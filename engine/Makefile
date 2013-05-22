@@ -1,43 +1,36 @@
-##
-# Makefile for compiling main
-# Author: vitor.rozsa
-# date: 21/05/2013
-##
-
-DIR_TOP := ..
+TOP = .
 
 ENABLE_EFENCE := #ENABLED
 
-COMPILER := gcc
-CFLAGS := -Wall -Werror
+CC = gcc
+CFLAGS := -Wall -Werror -DDEBUG_ON
 
 TARGET := game
 SOURCE := $(wildcard *.c)
 
-INCLUDES := -I./
+LDLIBS = `allegro-config --libs`
+LDFLAGS =
 
-OBJ_ADD := $(wildcard *.o)
+INCLUDES =	-I.\
+			-I$(TOP)/util
 
 LIB_DIR :=
 
-LIBS =
+#LIBS = -lpthread
 
 ifeq ($(ENABLE_EFENCE), ENABLED)
 	LIBS += -lefence
 endif
 
-$(TARGET): $(SOURCE) $(OBJ_ADD)
-	$(COMPILER) $(FLAGS) $(SOURCE) $(INCLUDES) $(OBJ_ADD) $(LIBS) -o $(TARGET) 
-	
-$(OBJ_ADD):
-	@cd $(DIR_TOP)/lib/ && make
+
+$(TARGET): $(SOURCE)
+	$(CC) $(CFLAGS) $(SOURCE) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -o $(TARGET)
+
 
 .PHONY: clean
 clean:
 	@echo "rm -f $(TARGET)"
 	@rm -f $(TARGET)
-	@echo "rm -f $(OBJ_ADD)"
-	@rm -f $(OBJ_ADD)
 	
 #  ".PHONY" specifies that target help is not a file,
 # even if there is a "help" file in the directory.
