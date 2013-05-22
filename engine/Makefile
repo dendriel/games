@@ -12,7 +12,7 @@ COMPILER := gcc
 CFLAGS := -Wall -Werror
 
 TARGET := game
-SOURCE := main.c
+SOURCE := $(wildcard *.c)
 
 INCLUDES := -I./
 
@@ -27,11 +27,10 @@ ifeq ($(ENABLE_EFENCE), ENABLED)
 endif
 
 $(TARGET): $(SOURCE) $(OBJ_ADD)
-	$(COMPILER) $(FLAGS) $(SOURCE) $(INCLUDES) $(OBJ_ADD) $(LIBS) -o $(TARGET)
+	$(COMPILER) $(FLAGS) $(SOURCE) $(INCLUDES) $(OBJ_ADD) $(LIBS) -o $(TARGET) 
 	
 $(OBJ_ADD):
-	$(COMPILER) $(FLAGS) -c $(SOURCE)
-
+	@cd $(DIR_TOP)/lib/ && make
 
 .PHONY: clean
 clean:
