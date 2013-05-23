@@ -27,7 +27,7 @@ void gameSystem_main(void)
 
 
 	gameVideo_init();
-	sleep(3);
+	sleep(10);
 
 	//cfg_iniciaConfig();						//	config.c		//
 	//

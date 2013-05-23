@@ -8,7 +8,8 @@ CFLAGS := -Wall -Werror -DDEBUG_ON
 TARGET := game
 SOURCE := $(wildcard *.c)
 
-LDLIBS = `allegro-config --libs`
+LDLIBS = `allegro-config --libs`\
+			-lpthread
 LDFLAGS =
 
 INCLUDES =	-I.\

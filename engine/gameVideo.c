@@ -1,4 +1,6 @@
 #include <allegro.h>
+#include <pthread.h>
+#include <stdbool.h>
 
 #include "gameVideo.h"
 #include "game_defines.h"
@@ -7,8 +9,20 @@
 
 /*************************************************************************************************/
 
+/**
+ * \d Processing thread. Receive and process message commands.
+ * \p data Unused.
+ */
+static void gameVideo_thread(void *data);
+
+/*************************************************************************************************/
+
 game_return_code gameVideo_init(void)
 {
+	pthread_t video_th;
+
+	pthread_create(&video_th, NULL, (void *)gameVideo_thread, NULL);
+
 //	BITMAP *BUFFER; 	//	*Double Buffering.	//
 //	BITMAP *SBUFFER;
 	   
@@ -18,15 +32,29 @@ game_return_code gameVideo_init(void)
 	//	Carrega Imagens.	//
 //	cfg_iniciaBitmaps();
 
-	BITMAP *batalha_bmp = load_bitmap("./media/img/campo_batalha.bmp", NULL);
-
-	draw_sprite(screen, batalha_bmp, 0, 0);
 
     //	Carrega Fontes.		//
 	//cfg_iniciaFontes();
 	return GAME_RET_SUCCESS;
 }
- 
+
+static void gameVideo_thread(void *data)
+{
+	BITMAP *BUFFER; 	//	*Double Buffering.	//
+	BITMAP *batalha_bmp = load_bitmap("./media/img/campo_batalha.bmp", NULL);
+
+	BUFFER = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
+
+	int i = 0;
+	while(true) {
+		clear(BUFFER);
+		draw_sprite(BUFFER, batalha_bmp, i, i);
+		draw_sprite(screen, BUFFER, 0, 0);
+		i+=5;
+		sleep(1);
+	}
+}
+
 //	Iniciar Imagens.	//
 //void cfg_iniciaBitmaps(void) {
 //	
