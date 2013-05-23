@@ -5,7 +5,7 @@
 
 
 #if defined(DEBUG_ON)
-#define DEBUG(...) fprintf(stderr, __VA_ARGS__)
+#define DEBUG(fmt,args...) (void)(printf("[debug] %s:%3d - "fmt"\n",__FILE__,__LINE__,##args))
 #else
 #define DEBUG(...)
 #endif
