@@ -1,21 +1,25 @@
 TOP = .
 
-ENABLE_EFENCE := #ENABLED
+ENABLE_EFENCE = #ENABLED
 
 CC = gcc
-CFLAGS := -Wall -Werror -DDEBUG_ON
+#CFLAGS := -Wall -Werror -DDEBUG
+CFLAGS = -Werror -DDEBUG
 
-TARGET := game
-SOURCE := $(wildcard *.c)
+TARGET = game
+SOURCE = $(wildcard *.c)
+OBJS = $(TOP)/libs/liblinked_list/linked_list.o #make a static lib
 
 LDLIBS = `allegro-config --libs`\
-			-lpthread
+			-lpthread\
+			-lrt
 LDFLAGS =
 
 INCLUDES =	-I.\
-			-I$(TOP)/util
+			-I$(TOP)/util\
+			-I$(TOP)/libs/liblinked_list/inc
 
-LIB_DIR :=
+LIB_DIR =
 
 #LIBS = -lpthread
 
@@ -25,7 +29,7 @@ endif
 
 
 $(TARGET): $(SOURCE)
-	$(CC) $(CFLAGS) $(SOURCE) $(INCLUDES) $(LDFLAGS) $(LDLIBS) -o $(TARGET)
+	$(CC) $(CFLAGS) $(SOURCE) $(INCLUDES) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(TARGET)
 
 
 .PHONY: clean

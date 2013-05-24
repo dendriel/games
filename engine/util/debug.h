@@ -1,13 +1,13 @@
-#ifndef DEBUG_INCLUDED
-#define DEBUG_INCLUDED
+#ifndef DEBUG_HEADER
+#define DEBUG_HEADER
 
 #include <stdio.h>
 
 
-#if defined(DEBUG_ON)
-#define DEBUG(fmt,args...) (void)(printf("[debug] %s:%3d - "fmt"\n",__FILE__,__LINE__,##args))
+#if defined(DEBUG)
+#define debug(fmt,args...) (void)(printf("[debug] %s:%3d - "fmt"\n",__FILE__,__LINE__,##args))
 #else
-#define DEBUG(...)
+#define debug(...)
 #endif
 
-#endif /* DEBUG_INCLUDED */
+#endif /* DEBUG_HEADER */

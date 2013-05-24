@@ -14,20 +14,19 @@ void gameSystem_main(void)
 
 	ret = gameSystem_engine_init();
 	if (ret != GAME_RET_SUCCESS) {
-		DEBUG("Failed to initialize game system engine! %d", 19);
-		//TODO: log message
-		exit(-1); // TODO: create a macro to debug.
+		debug("Failed to initialize game system engine.");
+		exit(-1);
 	}
 
 	ret = gameSystem_media_init();
 	if (ret != GAME_RET_SUCCESS) {
-		//TODO: log message
-		exit(-1); // TODO: create a macro to debug.
+		debug("Failed to initialize game media dependences.");
+		exit(-1);
 	}
 
 
 	gameVideo_init();
-	sleep(10);
+	sleep(3);
 
 	//cfg_iniciaConfig();						//	config.c		//
 	//
@@ -52,7 +51,7 @@ game_return_code gameSystem_engine_init(void)
 	/* Init allegro engine general support. */
 	ret = allegro_init();
 	if (ret != 0) {
-		// TODO: put debug.
+		debug("Failed to initialize allegro engine.");
 		return GAME_RET_ERROR;
 	}
 
