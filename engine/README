@@ -2,3 +2,17 @@ Install the following to get the game working:
 
     liballegro2.4
     liballegro2.4-dev
+
+ System reference~
+
+main modules folders:
+
+	./system # gameSystem module
+	./video  # gameVideo  module
+	./brain  # gameBrain  module
+
+auxiliary folders:
+
+	./util    # utilitary headers
+	./modules # extern modules (almost all)
+	./libs    # extern libs

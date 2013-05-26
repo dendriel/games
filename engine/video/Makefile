@@ -1,29 +1,13 @@
 TOP = ..
 MODULES = $(TOP)/modules
 
-include $(TOP)/Makefile.header
+include $(TOP)/Makefile.hd
 
-SOURCE = $(wildcard *.c)
-OBJS = $(SOURCE:.c=.o)
-
-INCLUDES =	-I.\
-			-I$(TOP)/\
+INCLUDES +=	-I$(TOP)/inc\
 			-I$(TOP)/util\
+			-I$(TOP)/system/inc\
+			-I$(MODULES)/mixedAPI/inc\
 			-I$(MODULES)/linked_list/inc\
 			-I$(MODULES)/alarm/inc
 
-SOURCE:
-	$(CC) $(CFLAGS) -c $(SOURCE) $(INCLUDES)
-
-
-.PHONY: clean
-clean:
-	@echo "rm -f $(TARGET)"
-	@rm -f $(TARGET)
-	
-#  ".PHONY" specifies that target help is not a file,
-# even if there is a "help" file in the directory.
-.PHONY: help
-help:
-	@echo "Usage: make"
-	@echo "       make clean"
+include $(TOP)/Makefile.tl

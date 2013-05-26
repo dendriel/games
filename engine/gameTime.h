@@ -1,4 +1,0 @@
-#ifndef GAMETIME_HEADER
-#define GAMETIME_HEADER
-
-#endif /* GAMETIME_HEADER */

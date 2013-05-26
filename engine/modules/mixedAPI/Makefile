@@ -1,11 +1,8 @@
 TOP = ../..
 
-include $(TOP)/Makefile.header
+include $(TOP)/Makefile.hd
 
-SOURCE = $(wildcard *.c)
-OBJS = $(SOURCE:.c=.o)
+INCLUDES +=	-I$(TOP)/modules/linked_list/inc
 
-INCLUDES = -I.
-
-include $(TOP)/Makefile.tail
+include $(TOP)/Makefile.tl
 

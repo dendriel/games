@@ -1,12 +1,20 @@
-# Compile objects.
+# Generic Makefile for compiling objects [tail].
 
-SOURCE:
+all: $(OBJS)
+
+$(OBJS) : $(SOURCE) $(INCDEP)
 	$(CC) $(CFLAGS) -c $(INCLUDES) $(SOURCE)
 
 .PHONY: clean
 clean:
 	@echo "rm -f $(OBJS)"
 	@rm -f $(OBJS)
+ifdef TARGET
+	@echo "rm -f $(TARGET)"
+	@rm -f $(TARGET)
+	@echo "rm -f $(INTOBJS)"
+	@rm -f $(INTOBJS)
+endif
 	
 #  ".PHONY" specifies that target help is not a file,
 # even if there is a "help" file in the directory.

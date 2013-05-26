@@ -4,8 +4,8 @@
 #include <mqueue.h>
 #include <errno.h>
 
-#include "linked_list.h"
-#include "linked_listStructs.h"
+#include "mixedAPI.h"
+#include "mixedAPI_defines.h"
 #include "alarm.h"
 #include "alarm_defines.h"
 #include "alarm_structs.h"
@@ -26,37 +26,6 @@
  *	\p data Unused.
  */
 static void gameVideo_thread(void *data);
-
-/**************************************************************************************************/
-/**
- *	\b Allocate memory for the visual list.
- *	\p visual_list Reference to the visual list.
- *	\r GAME_RET_SUCCESS for correctly list creation;
- *	GAME_RET_ERROR if could not create the list.
- */
-static en_game_return_code gameVideo_visual_list_create(st_list *visual_list);
-
-/**************************************************************************************************/
-/**
- *	\d Insert the first item in the visual list.
- *	\p visual_list Reference to the visual list that will receive the element.
- *	\p visual_elem The element to be inserted.
- *	\r GAME_RET_SUCCESS for correctly operation; GAME_RET_ERROR otherwise.
- */
-static en_game_return_code gameVideo_visual_list_add_first_elem(
-st_list		*visual_list,
-st_visual	*visual_elem);
-
-/**************************************************************************************************/
-/**
- *	\d Insert the first item in the visual list.
- *	\p visual_list Reference to the visual list that will receive the element.
- *	\p visual_elem The element to be inserted.
- *	\r GAME_RET_SUCCESS for correctly operation; GAME_RET_ERROR otherwise.
- */
-static en_game_return_code gameVideo_visual_list_add_elem(
-st_list *visual_list,
-st_visual *visual_elem);
 
 /**************************************************************************************************/
 /**
@@ -81,6 +50,7 @@ static void gameVideo_remove_update_screen_trigger(int alarm_entry);
  *	halting solicitation message.
  */
 static en_game_return_code gameVideo_process_message(st_game_msg *game_msg);
+
 
 /**************************************************************************************************/
 
@@ -191,13 +161,14 @@ static void gameVideo_thread(void *data)
 	char recvd_data[sizeof(st_game_msg)];
 	st_game_msg *game_msg = NULL;
 	en_game_return_code ret;
+	en_mixed_return_code mret;
 	mqd_t gvideo_mqueue;
 
 	memset(&recvd_data, 0, sizeof(recvd_data));
 
 	/* Setup mqueue. */
-	ret = gameVideo_open_mqueue(&gvideo_mqueue);
-	if (ret != GAME_RET_SUCCESS) {
+	mret = mixed_open_mqueue(&gvideo_mqueue, GAMEVIDEO_MQUEUE_NAME, sizeof(st_game_msg));
+	if (mret != MIXED_RET_SUCCESS) {
 		exit(-1);
 	}
 
@@ -238,86 +209,10 @@ static void gameVideo_thread(void *data)
 	}
 
 	/* Free the resources. */
-	gameVideo_close_mqueue(&gvideo_mqueue);
+	mixed_close_mqueue(&gvideo_mqueue, GAMEVIDEO_MQUEUE_NAME);
 	gameVideo_remove_update_screen_trigger(alarm_entry);
 }
 
-/**************************************************************************************************/
-
-static en_game_return_code gameVideo_visual_list_create(st_list *visual_list)
-{
-	visual_list = (st_list *)malloc(sizeof(st_list));
-	if (!visual_list) {
-		debug("Failed to allocate memory for st_list.");
-		return GAME_RET_ERROR;
-	}
-
-	return GAME_RET_SUCCESS;
-}
-
-/**************************************************************************************************/
-
-static en_game_return_code gameVideo_visual_list_add_first_elem(
-st_list		*visual_list,
-st_visual	*visual_elem)
-{
-	int ret;
-	st_list_item *list_item = NULL;
-
-	if (!visual_list || !visual_elem) {
-		debug("Null parameter received.");
-		return GAME_RET_ERROR;
-	}
-
-	list_item = (st_list_item *)malloc(sizeof(st_list_item));
-	if (!list_item) {
-		debug("Failed to allocate memory for st_list_item.");
-		return GAME_RET_ERROR;
-	}
-
-	memset(list_item, 0, sizeof(st_list_item));
-	list_item->data = visual_elem;
-
-	ret = list_add_first(visual_list, list_item);
-	if (ret != 0) {
-		debug("Failed to add first element to visual_list.");
-		return GAME_RET_ERROR;
-	}
-
-	return GAME_RET_SUCCESS;
-}
-
-/**************************************************************************************************/
-
-static en_game_return_code gameVideo_visual_list_add_elem(
-st_list *visual_list,
-st_visual *visual_elem)
-{
-	int ret;
-	st_list_item *list_item = NULL;
-
-	if (!visual_list || !visual_elem) {
-		debug("Null parameter received.");
-		return GAME_RET_ERROR;
-	}
-
-	list_item = (st_list_item *)malloc(sizeof(st_list_item));
-	if (!list_item) {
-		debug("Failed to allocate memory for st_list_item.");
-		return GAME_RET_ERROR;
-	}
-
-	memset(list_item, 0, sizeof(st_list_item));
-	list_item->data = visual_elem;
-
-	ret = list_add_next(visual_list, list_item);
-	if (ret != 0) {
-		debug("Failed to add element to visual_list.");
-		return GAME_RET_ERROR;
-	}
-
-	return GAME_RET_SUCCESS;
-}
 
 /*************************************************************************************************/
 

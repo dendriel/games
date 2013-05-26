@@ -1,0 +1,13 @@
+# Generic Makefile for compiling objects [header].
+
+ENABLE_EFENCE = #ENABLED
+
+CC = gcc
+CFLAGS = -Wall -Werror -DDEBUG
+
+SOURCE = $(wildcard *.c)
+OBJS = $(SOURCE:.c=.o)
+INCDEP = $(wildcard ./inc/*.h)
+
+INCLUDES = -I./inc
+

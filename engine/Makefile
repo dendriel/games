@@ -1,37 +1,59 @@
 TOP = .
-MODULES = ./modules
+MODULES = $(TOP)/modules
+SYSTEM = $(TOP)/system
+VIDEO = $(TOP)/video
+MIXEDAPI = $(MODULES)/mixedAPI
 
-include Makefile.header
+include Makefile.hd
 
-TARGET = game
-SOURCE = $(wildcard *.c)
-OBJS =	$(MODULES)/linked_list/linked_list.o\
-		$(MODULES)/alarm/alarm.o
+TARGET = main
+INCLUDES +=	-I./system/inc
+
+# Internal Objects Dependences #
+SYSTEM_DEP = $(wildcard $(SYSTEM)/*.c)
+SYSTEMDEP = $(SYSTEM_DEP:.c=.o)
+
+VIDEO_DEP = $(wildcard $(VIDEO)/*.c)
+VIDEODEP = $(VIDEO_DEP:.c=.o)
+
+MIXEDAPI_DEP = $(wildcard $(MIXEDAPI)/*.c)
+MIXEDAPIDEP = $(MIXEDAPI_DEP:.c=.o)
+
+INTOBJS =	$(SYSTEMDEP)\
+			$(VIDEODEP)\
+			$(MIXEDAPIDEP)\
+
+# External Objects Dependences #
+ALARMDEP = $(MODULES)/alarm/alarm.o
+LINKEDLISTDEP = $(MODULES)/linked_list/linked_list.o
+
+EXTOBJS =	$(ALARMDEP)\
+			$(LINKEDLISTDEP)
+
+# All objects #
+LDOBJS =	$(INTOBJS)\
+			$(EXTOBJS)
 
 
-INCLUDES =	-I.\
-			-I$(TOP)/$(MODULES)/alarm/inc
+LDFLAGS =
+LDLIBS = `allegro-config --libs`\
+			-lpthread\
+			-lrt
 
-LIB_DIR =
-
-
-ifeq ($(ENABLE_EFENCE), ENABLED)
-	LIBS += -lefence
-endif
-
-
-$(TARGET): $(SOURCE)
-	$(CC) $(CFLAGS) $(SOURCE) $(INCLUDES) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(TARGET)
+# Build target #
+$(TARGET): $(SOURCE) $(VIDEODEP) $(SYSTEMDEP) $(ALARMDEP) $(MIXEDAPIDEP)
+	$(CC) $(CFLAGS) $(LDOBJS) $(LDFLAGS) $(LDLIBS) $(SOURCE) $(INCLUDES) -o $(TARGET)
 
 
-.PHONY: clean
-clean:
-	@echo "rm -f $(TARGET)"
-	@rm -f $(TARGET)
-	
-#  ".PHONY" specifies that target help is not a file,
-# even if there is a "help" file in the directory.
-.PHONY: help
-help:
-	@echo "Usage: make"
-	@echo "       make clean"
+# Rules for dependences #
+$(VIDEODEP):
+	@cd $(VIDEO) && make && cd -
+
+$(SYSTEMDEP):
+	@cd $(SYSTEM) && make && cd -
+
+$(MIXEDAPIDEP):
+	@cd $(MIXEDAPI) && make && cd -
+
+
+include Makefile.tl
