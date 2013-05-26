@@ -44,7 +44,7 @@ void gameSystem_main(void)
 
 /*************************************************************************************************/
 
-game_return_code gameSystem_engine_init(void)
+en_game_return_code gameSystem_engine_init(void)
 {
 	int ret;
 
@@ -69,7 +69,7 @@ game_return_code gameSystem_engine_init(void)
 
 /*************************************************************************************************/
 
-game_return_code gameSystem_media_init(void)
+en_game_return_code gameSystem_media_init(void)
 {
 	int ret;
 

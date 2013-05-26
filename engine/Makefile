@@ -1,14 +1,15 @@
 TOP = .
+MODULES = ./modules
 
 ENABLE_EFENCE = #ENABLED
 
 CC = gcc
-#CFLAGS := -Wall -Werror -DDEBUG
-CFLAGS = -Werror -DDEBUG
+CFLAGS := -Wall -Werror -DDEBUG
 
 TARGET = game
 SOURCE = $(wildcard *.c)
-OBJS = $(TOP)/libs/liblinked_list/linked_list.o #make a static lib
+OBJS =	$(MODULES)/linked_list/linked_list.o\
+		$(MODULES)/alarm/alarm.o
 
 LDLIBS = `allegro-config --libs`\
 			-lpthread\
@@ -17,7 +18,8 @@ LDFLAGS =
 
 INCLUDES =	-I.\
 			-I$(TOP)/util\
-			-I$(TOP)/libs/liblinked_list/inc
+			-I$(MODULES)/linked_list/inc\
+			-I$(MODULES)/alarm/inc
 
 LIB_DIR =
 
