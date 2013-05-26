@@ -11,11 +11,13 @@
 #include "alarm_structs.h"
 #include "debug.h"
 
+#include "game_structs.h"
 #include "game_defines.h"
 #include "gameSystem_defines.h"
 #include "gameVideo.h"
 #include "gameVideo_defines.h"
 #include "gameVideo_structs.h"
+#include "gameVideo_screen.h"
 
 
 /**************************************************************************************************/
@@ -66,57 +68,19 @@ static en_game_return_code gameVideo_set_update_screen_trigger(int *alarm_entry)
 
 /**************************************************************************************************/
 /**
- *	\b Open a mqueue to receive video related solicitations.
- *	\p gvideo_mqueue Used to hold the mqueue reference.
- *	\r GAME_RET_SUCCESS if could open the mqueue; GAME_RET_ERROR otherwise.
+ *	\b Remove the update screen alarm entry.
+ *	\p Reference to the alarm (received at alarm creation).
  */
-static en_game_return_code gameVideo_open_mqueue(mqd_t *gvideo_mqueue);
+static void gameVideo_remove_update_screen_trigger(int alarm_entry);
 
 /**************************************************************************************************/
 /**
- *	\b Close the mqueue.
- *	\p gvideo_mqueue Reference to the mqueue that will be closed.
- *	\r GAME_RET_SUCCESS if could close the mqueue; GAME_RET_ERROR otherwise.
+ *	\b Process game video requests.
+ *	\p game_msg Data from the request.
+ *	\r GAME_RET_SUCCESS for successfully message processing; GAME_RET_HALT_PROCESS if received a
+ *	halting solicitation message.
  */
-static en_game_return_code gameVideo_close_mqueue(mqd_t *gvideo_mqueue);
-
-/**************************************************************************************************/
-
-static en_game_return_code gameVideo_open_mqueue(mqd_t *gvideo_mqueue)
-{
-	struct mq_attr attr;
-
-	/* Initialize the queue attributes */
-	attr.mq_flags = 0;
-	attr.mq_maxmsg = 1000;
-	attr.mq_msgsize = sizeof(st_visual);
-	attr.mq_curmsgs = 0;
-	
-	/* Create the message queue. */
-	*gvideo_mqueue = mq_open(GAMEVIDEO_QUEUE_NAME, O_CREAT | O_RDONLY, 0644, &attr);
-	if (*gvideo_mqueue == GAME_MQUEUE_FAILED) {
-		debug("Failed to open mqueue. errno: %d; msg: %s", errno, strerror(errno));
-		return GAME_RET_ERROR;
-	}
-
-	return GAME_RET_SUCCESS;
-}
-
-/**************************************************************************************************/
-
-static en_game_return_code gameVideo_close_mqueue(mqd_t *gvideo_mqueue)
-{
-	int ret;
-
-	/* Close the message queue. */
-	ret = mq_close(*gvideo_mqueue);
-	if (ret != 0) {
-		debug("Failed to close mqueue. errno: %d; msg: %s", errno, strerror(errno));
-		return GAME_RET_ERROR;
-	}
-
-	return GAME_RET_SUCCESS;
-}
+static en_game_return_code gameVideo_process_message(st_game_msg *game_msg);
 
 /**************************************************************************************************/
 
@@ -124,21 +88,27 @@ static en_game_return_code gameVideo_set_update_screen_trigger(int *alarm_entry)
 {
 	en_alarm_ret_code ret;
 	st_alarm alarm;
-	st_game_msg gvideo_msg;
+	st_game_msg *gvideo_msg;
 
 	memset(&alarm, 0, sizeof(alarm));
 	memset(&gvideo_msg, 0, sizeof(st_game_msg));
-
-	/* Fill up game message (data for alarm message). */
-	gvideo_msg.action = GAME_UPDATE_SCREEN;
 
 	/* Fill up alarm message. */
 	alarm.wait_time = GAMEVIDEO_SCREEN_UPDATE_US;
 	alarm.repeat = true;
 	alarm.priority = GAME_MQUEUE_PRIO_0;
-	strncpy(alarm.dest_mqueue, GAMEVIDEO_QUEUE_NAME, sizeof(alarm.dest_mqueue));
+	strncpy(alarm.dest_mqueue, GAMEVIDEO_MQUEUE_NAME, sizeof(alarm.dest_mqueue));
 
-	alarm.data = (void *)&gvideo_msg;
+	gvideo_msg = (st_game_msg *) malloc(sizeof(st_game_msg));
+	if (!gvideo_msg) {
+		debug("Failed to allocate memory for gvideo_msg.");
+		return GAME_RET_ERROR;
+	}
+
+	memset(gvideo_msg, 0, sizeof(*gvideo_msg));
+	gvideo_msg->type = GAME_ACTION_UPDATE_SCREEN;
+	gvideo_msg->id = GAMEVIDEO_MOD_ID;
+	alarm.data = (void *)gvideo_msg;
 
 	/* Set the trigger alarm for drawing the buffer into screen. */
 	ret = alarm_set_trigger(&alarm, alarm_entry);
@@ -152,47 +122,124 @@ static en_game_return_code gameVideo_set_update_screen_trigger(int *alarm_entry)
 
 /**************************************************************************************************/
 
+static void gameVideo_remove_update_screen_trigger(int alarm_entry)
+{
+	en_alarm_ret_code ret;
+
+	ret = alarm_remove_trigger(alarm_entry);
+	if (ret != ALARM_RET_SUCCESS) {
+		debug("Failed to remove update screen alarm entry.");
+	}
+}
+
+/**************************************************************************************************/
+
+static void gameVideo_processe_brain_message(st_game_msg *game_msg)
+{
+	return;
+}
+
+/**************************************************************************************************/
+
+static en_game_return_code gameVideo_process_message(st_game_msg *game_msg)
+{
+	en_game_msg_type type;
+	en_game_mod_id id;
+
+	type = game_msg->type;
+	id = game_msg->id;
+
+	/* Discovers the request of the message and processes acordingly. */
+	switch(id) {
+
+		case GAMEVIDEO_MOD_ID:
+			if (type == GAME_ACTION_UPDATE_SCREEN) {
+				gameVideo_screen_update();
+			}
+			else {
+				debug("Unknown message received from gameVideo module. Type: %d.\n", type);
+			}
+		break;
+
+		case GAMESYSTEM_MOD_ID:
+			if (type == GAME_ACTION_HALT_MODULE) {
+				debug("Received halt module solicitation. Will exit...");
+				return GAME_RET_HALT;
+			}
+			else {
+				debug("Unknown message received from gameSystem module. Type: %d.\n", type);
+			}
+		break;
+
+		case GAMEBRAIN_MOD_ID:
+			gameVideo_processe_brain_message(game_msg);
+		break;
+
+		default:
+			debug("Unkown message type received. Type: %d", type);
+		break;
+	}
+
+	return GAME_RET_SUCCESS;
+}
+
+/**************************************************************************************************/
+
 static void gameVideo_thread(void *data)
 {
-	int ret;
 	int alarm_entry;
-	en_game_return_code gret;
+	char recvd_data[sizeof(st_game_msg)];
+	st_game_msg *game_msg = NULL;
+	en_game_return_code ret;
 	mqd_t gvideo_mqueue;
-	int alarm_entry;
-	
-	gret = gameVideo_open_mqueue(&gvideo_mqueue);
-	if (rget != GAME_RET_SUCCESS) {
+
+	memset(&recvd_data, 0, sizeof(recvd_data));
+
+	/* Setup mqueue. */
+	ret = gameVideo_open_mqueue(&gvideo_mqueue);
+	if (ret != GAME_RET_SUCCESS) {
 		exit(-1);
 	}
 
-	gret = gameVideo_set_update_screen_trigger(&alarm_entry);
-	if (gret != GAME_RET_SUCCESS) {
+	/* Setup update screen trigger. */
+	ret = gameVideo_set_update_screen_trigger(&alarm_entry);
+	if (ret != GAME_RET_SUCCESS) {
 		exit(-1);
 	}
 
-	BITMAP *BUFFER; 	//	*Double Buffering.	//
-	BITMAP *batalha_bmp = load_bitmap("./media/img/campo_batalha.bmp", NULL);
+	/* TODO: setup screen. */
+	//BITMAP *BUFFER; 	//	*Double Buffering.	//
+	//BITMAP *batalha_bmp = load_bitmap("./media/img/campo_batalha.bmp", NULL);
+	//BUFFER = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
 
-	BUFFER = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
-
-	int i = 0;
-	st_game_msg recvd_msg;
-	memset(&recvd_msg, 0, sizeof(recvd_msg));
 
 	while(true) {
 		ssize_t bytes_read;
 
-        /* receive the message */
-        bytes_read = mq_receive(gvideo_mqueue, recvd_msg, sizeof(recvd_msg), NULL);
+        bytes_read = mq_receive(gvideo_mqueue, recvd_data, 1024, NULL);
 
-		printf("received a message!! action: %d\n", recvd_msg.action);
+		if (bytes_read == -1) {
+			debug("Failed to receive message. errno: %d; msg: %s", errno, strerror(errno));
+			continue;
+		}
+		game_msg = (st_game_msg *)recvd_data;
 
+		//printf("bytes: %d - msg type: %d - msg id: %d\n", bytes_read, game_msg->type, game_msg->id);
+
+		ret = gameVideo_process_message(game_msg);
+		if (ret == GAME_RET_HALT) {
+			/* Exiting message received. */
+			break;
+		}
 //		clear(BUFFER);
 //		draw_sprite(BUFFER, batalha_bmp, i, i);
 //		draw_sprite(screen, BUFFER, 0, 0);
 //		i+=1;
-//		sleep(0.05);
 	}
+
+	/* Free the resources. */
+	gameVideo_close_mqueue(&gvideo_mqueue);
+	gameVideo_remove_update_screen_trigger(alarm_entry);
 }
 
 /**************************************************************************************************/

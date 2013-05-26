@@ -1,29 +1,19 @@
 TOP = .
 MODULES = ./modules
 
-ENABLE_EFENCE = #ENABLED
-
-CC = gcc
-CFLAGS := -Wall -Werror -DDEBUG
+include Makefile.header
 
 TARGET = game
 SOURCE = $(wildcard *.c)
 OBJS =	$(MODULES)/linked_list/linked_list.o\
 		$(MODULES)/alarm/alarm.o
 
-LDLIBS = `allegro-config --libs`\
-			-lpthread\
-			-lrt
-LDFLAGS =
 
 INCLUDES =	-I.\
-			-I$(TOP)/util\
-			-I$(MODULES)/linked_list/inc\
-			-I$(MODULES)/alarm/inc
+			-I$(TOP)/$(MODULES)/alarm/inc
 
 LIB_DIR =
 
-#LIBS = -lpthread
 
 ifeq ($(ENABLE_EFENCE), ENABLED)
 	LIBS += -lefence

@@ -26,7 +26,8 @@ void gameSystem_main(void)
 
 
 	gameVideo_init();
-	sleep(3);
+	sleep(2);
+
 
 	//cfg_iniciaConfig();						//	config.c		//
 	//
@@ -98,4 +99,7 @@ void gameSystem_engine_exit()
 {
 	allegro_exit();
 }
+
+/*************************************************************************************************/
+
 

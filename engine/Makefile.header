@@ -1,0 +1,6 @@
+
+ENABLE_EFENCE = #ENABLED
+
+CC = gcc
+CFLAGS = -Wall -Werror -DDEBUG
+

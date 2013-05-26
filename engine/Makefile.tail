@@ -1,0 +1,16 @@
+# Compile objects.
+
+SOURCE:
+	$(CC) $(CFLAGS) -c $(INCLUDES) $(SOURCE)
+
+.PHONY: clean
+clean:
+	@echo "rm -f $(OBJS)"
+	@rm -f $(OBJS)
+	
+#  ".PHONY" specifies that target help is not a file,
+# even if there is a "help" file in the directory.
+.PHONY: help
+help:
+	@echo "Usage: make"
+	@echo "       make clean"

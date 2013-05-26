@@ -10,8 +10,9 @@
  *	\b Return codes for general use.
  */
 typedef enum {
+	GAME_RET_HALT		= 1,		//!< Informs that the process must finish (used in process message functions).
 	GAME_RET_SUCCESS	= 0,		//!< Generic success return code.
-	GAME_RET_ERROR		= -1,			//!< Generic error return code.
+	GAME_RET_ERROR		= -1,		//!< Generic error return code.
 } en_game_return_code;
 
 /**
@@ -27,7 +28,17 @@ typedef enum {
  *	\b Define possible actions to be requested in a message.
  */
 typedef enum {
-	GAME_UPDATE_SCREEN = 1234		//!< GAMEVIDEO_QUEUE_NAME.
+	GAME_ACTION_HALT_MODULE = 1,		//!< Requests to the module to terminate and free his resources.
+	GAME_ACTION_UPDATE_SCREEN,			//!< Requests to the game video module to update the screen.
 } en_game_msg_type;
+
+/**
+ *	\b Used to identify sender of the messages between modules.
+ */
+typedef enum {
+	GAMESYSTEM_MOD_ID = 100,		//!< Game system [main] module identifier.
+	GAMEBRAIN_MOD_ID,				//!< Game brain module identifier.
+	GAMEVIDEO_MOD_ID,				//!< Game video module identifier.
+} en_game_mod_id;
 
 #endif /* GAME_DEFINES_HEADER*/
