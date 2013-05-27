@@ -1,3 +1,4 @@
+#include <fcntl.h>
 #include <allegro.h>
 #include <pthread.h>
 #include <stdbool.h>
@@ -79,6 +80,7 @@ static en_game_return_code gameVideo_set_update_screen_trigger(int *alarm_entry)
 	gvideo_msg->type = GAME_ACTION_UPDATE_SCREEN;
 	gvideo_msg->id = GAMEVIDEO_MOD_ID;
 	alarm.data = (void *)gvideo_msg;
+	alarm.data_size = sizeof(st_game_msg);
 
 	/* Set the trigger alarm for drawing the buffer into screen. */
 	ret = alarm_set_trigger(&alarm, alarm_entry);
@@ -133,7 +135,7 @@ static en_game_return_code gameVideo_process_message(st_game_msg *game_msg)
 
 		case GAMESYSTEM_MOD_ID:
 			if (type == GAME_ACTION_HALT_MODULE) {
-				debug("Received halt module solicitation. Will exit...");
+				debug("Received halt solicitation. Will exit...");
 				return GAME_RET_HALT;
 			}
 			else {
@@ -146,7 +148,7 @@ static en_game_return_code gameVideo_process_message(st_game_msg *game_msg)
 		break;
 
 		default:
-			debug("Unkown message type received. Type: %d", type);
+			debug("Received message from invalid module. id: %d", id);
 		break;
 	}
 
@@ -159,15 +161,17 @@ static void gameVideo_thread(void *data)
 {
 	int alarm_entry;
 	char recvd_data[sizeof(st_game_msg)];
+	ssize_t bytes_read;
 	st_game_msg *game_msg = NULL;
 	en_game_return_code ret;
 	en_mixed_return_code mret;
 	mqd_t gvideo_mqueue;
 
-	memset(&recvd_data, 0, sizeof(recvd_data));
-
 	/* Setup mqueue. */
-	mret = mixed_open_mqueue(&gvideo_mqueue, GAMEVIDEO_MQUEUE_NAME, sizeof(st_game_msg));
+	mret = mixed_open_mqueue(&gvideo_mqueue,
+							GAMEVIDEO_MQUEUE_NAME,
+							GAME_MQUEUE_SIZE+1,
+							GAME_MQUEUE_RECV_MODE);
 	if (mret != MIXED_RET_SUCCESS) {
 		exit(-1);
 	}
@@ -185,8 +189,8 @@ static void gameVideo_thread(void *data)
 
 
 	while(true) {
-		ssize_t bytes_read;
 
+		memset(&recvd_data, 0, sizeof(recvd_data));
         bytes_read = mq_receive(gvideo_mqueue, recvd_data, 1024, NULL);
 
 		if (bytes_read == -1) {
@@ -199,6 +203,7 @@ static void gameVideo_thread(void *data)
 
 		ret = gameVideo_process_message(game_msg);
 		if (ret == GAME_RET_HALT) {
+			gameVideo_remove_update_screen_trigger(alarm_entry);
 			/* Exiting message received. */
 			break;
 		}
@@ -210,17 +215,21 @@ static void gameVideo_thread(void *data)
 
 	/* Free the resources. */
 	mixed_close_mqueue(&gvideo_mqueue, GAMEVIDEO_MQUEUE_NAME);
-	gameVideo_remove_update_screen_trigger(alarm_entry);
+	pthread_exit(0);
 }
 
 
 /*************************************************************************************************/
 
-en_game_return_code gameVideo_init(void)
+en_game_return_code gameVideo_init(pthread_t *thread_id)
 {
-	pthread_t video_th;
+	int ret;
 
-	pthread_create(&video_th, NULL, (void *)gameVideo_thread, NULL);
+	ret = pthread_create(thread_id, NULL, (void *)gameVideo_thread, NULL);
+	if (ret != 0) {
+		debug("Failed to create video module thread.");
+		return GAME_RET_ERROR;
+	}
 
 //	BITMAP *BUFFER; 	//	*Double Buffering.	//
 //	BITMAP *SBUFFER;

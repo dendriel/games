@@ -4,7 +4,9 @@
 #include <mqueue.h>
 
 
-#define GAME_MQUEUE_FAILED	(mqd_t)-1		//!< Mqueue error verification constant.
+#define GAME_MQUEUE_FAILED		(mqd_t)-1				//!< Mqueue error verification constant.
+#define GAME_MQUEUE_SEND_MODE	(O_CREAT|O_WRONLY)		//!< Open mqueue in send (write) mode.
+#define GAME_MQUEUE_RECV_MODE	(O_CREAT|O_RDONLY)		//!< Open mqueue in recv (read) mode.
 
 /**
  *	\b Return codes for general use.

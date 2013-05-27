@@ -1,3 +1,10 @@
+##
+# Makefile for compiling all the project.
+# Memory leak check: 
+# "valgrind --leak-check=yes  --leak-check=full --show-reachable=yes"
+# Note: Allegro game engine is a bomb of memory leaks =/
+##
+
 TOP = .
 MODULES = $(TOP)/modules
 SYSTEM = $(TOP)/system
@@ -6,7 +13,7 @@ MIXEDAPI = $(MODULES)/mixedAPI
 
 include Makefile.hd
 
-TARGET = main
+TARGET = game
 INCLUDES +=	-I./system/inc
 
 # Internal Objects Dependences #
@@ -44,7 +51,6 @@ LDLIBS = `allegro-config --libs`\
 $(TARGET): $(SOURCE) $(VIDEODEP) $(SYSTEMDEP) $(ALARMDEP) $(MIXEDAPIDEP)
 	$(CC) $(CFLAGS) $(LDOBJS) $(LDFLAGS) $(LDLIBS) $(SOURCE) $(INCLUDES) -o $(TARGET)
 
-
 # Rules for dependences #
 $(VIDEODEP):
 	@cd $(VIDEO) && make && cd -
@@ -54,6 +60,7 @@ $(SYSTEMDEP):
 
 $(MIXEDAPIDEP):
 	@cd $(MIXEDAPI) && make && cd -
+
 
 
 include Makefile.tl

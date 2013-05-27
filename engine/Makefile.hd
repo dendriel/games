@@ -4,6 +4,7 @@ ENABLE_EFENCE = #ENABLED
 
 CC = gcc
 CFLAGS = -Wall -Werror -DDEBUG
+CFLAGS += #-DRUN_FULLSCREEN
 
 SOURCE = $(wildcard *.c)
 OBJS = $(SOURCE:.c=.o)

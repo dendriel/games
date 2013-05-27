@@ -8,11 +8,17 @@
 /**************************************************************************************************/
 /**
  *	\b Interface function to open a mqueue.
- *	\p gvideo_mqueue Used to hold the mqueue reference.
+ *	\p mqueue Used to hold the mqueue reference.
  *	\p mq_name The name of the mqueue to be opened.
+ *	\p mq_size Size of the messages to send/receive through the mqueue.
+ *	\p mq_mode The mqueue operation mode.
  *	\r MIXED_RET_SUCCESS if could open the mqueue; MIXED_RET_ERROR otherwise.
  */
-en_mixed_return_code mixed_open_mqueue(mqd_t *mqueue, const char *mq_name, const unsigned mq_size);
+en_mixed_return_code mixed_open_mqueue(
+mqd_t *mqueue,
+const char *mq_name,
+const unsigned mq_size,
+const mode_t mq_mode);
 
 /**************************************************************************************************/
 /**

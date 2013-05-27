@@ -12,7 +12,11 @@
 
 /**************************************************************************************************/
 
-en_mixed_return_code mixed_open_mqueue(mqd_t *mqueue, const char *mq_name, const unsigned mq_size)
+en_mixed_return_code mixed_open_mqueue(
+mqd_t *mqueue,
+const char *mq_name,
+const unsigned mq_size,
+const mode_t mq_mode)
 {
 	struct mq_attr attr;
 
@@ -26,7 +30,7 @@ en_mixed_return_code mixed_open_mqueue(mqd_t *mqueue, const char *mq_name, const
 	attr.mq_msgsize = mq_size;
 
 	/* Create the message queue. */
-	*mqueue = mq_open(mq_name, O_CREAT | O_RDONLY, 0644, &attr);
+	*mqueue = mq_open(mq_name, mq_mode, 0644, &attr);
 	if (*mqueue == (mqd_t)-1) {
 		fprintf(stderr, "Failed to open mqueue. name: %s; errno: %d; msg: %s\n",
 			mq_name, errno, strerror(errno));
@@ -48,11 +52,15 @@ void mixed_close_mqueue(const mqd_t *mqueue, const char *mq_name)
 			mq_name, errno, strerror(errno));
 	}
 
+if (0) {
+	/* This action is not worling very well right now. */
 	ret = mq_unlink(mq_name);
 	if (ret != 0) {
 		fprintf(stderr, "Failed to unlink the mqueue. name: %s; errno: %d; msg: %s\n",
 			mq_name, errno, strerror(errno));
 	}
+}
+
 }
 
 /**************************************************************************************************/
