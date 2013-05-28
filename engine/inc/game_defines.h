@@ -21,8 +21,8 @@ typedef enum {
  *	\b Priority for message queues.
  */
 typedef enum {
-	GAME_MQUEUE_PRIO_0 = 0,		//!< Used for critical messages, as media and system issues.
-	GAME_MQUEUE_PRIO_1 = 1,		//!< Reserved.
+	GAME_MQUEUE_PRIO_0 = 0,		//!< Used for critical messages.
+	GAME_MQUEUE_PRIO_1 = 1,		//!< Used for media issues.
 	GAME_MQUEUE_PRIO_2 = 2,		//!< Default mqueue priority.
 } en_game_mqueue_prio;
 
@@ -31,7 +31,8 @@ typedef enum {
  */
 typedef enum {
 	GAME_ACTION_HALT_MODULE = 1,		//!< Requests to the module to terminate and free his resources.
-	GAME_ACTION_UPDATE_SCREEN,			//!< Requests to the game video module to update the screen.
+	GAME_ACTION_UPDATE_SCREEN,			//!< Requests to the gameVideo module to update the screen.
+	GAME_ACTION_ADD_SCREEN_ELEM,		//!< Requests to the gameVideo module to add a new element into the screen.
 } en_game_msg_type;
 
 /**

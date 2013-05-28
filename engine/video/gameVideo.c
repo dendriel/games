@@ -67,7 +67,7 @@ static en_game_return_code gameVideo_set_update_screen_trigger(int *alarm_entry)
 	/* Fill up alarm message. */
 	alarm.wait_time = GAMEVIDEO_SCREEN_UPDATE_US;
 	alarm.repeat = true;
-	alarm.priority = GAME_MQUEUE_PRIO_0;
+	alarm.priority = GAME_MQUEUE_PRIO_1;
 	strncpy(alarm.dest_mqueue, GAMEVIDEO_MQUEUE_NAME, sizeof(alarm.dest_mqueue));
 
 	gvideo_msg = (st_game_msg *) malloc(sizeof(st_game_msg));
@@ -108,6 +108,22 @@ static void gameVideo_remove_update_screen_trigger(int alarm_entry)
 
 static void gameVideo_processe_brain_message(st_game_msg *game_msg)
 {
+	en_game_msg_type type;
+
+	type = game_msg->type;
+
+	switch (type) {
+
+		case GAME_ACTION_ADD_SCREEN_ELEM:
+			gameVideo_screen_add_elem(&game_msg->v_elem);
+		break;
+
+		default:
+			debug("Invalid message type received from gameBrain module. type: %d", type);
+		break;
+
+	}
+
 	return;
 }
 
@@ -122,7 +138,7 @@ static en_game_return_code gameVideo_process_message(st_game_msg *game_msg)
 	id = game_msg->id;
 
 	/* Discovers the request of the message and processes acordingly. */
-	switch(id) {
+	switch (id) {
 
 		case GAMEVIDEO_MOD_ID:
 			if (type == GAME_ACTION_UPDATE_SCREEN) {

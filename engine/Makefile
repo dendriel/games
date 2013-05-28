@@ -47,8 +47,13 @@ LDLIBS = `allegro-config --libs`\
 			-lpthread\
 			-lrt
 
+all: $(TARGET)
+
 # Build target #
 $(TARGET): $(SOURCE) $(VIDEODEP) $(SYSTEMDEP) $(ALARMDEP) $(MIXEDAPIDEP)
+	@cd $(VIDEO) && make && cd -
+	@cd $(SYSTEM) && make && cd -
+	@cd $(MIXEDAPI) && make && cd -
 	$(CC) $(CFLAGS) $(LDOBJS) $(LDFLAGS) $(LDLIBS) $(SOURCE) $(INCLUDES) -o $(TARGET)
 
 # Rules for dependences #

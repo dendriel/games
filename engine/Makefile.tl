@@ -1,7 +1,5 @@
 # Generic Makefile for compiling objects [tail].
 
-all: $(OBJS)
-
 $(OBJS) : $(SOURCE) $(INCDEP)
 	$(CC) $(CFLAGS) -c $(INCLUDES) $(SOURCE)
 
