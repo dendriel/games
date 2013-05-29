@@ -12,9 +12,10 @@
  *	\b Return codes for general use.
  */
 typedef enum {
-	GAME_RET_HALT		= 1,		//!< Informs that the process must finish (used in process message functions).
-	GAME_RET_SUCCESS	= 0,		//!< Generic success return code.
-	GAME_RET_ERROR		= -1,		//!< Generic error return code.
+	GAME_RET_HALT			= 1,		//!< Informs that the process must finish (used in process message functions).
+	GAME_RET_SUCCESS		= 0,		//!< Generic success return code.
+	GAME_RET_ERROR			= -1,		//!< Generic error return code.
+	GAME_RET_UNINITIALIZED	= -2,		//!< Uninitialized module.
 } en_game_return_code;
 
 /**

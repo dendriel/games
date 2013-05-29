@@ -4,12 +4,20 @@
 #include "game_structs.h"
 #include "game_defines.h"
 
+
+/**************************************************************************************************/
+/**
+ *	\b Initialize the gameVideo_screen sub-module.
+ */
+void gameVideo_screen_init(void);
+
 /**************************************************************************************************/
 /**
  *	\b Draw all the visual buffer content into the screen.
+ *	\r GAME_RET_SUCCESS if the screen was successfuly updated;
+ *	GAME_RET_UNITIALIZED if the screen sub-module was not initialized.
  */
-void gameVideo_screen_update(void);
-
+en_game_return_code gameVideo_screen_update(void);
 
 /**************************************************************************************************/
 /**

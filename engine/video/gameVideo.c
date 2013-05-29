@@ -192,6 +192,9 @@ static void gameVideo_thread(void *data)
 		exit(-1);
 	}
 
+	/* Setup gameVideo sub-module "screen". */
+	gameVideo_screen_init();
+
 	/* Setup update screen trigger. */
 	ret = gameVideo_set_update_screen_trigger(&alarm_entry);
 	if (ret != GAME_RET_SUCCESS) {
