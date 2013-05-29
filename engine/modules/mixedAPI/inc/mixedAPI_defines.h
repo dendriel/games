@@ -1,7 +1,7 @@
 #ifndef MIDEXAPI_DEFINES_HEADER
 #define MIDEXAPI_DEFINES_HEADER
 
-#define MIXED_MAX_MQUEUE_MSG	100	//!< Define maximun number of enqueued messages.
+#define MIXED_MAX_MQUEUE_MSG	10	//!< Define maximun number of enqueued messages.
 
 /**
  *	\b Define return codes for mixed API.
