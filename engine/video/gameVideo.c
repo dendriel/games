@@ -34,14 +34,14 @@ static void gameVideo_thread(void *data);
  *	\p alarm_entry Filled with a reference to the created alarm.
  *	\r GAME_RET_SUCCESS if could create the alarm; GAME_RET_ERROR otherwise.
  */
-static en_game_return_code gameVideo_set_update_screen_trigger(int *alarm_entry);
+static en_game_return_code gameVideo_set_screen_trigger(int *alarm_entry);
 
 /**************************************************************************************************/
 /**
  *	\b Remove the update screen alarm entry.
  *	\p Reference to the alarm (received at alarm creation).
  */
-static void gameVideo_remove_update_screen_trigger(int alarm_entry);
+static void gameVideo_remove_screen_trigger(int alarm_entry);
 
 /**************************************************************************************************/
 /**
@@ -55,7 +55,7 @@ static en_game_return_code gameVideo_process_message(st_game_msg *game_msg);
 
 /**************************************************************************************************/
 
-static en_game_return_code gameVideo_set_update_screen_trigger(int *alarm_entry)
+static en_game_return_code gameVideo_set_screen_trigger(int *alarm_entry)
 {
 	en_alarm_ret_code ret;
 	st_alarm alarm;
@@ -94,7 +94,7 @@ static en_game_return_code gameVideo_set_update_screen_trigger(int *alarm_entry)
 
 /**************************************************************************************************/
 
-static void gameVideo_remove_update_screen_trigger(int alarm_entry)
+static void gameVideo_remove_screen_trigger(int alarm_entry)
 {
 	en_alarm_ret_code ret;
 
@@ -108,6 +108,7 @@ static void gameVideo_remove_update_screen_trigger(int alarm_entry)
 
 static void gameVideo_processe_brain_message(st_game_msg *game_msg)
 {
+	en_game_return_code ret;
 	en_game_msg_type type;
 
 	type = game_msg->type;
@@ -115,7 +116,11 @@ static void gameVideo_processe_brain_message(st_game_msg *game_msg)
 	switch (type) {
 
 		case GAME_ACTION_ADD_SCREEN_ELEM:
-			gameVideo_screen_add_elem(&game_msg->v_elem);
+			debug("Received solicitation to add an element to the visual list.");
+			ret = gameVideo_screen_add_elem(&game_msg->v_elem);
+			if (ret != GAME_RET_SUCCESS) {
+				critical("Failed to add element type %d into screen list.", game_msg->v_elem.type);
+			}
 		break;
 
 		default:
@@ -176,41 +181,47 @@ static en_game_return_code gameVideo_process_message(st_game_msg *game_msg)
 static void gameVideo_thread(void *data)
 {
 	int alarm_entry;
-	char recvd_data[sizeof(st_game_msg)];
+	char recvd_data[GAME_MQUEUE_RECV_BUF_SIZE];
 	ssize_t bytes_read;
 	st_game_msg *game_msg = NULL;
 	en_game_return_code ret;
 	en_mixed_return_code mret;
 	mqd_t gvideo_mqueue;
 
-	/* Setup mqueue. */
-	mret = mixed_open_mqueue(&gvideo_mqueue,
-							GAMEVIDEO_MQUEUE_NAME,
-							GAME_MQUEUE_SIZE+1,
-							GAME_MQUEUE_RECV_MODE);
-	if (mret != MIXED_RET_SUCCESS) {
+	/* Setup gameVideo sub-module "screen". */
+	debug("Initialize gameVideo screen sub-module.");
+	ret = gameVideo_screen_init();
+	if (ret != GAME_RET_SUCCESS) {
+		critical("Failed to initialize gameVideo screen sub-module.");
 		exit(-1);
 	}
-
-	/* Setup gameVideo sub-module "screen". */
-	gameVideo_screen_init();
 
 	/* Setup update screen trigger. */
-	ret = gameVideo_set_update_screen_trigger(&alarm_entry);
+	debug("Setup update screen alarm.");
+	ret = gameVideo_set_screen_trigger(&alarm_entry);
 	if (ret != GAME_RET_SUCCESS) {
+		critical("Failed to setup screen alarm.");
+		gameVideo_screen_finish();
 		exit(-1);
 	}
 
-	/* TODO: setup screen. */
-	//BITMAP *BUFFER; 	//	*Double Buffering.	//
-	//BITMAP *batalha_bmp = load_bitmap("./media/img/campo_batalha.bmp", NULL);
-	//BUFFER = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
-
+	/* Setup mqueue. */
+	debug("Setup mqueue for receiving requests.");
+	mret = mixed_create_mqueue(&gvideo_mqueue,
+							GAMEVIDEO_MQUEUE_NAME,
+							GAME_MQUEUE_SIZE,
+							GAME_MQUEUE_RECV_MODE);
+	if (mret != MIXED_RET_SUCCESS) {
+		debug("Failed to setup mqueue.");
+		gameVideo_remove_screen_trigger(alarm_entry);
+		gameVideo_screen_finish();
+		exit(-1);
+	}
 
 	while(true) {
 
 		memset(&recvd_data, 0, sizeof(recvd_data));
-        bytes_read = mq_receive(gvideo_mqueue, recvd_data, 1024, NULL);
+        bytes_read = mq_receive(gvideo_mqueue, recvd_data, GAME_MQUEUE_RECV_BUF_SIZE, NULL);
 
 		if (bytes_read == -1) {
 			debug("Failed to receive message. errno: %d; msg: %s", errno, strerror(errno));
@@ -222,18 +233,15 @@ static void gameVideo_thread(void *data)
 
 		ret = gameVideo_process_message(game_msg);
 		if (ret == GAME_RET_HALT) {
-			gameVideo_remove_update_screen_trigger(alarm_entry);
+			gameVideo_remove_screen_trigger(alarm_entry);
 			/* Exiting message received. */
 			break;
 		}
-//		clear(BUFFER);
-//		draw_sprite(BUFFER, batalha_bmp, i, i);
-//		draw_sprite(screen, BUFFER, 0, 0);
-//		i+=1;
 	}
 
 	/* Free the resources. */
 	mixed_close_mqueue(&gvideo_mqueue, GAMEVIDEO_MQUEUE_NAME);
+	gameVideo_screen_finish();
 	pthread_exit(0);
 }
 

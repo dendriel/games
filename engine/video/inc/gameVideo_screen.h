@@ -9,7 +9,14 @@
 /**
  *	\b Initialize the gameVideo_screen sub-module.
  */
-void gameVideo_screen_init(void);
+en_game_return_code gameVideo_screen_init(void);
+
+/**************************************************************************************************/
+/**
+ *	\b Finalize the gameVideo_screen sub-module and free the allocated resources.
+ *	\n Also used to clear all the screen content, but must be re-initialized.
+ */
+void gameVideo_screen_finish(void);
 
 /**************************************************************************************************/
 /**

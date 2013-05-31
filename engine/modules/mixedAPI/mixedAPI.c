@@ -12,6 +12,21 @@
 
 /**************************************************************************************************/
 
+en_mixed_return_code mixed_create_mqueue(
+mqd_t *mqueue,
+const char *mq_name,
+const unsigned mq_size,
+const mode_t mq_mode)
+{
+
+	/* Remove the mqueue if it is already created (removing previous messages). */
+	(void) mq_unlink(mq_name);
+
+	return mixed_open_mqueue(mqueue, mq_name, mq_size, mq_mode);
+}
+
+/**************************************************************************************************/
+
 en_mixed_return_code mixed_open_mqueue(
 mqd_t *mqueue,
 const char *mq_name,
@@ -20,7 +35,7 @@ const mode_t mq_mode)
 {
 	struct mq_attr attr;
 
-	if (!mqueue) {
+	if (!mqueue || !mq_name) {
 		return MIXED_RET_ERROR;
 	}
 
@@ -42,7 +57,7 @@ const mode_t mq_mode)
 
 /**************************************************************************************************/
 
-void mixed_close_mqueue(const mqd_t *mqueue, const char *mq_name)
+void mixed_close_mqueue_sender(const mqd_t *mqueue, const char *mq_name)
 {
 	int ret;
 
@@ -51,16 +66,21 @@ void mixed_close_mqueue(const mqd_t *mqueue, const char *mq_name)
 		fprintf(stderr, "Failed to close the mqueue. name: %s; errno: %d; msg: %s\n",
 			mq_name, errno, strerror(errno));
 	}
+}
 
-if (0) {
-	/* This action is not worling very well right now. */
+/**************************************************************************************************/
+
+void mixed_close_mqueue(const mqd_t *mqueue, const char *mq_name)
+{
+	int ret;
+
+	mixed_close_mqueue_sender(mqueue, mq_name);
+
 	ret = mq_unlink(mq_name);
-	if (ret != 0) {
+	if (ret != 0 && (errno != 2)) {
 		fprintf(stderr, "Failed to unlink the mqueue. name: %s; errno: %d; msg: %s\n",
 			mq_name, errno, strerror(errno));
 	}
-}
-
 }
 
 /**************************************************************************************************/

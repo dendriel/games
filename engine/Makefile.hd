@@ -1,10 +1,8 @@
 # Generic Makefile for compiling objects [header].
-
-ENABLE_EFENCE = #ENABLED
+include $(TOP)/defines.mk
 
 CC = gcc
-CFLAGS = -Wall -Werror -DDEBUG
-CFLAGS += #-DRUN_FULLSCREEN
+CFLAGS += -Wall -Werror
 
 SOURCE = $(wildcard *.c)
 OBJS = $(SOURCE:.c=.o)

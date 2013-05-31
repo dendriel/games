@@ -4,6 +4,7 @@
 # "valgrind --leak-check=yes  --leak-check=full --show-reachable=yes"
 # Note: Allegro game engine is a bomb of memory leaks =/
 ##
+include defines.mk
 
 TOP = .
 MODULES = $(TOP)/modules
