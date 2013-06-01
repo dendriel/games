@@ -7,6 +7,6 @@ INCLUDES +=	-I$(TOP)/inc\
 			-I$(TOP)/video/inc\
 			-I$(TOP)/util\
 			-I$(MODULES)/mixedAPI/inc\
-			-I$(MODULES)/linked_list/inc
+			-I$(MODULES)/llist/inc
 
 include $(TOP)/Makefile.tl

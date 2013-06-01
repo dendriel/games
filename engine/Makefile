@@ -4,7 +4,6 @@
 # "valgrind --leak-check=yes  --leak-check=full --show-reachable=yes"
 # Note: Allegro game engine is a bomb of memory leaks =/
 ##
-include defines.mk
 
 TOP = .
 MODULES = $(TOP)/modules
@@ -13,6 +12,7 @@ VIDEO = $(TOP)/video
 MIXEDAPI = $(MODULES)/mixedAPI
 
 include Makefile.hd
+include defines.mk
 
 TARGET = game
 INCLUDES +=	-I./system/inc
@@ -33,7 +33,7 @@ INTOBJS =	$(SYSTEMDEP)\
 
 # External Objects Dependences #
 ALARMDEP = $(MODULES)/alarm/alarm.o
-LINKEDLISTDEP = $(MODULES)/linked_list/linked_list.o
+LINKEDLISTDEP = $(MODULES)/llist/llist.o
 
 EXTOBJS =	$(ALARMDEP)\
 			$(LINKEDLISTDEP)

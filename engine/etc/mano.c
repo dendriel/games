@@ -12,6 +12,7 @@
 
 typedef struct {
 	char name[32];
+	char *l;
 	int counter;
 } myStruct;
 

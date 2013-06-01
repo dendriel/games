@@ -1,6 +1,4 @@
 # Generic Makefile for compiling objects [header].
-include $(TOP)/defines.mk
-
 CC = gcc
 CFLAGS += -Wall -Werror
 
@@ -10,3 +8,4 @@ INCDEP = $(wildcard ./inc/*.h)
 
 INCLUDES = -I./inc
 
+include $(TOP)/defines.mk

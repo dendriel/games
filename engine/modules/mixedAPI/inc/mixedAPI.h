@@ -2,9 +2,8 @@
 #define MIXEDAPI_HEADER
 
 #include <mqueue.h>
-#include "linked_listStructs.h"
+#include "llist_structs.h"
 #include "mixedAPI_defines.h"
-
 
 
 /**************************************************************************************************/
@@ -68,9 +67,10 @@ en_mixed_return_code mixed_list_create(st_list *list);
  *	\d Insert the first element in the list.
  *	\p list Reference to the list that will receive the element.
  *	\p elem The element to be inserted.
- *	\r MIXED_RET_SUCCESS for correctly operation; MIXED_RET_ERROR otherwise.
+ *	\p elem The size of the elemen to be inserted.
+ *	\r Will return the inserted item or NULL in case of operation error.
  */
-en_mixed_return_code mixed_visual_list_add_first_elem(st_list *list, void *elem);
+st_list_item *mixed_llist_add_first(st_list *list, const void *elem, const size_t elem_size);
 
 /**************************************************************************************************/
 /**
@@ -79,6 +79,6 @@ en_mixed_return_code mixed_visual_list_add_first_elem(st_list *list, void *elem)
  *	\p elem The element to be inserted.
  *	\r MIXED_RET_SUCCESS for correctly operation; MIXED_RET_ERROR otherwise.
  */
-en_mixed_return_code mixed_visual_list_add_elem(st_list *list, void *elem);
+en_mixed_return_code mixed_llist_add_elem(st_list *list, void *elem);
 
 #endif /* MIXEDAPI_HEADER */

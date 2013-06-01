@@ -1,13 +1,17 @@
 #include <allegro.h>
 #include <stdbool.h>
 
-#include "linked_list.h"
-#include "linked_listStructs.h"
-
+#include "gameVideo_screen.h"
+#include "gameVideo_screen_defines.h"
 #include "game_defines.h"
 #include "game_structs.h"
 #include "gameSystem_defines.h"
-#include "gameVideo_screen_defines.h"
+
+#include "llist.h"
+#include "llist_defines.h"
+#include "llist_structs.h"
+#include "mixedAPI.h"
+#include "mixedAPI_defines.h"
 
 #include "debug.h"
 #include "macros.h"
@@ -26,41 +30,6 @@ static struct Visual {
 // Put inside the structure.
 	BITMAP *gvideo_buffer = NULL;
 
-/**************************************************************************************************/
-/**
- *	\b Allocate data and copy the given element.
- *	\p dest Will have data allocated and receive the element pointed by orig.
- *	\p orig From where to copy data.
- *	\r GAME_RET_SUCCESS if cold copy the element; GAME_RET_ERROR otherwise.
- *	\n This function can be generic if we use void pointers and a parameter to inform data size.
- */
-static en_game_return_code gameVideo_screen_copy_elem(st_list_item **item, st_visual *orig)
-{
-	if (!orig) {
-		debug("Received invalid parameter.");
-		return GAME_RET_ERROR;
-	}
-
-	st_visual *data = NULL;
-
-	*item = (st_list_item *)malloc(sizeof(st_list_item));
-	if (!item) {
-		debug("Failed to allocate data for st_list_item.");
-		return GAME_RET_ERROR;
-	}
-
-	data = (st_visual *)malloc(sizeof(st_visual));
-	if (!data) {
-		free(item);
-		debug("Failed to allocate data for st_visual.");
-		return GAME_RET_ERROR;
-	}
-
-	memcpy(data, orig, sizeof(st_visual));
-	(*item)->data = data;
-
-	return GAME_RET_SUCCESS;
-}
 
 /**************************************************************************************************/
 
@@ -69,7 +38,7 @@ en_game_return_code gameVideo_screen_init(void)
 	if (!visual.initialized) {
 		int ret;
 
-		ret = list_init(&visual.list);
+		ret = llist_init(&visual.list);
 		if (ret != 0) {
 			return GAME_RET_ERROR;
 		}
@@ -92,13 +61,13 @@ void gameVideo_screen_finish(void)
 
 		/* Free allocated bitmaps for elements. */
 		for(i = 0; i < visual.list->item_counter; i++) {
-			list_item = list_get_item(visual.list, i);
+			list_item = llist_get_item(visual.list, i);
 			elem = (st_visual *)list_item->data;
 			destroy_bitmap(elem->image);
 		}
 
 		// TODO: this linked list kind sucks... as the own description tells "study purpose, only" :[
-		//list_destroy(&visual.list);
+		//llist_destroy(&visual.list);
 	}
 }
 
@@ -122,13 +91,13 @@ en_game_return_code gameVideo_screen_update(void)
 	gvideo_buffer = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
 
 	/* Draw scenery first layer. */
-	list_item = list_get_first(visual.list);
+	list_item = llist_get_first(visual.list);
 	gvideo_elem = (st_visual *)list_item->data;
 	draw_sprite(gvideo_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
 
 	/* Iterate the visual list. Index 0 is the scenery. */
 	for (i = 1; i < visual.list->item_counter; i++) {
-		gvideo_elem = (st_visual *)list_get_item(visual.list, i);
+		gvideo_elem = (st_visual *)llist_get_item(visual.list, i);
 		draw_sprite(gvideo_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
 		debug("Element added into the screen. Type: %d.", gvideo_elem->type);
 	}
@@ -145,29 +114,20 @@ en_game_return_code gameVideo_screen_add_elem(st_visual *elem)
 {
 	CHECK_INITIALIZED(visual.initialized);
 
-	int ret;
 	st_list_item *item = NULL;
 
 	/* Insert first item - the scenery figure. */
 	if ((elem->type == GAMEVIDEO_VTYPE_SCEN_STATIC) || (elem->type == GAMEVIDEO_VTYPE_SCEN_DYNAMIC)) {
 		if (visual.list->item_counter == 0) {
 
-			ret = gameVideo_screen_copy_elem(&item, elem);
-			if (ret != GAME_RET_SUCCESS) {
-				critical("Failed to copy element into element data field.");
-				return GAME_RET_ERROR;
-			}
-
-			ret = list_add_first(visual.list, item);
-			if (ret < 0) {
-				critical("Failed to add first item to the visual list.");
-				free(&item->data);
-				free(item);
+			item = mixed_llist_add_first(visual.list, elem, sizeof(st_visual));
+			if (item == NULL) {
+				critical("Failed to add the first element into the visual list.");
 				return GAME_RET_ERROR;
 			}
 
 			debug("Item with index %d was added to visual list.", item->index);
-			return item->index;
+			return 0;
 		}
 		else {
 			debug("Error. One scenery can be loaded per time.");
@@ -177,7 +137,6 @@ en_game_return_code gameVideo_screen_add_elem(st_visual *elem)
 	/* Insert item. */
 	else {
 		debug("insert item!");
-
 	}
 
 	return GAME_RET_SUCCESS;
@@ -188,7 +147,7 @@ en_game_return_code gameVideo_screen_add_elem(st_visual *elem)
 en_game_return_code gameVideo_screen_update_elem(st_visual *elem)
 {
 	CHECK_INITIALIZED(visual.initialized);
-	
+
 
 	return GAME_RET_SUCCESS;
 }

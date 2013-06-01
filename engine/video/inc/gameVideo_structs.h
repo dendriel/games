@@ -1,6 +1,7 @@
 #ifndef GAMEVIDEO_STRUCTS_HEADER
 #define GAMEVIDEO_STRUCTS_HEADER
 
+#include <allegro.h>
 #include "gameVideo_defines.h"
 
 /**
