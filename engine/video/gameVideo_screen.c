@@ -21,14 +21,14 @@
 /**
  *	\b Hold data used to process game screen issues.
  */
-static struct Visual {
+static struct {
 	bool initialized;	//!< Tells that the gameVideo_screen is initialized and could be used.
 	st_list *list;		//!< Visual List - Hold figures that will draw into the screen.
-} visual = {false, NULL};
+	BITMAP *screen_buffer;
+} visual = {false, NULL, NULL};
 
 
 // Put inside the structure.
-	BITMAP *gvideo_buffer = NULL;
 
 
 /**************************************************************************************************/
@@ -38,11 +38,23 @@ en_game_return_code gameVideo_screen_init(void)
 	if (!visual.initialized) {
 		int ret;
 
+		/* Initialize a linked list to hold the visual objects. */
 		ret = llist_init(&visual.list);
 		if (ret != 0) {
+			critical("Failed to initialize visual linked list.");
+			return GAME_RET_ERROR;
+		}
+	
+		/* Create internal screen buffer. */
+		visual.screen_buffer = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
+		if (visual.screen_buffer == NULL) {
+			critical("Failed to create screen_buffer bitmap.");
+			// TODO:i think we can't destroy the list before adding something
+			//llist_destroy(&visual.list);
 			return GAME_RET_ERROR;
 		}
 
+		/* Set initialized flag so the video processing can go on. */
 		visual.initialized = true;
 	}
 
@@ -59,15 +71,19 @@ void gameVideo_screen_finish(void)
 		st_list_item *list_item = NULL;
 		st_visual *elem = NULL;
 
-		/* Free allocated bitmaps for elements. */
+		/* Free allocated bitmaps for list elements. */
 		for(i = 0; i < visual.list->item_counter; i++) {
 			list_item = llist_get_item(visual.list, i);
 			elem = (st_visual *)list_item->data;
 			destroy_bitmap(elem->image);
+			elem->image = NULL;
 		}
 
-		// TODO: this linked list kind sucks... as the own description tells "study purpose, only" :[
-		//llist_destroy(&visual.list);
+		/* Free the linked list allocated memory. */
+		llist_destroy(&visual.list);
+
+		/* Free screen buffer bitmap. */
+		destroy_bitmap(visual.screen_buffer);
 	}
 }
 
@@ -81,29 +97,27 @@ en_game_return_code gameVideo_screen_update(void)
 	st_list_item *list_item= NULL;
 
 	// maybe will be used.
-	//clear_buffer(gvideo_buffer);
+	//clear_buffer(visual.screen_buffer);
 
 	/* Return if there is nothing to put into the screen. */
 	if (visual.list->item_counter == 0) {
 		return GAME_RET_SUCCESS;
 	}
-	/* Create internal screen buffer. */
-	gvideo_buffer = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
 
 	/* Draw scenery first layer. */
 	list_item = llist_get_first(visual.list);
 	gvideo_elem = (st_visual *)list_item->data;
-	draw_sprite(gvideo_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
+	draw_sprite(visual.screen_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
 
 	/* Iterate the visual list. Index 0 is the scenery. */
 	for (i = 1; i < visual.list->item_counter; i++) {
 		gvideo_elem = (st_visual *)llist_get_item(visual.list, i);
-		draw_sprite(gvideo_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
+		draw_sprite(visual.screen_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
 		debug("Element added into the screen. Type: %d.", gvideo_elem->type);
 	}
 
 	/* Draw all contet into the screen. */
-	draw_sprite(screen, gvideo_buffer, GAMEVIDEO_SCREEN_ORIG_H, GAMEVIDEO_SCREEN_ORIG_V);
+	draw_sprite(screen, visual.screen_buffer, GAMEVIDEO_SCREEN_ORIG_H, GAMEVIDEO_SCREEN_ORIG_V);
 
 	return GAME_RET_SUCCESS;
 }
