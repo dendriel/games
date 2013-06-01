@@ -22,13 +22,10 @@
  *	\b Hold data used to process game screen issues.
  */
 static struct {
-	bool initialized;	//!< Tells that the gameVideo_screen is initialized and could be used.
-	st_list *list;		//!< Visual List - Hold figures that will draw into the screen.
-	BITMAP *screen_buffer;
+	bool initialized;				//!< Tells that the gameVideo_screen is initialized.
+	st_list *list;					//!< Visual List - Hold figures that will draw into the screen.
+	BITMAP *screen_buffer;			//!< Used to draw the figure of the elements.
 } visual = {false, NULL, NULL};
-
-
-// Put inside the structure.
 
 
 /**************************************************************************************************/
@@ -72,19 +69,25 @@ void gameVideo_screen_finish(void)
 		st_visual *elem = NULL;
 
 		/* Free allocated bitmaps for list elements. */
+		debug("Free visual elements bitmaps.");
 		for(i = 0; i < visual.list->item_counter; i++) {
 			list_item = llist_get_item(visual.list, i);
 			elem = (st_visual *)list_item->data;
+			debug_screen("Will remove the bitmap %p...", elem->image);
 			destroy_bitmap(elem->image);
 			elem->image = NULL;
 		}
 
 		/* Free the linked list allocated memory. */
+		debug("Free visual list...");
 		llist_destroy(&visual.list);
 
 		/* Free screen buffer bitmap. */
+		debug("Destroy visual buffer bitmap...");
 		destroy_bitmap(visual.screen_buffer);
 	}
+
+	debug("gameVideo screen sub-module finished successfully.");
 }
 
 /**************************************************************************************************/
@@ -105,55 +108,73 @@ en_game_return_code gameVideo_screen_update(void)
 	}
 
 	/* Draw scenery first layer. */
+	debug_screen("Draw scenery bitmap.");
 	list_item = llist_get_first(visual.list);
 	gvideo_elem = (st_visual *)list_item->data;
+	debug_screen("scenery - bitmap %p.", gvideo_elem->image);
 	draw_sprite(visual.screen_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
 
 	/* Iterate the visual list. Index 0 is the scenery. */
 	for (i = 1; i < visual.list->item_counter; i++) {
-		gvideo_elem = (st_visual *)llist_get_item(visual.list, i);
+		debug_screen("Draw element at index %d.", i);
+		list_item = llist_get_item(visual.list, i);
+		gvideo_elem = (st_visual *)list_item->data;
+		debug_screen("index %d - bitmap %p.", i, gvideo_elem->image);
 		draw_sprite(visual.screen_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
-		debug("Element added into the screen. Type: %d.", gvideo_elem->type);
+		debug_screen("Element added into the screen. Type: %d.", gvideo_elem->type);
 	}
 
 	/* Draw all contet into the screen. */
-	draw_sprite(screen, visual.screen_buffer, GAMEVIDEO_SCREEN_ORIG_H, GAMEVIDEO_SCREEN_ORIG_V);
+	debug_screen("Draw buffer into screen.");
+	draw_sprite(screen, visual.screen_buffer, GVIDEO_SCREEN_ORIG_H, GVIDEO_SCREEN_ORIG_V);
+	debug_screen("Screen update completed.");
 
 	return GAME_RET_SUCCESS;
 }
 
 /**************************************************************************************************/
 
-en_game_return_code gameVideo_screen_add_elem(st_visual *elem)
+int gameVideo_screen_add_elem(st_visual *elem)
 {
 	CHECK_INITIALIZED(visual.initialized);
 
 	st_list_item *item = NULL;
 
 	/* Insert first item - the scenery figure. */
-	if ((elem->type == GAMEVIDEO_VTYPE_SCEN_STATIC) || (elem->type == GAMEVIDEO_VTYPE_SCEN_DYNAMIC)) {
+	// TODO: re-think this logic!!
+	if ((elem->type == GVIDEO_VTYPE_SCEN_STATIC) || (elem->type == GVIDEO_VTYPE_SCEN_DYNAMIC)) {
 		if (visual.list->item_counter == 0) {
 
-			item = mixed_llist_add_first(visual.list, elem, sizeof(st_visual));
+			item = mixed_llist_add_elem(visual.list, elem, sizeof(st_visual), true);
 			if (item == NULL) {
 				critical("Failed to add the first element into the visual list.");
 				return GAME_RET_ERROR;
 			}
 
-			debug("Item with index %d was added to visual list.", item->index);
-			return 0;
+			return item->index;
 		}
 		else {
-			debug("Error. One scenery can be loaded per time.");
+			debug("Error. Only one scenery can be loaded per time.");
 			return GAME_RET_ERROR;
 		}
 	}
 	/* Insert item. */
 	else {
-		debug("insert item!");
+		if ((elem->type < 0) || (elem->type >= GVIDEO_VTYPE_MAX_ELEM)) {
+			debug("Invalid item type received.");
+			return GAME_RET_ERROR;
+		}
+
+		item = mixed_llist_add_elem(visual.list, elem, sizeof(st_visual), false);
+		if (item == NULL) {
+			critical("Failed to add the first element into the visual list.");
+			return GAME_RET_ERROR;
+		}
+
+		return item->index;
 	}
 
-	return GAME_RET_SUCCESS;
+	return GAME_RET_ERROR;
 }
 
 /**************************************************************************************************/

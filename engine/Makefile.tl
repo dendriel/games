@@ -1,6 +1,6 @@
 # Generic Makefile for compiling objects [tail].
 
-$(OBJS) : $(SOURCE) $(INCDEP)
+$(OBJS): $(SOURCE) $(INCDEP)
 	$(CC) $(CFLAGS) -c $(INCLUDES) $(SOURCE)
 
 .PHONY: clean

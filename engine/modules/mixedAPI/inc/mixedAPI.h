@@ -2,6 +2,7 @@
 #define MIXEDAPI_HEADER
 
 #include <mqueue.h>
+#include <stdbool.h>
 #include "llist_structs.h"
 #include "mixedAPI_defines.h"
 
@@ -64,21 +65,18 @@ en_mixed_return_code mixed_list_create(st_list *list);
 
 /**************************************************************************************************/
 /**
- *	\d Insert the first element in the list.
- *	\p list Reference to the list that will receive the element.
- *	\p elem The element to be inserted.
- *	\p elem The size of the elemen to be inserted.
- *	\r Will return the inserted item or NULL in case of operation error.
- */
-st_list_item *mixed_llist_add_first(st_list *list, const void *elem, const size_t elem_size);
-
-/**************************************************************************************************/
-/**
  *	\d Insert an element in the list.
  *	\p list Reference to the list that will receive the element.
  *	\p elem The element to be inserted.
- *	\r MIXED_RET_SUCCESS for correctly operation; MIXED_RET_ERROR otherwise.
+ *	\p elem_size The size of the elemen to be inserted.
+ *	\p first true: is the first element that will be inserted in the list; false: is just another 
+ *	element to be inserted.
+ *	\r Will return the inserted item or NULL in case of operation error.
  */
-en_mixed_return_code mixed_llist_add_elem(st_list *list, void *elem);
+st_list_item *mixed_llist_add_elem(
+st_list *list,
+const void *elem,
+const size_t elem_size,
+const bool first);
 
 #endif /* MIXEDAPI_HEADER */

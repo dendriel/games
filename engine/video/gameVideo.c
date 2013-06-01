@@ -108,26 +108,31 @@ static void gameVideo_remove_screen_trigger(int alarm_entry)
 
 static void gameVideo_processe_brain_message(st_game_msg *game_msg)
 {
-	en_game_return_code ret;
 	en_game_msg_type type;
 
 	type = game_msg->type;
-
 	switch (type) {
 
 		case GAME_ACTION_ADD_SCREEN_ELEM:
 			debug("Received solicitation to add an element to the visual list.");
-			ret = gameVideo_screen_add_elem(&game_msg->v_elem);
-			if (ret != GAME_RET_SUCCESS) {
+			int index;
+			index = gameVideo_screen_add_elem(&game_msg->v_elem);
+			if (index == GAME_RET_ERROR) {
 				critical("Failed to add element type %d into screen list.", game_msg->v_elem.type);
+				game_msg->v_elem.key = GVIDEO_INVALID_KEY;
+			}
+			else {
+				debug("Item type %d with index %d was added to visual list.", game_msg->v_elem.type, index);
+				game_msg->v_elem.key = index;
 			}
 		break;
 
 		default:
 			debug("Invalid message type received from gameBrain module. type: %d", type);
 		break;
-
 	}
+
+	// Re-send the packet to the request with the same packet.
 
 	return;
 }

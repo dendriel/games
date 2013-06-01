@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <mqueue.h>
@@ -112,7 +113,11 @@ en_mixed_return_code mixed_list_create(st_list *list)
 
 /**************************************************************************************************/
 
-st_list_item *mixed_llist_add_first(st_list *list, const void *elem, const size_t elem_size)
+st_list_item *mixed_llist_add_elem(
+st_list *list,
+const void *elem,
+const size_t elem_size,
+const bool first)
 {
 	int ret;
 	en_mixed_return_code mret;
@@ -129,43 +134,19 @@ st_list_item *mixed_llist_add_first(st_list *list, const void *elem, const size_
 		return NULL;
 	}
 
-	ret = llist_add_first(list, item);
+	if (first) {
+		ret = llist_add_first(list, item);
+	}
+	else {
+		ret = llist_add_next(list, item);
+	}
+
 	if (ret != MIXED_RET_SUCCESS) {
 		debug("Failed to add the first element into the list.\n");
 		return NULL;
 	}
 
 	return item;
-}
-
-/**************************************************************************************************/
-
-en_mixed_return_code mixed_llist_add_elem(st_list *list, void *elem)
-{
-	int ret;
-	st_list_item *list_item = NULL;
-
-	if (!list || !elem) {
-		debug("Null parameter received.");
-		return MIXED_RET_ERROR;
-	}
-
-	list_item = (st_list_item *)malloc(sizeof(st_list_item));
-	if (!list_item) {
-		debug("Failed to allocate memory for st_list_item.");
-		return MIXED_RET_ERROR;
-	}
-
-	memset(list_item, 0, sizeof(st_list_item));
-	list_item->data = elem;
-
-	ret = llist_add_next(list, list_item);
-	if (ret != 0) {
-		debug("Failed to add element to list.");
-		return MIXED_RET_ERROR;
-	}
-
-	return MIXED_RET_SUCCESS;
 }
 
 /**************************************************************************************************/
@@ -184,6 +165,7 @@ static en_mixed_return_code mixed_llist_copy_elem(st_list_item **item, const voi
 		debug("Failed to allocate data for st_list_item.");
 		return MIXED_RET_ERROR;
 	}
+	memset(*item, 0, sizeof(st_list_item));
 
 	data = (void *)malloc(elem_size);
 	if (!data) {
@@ -191,6 +173,7 @@ static en_mixed_return_code mixed_llist_copy_elem(st_list_item **item, const voi
 		debug("Failed to allocate data for the element.");
 		return MIXED_RET_ERROR;
 	}
+	memset(data, 0, elem_size);
 
 	memcpy(data, elem, elem_size);
 	(*item)->data = data;

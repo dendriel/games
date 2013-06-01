@@ -23,4 +23,15 @@
 #define critical(...)
 #endif
 
+/**
+ *	\b Define screen debug (WARNING: this is a verbose debug).
+ */
+#if defined(DEBUG_SCREEN)
+#define DEBUG_SCREEN_HEADER_MSG "[gVideo_screen]"
+#define debug_screen(fmt,args...) (void)(printf("%s %s:%3d - "fmt"\n",DEBUG_SCREEN_HEADER_MSG,__FILE__,__LINE__,##args))
+#else
+#define debug_screen(...)
+#endif
+
+
 #endif /* DEBUG_HEADER */

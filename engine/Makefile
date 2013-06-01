@@ -9,6 +9,7 @@ TOP = .
 MODULES = $(TOP)/modules
 SYSTEM = $(TOP)/system
 VIDEO = $(TOP)/video
+BRAIN = $(TOP)/brain
 MIXEDAPI = $(MODULES)/mixedAPI
 
 include Makefile.hd
@@ -24,11 +25,15 @@ SYSTEMDEP = $(SYSTEM_DEP:.c=.o)
 VIDEO_DEP = $(wildcard $(VIDEO)/*.c)
 VIDEODEP = $(VIDEO_DEP:.c=.o)
 
+BRAIN_DEP = $(wildcard $(BRAIN)/*.c)
+BRAINDEP = $(BRAIN_DEP:.c=.o)
+
 MIXEDAPI_DEP = $(wildcard $(MIXEDAPI)/*.c)
 MIXEDAPIDEP = $(MIXEDAPI_DEP:.c=.o)
 
 INTOBJS =	$(SYSTEMDEP)\
 			$(VIDEODEP)\
+			$(BRAINDEP)\
 			$(MIXEDAPIDEP)\
 
 # External Objects Dependences #
@@ -52,9 +57,10 @@ all: $(TARGET)
 
 # Build target #
 $(TARGET): $(SOURCE) $(VIDEODEP) $(SYSTEMDEP) $(ALARMDEP) $(MIXEDAPIDEP)
-	@cd $(VIDEO) && make && cd -
-	@cd $(SYSTEM) && make && cd -
-	@cd $(MIXEDAPI) && make && cd -
+	@make -C $(VIDEO)
+	@make -C $(SYSTEM)
+	@make -C $(BRAIN)
+	@make -C $(MIXEDAPI)
 	$(CC) $(CFLAGS) $(LDOBJS) $(LDFLAGS) $(LDLIBS) $(SOURCE) $(INCLUDES) -o $(TARGET)
 
 # Rules for dependences #

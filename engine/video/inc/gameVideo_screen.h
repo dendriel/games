@@ -30,10 +30,10 @@ en_game_return_code gameVideo_screen_update(void);
 /**
  *	\b Add an element to the visual list that is inserted into the screen.
  *	\p elem The element to be added.
- *	\r GAME_RET_SUCCESS if could add the element; GAME_RET_ERROR if the element could not be 
- *	added to the list.
+ *	\r If success, return the index of the element in the visual list; In case of error, returns
+ *	GAME_RET_ERROR.
  */
-en_game_return_code gameVideo_screen_add_elem(st_visual *elem);
+int gameVideo_screen_add_elem(st_visual *elem);
 
 /**************************************************************************************************/
 /**

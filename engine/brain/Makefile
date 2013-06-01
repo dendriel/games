@@ -5,9 +5,8 @@ include $(TOP)/Makefile.hd
 
 INCLUDES +=	-I$(TOP)/inc\
 			-I$(TOP)/video/inc\
-			-I$(TOP)/brain/inc\
-			-I$(TOP)/util\
-			-I$(MODULES)/mixedAPI/inc\
-			-I$(MODULES)/llist/inc
+			-I$(TOP)/modules/mixedAPI/inc\
+			-I$(TOP)/modules/llist/inc\
+			-I$(TOP)/util
 
 include $(TOP)/Makefile.tl
