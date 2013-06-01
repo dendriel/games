@@ -1,5 +1,5 @@
-#ifndef GAMEVIDEO_SCREEN_HEADER
-#define GAMEVIDEO_SCREEN_HEADER
+#ifndef GVIDEO_SCREEN_HEADER
+#define GVIDEO_SCREEN_HEADER
 
 #include "game_structs.h"
 #include "game_defines.h"
@@ -44,4 +44,4 @@ int gameVideo_screen_add_elem(st_visual *elem);
  */
 en_game_return_code gameVideo_screen_update_elem_pos(st_visual *elem);
 
-#endif /* GAMEVIDEO_SCREEN_HEADER */
+#endif /* GVIDEO_SCREEN_HEADER */

@@ -2,7 +2,7 @@
 
 #include "game_defines.h"
 #include "game_structs.h"
-#include "gameVideo_structs.h"
+#include "gVideo_structs.h"
 
 #include "mixedAPI.h"
 #include "mixedAPI_defines.h"
@@ -45,7 +45,6 @@ en_game_return_code gBrain_video_intf_test()
 		critical("Failed to load  espada bitmap.");
 		return GAME_RET_ERROR;
 	}
-	debug("v_elem.image %p", v_elem.image);
 
 	ret = gBrain_video_intf_add_elem(&v_elem);
 	if (ret != GAME_RET_SUCCESS) {

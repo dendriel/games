@@ -1,5 +1,5 @@
-#ifndef GAMESYSTEM_HEADER
-#define GAMESYSTEM_HEADER
+#ifndef GSYSTEM_HEADER
+#define GSYSTEM_HEADER
 
 #include "game_defines.h"
 
@@ -7,7 +7,7 @@
 /**
  *	\d Main game system function. Initialize the game itself.
  */
-void gameSystem_main(void);
+void gSystem_main(void);
 
 /*************************************************************************************************/
 /**
@@ -15,7 +15,7 @@ void gameSystem_main(void);
  *	\r GAME_RET_SUCCESS for successfuly execution;
  *	GAME_RET_ERROR for error in the execution.
  */
-en_game_return_code gameSystem_engine_init(void);
+en_game_return_code gSystem_engine_init(void);
 
 /*************************************************************************************************/
 /**
@@ -23,12 +23,12 @@ en_game_return_code gameSystem_engine_init(void);
  *	\r GAME_RET_SUCCESS for successfuly execution;
  *	GAME_RET_ERROR for error in the execution.
  */
-en_game_return_code gameSystem_media_init(void);
+en_game_return_code gSystem_media_init(void);
 
 /*************************************************************************************************/
 /**
  *	\d Halt the game engine.
  */
-void gameSystem_engine_exit(void);
+void gSystem_engine_exit(void);
 
-#endif /* GAMESYSTEM_HEADER */
+#endif /* GSYSTEM_HEADER */

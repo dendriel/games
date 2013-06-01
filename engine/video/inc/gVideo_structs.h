@@ -1,8 +1,8 @@
-#ifndef GAMEVIDEO_STRUCTS_HEADER
-#define GAMEVIDEO_STRUCTS_HEADER
+#ifndef GVIDEO_STRUCTS_HEADER
+#define GVIDEO_STRUCTS_HEADER
 
 #include <allegro.h>
-#include "gameVideo_defines.h"
+#include "gVideo_defines.h"
 
 /**
  * \b Structure that visually represents an element.
@@ -15,4 +15,4 @@ typedef struct {
 	int key;				//!< Key to access this element (maybe unused).
 } st_visual;
 
-#endif /* GAMEVIDEO_STRUCTS_HEADER */
+#endif /* GVIDEO_STRUCTS_HEADER */

@@ -2,7 +2,7 @@
 #define GBRAIN_VIDEO_INTF_HEADER
 
 #include "game_defines.h"
-#include "gameVideo_structs.h"
+#include "gVideo_structs.h"
 
 // testing purpose only!
 en_game_return_code gBrain_video_intf_test();

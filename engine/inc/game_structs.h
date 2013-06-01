@@ -1,7 +1,7 @@
 #ifndef GAMESTRUCTS_HEADER
 #define GAMESTRUCTS_HEADER
 
-#include "gameVideo_structs.h"
+#include "gVideo_structs.h"
 #include "game_defines.h"
 
 /**

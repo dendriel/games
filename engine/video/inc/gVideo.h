@@ -1,5 +1,5 @@
-#ifndef GAMEVIDEO_HEADER
-#define GAMEVIDEO_HEADER
+#ifndef GVIDEO_HEADER
+#define GVIDEO_HEADER
 
 #include "game_defines.h"
 
@@ -12,4 +12,4 @@
  */
 en_game_return_code gameVideo_init(pthread_t *thread_id);
 
-#endif /* GAMEVIDEO_HEADER */
+#endif /* GVIDEO_HEADER */

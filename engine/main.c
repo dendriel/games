@@ -1,12 +1,15 @@
-#include "gameSystem.h"
+#include "gSystem.h"
 
 
 /*************************************************************************************************/
-
+/**
+ *	\b Main: calls game system that will process the game.
+ *	\r 0 for successfully operation.
+ */
 int main (void)
 {
 	/* Start the game engine. */
-	gameSystem_main();
+	gSystem_main();
 
     return 0;
 }

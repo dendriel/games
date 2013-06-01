@@ -2,12 +2,12 @@
 #include <fcntl.h>
 #include <pthread.h>
 
-#include "gameSystem.h"
-#include "gameSystem_defines.h"
+#include "gSystem.h"
+#include "gSystem_defines.h"
 #include "game_defines.h"
 #include "game_structs.h"
-#include "gameVideo.h"
-#include "gameVideo_defines.h"
+#include "gVideo.h"
+#include "gVideo_defines.h"
 #include "gBrain_video_intf.h"
 
 #include "mixedAPI.h"
@@ -20,29 +20,29 @@
  *	\r GAME_RET_SUCCESS if could sucessfully send the request;
  *	GAME_RET_ERROR otherwise.
  */
-static en_game_return_code gameSystem_halt_video(void);
+static en_game_return_code gSystem_halt_video(void);
 
 
 /*************************************************************************************************/
 
-void gameSystem_main(void)
+void gSystem_main(void)
 {
 	int ret;
 	int **th_ret = NULL;
 	pthread_t mod_th_list[GAMESYSTEM_MAX_TH_ID];
 
 	debug("Initialize allegro engine general elements...");
-	ret = gameSystem_engine_init();
+	ret = gSystem_engine_init();
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to initialize game system engine.");
 		exit(-1);
 	}
 
 	debug("Initialize allegro engine media...");
-	ret = gameSystem_media_init();
+	ret = gSystem_media_init();
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to initialize game media dependences.");
-		gameSystem_engine_exit();
+		gSystem_engine_exit();
 		exit(-1);
 	}
 
@@ -50,7 +50,7 @@ void gameSystem_main(void)
 	ret = gameVideo_init(&mod_th_list[GAMESYSTEM_VIDEO_TH_ID]);
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to initialize game video module.");
-		gameSystem_engine_exit();
+		gSystem_engine_exit();
 		exit(-1);
 	}
 
@@ -62,19 +62,19 @@ void gameSystem_main(void)
 	sleep(1);
 
 	debug("Sending halt solicitation to gameVideo module...");
-	gameSystem_halt_video();
+	gSystem_halt_video();
 	pthread_join(mod_th_list[GAMESYSTEM_VIDEO_TH_ID], (void *)&th_ret);
 	debug("gameVideo module halted.");
 
 	debug("Uninstall allegro elements...");
-	gameSystem_engine_exit();
+	gSystem_engine_exit();
 
 	debug("Exiting...");
 }
 
 /*************************************************************************************************/
 
-static en_game_return_code gameSystem_halt_video(void)
+static en_game_return_code gSystem_halt_video(void)
 {
 	en_mixed_return_code ret;
 	mqd_t gvideo_mqueue;
@@ -108,7 +108,7 @@ static en_game_return_code gameSystem_halt_video(void)
 
 /*************************************************************************************************/
 
-en_game_return_code gameSystem_engine_init(void)
+en_game_return_code gSystem_engine_init(void)
 {
 	int ret;
 
@@ -142,7 +142,7 @@ en_game_return_code gameSystem_engine_init(void)
 
 /*************************************************************************************************/
 
-en_game_return_code gameSystem_media_init(void)
+en_game_return_code gSystem_media_init(void)
 {
 	int ret;
 	int card_mode;
@@ -171,7 +171,7 @@ en_game_return_code gameSystem_media_init(void)
 
 /*************************************************************************************************/
 
-void gameSystem_engine_exit()
+void gSystem_engine_exit()
 {
 	remove_keyboard();
 

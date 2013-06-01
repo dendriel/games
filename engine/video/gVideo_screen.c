@@ -1,11 +1,11 @@
 #include <allegro.h>
 #include <stdbool.h>
 
-#include "gameVideo_screen.h"
-#include "gameVideo_screen_defines.h"
+#include "gVideo_screen.h"
+#include "gVideo_screen_defines.h"
 #include "game_defines.h"
 #include "game_structs.h"
-#include "gameSystem_defines.h"
+#include "gSystem_defines.h"
 
 #include "llist.h"
 #include "llist_defines.h"
@@ -29,6 +29,15 @@ static struct {
 
 
 /**************************************************************************************************/
+/**
+ *	\b Verify if the given visual element is valid.
+ *	\p elem The element to be verified.
+ *	\r GAME_RET_SUCCESS if the element is valid; GAME_RET_ERROR for invalid element.
+ */
+static en_game_return_code gVideo_screen_check_elem(st_visual *elem);
+
+
+/**************************************************************************************************/
 
 en_game_return_code gameVideo_screen_init(void)
 {
@@ -46,8 +55,7 @@ en_game_return_code gameVideo_screen_init(void)
 		visual.screen_buffer = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
 		if (visual.screen_buffer == NULL) {
 			critical("Failed to create screen_buffer bitmap.");
-			// TODO:i think we can't destroy the list before adding something
-			//llist_destroy(&visual.list);
+			llist_destroy(&visual.list);
 			return GAME_RET_ERROR;
 		}
 
@@ -138,12 +146,19 @@ int gameVideo_screen_add_elem(st_visual *elem)
 {
 	CHECK_INITIALIZED(visual.initialized);
 
+	en_game_return_code ret;
+	ret = gVideo_screen_check_elem(elem);
+	if (ret != GAME_RET_SUCCESS) {
+		debug("The element solicited to be added contain invalid data.");
+		return GAME_RET_ERROR;
+	}
+
 	st_list_item *item = NULL;
 
 	/* Insert first item - the scenery figure. */
-	// TODO: re-think this logic!!
-	if ((elem->type == GVIDEO_VTYPE_SCEN_STATIC) || (elem->type == GVIDEO_VTYPE_SCEN_DYNAMIC)) {
-		if (visual.list->item_counter == 0) {
+	if (visual.list->item_counter == 0) {
+		if ((elem->type == GVIDEO_VTYPE_SCEN_STATIC) ||
+			 (elem->type == GVIDEO_VTYPE_SCEN_DYNAMIC)) {
 
 			item = mixed_llist_add_elem(visual.list, elem, sizeof(st_visual), true);
 			if (item == NULL) {
@@ -154,23 +169,17 @@ int gameVideo_screen_add_elem(st_visual *elem)
 			return item->index;
 		}
 		else {
-			debug("Error. Only one scenery can be loaded per time.");
+			debug("The first item to be added must be a scenery element.");
 			return GAME_RET_ERROR;
 		}
 	}
 	/* Insert item. */
 	else {
-		if ((elem->type < 0) || (elem->type >= GVIDEO_VTYPE_MAX_ELEM)) {
-			debug("Invalid item type received.");
-			return GAME_RET_ERROR;
-		}
-
 		item = mixed_llist_add_elem(visual.list, elem, sizeof(st_visual), false);
 		if (item == NULL) {
 			critical("Failed to add the first element into the visual list.");
 			return GAME_RET_ERROR;
 		}
-
 		return item->index;
 	}
 
@@ -183,6 +192,19 @@ en_game_return_code gameVideo_screen_update_elem(st_visual *elem)
 {
 	CHECK_INITIALIZED(visual.initialized);
 
+	return GAME_RET_SUCCESS;
+}
+
+/**************************************************************************************************/
+
+static en_game_return_code gVideo_screen_check_elem(st_visual *elem)
+{
+	if ((elem->h < GVIDEO_SCREEN_ORIG_H) || (GAMESYSTEM_MAX_X < elem->h) ||
+		(elem->v < GVIDEO_SCREEN_ORIG_V) || (GAMESYSTEM_MAX_Y < elem->v) ||
+		(elem->type < 0) || (GVIDEO_VTYPE_MAX_ELEM <= elem->type) ||
+		(elem->image == NULL)) {
+		return GAME_RET_ERROR;
+	}
 
 	return GAME_RET_SUCCESS;
 }

@@ -5,20 +5,21 @@
 #include <mqueue.h>
 #include <errno.h>
 
+#include "gVideo.h"
+#include "gVideo_defines.h"
+#include "gVideo_structs.h"
+#include "gVideo_screen.h"
+#include "game_structs.h"
+#include "game_defines.h"
+#include "gSystem_defines.h"
+
 #include "mixedAPI.h"
 #include "mixedAPI_defines.h"
 #include "alarm.h"
 #include "alarm_defines.h"
 #include "alarm_structs.h"
-#include "debug.h"
 
-#include "game_structs.h"
-#include "game_defines.h"
-#include "gameSystem_defines.h"
-#include "gameVideo.h"
-#include "gameVideo_defines.h"
-#include "gameVideo_structs.h"
-#include "gameVideo_screen.h"
+#include "debug.h"
 
 
 /**************************************************************************************************/
