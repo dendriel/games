@@ -142,7 +142,7 @@ en_game_return_code gameVideo_screen_update(void)
 
 /**************************************************************************************************/
 
-int gameVideo_screen_add_elem(st_visual *elem)
+int gVideo_screen_add_elem(st_visual *elem)
 {
 	CHECK_INITIALIZED(visual.initialized);
 
@@ -188,9 +188,29 @@ int gameVideo_screen_add_elem(st_visual *elem)
 
 /**************************************************************************************************/
 
-en_game_return_code gameVideo_screen_update_elem(st_visual *elem)
+en_game_return_code gVideo_screen_update_elem_pos(st_visual *elem)
 {
 	CHECK_INITIALIZED(visual.initialized);
+	if ((elem->h < GVIDEO_SCREEN_ORIG_H) || (GAMESYSTEM_MAX_X < elem->h) ||
+		(elem->v < GVIDEO_SCREEN_ORIG_V) || (GAMESYSTEM_MAX_Y < elem->v)) {
+		return GAME_RET_ERROR;
+	}
+
+	st_list_item *item;
+	st_visual *list_elem;
+
+	item = mixed_llist_get_elem(visual.list, elem->key);
+	if (item == NULL) {
+		debug("Failed to retrieve the element from the list.");
+		return GAME_RET_ERROR;
+	}
+
+	list_elem = (st_visual *) item->data;
+
+	list_elem->h = elem->h;
+	list_elem->v = elem->v;
+
+	debug("New element position; h: %d, v: %d", elem->h, elem->v);
 
 	return GAME_RET_SUCCESS;
 }

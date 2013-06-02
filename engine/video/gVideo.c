@@ -117,7 +117,7 @@ static void gameVideo_processe_brain_message(st_game_msg *game_msg)
 		case GAME_ACTION_ADD_SCREEN_ELEM:
 			debug("Received solicitation to add an element to the visual list.");
 			int index;
-			index = gameVideo_screen_add_elem(&game_msg->v_elem);
+			index = gVideo_screen_add_elem(&game_msg->v_elem);
 			if (index == GAME_RET_ERROR) {
 				critical("Failed to add element type %d into screen list.", game_msg->v_elem.type);
 				game_msg->v_elem.key = GVIDEO_INVALID_KEY;
@@ -125,6 +125,15 @@ static void gameVideo_processe_brain_message(st_game_msg *game_msg)
 			else {
 				debug("Item type %d with index %d was added to visual list.", game_msg->v_elem.type, index);
 				game_msg->v_elem.key = index;
+			}
+		break;
+
+		case GAME_ACTION_UPD_SCREEN_ELEM_POS:
+			debug("Received solicitation to update an element from the visual list.");
+			int ret;
+			ret = gVideo_screen_update_elem_pos(&game_msg->v_elem);
+			if (ret != GAME_RET_SUCCESS) {
+				debug("Failed to update the element.");
 			}
 		break;
 

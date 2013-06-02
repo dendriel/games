@@ -10,7 +10,7 @@
  *	\b Visual elements types.
  */
 typedef enum {
-	GVIDEO_VTYPE_SCEN_STATIC = 0,		//!< Used to static scenery.
+	GVIDEO_VTYPE_SCEN_STATIC = 1,		//!< Used to static scenery.
 	GVIDEO_VTYPE_SCEN_DYNAMIC,			//!< Used to dynamic scenery.
 	GVIDEO_VTYPE_ELEM_STATIC,			//!< Used to static element.
 	GVIDEO_VTYPE_ELEM_DYNAMIC,			//!< Used to dynamic element.

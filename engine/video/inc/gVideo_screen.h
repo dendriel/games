@@ -33,15 +33,14 @@ en_game_return_code gameVideo_screen_update(void);
  *	\r If success, return the index of the element in the visual list; In case of error, returns
  *	GAME_RET_ERROR.
  */
-int gameVideo_screen_add_elem(st_visual *elem);
+int gVideo_screen_add_elem(st_visual *elem);
 
 /**************************************************************************************************/
 /**
- *	\b Update the element position in the screen.
+ *	\b Update the element in the screen.
  *	\p elem Reference to the element that will be updated (and the new h,v values).
- *	\r GAME_RET_SUCCESS if could add the element; GAME_RET_ERROR if the element could not be 
- *	added to the list.
+ *	\r GAME_RET_SUCCESS if could update the element; GAME_RET_ERROR otherwise.
  */
-en_game_return_code gameVideo_screen_update_elem_pos(st_visual *elem);
+en_game_return_code gVideo_screen_update_elem_pos(st_visual *elem);
 
 #endif /* GVIDEO_SCREEN_HEADER */

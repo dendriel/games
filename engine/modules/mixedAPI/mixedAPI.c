@@ -180,6 +180,21 @@ const bool first)
 
 /**************************************************************************************************/
 
+st_list_item *mixed_llist_get_elem(st_list *list, const int index)
+{
+	if (!list) {
+		return NULL;
+	}
+
+	if ((index < 0) || (list->item_counter <= index)) {
+		return NULL;
+	}
+
+	return llist_get_item(list, index);
+}
+
+/**************************************************************************************************/
+
 static en_mixed_return_code mixed_llist_copy_elem(st_list_item **item, const void *elem, const size_t elem_size)
 {
 	if (!elem || !item) {

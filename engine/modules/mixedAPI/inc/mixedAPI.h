@@ -92,4 +92,13 @@ const void *elem,
 const size_t elem_size,
 const bool first);
 
+/**************************************************************************************************/
+/**
+ *	\b Retrieve (just get) from list the item pointed by index.
+ *	\p list The linked list to be searched for.
+ *	\p index A reference for the requested item.
+ *	\r The element if the list and index are valid; NULL otherwise.
+ */
+st_list_item *mixed_llist_get_elem(st_list *list, const int index);
+
 #endif /* MIXEDAPI_HEADER */

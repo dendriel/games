@@ -34,8 +34,9 @@ typedef enum {
  */
 typedef enum {
 	GAME_ACTION_HALT_MODULE = 1,		//!< Requests to the module to terminate and free his resources.
-	GAME_ACTION_UPDATE_SCREEN,			//!< Requests to the gameVideo module to update the screen.
-	GAME_ACTION_ADD_SCREEN_ELEM,		//!< Requests to the gameVideo module to add a new element into the screen.
+	GAME_ACTION_UPDATE_SCREEN,			//!< Requests to the game video module to update the screen.
+	GAME_ACTION_ADD_SCREEN_ELEM,		//!< Requests to the game video module to add a new element into the screen.
+	GAME_ACTION_UPD_SCREEN_ELEM_POS,	//!< Requests to the game video module to update a new element (position; image style).
 } en_game_msg_type;
 
 /**
