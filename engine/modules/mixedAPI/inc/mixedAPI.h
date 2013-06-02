@@ -9,6 +9,19 @@
 
 /**************************************************************************************************/
 /**
+ *	\b Open a mqueue and send a generic (void *) message thorugh.
+ *	\p mqueue_name The mqueue that will be opened.
+ *	\p msg_prio The priority of the message that will be sent.
+ *	\p msg The data to be sent.
+ *	\r MIXED_RET_SUCCESS for successfully operation; MIXED_RET_ERROR otherwise.
+ */
+en_mixed_return_code mixed_mqueue_send_msg(
+const char *mqueue_name,
+const unsigned int msg_prio,
+const void *msg);
+
+/**************************************************************************************************/
+/**
  *	\b Does the same as "mixed_open_mqueue", expect that destroys the [mq_name] if it already 
  *	exists. Should be used by the holders (receptors) of the [mq_name].
  *	\p mqueue used to hold the mqueue reference.
@@ -17,7 +30,7 @@
  *	\p mq_mode the mqueue operation mode.
  *	\r mixed_ret_success if could open the mqueue; mixed_ret_error otherwise.
  */
-en_mixed_return_code mixed_create_mqueue(
+en_mixed_return_code mixed_mqueue_create(
 mqd_t *mqueue,
 const char *mq_name,
 const unsigned mq_size,
@@ -32,7 +45,7 @@ const mode_t mq_mode);
  *	\p mq_mode the mqueue operation mode.
  *	\r mixed_ret_success if could open the mqueue; mixed_ret_error otherwise.
  */
-en_mixed_return_code mixed_open_mqueue(
+en_mixed_return_code mixed_mqueue_open(
 mqd_t *mqueue,
 const char *mq_name,
 const unsigned mq_size,
@@ -44,7 +57,7 @@ const mode_t mq_mode);
  *	\p gvideo_mqueue Reference to the mqueue that will be closed.
  *	\p mq_name The name of the mqueue to be closed.
  */
-void mixed_close_mqueue_sender(const mqd_t *mqueue, const char *mq_name);
+void mixed_mqueue_close_sender(const mqd_t *mqueue, const char *mq_name);
 
 /**************************************************************************************************/
 /**
@@ -52,7 +65,7 @@ void mixed_close_mqueue_sender(const mqd_t *mqueue, const char *mq_name);
  *	\p gvideo_mqueue Reference to the mqueue that will be closed.
  *	\p mq_name The name of the mqueue to be closed.
  */
-void mixed_close_mqueue(const mqd_t *mqueue, const char *mq_name);
+void mixed_mqueue_close(const mqd_t *mqueue, const char *mq_name);
 
 /**************************************************************************************************/
 /**

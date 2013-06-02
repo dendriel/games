@@ -77,31 +77,20 @@ void gSystem_main(void)
 static en_game_return_code gSystem_halt_video(void)
 {
 	en_mixed_return_code ret;
-	mqd_t gvideo_mqueue;
 	st_game_msg msg;
 
 	memset(&msg, 0, sizeof(msg));
-
-	ret = mixed_open_mqueue(&gvideo_mqueue,
-							GAMEVIDEO_MQUEUE_NAME,
-							GAME_MQUEUE_SIZE,
-							GAME_MQUEUE_SEND_MODE);
-	if (ret != MIXED_RET_SUCCESS) {
-		return GAME_RET_ERROR;
-	}
 
 	/* Fill the message. */
 	msg.id = GAMESYSTEM_MOD_ID;
 	msg.type = GAME_ACTION_HALT_MODULE;
 
-	ret = mq_send(gvideo_mqueue, (void *)&msg, GAME_MQUEUE_SIZE, GAME_MQUEUE_PRIO_0);
-	if (ret != 0) {
-		critical("Failed to send message. errno: %d; msg: %s\n", errno, strerror(errno));
-		mixed_close_mqueue(&gvideo_mqueue, GAMEVIDEO_MQUEUE_NAME);
+	ret = mixed_mqueue_send_msg(GVIDEO_MQUEUE_NAME,
+								GAME_MQUEUE_PRIO_0,
+								&msg);
+	if (ret != MIXED_RET_SUCCESS) {
 		return GAME_RET_ERROR;
 	}
-
-	mixed_close_mqueue_sender(&gvideo_mqueue, GAMEVIDEO_MQUEUE_NAME);
 
 	return GAME_RET_SUCCESS;
 }

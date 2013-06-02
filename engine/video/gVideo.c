@@ -27,7 +27,7 @@
  *	\d Processing thread. Receive and process message commands.
  *	\p data Unused.
  */
-static void gameVideo_thread(void *data);
+static void gVideo_thread(void *data);
 
 /**************************************************************************************************/
 /**
@@ -69,7 +69,7 @@ static en_game_return_code gameVideo_set_screen_trigger(int *alarm_entry)
 	alarm.wait_time = GAMEVIDEO_SCREEN_UPDATE_US;
 	alarm.repeat = true;
 	alarm.priority = GAME_MQUEUE_PRIO_1;
-	strncpy(alarm.dest_mqueue, GAMEVIDEO_MQUEUE_NAME, sizeof(alarm.dest_mqueue));
+	strncpy(alarm.dest_mqueue, GVIDEO_MQUEUE_NAME, sizeof(alarm.dest_mqueue));
 
 	gvideo_msg = (st_game_msg *) malloc(sizeof(st_game_msg));
 	if (!gvideo_msg) {
@@ -184,7 +184,7 @@ static en_game_return_code gameVideo_process_message(st_game_msg *game_msg)
 
 /**************************************************************************************************/
 
-static void gameVideo_thread(void *data)
+static void gVideo_thread(void *data)
 {
 	int alarm_entry;
 	char recvd_data[GAME_MQUEUE_RECV_BUF_SIZE];
@@ -213,8 +213,8 @@ static void gameVideo_thread(void *data)
 
 	/* Setup mqueue. */
 	debug("Setup mqueue for receiving requests.");
-	mret = mixed_create_mqueue(&gvideo_mqueue,
-							GAMEVIDEO_MQUEUE_NAME,
+	mret = mixed_mqueue_create(&gvideo_mqueue,
+							GVIDEO_MQUEUE_NAME,
 							GAME_MQUEUE_SIZE,
 							GAME_MQUEUE_RECV_MODE);
 	if (mret != MIXED_RET_SUCCESS) {
@@ -246,11 +246,10 @@ static void gameVideo_thread(void *data)
 	}
 
 	/* Free the resources. */
-	mixed_close_mqueue(&gvideo_mqueue, GAMEVIDEO_MQUEUE_NAME);
+	mixed_mqueue_close(&gvideo_mqueue, GVIDEO_MQUEUE_NAME);
 	gameVideo_screen_finish();
 	pthread_exit(0);
 }
-
 
 /*************************************************************************************************/
 
@@ -258,80 +257,12 @@ en_game_return_code gameVideo_init(pthread_t *thread_id)
 {
 	int ret;
 
-	ret = pthread_create(thread_id, NULL, (void *)gameVideo_thread, NULL);
+	ret = pthread_create(thread_id, NULL, (void *)gVideo_thread, NULL);
 	if (ret != 0) {
 		debug("Failed to create video module thread.");
 		return GAME_RET_ERROR;
 	}
 
-//	BITMAP *BUFFER; 	//	*Double Buffering.	//
-//	BITMAP *SBUFFER;
-	   
-//	BUFFER = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
-//	SBUFFER = create_bitmap(GAMESYSTEM_MAX_X, GAMESYSTEM_MAX_Y);
-	
-	//	Carrega Imagens.	//
-//	cfg_iniciaBitmaps();
-
-
-    //	Carrega Fontes.		//
-	//cfg_iniciaFontes();
 	return GAME_RET_SUCCESS;
 }
-
-//	Iniciar Imagens.	//
-//void cfg_iniciaBitmaps(void) {
-//	
-//	int cont;
-//	char caminho[50];
-//	
-////-------------Imagens de etc
-//	_ponteiro = carregaBitmap(_ponteiro, "../bmp/ponteiro.bmp");
-//    _menu_batalha = carregaBitmap(_menu_batalha, "../bmp/batalha/0.bmp");
-//    _batalha = carregaBitmap(_batalha, "../bmp/campo_batalha.bmp");
-//    
-////-------------Imagens de Menu
-////	for( cont = 0; cont < 8; cont++) {
-////		sprintf(caminho, "../bmp/menu/%d.bmp",cont);
-////		_menu[cont] = carregaBitmap(_menu[cont], caminho);
-////	}
-////	_menuItens[0] = carregaBitmap(_menuItens[0], "../bmp/menu/itens.bmp");
-////	
-//    return;
-//}
-//	Carregar Imagens.	//
-
-//BITMAP *carregaBitmap(BITMAP *bitmap, char endereco[50]) {
-//	
-//	if( bitmap = load_bitmap(endereco, NULL) ) {
-//		return(bitmap);
-//	}
-//	else {
-//		printf("Falha ao tentar acessar \"%s\"\n",endereco);
-//		allegro_exit();
-//		exit(-1);
-//	}
-//	return;
-//}
-
-//	Iniciar Fontes.	//
-//void cfg_iniciaFontes(void) {
-//	
-//	sans_serif18 = carregaFonte(sans_serif18, "../bmp/fontes/sans_serif18.pcx");
-//	sans_serif20 = carregaFonte(sans_serif20, "../bmp/fontes/sans_serif20.pcx");
-//	return;
-//}
-
-//	Carregar Fontes.//
-//FONT *carregaFonte(FONT *nome, char endereco[50]) {
-//	
-//	if( nome = load_font(endereco, palette, NULL) ) {
-//		return(nome);
-//	}
-//	else {
-//		printf("Erro ao carregar fonte \"%s\".\n", endereco);
-//		nome = font;
-//		return(nome);
-//	}
-//}
 
