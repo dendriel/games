@@ -9,14 +9,14 @@
 /**
  *	\b Initialize the gameVideo_screen sub-module.
  */
-en_game_return_code gameVideo_screen_init(void);
+en_game_return_code gVideo_screen_init(void);
 
 /**************************************************************************************************/
 /**
  *	\b Finalize the gameVideo_screen sub-module and free the allocated resources.
  *	\n Also used to clear all the screen content, but must be re-initialized.
  */
-void gameVideo_screen_finish(void);
+void gVideo_screen_finish(void);
 
 /**************************************************************************************************/
 /**
@@ -24,7 +24,7 @@ void gameVideo_screen_finish(void);
  *	\r GAME_RET_SUCCESS if the screen was successfuly updated;
  *	GAME_RET_UNITIALIZED if the screen sub-module was not initialized.
  */
-en_game_return_code gameVideo_screen_update(void);
+en_game_return_code gVideo_screen_update(void);
 
 /**************************************************************************************************/
 /**

@@ -35,28 +35,28 @@ static void gVideo_thread(void *data);
  *	\p alarm_entry Filled with a reference to the created alarm.
  *	\r GAME_RET_SUCCESS if could create the alarm; GAME_RET_ERROR otherwise.
  */
-static en_game_return_code gameVideo_set_screen_trigger(int *alarm_entry);
+static en_game_return_code gVideo_set_screen_trigger(int *alarm_entry);
 
 /**************************************************************************************************/
 /**
  *	\b Remove the update screen alarm entry.
  *	\p Reference to the alarm (received at alarm creation).
  */
-static void gameVideo_remove_screen_trigger(int alarm_entry);
+static void gVideo_remove_screen_trigger(int alarm_entry);
 
 /**************************************************************************************************/
 /**
  *	\b Process game video requests.
  *	\p game_msg Data from the request.
- *	\r GAME_RET_SUCCESS for successfully message processing; GAME_RET_HALT_PROCESS if received a
+ *	\r GAME_RET_SUCCESS for successfully message processing; GAME_RET_HALT if received a
  *	halting solicitation message.
  */
-static en_game_return_code gameVideo_process_message(st_game_msg *game_msg);
+static en_game_return_code gVideo_process_message(st_game_msg *game_msg);
 
 
 /**************************************************************************************************/
 
-static en_game_return_code gameVideo_set_screen_trigger(int *alarm_entry)
+static en_game_return_code gVideo_set_screen_trigger(int *alarm_entry)
 {
 	en_alarm_ret_code ret;
 	st_alarm alarm;
@@ -79,7 +79,7 @@ static en_game_return_code gameVideo_set_screen_trigger(int *alarm_entry)
 
 	memset(gvideo_msg, 0, sizeof(*gvideo_msg));
 	gvideo_msg->type = GAME_ACTION_UPDATE_SCREEN;
-	gvideo_msg->id = GAMEVIDEO_MOD_ID;
+	gvideo_msg->id = GVIDEO_MOD_ID;
 	alarm.data = (void *)gvideo_msg;
 	alarm.data_size = sizeof(st_game_msg);
 
@@ -95,7 +95,7 @@ static en_game_return_code gameVideo_set_screen_trigger(int *alarm_entry)
 
 /**************************************************************************************************/
 
-static void gameVideo_remove_screen_trigger(int alarm_entry)
+static void gVideo_remove_screen_trigger(int alarm_entry)
 {
 	en_alarm_ret_code ret;
 
@@ -107,7 +107,7 @@ static void gameVideo_remove_screen_trigger(int alarm_entry)
 
 /**************************************************************************************************/
 
-static void gameVideo_processe_brain_message(st_game_msg *game_msg)
+static void gVideo_processe_brain_message(st_game_msg *game_msg)
 {
 	en_game_msg_type type;
 
@@ -115,6 +115,7 @@ static void gameVideo_processe_brain_message(st_game_msg *game_msg)
 	switch (type) {
 
 		case GAME_ACTION_ADD_SCREEN_ELEM:
+		{
 			debug("Received solicitation to add an element to the visual list.");
 			int index;
 			index = gVideo_screen_add_elem(&game_msg->v_elem);
@@ -126,15 +127,17 @@ static void gameVideo_processe_brain_message(st_game_msg *game_msg)
 				debug("Item type %d with index %d was added to visual list.", game_msg->v_elem.type, index);
 				game_msg->v_elem.key = index;
 			}
+		}
 		break;
 
 		case GAME_ACTION_UPD_SCREEN_ELEM_POS:
-			debug("Received solicitation to update an element from the visual list.");
+		{
 			int ret;
 			ret = gVideo_screen_update_elem_pos(&game_msg->v_elem);
 			if (ret != GAME_RET_SUCCESS) {
 				debug("Failed to update the element.");
 			}
+		}
 		break;
 
 		default:
@@ -149,7 +152,7 @@ static void gameVideo_processe_brain_message(st_game_msg *game_msg)
 
 /**************************************************************************************************/
 
-static en_game_return_code gameVideo_process_message(st_game_msg *game_msg)
+static en_game_return_code gVideo_process_message(st_game_msg *game_msg)
 {
 	en_game_msg_type type;
 	en_game_mod_id id;
@@ -160,16 +163,16 @@ static en_game_return_code gameVideo_process_message(st_game_msg *game_msg)
 	/* Discovers the request of the message and processes acordingly. */
 	switch (id) {
 
-		case GAMEVIDEO_MOD_ID:
+		case GVIDEO_MOD_ID:
 			if (type == GAME_ACTION_UPDATE_SCREEN) {
-				gameVideo_screen_update();
+				gVideo_screen_update();
 			}
 			else {
-				debug("Unknown message received from gameVideo module. Type: %d.\n", type);
+				debug("Unknown message received from game video module. Type: %d.\n", type);
 			}
 		break;
 
-		case GAMESYSTEM_MOD_ID:
+		case GSYSTEM_MOD_ID:
 			if (type == GAME_ACTION_HALT_MODULE) {
 				debug("Received halt solicitation. Will exit...");
 				return GAME_RET_HALT;
@@ -179,8 +182,8 @@ static en_game_return_code gameVideo_process_message(st_game_msg *game_msg)
 			}
 		break;
 
-		case GAMEBRAIN_MOD_ID:
-			gameVideo_processe_brain_message(game_msg);
+		case GBRAIN_MOD_ID:
+			gVideo_processe_brain_message(game_msg);
 		break;
 
 		default:
@@ -203,20 +206,20 @@ static void gVideo_thread(void *data)
 	en_mixed_return_code mret;
 	mqd_t gvideo_mqueue;
 
-	/* Setup gameVideo sub-module "screen". */
-	debug("Initialize gameVideo screen sub-module.");
-	ret = gameVideo_screen_init();
+	/* Setup game video sub-module "screen". */
+	debug("Initialize game video screen sub-module.");
+	ret = gVideo_screen_init();
 	if (ret != GAME_RET_SUCCESS) {
-		critical("Failed to initialize gameVideo screen sub-module.");
+		critical("Failed to initialize game video screen sub-module.");
 		exit(-1);
 	}
 
 	/* Setup update screen trigger. */
 	debug("Setup update screen alarm.");
-	ret = gameVideo_set_screen_trigger(&alarm_entry);
+	ret = gVideo_set_screen_trigger(&alarm_entry);
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to setup screen alarm.");
-		gameVideo_screen_finish();
+		gVideo_screen_finish();
 		exit(-1);
 	}
 
@@ -228,8 +231,8 @@ static void gVideo_thread(void *data)
 							GAME_MQUEUE_RECV_MODE);
 	if (mret != MIXED_RET_SUCCESS) {
 		debug("Failed to setup mqueue.");
-		gameVideo_remove_screen_trigger(alarm_entry);
-		gameVideo_screen_finish();
+		gVideo_remove_screen_trigger(alarm_entry);
+		gVideo_screen_finish();
 		exit(-1);
 	}
 
@@ -246,9 +249,9 @@ static void gVideo_thread(void *data)
 
 		//printf("bytes: %d - msg type: %d - msg id: %d\n", bytes_read, game_msg->type, game_msg->id);
 
-		ret = gameVideo_process_message(game_msg);
+		ret = gVideo_process_message(game_msg);
 		if (ret == GAME_RET_HALT) {
-			gameVideo_remove_screen_trigger(alarm_entry);
+			gVideo_remove_screen_trigger(alarm_entry);
 			/* Exiting message received. */
 			break;
 		}
@@ -256,13 +259,14 @@ static void gVideo_thread(void *data)
 
 	/* Free the resources. */
 	mixed_mqueue_close(&gvideo_mqueue, GVIDEO_MQUEUE_NAME);
-	gameVideo_screen_finish();
+	gVideo_screen_finish();
+	debug("Game video module has finished successfully.");
 	pthread_exit(0);
 }
 
 /*************************************************************************************************/
 
-en_game_return_code gameVideo_init(pthread_t *thread_id)
+en_game_return_code gVideo_init(pthread_t *thread_id)
 {
 	int ret;
 

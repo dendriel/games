@@ -32,6 +32,39 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg);
 
 static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 {
+	en_game_msg_type type;
+	en_game_mod_id id;
+
+	type = game_msg->type;
+	id = game_msg->id;
+
+	/* Discovers the request of the message and processes acordingly. */
+	switch (id) {
+
+		case GVIDEO_MOD_ID:
+			debug("Unknown message received from game video module. Type: %d.\n", type);
+		break;
+
+		case GSYSTEM_MOD_ID:
+			if (type == GAME_ACTION_HALT_MODULE) {
+				debug("Received halt solicitation. Will exit...");
+				return GAME_RET_HALT;
+			}
+			else {
+				debug("Unknown message received from gameSystem module. Type: %d.\n", type);
+			}
+		break;
+
+		case GBRAIN_MOD_ID:
+			debug("Unknown message received from game brain module. Type: %d.\n", type);
+		break;
+
+		default:
+			debug("Received message from invalid module. id: %d", id);
+		break;
+	}
+
+
 	return GAME_RET_SUCCESS;
 }
 

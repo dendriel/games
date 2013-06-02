@@ -9,27 +9,97 @@
 #include "gVideo.h"
 #include "gVideo_defines.h"
 #include "gBrain_video_intf.h"
+#include "gBrain.h"
+#include "gBrain_defines.h"
 
 #include "mixedAPI.h"
 #include "debug.h"
+#include "modules_infos.h"
+
 
 
 /*************************************************************************************************/
 /**
- *	\b Requests to the gameVideo module to halt.
- *	\r GAME_RET_SUCCESS if could sucessfully send the request;
- *	GAME_RET_ERROR otherwise.
+ *	\b Hold game modules threads ID. Used to whe halting the game (join the threads).
  */
-static en_game_return_code gSystem_halt_video(void);
+static pthread_t mod_th_list[GSYSTEM_MAX_TH_ID];
+
+
+/*************************************************************************************************/
+/**
+ *	\b Initialize game system basics and launch modules threads.
+ */
+static void gSystem_init(void);
+
+/*************************************************************************************************/
+/**
+ *	\b Join the game modules threads and free the resources.
+ */
+static void gSystem_exit();
+
+/*************************************************************************************************/
+/**
+ *	\d Initialize the allegro library and install components (keyboard, mouse)
+ *	\r GAME_RET_SUCCESS for successfuly execution;
+ *	GAME_RET_ERROR for error in the execution.
+ */
+static en_game_return_code gSystem_engine_init(void);
+
+/*************************************************************************************************/
+/**
+ *	\d Initialize the media components (audio, video).
+ *	\r GAME_RET_SUCCESS for successfuly execution;
+ *	GAME_RET_ERROR for error in the execution.
+ */
+static en_game_return_code gSystem_media_init(void);
+
+/*************************************************************************************************/
+/**
+ *	\b Initialize basic game modules.
+ */
+static void gSystem_init_modules(void);
+
+/*************************************************************************************************/
+/**
+ *	\b Send halt request to the given module.
+ *	\p module The mqueue name of the module to be halted.
+ *	\r GAME_RET_SUCCESS if could send the request; GAME_RET_ERROR otherwise.
+ */
+static en_game_return_code gSystem_halt_module(const char *module);
+
+/*************************************************************************************************/
+/**
+ *	\b Halt the game modules.
+ */
+static void gSystem_finish_modules(void);
 
 
 /*************************************************************************************************/
 
 void gSystem_main(void)
 {
-	int ret;
-	int **th_ret = NULL;
-	pthread_t mod_th_list[GAMESYSTEM_MAX_TH_ID];
+	debug("Starting the game system...");
+	gSystem_init();
+
+	sleep(1); // wait the gameVideo sub-module to take place.testing purpose
+	// Testing purpose only.
+	debug("Add scenary element into the screen...");
+	gBrain_video_intf_test();
+
+	sleep(1);
+
+
+	debug("Uninstall allegro elements...");
+	gSystem_exit();
+
+	debug("Exiting...");
+}
+
+/*************************************************************************************************/
+
+static void gSystem_init(void)
+{
+	en_game_return_code ret;
 
 	debug("Initialize allegro engine general elements...");
 	ret = gSystem_engine_init();
@@ -42,39 +112,58 @@ void gSystem_main(void)
 	ret = gSystem_media_init();
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to initialize game media dependences.");
-		gSystem_engine_exit();
+		gSystem_exit();
 		exit(-1);
 	}
 
-	debug("Initialize gameVideo module...");
-	ret = gameVideo_init(&mod_th_list[GAMESYSTEM_VIDEO_TH_ID]);
-	if (ret != GAME_RET_SUCCESS) {
-		critical("Failed to initialize game video module.");
-		gSystem_engine_exit();
-		exit(-1);
-	}
-
-	sleep(1); // wait the gameVideo sub-module to take place.testing purpose
-	// Testing purpose only.
-	debug("Add scenary element into the screen...");
-	gBrain_video_intf_test();
-
-	sleep(1);
-
-	debug("Sending halt solicitation to gameVideo module...");
-	gSystem_halt_video();
-	pthread_join(mod_th_list[GAMESYSTEM_VIDEO_TH_ID], (void *)&th_ret);
-	debug("gameVideo module halted.");
-
-	debug("Uninstall allegro elements...");
-	gSystem_engine_exit();
-
-	debug("Exiting...");
+	gSystem_init_modules();
 }
 
 /*************************************************************************************************/
 
-static en_game_return_code gSystem_halt_video(void)
+static void gSystem_init_modules(void)
+{
+	en_game_return_code ret;
+
+	debug("Initialize game video module...");
+	ret = gVideo_init(&mod_th_list[GSYSTEM_VIDEO_TH_ID]);
+	if (ret != GAME_RET_SUCCESS) {
+		critical("Failed to initialize game video module.");
+		gSystem_exit();
+		exit(-1);
+	}
+
+	debug("Initialize game brain module...");
+	ret = gBrain_init(&mod_th_list[GSYSTEM_BRAIN_TH_ID]);
+	if (ret != GAME_RET_SUCCESS) {
+		critical("Failed to initialize game brain module.");
+		gSystem_exit();
+		exit(-1);
+	}
+}
+
+/*************************************************************************************************/
+
+static void gSystem_finish_modules(void)
+{
+	unsigned int id;
+	int **th_ret = NULL;
+
+	debug("Sending halt solicitation to game video module...");
+	gSystem_halt_module(GVIDEO_MQUEUE_NAME);
+
+	debug("Sending halt solicitation to game brain module...");
+	gSystem_halt_module(GBRAIN_MQUEUE_NAME);
+
+	for (id = 0; id < GSYSTEM_MAX_TH_ID; id++) {
+		pthread_join(mod_th_list[id], (void *)&th_ret);
+		debug("Module %s was finished.", MOD_NAME(id));
+	}
+}
+
+/*************************************************************************************************/
+
+static en_game_return_code gSystem_halt_module(const char *module)
 {
 	en_mixed_return_code ret;
 	st_game_msg msg;
@@ -82,10 +171,10 @@ static en_game_return_code gSystem_halt_video(void)
 	memset(&msg, 0, sizeof(msg));
 
 	/* Fill the message. */
-	msg.id = GAMESYSTEM_MOD_ID;
+	msg.id = GSYSTEM_MOD_ID;
 	msg.type = GAME_ACTION_HALT_MODULE;
 
-	ret = mixed_mqueue_send_msg(GVIDEO_MQUEUE_NAME,
+	ret = mixed_mqueue_send_msg(module,
 								GAME_MQUEUE_PRIO_0,
 								&msg);
 	if (ret != MIXED_RET_SUCCESS) {
@@ -97,7 +186,7 @@ static en_game_return_code gSystem_halt_video(void)
 
 /*************************************************************************************************/
 
-en_game_return_code gSystem_engine_init(void)
+static en_game_return_code gSystem_engine_init(void)
 {
 	int ret;
 
@@ -131,7 +220,7 @@ en_game_return_code gSystem_engine_init(void)
 
 /*************************************************************************************************/
 
-en_game_return_code gSystem_media_init(void)
+static en_game_return_code gSystem_media_init(void)
 {
 	int ret;
 	int card_mode;
@@ -160,8 +249,11 @@ en_game_return_code gSystem_media_init(void)
 
 /*************************************************************************************************/
 
-void gSystem_engine_exit()
+static void gSystem_exit()
 {
+	/* Halt the game modules before releasing the resources. */
+	gSystem_finish_modules();
+
 	remove_keyboard();
 
 	remove_timer();

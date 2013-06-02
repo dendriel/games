@@ -43,9 +43,9 @@ typedef enum {
  *	\b Used to identify sender of the messages between modules.
  */
 typedef enum {
-	GAMESYSTEM_MOD_ID = 100,		//!< Game system [main] module identifier.
-	GAMEBRAIN_MOD_ID,				//!< Game brain module identifier.
-	GAMEVIDEO_MOD_ID,				//!< Game video module identifier.
+	GSYSTEM_MOD_ID = 100,		//!< Game system [main] module identifier.
+	GBRAIN_MOD_ID,				//!< Game brain module identifier.
+	GVIDEO_MOD_ID,				//!< Game video module identifier.
 } en_game_mod_id;
 
 #endif /* GAME_DEFINES_HEADER*/

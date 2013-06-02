@@ -15,11 +15,13 @@
 
 /**
  *	\b Define modules threads identifiers.
+ *	\n Keep concordance with "game_mods_names" at "modules_infos.h".
  */
 typedef enum {
-	GAMESYSTEM_BRAIN_TH_ID = 0,		//!< Position of brain thread id in the list.
-	GAMESYSTEM_VIDEO_TH_ID,			//!< Position of video thread id in the list.
-	GAMESYSTEM_MAX_TH_ID			//!< List limit. Keep this as the last item!
-} en_gameSystem_th_id;
+	GSYSTEM_SYSTEM_TH_ID = 0,	//!< Not used.
+	GSYSTEM_BRAIN_TH_ID,		//!< Position of brain thread id in the list.
+	GSYSTEM_VIDEO_TH_ID,		//!< Position of video thread id in the list.
+	GSYSTEM_MAX_TH_ID			//!< List limit. Keep this as the last item!
+} en_gSystem_th_id;
 
 #endif /* GSYSTEM_DEFINES_HEADER */

@@ -39,7 +39,7 @@ static en_game_return_code gVideo_screen_check_elem(st_visual *elem);
 
 /**************************************************************************************************/
 
-en_game_return_code gameVideo_screen_init(void)
+en_game_return_code gVideo_screen_init(void)
 {
 	if (!visual.initialized) {
 		int ret;
@@ -68,7 +68,7 @@ en_game_return_code gameVideo_screen_init(void)
 
 /**************************************************************************************************/
 
-void gameVideo_screen_finish(void)
+void gVideo_screen_finish(void)
 {
 	if (visual.initialized) {
 
@@ -95,12 +95,12 @@ void gameVideo_screen_finish(void)
 		destroy_bitmap(visual.screen_buffer);
 	}
 
-	debug("gameVideo screen sub-module finished successfully.");
+	debug("Game video screen sub-module has finished successfully.");
 }
 
 /**************************************************************************************************/
 
-en_game_return_code gameVideo_screen_update(void)
+en_game_return_code gVideo_screen_update(void)
 {
 	CHECK_INITIALIZED(visual.initialized);
 	unsigned int i;
@@ -210,7 +210,7 @@ en_game_return_code gVideo_screen_update_elem_pos(st_visual *elem)
 	list_elem->h = elem->h;
 	list_elem->v = elem->v;
 
-	debug("New element position; h: %d, v: %d", elem->h, elem->v);
+	debug_screen("New element position; h: %d, v: %d", elem->h, elem->v);
 
 	return GAME_RET_SUCCESS;
 }
