@@ -6,7 +6,8 @@
 
 #define GAME_MQUEUE_FAILED			(mqd_t)-1				//!< Mqueue error verification constant.
 #define GAME_MQUEUE_SEND_MODE		(O_CREAT|O_WRONLY)		//!< Open mqueue in send (write) mode.
-#define GAME_MQUEUE_RECV_MODE		(O_CREAT|O_RDONLY)		//!< Open mqueue in recv (read) mode.
+#define GAME_MQUEUE_CRRECV_MODE		(O_CREAT|O_RDONLY)		//!< Create mqueue in recv (read) mode.
+#define GAME_MQUEUE_RECV_MODE		(O_RDONLY)				//!< Open mqueue in recv (read) mode.
 #define GAME_MQUEUE_SIZE			1024					//!< Message size to be received from a mqueue.
 #define GAME_MQUEUE_RECV_BUF_SIZE	GAME_MQUEUE_SIZE+1	//!< Receive buffer size.
 
@@ -37,6 +38,8 @@ typedef enum {
 	GAME_ACTION_UPDATE_SCREEN,			//!< Requests to the game video module to update the screen.
 	GAME_ACTION_ADD_SCREEN_ELEM,		//!< Requests to the game video module to add a new element into the screen.
 	GAME_ACTION_UPD_SCREEN_ELEM_POS,	//!< Requests to the game video module to update a new element (position; image style).
+	GAME_ACTION_RET_SCREEN_ELEM,		//!< Used to send the result of the screen elements related requests.
+	GAME_ACTION_LOAD_SCENERY,			//!< Requests to the game brain module to load the given scenery and his elements.
 } en_game_msg_type;
 
 /**
@@ -46,6 +49,7 @@ typedef enum {
 	GSYSTEM_MOD_ID = 100,		//!< Game system [main] module identifier.
 	GBRAIN_MOD_ID,				//!< Game brain module identifier.
 	GVIDEO_MOD_ID,				//!< Game video module identifier.
+	GCONTROL_MOD_ID,			//!< Game controller module identifier.
 } en_game_mod_id;
 
 #endif /* GAME_DEFINES_HEADER*/

@@ -1,7 +1,7 @@
 #ifndef GSYSTEM_DEFINES_HEADER
 #define GSYSTEM_DEFINES_HEADER
 
-#define GAMESYSTEM_MQUEUE_NAME	"/gameSystem_queue"	//!< Queue name for gameVideo module.
+#define GSYSTEM_MQUEUE_NAME	"/gameSystem_queue"	//!< Queue name for gameVideo module.
 
 /* Media defines. */
 #define GAMESYSTEM_COLOR_BITS	32			//!< Screen color depth.

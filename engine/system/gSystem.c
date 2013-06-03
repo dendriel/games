@@ -14,8 +14,6 @@
 
 #include "mixedAPI.h"
 #include "debug.h"
-#include "modules_infos.h"
-
 
 
 /*************************************************************************************************/
@@ -73,6 +71,9 @@ static en_game_return_code gSystem_halt_module(const char *module);
  */
 static void gSystem_finish_modules(void);
 
+/*************************************************************************************************/
+
+static void gSystem_test_load_scenery(void);
 
 /*************************************************************************************************/
 
@@ -82,17 +83,29 @@ void gSystem_main(void)
 	gSystem_init();
 
 	sleep(1); // wait the gameVideo sub-module to take place.testing purpose
-	// Testing purpose only.
-	debug("Add scenary element into the screen...");
-	gBrain_video_intf_test();
+	gSystem_test_load_scenery();
+	sleep(3);
 
-	sleep(1);
-
-
-	debug("Uninstall allegro elements...");
+	debug("Finishing the game system...");
 	gSystem_exit();
 
 	debug("Exiting...");
+}
+
+/*************************************************************************************************/
+
+static void gSystem_test_load_scenery(void)
+{
+	st_game_msg msg;
+
+	memset(&msg, 0, sizeof(msg));
+
+	msg.id = GSYSTEM_MOD_ID;
+	msg.type = GAME_ACTION_LOAD_SCENERY;
+
+	// Testing purpose only.
+	debug("Add scenary element into the screen...");
+	mixed_mqueue_send_msg(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_2, &msg);
 }
 
 /*************************************************************************************************/
@@ -157,7 +170,7 @@ static void gSystem_finish_modules(void)
 
 	for (id = 0; id < GSYSTEM_MAX_TH_ID; id++) {
 		pthread_join(mod_th_list[id], (void *)&th_ret);
-		debug("Module %s was finished.", MOD_NAME(id));
+		debug("Module %d was finished.", id);
 	}
 }
 

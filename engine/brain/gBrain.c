@@ -3,6 +3,7 @@
 
 #include "gBrain.h"
 #include "gBrain_defines.h"
+#include "gBrain_scenery.h"
 #include "game_defines.h"
 #include "game_structs.h"
 
@@ -50,9 +51,24 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 				debug("Received halt solicitation. Will exit...");
 				return GAME_RET_HALT;
 			}
+			else if (type == GAME_ACTION_LOAD_SCENERY) {
+				debug("Received a request to load a scenery.");
+				en_game_return_code ret;
+				ret = gBrain_scenery_load();
+				if (ret == GAME_RET_HALT) {
+					return GAME_RET_HALT;
+				}
+				else if (ret != GAME_RET_SUCCESS){
+					debug("Failed to process te load scenery request.");
+				}
+			}
 			else {
 				debug("Unknown message received from gameSystem module. Type: %d.\n", type);
 			}
+		break;
+
+		case GCONTROL_MOD_ID:
+			debug("Unknown message received from game control module. Type: %d.\n", type);
 		break;
 
 		case GBRAIN_MOD_ID:
@@ -79,24 +95,31 @@ static void gBrain_thread(void *data)
 	en_mixed_return_code mret;
 	mqd_t gbrain_mqueue;
 
+	debug("Initialize game brain scenery sub-module.");
+	ret = gBrain_scenery_init();
+	if (ret != GAME_RET_SUCCESS) {
+		critical("Failed to initialized game brain scenery sub-module.");
+		exit(-1);
+	}
+
 	/* Setup mqueue. */
 	debug("Setup mqueue for receiving requests.");
 	mret = mixed_mqueue_create(&gbrain_mqueue,
 							GBRAIN_MQUEUE_NAME,
 							GAME_MQUEUE_SIZE,
-							GAME_MQUEUE_RECV_MODE);
+							GAME_MQUEUE_CRRECV_MODE);
 	if (mret != MIXED_RET_SUCCESS) {
-		debug("Failed to setup mqueue.");
+		critical("Failed to setup mqueue.");
 		exit(-1);
 	}
 
 	while(true) {
 
 		memset(&recvd_data, 0, sizeof(recvd_data));
-        bytes_read = mq_receive(gbrain_mqueue, recvd_data, GAME_MQUEUE_RECV_BUF_SIZE, NULL);
+		bytes_read = mq_receive(gbrain_mqueue, recvd_data, GAME_MQUEUE_RECV_BUF_SIZE, NULL);
 
 		if (bytes_read == -1) {
-			debug("Failed to receive message. errno: %d; msg: %s", errno, strerror(errno));
+			error("Failed to receive message. errno: %d; msg: %s", errno, strerror(errno));
 			continue;
 		}
 		game_msg = (st_game_msg *)recvd_data;

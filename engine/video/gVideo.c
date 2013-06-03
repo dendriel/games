@@ -12,6 +12,7 @@
 #include "game_structs.h"
 #include "game_defines.h"
 #include "gSystem_defines.h"
+#include "gBrain_defines.h"
 
 #include "mixedAPI.h"
 #include "mixedAPI_defines.h"
@@ -110,6 +111,7 @@ static void gVideo_remove_screen_trigger(int alarm_entry)
 static void gVideo_processe_brain_message(st_game_msg *game_msg)
 {
 	en_game_msg_type type;
+	bool re_send = false;
 
 	type = game_msg->type;
 	switch (type) {
@@ -117,6 +119,7 @@ static void gVideo_processe_brain_message(st_game_msg *game_msg)
 		case GAME_ACTION_ADD_SCREEN_ELEM:
 		{
 			debug("Received solicitation to add an element to the visual list.");
+			re_send = true;
 			int index;
 			index = gVideo_screen_add_elem(&game_msg->v_elem);
 			if (index == GAME_RET_ERROR) {
@@ -145,7 +148,15 @@ static void gVideo_processe_brain_message(st_game_msg *game_msg)
 		break;
 	}
 
-	// Re-send the packet to the request with the same packet.
+	/* Re-send the packet to the request with the same packet. */
+	if (re_send == true) {
+		debug("Re-send the message to game brain module.");
+		en_mixed_return_code mret;
+		mret = mixed_mqueue_send_msg(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, game_msg);
+		if (mret != MIXED_RET_SUCCESS) {
+			error("Failed to re-send the message to game brain module. Type was: %d.", type);
+		}
+	}
 
 	return;
 }
@@ -228,7 +239,7 @@ static void gVideo_thread(void *data)
 	mret = mixed_mqueue_create(&gvideo_mqueue,
 							GVIDEO_MQUEUE_NAME,
 							GAME_MQUEUE_SIZE,
-							GAME_MQUEUE_RECV_MODE);
+							GAME_MQUEUE_CRRECV_MODE);
 	if (mret != MIXED_RET_SUCCESS) {
 		debug("Failed to setup mqueue.");
 		gVideo_remove_screen_trigger(alarm_entry);

@@ -8,9 +8,19 @@
  */
 #if defined(DEBUG)
 #define DEBUG_HEADER_MSG "[debug]"
-#define debug(fmt,args...) (void)(printf("%s %s:%3d - "fmt"\n",DEBUG_HEADER_MSG,__FILE__,__LINE__,##args))
+#define debug(fmt,args...) (void)(printf("%s %15s:%3d -\t "fmt"\n",DEBUG_HEADER_MSG,__FILE__,__LINE__,##args))
 #else
 #define debug(...)
+#endif
+
+/**
+ *	\b Define debug error macro output.
+ */
+#if defined(DEBUG_ERROR)
+#define DEBUG_ERROR_HEADER_MSG "[error]"
+#define error(fmt,args...) (void)(printf("%s %15s:%3d - "fmt"\n",DEBUG_ERROR_HEADER_MSG,__FILE__,__LINE__,##args))
+#else
+#define error(...)
 #endif
 
 /**
@@ -18,7 +28,7 @@
  */
 #if defined(DEBUG_CRITICAL)
 #define DEBUG_CRITICAL_HEADER_MSG "[critical]"
-#define critical(fmt,args...) (void)(printf("%s %s:%3d - "fmt"\n",DEBUG_CRITICAL_HEADER_MSG,__FILE__,__LINE__,##args))
+#define critical(fmt,args...) (void)(printf("%s %15s:%3d - "fmt"\n",DEBUG_CRITICAL_HEADER_MSG,__FILE__,__LINE__,##args))
 #else
 #define critical(...)
 #endif
@@ -28,7 +38,7 @@
  */
 #if defined(DEBUG_SCREEN)
 #define DEBUG_SCREEN_HEADER_MSG "[gVideo_screen]"
-#define debug_screen(fmt,args...) (void)(printf("%s %s:%3d - "fmt"\n",DEBUG_SCREEN_HEADER_MSG,__FILE__,__LINE__,##args))
+#define debug_screen(fmt,args...) (void)(printf("%s %15s:%3d - "fmt"\n",DEBUG_SCREEN_HEADER_MSG,__FILE__,__LINE__,##args))
 #else
 #define debug_screen(...)
 #endif

@@ -129,19 +129,6 @@ void mixed_mqueue_close(const mqd_t *mqueue, const char *mq_name)
 
 /**************************************************************************************************/
 
-en_mixed_return_code mixed_list_create(st_list *list)
-{
-	list = (st_list *)malloc(sizeof(st_list));
-	if (!list) {
-		debug("Failed to allocate memory for st_list.\n");
-		return MIXED_RET_ERROR;
-	}
-
-	return MIXED_RET_SUCCESS;
-}
-
-/**************************************************************************************************/
-
 st_list_item *mixed_llist_add_elem(
 st_list *list,
 const void *elem,

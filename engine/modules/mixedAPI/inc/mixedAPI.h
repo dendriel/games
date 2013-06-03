@@ -69,15 +69,6 @@ void mixed_mqueue_close(const mqd_t *mqueue, const char *mq_name);
 
 /**************************************************************************************************/
 /**
- *	\b Allocate memory for the visual list.
- *	\p list Reference to the visual list.
- *	\r MIXED_RET_SUCCESS for correctly list creation;
- *	MIXED_RET_ERROR if could not create the list.
- */
-en_mixed_return_code mixed_list_create(st_list *list);
-
-/**************************************************************************************************/
-/**
  *	\d Insert an element in the list.
  *	\p list Reference to the list that will receive the element.
  *	\p elem The element to be inserted.
