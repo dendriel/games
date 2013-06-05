@@ -35,10 +35,11 @@ static en_game_return_code gBrain_scenery_load_elem(st_scen_elem *elem);
 /**
  *	\b Try to receive a message from the game video module to acknowledge the insert of the element 
  *	into the visual list.
- *	\r GAME_RET_SUCCESS if the element was successully added to the visual list; 
- *	GAME_RET_ERROR otherwise.
+ *	\r GAME_RET_SUCCESS if the element was successully added to the visual list and the visual list 
+ *	key for the element was filled (v_elem.key); GAME_RET_HALT if received a halt solicitation 
+ *	while receiving messages; GAME_RET_ERROR for any operation error.
  */
-static en_game_return_code gBrain_scenery_load_elem_ack(void);
+static en_game_return_code gBrain_scenery_load_elem_ack(unsigned int *key);
 
 /**************************************************************************************************/
 
@@ -93,7 +94,7 @@ en_game_return_code gBrain_scenery_load(void)
 		return GAME_RET_ERROR;
 	}
 
-	debug("Load element for scenary.");
+	debug("Load scenary element.");
 	ret = gBrain_scenery_load_elem(&sc_elem);
 	if (ret == GAME_RET_HALT) {
 		return GAME_RET_HALT;
@@ -103,21 +104,67 @@ en_game_return_code gBrain_scenery_load(void)
 		return GAME_RET_ERROR;
 	}
 
-//	memset(&msg, 0, sizeof(st_game_msg));
-//
-//	/* Fill the message. */
-//	msg.id = GBRAIN_MOD_ID;
-//	msg.type = GAME_ACTION_ADD_SCREEN_ELEM;
-//	/* Fill visual elements. */
-//	msg.v_elem.type = GVIDEO_VTYPE_ELEM_STATIC;
-//	msg.v_elem.h = 90;
-//	msg.v_elem.v = 90;
-//	msg.v_elem.image = load_bitmap("./media/img/espada.bmp", NULL);
-//
-//	if (!msg.v_elem.image) {
-//		critical("Failed to load  espada bitmap.");
-//		return GAME_RET_ERROR;
-//	}
+
+	memset(&sc_elem, 0, sizeof(sc_elem));
+
+	/* Fill visual elements. */
+	sc_elem.v_elem.type = GVIDEO_VTYPE_ELEM_STATIC;
+	sc_elem.v_elem.h = 90;
+	sc_elem.v_elem.v = 90;
+	sc_elem.v_elem.image = load_bitmap("./media/img/espada.bmp", NULL);
+
+	if (!sc_elem.v_elem.image) {
+		critical("Failed to load  espada bitmap.");
+		return GAME_RET_ERROR;
+	}
+
+	debug("Load sword element.");
+	ret = gBrain_scenery_load_elem(&sc_elem);
+	if (ret == GAME_RET_HALT) {
+		return GAME_RET_HALT;
+	}
+	else if (ret != GAME_RET_SUCCESS) {
+		debug("Failed to load an element.");
+		return GAME_RET_ERROR;
+	}
+
+	memset(&sc_elem, 0, sizeof(sc_elem));
+
+	/* Fill visual elements. */
+	sc_elem.v_elem.type = GVIDEO_VTYPE_ELEM_STATIC;
+	sc_elem.v_elem.h = 200;
+	sc_elem.v_elem.v = 200;
+	sc_elem.v_elem.image = load_bitmap("./media/img/house.bmp", NULL);
+
+	if (!sc_elem.v_elem.image) {
+		critical("Failed to load  espada bitmap.");
+		return GAME_RET_ERROR;
+	}
+
+	debug("Load house element.");
+	ret = gBrain_scenery_load_elem(&sc_elem);
+	if (ret == GAME_RET_HALT) {
+		return GAME_RET_HALT;
+	}
+	else if (ret != GAME_RET_SUCCESS) {
+		debug("Failed to load an element.");
+		return GAME_RET_ERROR;
+	}
+
+
+	/* verify the elem. */
+	st_list_item *ll_elem = NULL;
+	st_scen_elem *ss_elem = NULL;
+
+	ll_elem = mixed_llist_get_elem(Scenery.elem_list, 2);
+	if (ll_elem == NULL) {
+		error("Failed to recover the elemnt.");
+		return GAME_RET_ERROR;
+	}
+	ss_elem = (st_scen_elem *)ll_elem->data;
+	debug("Element recovered! Key: %d", ss_elem->v_elem.key);
+
+
 //
 //	ret = mixed_mqueue_send_msg(GVIDEO_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, &msg);
 //	if (ret != GAME_RET_SUCCESS) {
@@ -152,8 +199,10 @@ static en_game_return_code gBrain_scenery_load_elem(st_scen_elem *elem)
 {
 	CHECK_INITIALIZED(Scenery.initialized);
 
+	unsigned int elem_key = -1;
 	en_game_return_code ret;
 	st_list_item *list_item = NULL;
+	st_scen_elem *scen_elem = NULL;
 	en_mixed_return_code mret;
 	st_game_msg msg;
 
@@ -164,7 +213,7 @@ static en_game_return_code gBrain_scenery_load_elem(st_scen_elem *elem)
 		list_item = mixed_llist_add_elem(Scenery.elem_list, elem, sizeof(st_scen_elem), true);
 	}
 	else {
-		list_item = mixed_llist_add_elem(Scenery.elem_list, elem, sizeof(st_scen_elem), true);
+		list_item = mixed_llist_add_elem(Scenery.elem_list, elem, sizeof(st_scen_elem), false);
 	}
 	/* Valided mixedAPI answer. */
 	if (list_item == NULL) {
@@ -187,7 +236,7 @@ static en_game_return_code gBrain_scenery_load_elem(st_scen_elem *elem)
 		return GAME_RET_ERROR;
 	}
 
-	ret = gBrain_scenery_load_elem_ack();
+	ret = gBrain_scenery_load_elem_ack(&elem_key);
 	if (ret == GAME_RET_HALT) {
 		return GAME_RET_HALT;
 	}
@@ -195,10 +244,16 @@ static en_game_return_code gBrain_scenery_load_elem(st_scen_elem *elem)
 		return GAME_RET_ERROR;
 	}
 
+	/* Acknowledge was successful. Update the element into the list. */
+	scen_elem = (st_scen_elem *)list_item->data;
+	scen_elem->v_elem.key = elem_key;
+
+	debug("Element key: %d", scen_elem->v_elem.key);
+
 	return GAME_RET_SUCCESS;
 }
 
-static en_game_return_code gBrain_scenery_load_elem_ack(void)
+static en_game_return_code gBrain_scenery_load_elem_ack(unsigned int *key)
 {
 	en_mixed_return_code mret;
 	char recvd_data[GAME_MQUEUE_RECV_BUF_SIZE];
@@ -208,41 +263,50 @@ static en_game_return_code gBrain_scenery_load_elem_ack(void)
 
 	mret = mixed_mqueue_open(&gbrain_mqueue, GBRAIN_MQUEUE_NAME, GAME_MQUEUE_SIZE, GAME_MQUEUE_RECV_MODE);
 	if (mret != MIXED_RET_SUCCESS) {
-		debug("Failed to open mqueue in read mode.");
+		error("Failed to open mqueue in read mode.");
 		return GAME_RET_ERROR;
 	}
 
 	struct timespec tm;
 
 	while(true) {
+		/* Set timeout. */
 		clock_gettime(CLOCK_REALTIME, &tm);
-		tm.tv_sec += 5;
+		tm.tv_sec += 1;
 
 		memset(&recvd_data, 0, sizeof(recvd_data));
-		//bytes_read = mq_receive(gbrain_mqueue, recvd_data, GAME_MQUEUE_RECV_BUF_SIZE, NULL);
+		/* Receive data. */
 		bytes_read = mq_timedreceive(gbrain_mqueue, recvd_data, GAME_MQUEUE_RECV_BUF_SIZE, NULL, &tm);
 
+		/* Validate receive operation. */
 		if (bytes_read == -1) {
 			error("Failed to receive message. errno: %d; msg: %s.", errno, strerror(errno));
 			if (errno == ETIMEDOUT) {
-				break;
+				error("Game video module is not responding.");
+				mixed_mqueue_close_sender(&gbrain_mqueue, GBRAIN_MQUEUE_NAME);
+				return GAME_RET_ERROR;
 			}
 			continue;
 		}
-		game_msg = (st_game_msg *)recvd_data;
 
+		game_msg = (st_game_msg *)recvd_data;
+		/* Verify received data. */
 		if (game_msg->type == GAME_ACTION_RET_SCREEN_ELEM) {
-			debug("Received an add screen elem return.");
-			debug("h: %d; v: %d; key: %d", game_msg->v_elem.h, game_msg->v_elem.v, game_msg->v_elem.key);
+			debug("Received screen return msg. Operation %s.",
+				(game_msg->v_elem.key != GVIDEO_INVALID_KEY)? "success":"error");
+				*key = game_msg->v_elem.key;
+			mixed_mqueue_close_sender(&gbrain_mqueue, GBRAIN_MQUEUE_NAME);
+			return GAME_RET_SUCCESS;
 		}
 		else if (game_msg->type == GAME_ACTION_HALT_MODULE) {
 			debug("Received a halt solicitation while loading a scenery. Quitting...");
 			return GAME_RET_HALT;
 		}
+		else {
+			debug("Received a message that cannot process. Message type: %d", game_msg->type);
+		}
 	}
 
-	return GAME_RET_SUCCESS;
+	return GAME_RET_ERROR;
 }
-
-
 

@@ -123,23 +123,28 @@ static void gVideo_processe_brain_message(st_game_msg *game_msg)
 			int index;
 			index = gVideo_screen_add_elem(&game_msg->v_elem);
 			if (index == GAME_RET_ERROR) {
-				critical("Failed to add element type %d into screen list.", game_msg->v_elem.type);
+				error("Failed to add element type %d into screen list.", game_msg->v_elem.type);
 				game_msg->v_elem.key = GVIDEO_INVALID_KEY;
 			}
 			else {
 				debug("Item type %d with index %d was added to visual list.", game_msg->v_elem.type, index);
 				game_msg->v_elem.key = index;
 			}
+			game_msg->type = GAME_ACTION_RET_SCREEN_ELEM;
 		}
 		break;
 
 		case GAME_ACTION_UPD_SCREEN_ELEM_POS:
 		{
+			re_send= true;
 			int ret;
 			ret = gVideo_screen_update_elem_pos(&game_msg->v_elem);
 			if (ret != GAME_RET_SUCCESS) {
-				debug("Failed to update the element.");
+				error("Failed to update the element.");
+				/* Fill the element key with invalid value to indicate the error. */
+				game_msg->v_elem.key = GVIDEO_INVALID_KEY;
 			}
+			game_msg->type = GAME_ACTION_RET_SCREEN_ELEM;
 		}
 		break;
 
@@ -150,7 +155,8 @@ static void gVideo_processe_brain_message(st_game_msg *game_msg)
 
 	/* Re-send the packet to the request with the same packet. */
 	if (re_send == true) {
-		debug("Re-send the message to game brain module.");
+		debug("Re-send the message to game brain module. h: %d; v: %d; key: %d", 
+			game_msg->v_elem.h, game_msg->v_elem.v, game_msg->v_elem.key);
 		en_mixed_return_code mret;
 		mret = mixed_mqueue_send_msg(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, game_msg);
 		if (mret != MIXED_RET_SUCCESS) {
