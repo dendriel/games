@@ -10,4 +10,63 @@
  */
 #define CHECK_INITIALIZED(flag) if (!flag) {error("Sub-module not initialized."); return GAME_RET_UNINITIALIZED;}
 
+/**************************************************************************************************/
+/**
+ *	\b Check success or return the exception value.
+ */
+#define CHECK_EXCEPT(f, except)\
+	{\
+		en_game_return_code ret;\
+		if ((ret = (f)) == except) {\
+			return except;\
+		}\
+		else if (ret != GAME_RET_SUCCESS) {\
+			return GAME_RET_ERROR;\
+		}\
+	}
+
+/**************************************************************************************************/
+/**
+ *	\b Check success or print error msg and return the exception value.
+ */
+#define CHECK_ERROR_EXCEPT(f, except, fmt, args...)\
+	{\
+		en_game_return_code ret;\
+		if ((ret = (f)) == except) {\
+			return except;\
+		}\
+		else if (ret != GAME_RET_SUCCESS) {\
+			error(fmt, ##args);\
+			return GAME_RET_ERROR;\
+		}\
+	}
+
+/**************************************************************************************************/
+/**
+ *	\b Fill the v_elem structure automatic loading the image.
+ */
+#define BRAIN_FILLNLOAD_V_ELEM(elem, t, x, y, img)\
+	{\
+		elem.type = (t);\
+		elem.h = x;\
+		elem.v = y;\
+		elem.image = load_bitmap(img, NULL);\
+		if (elem.image == NULL) {\
+			error("Failed to load bitmap.");\
+			return GAME_RET_ERROR;\
+		}\
+	}
+
+/**
+ *	\b Copy the visal data pointed by "from" to "dest".
+ */
+#define BRAIN_FILL_V_ELEM(dest, from)\
+	{\
+		dest.type = from.type;\
+		dest.h = from.h;\
+		dest.v = from.v;\
+		dest.image = from.image;\
+	}
+
+
 #endif /* MACROS_HEADER */

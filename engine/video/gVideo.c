@@ -158,7 +158,7 @@ static void gVideo_processe_brain_message(st_game_msg *game_msg)
 		debug("Re-send the message to game brain module. h: %d; v: %d; key: %d", 
 			game_msg->v_elem.h, game_msg->v_elem.v, game_msg->v_elem.key);
 		en_mixed_return_code mret;
-		mret = mixed_mqueue_send_msg(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, game_msg);
+		mret = mixed_mqueue_send(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, game_msg);
 		if (mret != MIXED_RET_SUCCESS) {
 			error("Failed to re-send the message to game brain module. Type was: %d.", type);
 		}
@@ -191,7 +191,6 @@ static en_game_return_code gVideo_process_message(st_game_msg *game_msg)
 
 		case GSYSTEM_MOD_ID:
 			if (type == GAME_ACTION_HALT_MODULE) {
-				debug("Received halt solicitation. Will exit...");
 				return GAME_RET_HALT;
 			}
 			else {
@@ -268,6 +267,7 @@ static void gVideo_thread(void *data)
 
 		ret = gVideo_process_message(game_msg);
 		if (ret == GAME_RET_HALT) {
+			debug("Received halt solicitation. Will exit...");
 			gVideo_remove_screen_trigger(alarm_entry);
 			/* Exiting message received. */
 			break;

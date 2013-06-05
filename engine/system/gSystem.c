@@ -105,7 +105,7 @@ static void gSystem_test_load_scenery(void)
 
 	// Testing purpose only.
 	debug("Add scenary element into the screen...");
-	mixed_mqueue_send_msg(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_2, &msg);
+	mixed_mqueue_send(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_2, &msg);
 }
 
 /*************************************************************************************************/
@@ -160,7 +160,7 @@ static void gSystem_init_modules(void)
 static void gSystem_finish_modules(void)
 {
 	unsigned int id;
-	int **th_ret = NULL;
+	int th_ret;
 
 	debug("Sending halt solicitation to game video module...");
 	gSystem_halt_module(GVIDEO_MQUEUE_NAME);
@@ -168,10 +168,12 @@ static void gSystem_finish_modules(void)
 	debug("Sending halt solicitation to game brain module...");
 	gSystem_halt_module(GBRAIN_MQUEUE_NAME);
 
-	for (id = 0; id < GSYSTEM_MAX_TH_ID; id++) {
+	for (id = 1; id < GSYSTEM_MAX_TH_ID; id++) {
 		pthread_join(mod_th_list[id], (void *)&th_ret);
-		debug("Module %d was finished.", id);
+		debug("Module %d has halted with value %d.", id, th_ret);
 	}
+
+	debug("The game modules were halted.");
 }
 
 /*************************************************************************************************/
@@ -187,7 +189,7 @@ static en_game_return_code gSystem_halt_module(const char *module)
 	msg.id = GSYSTEM_MOD_ID;
 	msg.type = GAME_ACTION_HALT_MODULE;
 
-	ret = mixed_mqueue_send_msg(module,
+	ret = mixed_mqueue_send(module,
 								GAME_MQUEUE_PRIO_0,
 								&msg);
 	if (ret != MIXED_RET_SUCCESS) {

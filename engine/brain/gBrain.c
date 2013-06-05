@@ -48,7 +48,6 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 
 		case GSYSTEM_MOD_ID:
 			if (type == GAME_ACTION_HALT_MODULE) {
-				debug("Received halt solicitation. Will exit...");
 				return GAME_RET_HALT;
 			}
 			else if (type == GAME_ACTION_LOAD_SCENERY) {
@@ -128,13 +127,16 @@ static void gBrain_thread(void *data)
 
 		ret = gBrain_process_message(game_msg);
 		if (ret == GAME_RET_HALT) {
+			debug("Received halt solicitation. Will exit...");
 			/* Exiting message received. */
 			break;
 		}
 	}
 
 	/* Free the resources. */
+	gBrain_scenery_finish();
 	mixed_mqueue_close(&gbrain_mqueue, GVIDEO_MQUEUE_NAME);
+	debug("Game brain module has finished successfully.");
 	pthread_exit(0);
 }
 

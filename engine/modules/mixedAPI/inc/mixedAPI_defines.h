@@ -11,6 +11,7 @@
 typedef enum {
 	MIXED_RET_SUCCESS	= 0,	//!< Generic success return code.
 	MIXED_RET_ERROR		= -1,	//!< Generic error return code.
+	MIXED_RET_TIMEOUT	= -2,	//!< Returned by timeout.
 } en_mixed_return_code;
 
 #endif /* MIDEXAPI_DEFINES_HEADER */

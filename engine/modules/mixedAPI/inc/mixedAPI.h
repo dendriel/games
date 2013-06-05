@@ -15,10 +15,30 @@
  *	\p msg The data to be sent.
  *	\r MIXED_RET_SUCCESS for successfully operation; MIXED_RET_ERROR otherwise.
  */
-en_mixed_return_code mixed_mqueue_send_msg(
+en_mixed_return_code mixed_mqueue_send(
 const char *mqueue_name,
 const unsigned int msg_prio,
 const void *msg);
+
+/**************************************************************************************************/
+/**
+ *	\b Receive a message through a mqueue (the mqueue must be already openned). If tout_sec or 
+ *	tout_usec is set, 'mqueuetimedreceive' will be used and touc_sec and touc_used will be used to 
+ *	fill the tmespec structure.
+ *	\p mqueue_name The mqueue to receive the message.
+ *	\p rcvd_data A buffer to store the received data.
+ *	\p data_size The size of the parameter "buffer".
+ *	\p tout_sec Timeout in seconds.
+ *	\p tout_usec Timeout in micro-seconds.
+ *	\r GAME_RET_SUCCESS if could successfully receive the data; GAME_RET_TIMEOUT if the receive 
+ *	operation has canceled by the timeout; GAME_RET_ERROR for generic operation error.
+ */
+en_mixed_return_code mixed_mqueue_recv(
+const mqd_t mqueue,
+char *recvd_data,
+const size_t data_size,
+const unsigned int tout_sec,
+const unsigned int tout_usec);
 
 /**************************************************************************************************/
 /**

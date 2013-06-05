@@ -185,8 +185,6 @@ int gVideo_screen_add_elem(st_visual *elem)
 		}
 		return item->index;
 	}
-
-	return GAME_RET_ERROR;
 }
 
 /**************************************************************************************************/

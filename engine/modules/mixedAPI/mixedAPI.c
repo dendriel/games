@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <mqueue.h>
+#include <time.h>
 #include <errno.h>
 
 #include "mixedAPI.h"
@@ -26,7 +27,7 @@ static en_mixed_return_code mixed_llist_copy_elem(st_list_item **item, const voi
 
 /**************************************************************************************************/
 
-en_mixed_return_code mixed_mqueue_send_msg(
+en_mixed_return_code mixed_mqueue_send(
 const char *mqueue_name,
 const unsigned int msg_prio,
 const void *msg)
@@ -50,6 +51,51 @@ const void *msg)
 	}
 
 	mixed_mqueue_close_sender(&mqueue_fd, mqueue_name);
+
+	return MIXED_RET_SUCCESS;
+}
+
+/**************************************************************************************************/
+
+en_mixed_return_code mixed_mqueue_recv(
+const mqd_t mqueue,
+char *recvd_data,
+const size_t data_size,
+const unsigned int tout_sec,
+const unsigned int tout_usec)
+{
+	if (recvd_data == NULL) {
+		return MIXED_RET_ERROR;
+	}
+
+	ssize_t bytes_read;
+	memset(recvd_data, 0, data_size);
+
+	/* Blocks until timeout to receive data. */
+	if (tout_sec || tout_usec) {
+		struct timespec tm;
+		memset(&tm, 0, sizeof(tm));
+
+		/* Set timeout. */
+		clock_gettime(CLOCK_REALTIME, &tm);
+		tm.tv_sec += tout_sec;
+		tm.tv_sec += tout_usec;
+	
+		bytes_read = mq_timedreceive(mqueue, recvd_data, data_size, NULL, &tm);
+	}
+	/* Blocks until receive data. */
+	else {
+		bytes_read = mq_receive(mqueue, recvd_data, data_size, NULL);
+	}
+
+	/* Validate receive operation. */
+	if (bytes_read == -1) {
+		error("Failed to receive message. errno: %d; msg: %s.", errno, strerror(errno));
+		if (errno == ETIMEDOUT) {
+			return MIXED_RET_TIMEOUT;
+		}
+		return MIXED_RET_ERROR;
+	}
 
 	return MIXED_RET_SUCCESS;
 }
