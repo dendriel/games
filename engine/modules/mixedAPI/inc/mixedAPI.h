@@ -29,7 +29,7 @@ const void *msg);
  *	\p rcvd_data A buffer to store the received data.
  *	\p data_size The size of the parameter "buffer".
  *	\p tout_sec Timeout in seconds.
- *	\p tout_usec Timeout in micro-seconds.
+ *	\p tout_nsec Timeout in nano-seconds.
  *	\r GAME_RET_SUCCESS if could successfully receive the data; GAME_RET_TIMEOUT if the receive 
  *	operation has canceled by the timeout; GAME_RET_ERROR for generic operation error.
  */
@@ -37,8 +37,8 @@ en_mixed_return_code mixed_mqueue_recv(
 const mqd_t mqueue,
 char *recvd_data,
 const size_t data_size,
-const unsigned int tout_sec,
-const unsigned int tout_usec);
+const float tout_sec,
+const long tout_nsec);
 
 /**************************************************************************************************/
 /**

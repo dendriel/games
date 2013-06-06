@@ -61,8 +61,8 @@ en_mixed_return_code mixed_mqueue_recv(
 const mqd_t mqueue,
 char *recvd_data,
 const size_t data_size,
-const unsigned int tout_sec,
-const unsigned int tout_usec)
+const float tout_sec,
+const long tout_nsec)
 {
 	if (recvd_data == NULL) {
 		return MIXED_RET_ERROR;
@@ -72,15 +72,14 @@ const unsigned int tout_usec)
 	memset(recvd_data, 0, data_size);
 
 	/* Blocks until timeout to receive data. */
-	if (tout_sec || tout_usec) {
+	if (tout_sec || tout_nsec) {
 		struct timespec tm;
 		memset(&tm, 0, sizeof(tm));
 
 		/* Set timeout. */
 		clock_gettime(CLOCK_REALTIME, &tm);
 		tm.tv_sec += tout_sec;
-		tm.tv_sec += tout_usec;
-	
+		tm.tv_nsec += tout_nsec;
 		bytes_read = mq_timedreceive(mqueue, recvd_data, data_size, NULL, &tm);
 	}
 	/* Blocks until receive data. */

@@ -14,7 +14,7 @@
 #include "debug.h"
 #include "macros.h"
 
-#define MS 1000		//!< Multiply by this define to obtain miliseconds from microseconds.
+#define USEC (float) 0.00001
 
 /**************************************************************************************************/
 /**
@@ -230,7 +230,7 @@ static en_game_return_code gBrain_scenery_load_elem_ack(unsigned int *key)
 
 	while(true) {
 		/* Try to receive the answer. */
-		mret = mixed_mqueue_recv(gbrain_mqueue, recvd_data, GAME_MQUEUE_RECV_BUF_SIZE, 0, 10*MS);
+		mret = mixed_mqueue_recv(gbrain_mqueue, recvd_data, GAME_MQUEUE_RECV_BUF_SIZE, 10*USEC, 0);
 		if (mret == MIXED_RET_TIMEOUT) {
 			error("Game video module is not responding.");
 			mixed_mqueue_close_sender(&gbrain_mqueue, GBRAIN_MQUEUE_NAME);

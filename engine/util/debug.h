@@ -18,7 +18,7 @@
  */
 #if defined(DEBUG_ERROR)
 #define DEBUG_ERROR_HEADER_MSG "[error]"
-#define error(fmt,args...) (void)(printf("%s %15s:%3d - "fmt"\n",DEBUG_ERROR_HEADER_MSG,__FILE__,__LINE__,##args))
+#define error(fmt,args...) (void)(printf("%s %15s:%s():%3d - "fmt"\n",DEBUG_ERROR_HEADER_MSG,__FILE__,__func__,__LINE__,##args))
 #else
 #define error(...)
 #endif
@@ -28,7 +28,7 @@
  */
 #if defined(DEBUG_CRITICAL)
 #define DEBUG_CRITICAL_HEADER_MSG "[critical]"
-#define critical(fmt,args...) (void)(printf("%s %15s:%3d - "fmt"\n",DEBUG_CRITICAL_HEADER_MSG,__FILE__,__LINE__,##args))
+#define critical(fmt,args...) (void)(printf("%s %15s:%s():%3d - "fmt"\n",DEBUG_CRITICAL_HEADER_MSG,__FILE__,__func__,__LINE__,##args))
 #else
 #define critical(...)
 #endif

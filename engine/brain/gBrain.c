@@ -62,16 +62,16 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 				}
 			}
 			else {
-				debug("Unknown message received from gameSystem module. Type: %d.\n", type);
+				debug("Unknown message received from gameSystem module. Type: %d.", type);
 			}
 		break;
 
 		case GCONTROL_MOD_ID:
-			debug("Unknown message received from game control module. Type: %d.\n", type);
+			debug("Unknown message received from game control module. Type: %d.", type);
 		break;
 
 		case GBRAIN_MOD_ID:
-			debug("Unknown message received from game brain module. Type: %d.\n", type);
+			debug("Unknown message received from game brain module. Type: %d.", type);
 		break;
 
 		default:
