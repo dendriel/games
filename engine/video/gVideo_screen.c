@@ -77,9 +77,13 @@ void gVideo_screen_finish(void)
 		st_visual *elem = NULL;
 
 		/* Free allocated bitmaps for list elements. */
+		// TODO: this can be improved when we have a "get_next" function.
 		debug("Free visual elements bitmaps.");
 		for(i = 0; i < Visual.list->item_counter; i++) {
 			list_item = llist_get_item(Visual.list, i);
+			if (list_item == NULL) {
+				continue;
+			}
 			elem = (st_visual *)list_item->data;
 			debug_screen("Will remove the bitmap %p...", elem->image);
 			destroy_bitmap(elem->image);
@@ -129,6 +133,10 @@ en_game_return_code gVideo_screen_update(void)
 	for (i = 1; i < Visual.list->item_counter; i++) {
 		debug_screen("Draw element at index %d.", i);
 		list_item = llist_get_item(Visual.list, i);
+		// TODO: improve this with a "get_next" function.
+		if (list_item == NULL) {
+			continue;
+		}
 		gvideo_elem = (st_visual *)list_item->data;
 		debug_screen("index %d - bitmap %p.", i, gvideo_elem->image);
 		draw_sprite(Visual.screen_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
@@ -163,7 +171,7 @@ int gVideo_screen_add_elem(st_visual *elem)
 		if ((elem->type == GVIDEO_VTYPE_SCEN_STATIC) ||
 			 (elem->type == GVIDEO_VTYPE_SCEN_DYNAMIC)) {
 
-			item = mixed_llist_add_elem(Visual.list, elem, sizeof(st_visual), true);
+			item = mixed_llist_add_elem(Visual.list, elem, sizeof(st_visual));
 			if (item == NULL) {
 				critical("Failed to add the first element into the visual list.");
 				return GAME_RET_ERROR;
@@ -178,13 +186,36 @@ int gVideo_screen_add_elem(st_visual *elem)
 	}
 	/* Insert item. */
 	else {
-		item = mixed_llist_add_elem(Visual.list, elem, sizeof(st_visual), false);
+		item = mixed_llist_add_elem(Visual.list, elem, sizeof(st_visual));
 		if (item == NULL) {
 			critical("Failed to add the first element into the visual list.");
 			return GAME_RET_ERROR;
 		}
 		return item->index;
 	}
+}
+
+/**************************************************************************************************/
+
+en_game_return_code gVideo_screen_rem_elem(const unsigned int index)
+{
+	CHECK_INITIALIZED(Visual.initialized);
+
+	st_list_item *elem = NULL;
+	st_visual *v_elem = NULL;
+
+	elem = mixed_llist_get_elem(Visual.list, index);
+	if (elem == NULL) {
+		error("The solicited element to be removed does not exists.");
+		return GAME_RET_ERROR;
+	}
+
+	v_elem = (st_visual *) elem->data;
+
+	destroy_bitmap(v_elem->image);
+	mixed_llist_rem_elem(Visual.list, index);
+
+	return GAME_RET_SUCCESS;
 }
 
 /**************************************************************************************************/

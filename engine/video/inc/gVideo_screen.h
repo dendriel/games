@@ -32,8 +32,17 @@ en_game_return_code gVideo_screen_update(void);
  *	\p elem The element to be added.
  *	\r If success, return the index of the element in the visual list; In case of error, returns
  *	GAME_RET_ERROR.
+ *	\n TODO: return index as output parameter.
  */
 int gVideo_screen_add_elem(st_visual *elem);
+
+/**************************************************************************************************/
+/**
+ *	\b Remove the element pointed by index from the visual linked list.
+ *	\p index Reference to the element that will be removed.
+ *	\r GAME_RET_SUCCESS if the element was removed; GAME_RET_ERROR if the element was not found.
+ */
+en_game_return_code gVideo_screen_rem_elem(const unsigned int index);
 
 /**************************************************************************************************/
 /**

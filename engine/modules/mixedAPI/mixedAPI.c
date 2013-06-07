@@ -14,6 +14,17 @@
 
 #include "debug.h"
 
+/**************************************************************************************************/
+/**
+ *	\b Simplify the use of strerror_r.
+ */
+#define strerror_buf_len 256
+#define STRERROR_R(error)\
+	({\
+		char buf[strerror_buf_len];\
+		strerror_r(error, buf, strerror_buf_len);\
+		buf;\
+	})
 
 /**************************************************************************************************/
 /**
@@ -45,7 +56,7 @@ const void *msg)
 
 	ret = mq_send(mqueue_fd, msg, MIXED_MQUEUE_SIZE, msg_prio);
 	if (ret != 0) {
-		critical("Failed to send message. errno: %d; msg: %s\n", errno, strerror(errno));
+		critical("Failed to send message. errno: %d; msg: %s", errno, STRERROR_R(errno));
 		mixed_mqueue_close(&mqueue_fd, mqueue_name);
 		return MIXED_RET_ERROR;
 	}
@@ -89,7 +100,7 @@ const long tout_nsec)
 
 	/* Validate receive operation. */
 	if (bytes_read == -1) {
-		error("Failed to receive message. errno: %d; msg: %s.", errno, strerror(errno));
+		error("Failed to receive message. errno: %d; msg: %s.", errno, STRERROR_R(errno));
 		if (errno == ETIMEDOUT) {
 			return MIXED_RET_TIMEOUT;
 		}
@@ -136,8 +147,8 @@ const mode_t mq_mode)
 	/* Create the message queue. */
 	*mqueue = mq_open(mq_name, mq_mode, 0644, &attr);
 	if (*mqueue == (mqd_t)-1) {
-		debug("Failed to open mqueue. name: %s; errno: %d; msg: %s\n",
-			mq_name, errno, strerror(errno));
+		debug("Failed to open mqueue. name: %s; errno: %d; msg: %s",
+			mq_name, errno, STRERROR_R(errno));
 		return MIXED_RET_ERROR;
 	}
 
@@ -152,8 +163,8 @@ void mixed_mqueue_close_sender(const mqd_t *mqueue, const char *mq_name)
 
 	ret = mq_close(*mqueue);
 	if (ret != 0) {
-		debug("Failed to close the mqueue. name: %s; errno: %d; msg: %s\n",
-			mq_name, errno, strerror(errno));
+		debug("Failed to close the mqueue. name: %s; errno: %d; msg: %s",
+			mq_name, errno, STRERROR_R(errno));
 	}
 }
 
@@ -167,8 +178,8 @@ void mixed_mqueue_close(const mqd_t *mqueue, const char *mq_name)
 
 	ret = mq_unlink(mq_name);
 	if (ret != 0 && (errno != 2)) {
-		debug("Failed to unlink the mqueue. name: %s; errno: %d; msg: %s\n",
-			mq_name, errno, strerror(errno));
+		debug("Failed to unlink the mqueue. name: %s; errno: %d; msg: %s",
+			mq_name, errno, STRERROR_R(errno));
 	}
 }
 
@@ -177,25 +188,24 @@ void mixed_mqueue_close(const mqd_t *mqueue, const char *mq_name)
 st_list_item *mixed_llist_add_elem(
 st_list *list,
 const void *elem,
-const size_t elem_size,
-const bool first)
+const size_t elem_size)
 {
 	int ret;
 	en_mixed_return_code mret;
 	st_list_item *item = NULL;
 
 	if (!list || !elem) {
-		debug("Null parameter received.\n");
+		error("Null parameter received.");
 		return NULL;
 	}
 
 	mret = mixed_llist_copy_elem(&item, elem, elem_size);
 	if (mret != MIXED_RET_SUCCESS) {
-		debug("Failed to copy element to the linked list.\n");
+		error("Failed to copy element to the linked list.");
 		return NULL;
 	}
 
-	if (first) {
+	if (list->item_counter == 0) {
 		ret = llist_add_first(list, item);
 	}
 	else {
@@ -203,7 +213,7 @@ const bool first)
 	}
 
 	if (ret != MIXED_RET_SUCCESS) {
-		debug("Failed to add the first element into the list.\n");
+		error("Failed to add the first element into the list.");
 		return NULL;
 	}
 
@@ -212,13 +222,20 @@ const bool first)
 
 /**************************************************************************************************/
 
-st_list_item *mixed_llist_get_elem(st_list *list, const int index)
+void mixed_llist_rem_elem(st_list *list, const unsigned int index)
 {
-	if (!list) {
-		return NULL;
+	if (list == NULL) {
+		return;
 	}
 
-	if ((index < 0) || (list->item_counter <= index)) {
+	llist_rm_index(list, index);
+}
+
+/**************************************************************************************************/
+
+st_list_item *mixed_llist_get_elem(st_list *list, const unsigned int index)
+{
+	if (list == NULL) {
 		return NULL;
 	}
 
@@ -230,7 +247,7 @@ st_list_item *mixed_llist_get_elem(st_list *list, const int index)
 static en_mixed_return_code mixed_llist_copy_elem(st_list_item **item, const void *elem, const size_t elem_size)
 {
 	if (!elem || !item) {
-		debug("Received invalid parameter.");
+		error("Received invalid parameter.");
 		return MIXED_RET_ERROR;
 	}
 
@@ -238,7 +255,7 @@ static en_mixed_return_code mixed_llist_copy_elem(st_list_item **item, const voi
 
 	*item = (st_list_item *)malloc(sizeof(st_list_item));
 	if (!item) {
-		debug("Failed to allocate data for st_list_item.");
+		error("Failed to allocate data for st_list_item.");
 		return MIXED_RET_ERROR;
 	}
 	memset(*item, 0, sizeof(st_list_item));
@@ -246,7 +263,7 @@ static en_mixed_return_code mixed_llist_copy_elem(st_list_item **item, const voi
 	data = (void *)malloc(elem_size);
 	if (!data) {
 		free(item);
-		debug("Failed to allocate data for the element.");
+		error("Failed to allocate data for the element.");
 		return MIXED_RET_ERROR;
 	}
 	memset(data, 0, elem_size);

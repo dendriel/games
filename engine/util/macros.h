@@ -57,6 +57,7 @@
 		}\
 	}
 
+/**************************************************************************************************/
 /**
  *	\b Copy the visal data pointed by "from" to "dest".
  */
@@ -66,6 +67,17 @@
 		dest.h = from.h;\
 		dest.v = from.v;\
 		dest.image = from.image;\
+	}
+
+/**************************************************************************************************/
+/**
+ *	\b Simplify the use of strerror_r.
+ */
+#define strerror_buf_len 256
+#define STRERROR_R(error)\
+	{\
+		char *buf[strerror_buf_len];\
+		strerror_r(error, buf, strerror_buf_len);\
 	}
 
 

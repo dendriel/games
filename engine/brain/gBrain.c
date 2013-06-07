@@ -52,6 +52,7 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 			}
 			else if (type == GAME_ACTION_LOAD_SCENERY) {
 				debug("Received a request to load a scenery.");
+
 				en_game_return_code ret;
 				ret = gBrain_scenery_load();
 				if (ret == GAME_RET_HALT) {

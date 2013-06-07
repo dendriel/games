@@ -93,15 +93,20 @@ void mixed_mqueue_close(const mqd_t *mqueue, const char *mq_name);
  *	\p list Reference to the list that will receive the element.
  *	\p elem The element to be inserted.
  *	\p elem_size The size of the elemen to be inserted.
- *	\p first true: is the first element that will be inserted in the list; false: is just another 
- *	element to be inserted.
  *	\r Will return the inserted item or NULL in case of operation error.
  */
 st_list_item *mixed_llist_add_elem(
 st_list *list,
 const void *elem,
-const size_t elem_size,
-const bool first);
+const size_t elem_size);
+
+/**************************************************************************************************/
+/**
+ *	\b Remove from the list the element pointed by index.
+ *	\p list The linked list that will have the element removed.
+ *	\p index A reference for the element to be removed.
+ */
+void mixed_llist_rem_elem(st_list *list, const unsigned int index);
 
 /**************************************************************************************************/
 /**
@@ -110,6 +115,6 @@ const bool first);
  *	\p index A reference for the requested item.
  *	\r The element if the list and index are valid; NULL otherwise.
  */
-st_list_item *mixed_llist_get_elem(st_list *list, const int index);
+st_list_item *mixed_llist_get_elem(st_list *list, const unsigned int index);
 
 #endif /* MIXEDAPI_HEADER */

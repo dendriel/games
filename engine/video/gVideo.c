@@ -54,6 +54,12 @@ static void gVideo_remove_screen_trigger(int alarm_entry);
  */
 static en_game_return_code gVideo_process_message(st_game_msg *game_msg);
 
+/**************************************************************************************************/
+/**
+ *	\b Process game video requests from brain module.
+ *	\p game_msg Data from the request.
+ */
+static void gVideo_process_brain_message(st_game_msg *game_msg);
 
 /**************************************************************************************************/
 
@@ -108,10 +114,12 @@ static void gVideo_remove_screen_trigger(int alarm_entry)
 
 /**************************************************************************************************/
 
-static void gVideo_processe_brain_message(st_game_msg *game_msg)
+static void gVideo_process_brain_message(st_game_msg *game_msg)
 {
 	en_game_msg_type type;
-	bool re_send = false;
+
+	game_msg->reply = GAME_MSG_RET_OP_SUCCESS;
+	game_msg->id = GVIDEO_MOD_ID;
 
 	type = game_msg->type;
 	switch (type) {
@@ -119,25 +127,22 @@ static void gVideo_processe_brain_message(st_game_msg *game_msg)
 		case GAME_ACTION_ADD_SCREEN_ELEM:
 		{
 			debug("Received solicitation to add an element to the visual list.");
-			re_send = true;
 			int index;
 			index = gVideo_screen_add_elem(&game_msg->v_elem);
 			if (index == GAME_RET_ERROR) {
 				error("Failed to add element type %d into screen list.", game_msg->v_elem.type);
-				game_msg->v_elem.key = GVIDEO_INVALID_KEY;
+				game_msg->reply = GAME_MSG_RET_OP_FAILED;
 			}
 			else {
 				debug("Item type %d with index %d was added to visual list.", game_msg->v_elem.type, index);
 				game_msg->v_elem.key = index;
 			}
-			game_msg->type = GAME_ACTION_RET_SCREEN_ELEM;
 		}
 		break;
 
 		case GAME_ACTION_UPD_SCREEN_ELEM_POS:
 		{
-			re_send= true;
-			int ret;
+			en_game_return_code ret;
 			ret = gVideo_screen_update_elem_pos(&game_msg->v_elem);
 			if (ret != GAME_RET_SUCCESS) {
 				error("Failed to update the element.");
@@ -148,20 +153,32 @@ static void gVideo_processe_brain_message(st_game_msg *game_msg)
 		}
 		break;
 
+		case GAME_ACTION_REM_SCREEN_ELEM:
+		{
+			en_game_return_code ret;
+			ret = gVideo_screen_rem_elem(game_msg->v_elem.key);
+			if (ret != GAME_RET_SUCCESS) {
+				error("Failed to remove the element.");
+				game_msg->reply = GAME_MSG_RET_OP_FAILED;
+			}
+		}
+		break;
+
 		default:
 			debug("Invalid message type received from gameBrain module. type: %d", type);
 		break;
 	}
 
 	/* Re-send the packet to the request with the same packet. */
-	if (re_send == true) {
-		debug("Re-send the message to game brain module. h: %d; v: %d; key: %d", 
-			game_msg->v_elem.h, game_msg->v_elem.v, game_msg->v_elem.key);
-		en_mixed_return_code mret;
-		mret = mixed_mqueue_send(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, game_msg);
-		if (mret != MIXED_RET_SUCCESS) {
-			error("Failed to re-send the message to game brain module. Type was: %d.", type);
-		}
+	debug("Re-send the message to game brain module. h: %d; v: %d; key: %d", 
+		game_msg->v_elem.h, game_msg->v_elem.v, game_msg->v_elem.key);
+
+	game_msg->type = GAME_ACTION_RET_SCREEN_ELEM;
+
+	en_mixed_return_code mret;
+	mret = mixed_mqueue_send(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, game_msg);
+	if (mret != MIXED_RET_SUCCESS) {
+		error("Failed to re-send the message to game brain module. Type was: %d.", type);
 	}
 
 	return;
@@ -199,7 +216,7 @@ static en_game_return_code gVideo_process_message(st_game_msg *game_msg)
 		break;
 
 		case GBRAIN_MOD_ID:
-			gVideo_processe_brain_message(game_msg);
+			gVideo_process_brain_message(game_msg);
 		break;
 
 		default:

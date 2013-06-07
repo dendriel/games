@@ -31,18 +31,6 @@ typedef enum {
 } en_game_mqueue_prio;
 
 /**
- *	\b Define possible actions to be requested in a message.
- */
-typedef enum {
-	GAME_ACTION_HALT_MODULE = 1,		//!< Requests to the module to terminate and free his resources.
-	GAME_ACTION_UPDATE_SCREEN,			//!< Requests to the game video module to update the screen.
-	GAME_ACTION_ADD_SCREEN_ELEM,		//!< Requests to the game video module to add a new element into the screen.
-	GAME_ACTION_UPD_SCREEN_ELEM_POS,	//!< Requests to the game video module to update a new element (position; image style).
-	GAME_ACTION_RET_SCREEN_ELEM,		//!< Used to send the result of the screen elements related requests.
-	GAME_ACTION_LOAD_SCENERY,			//!< Requests to the game brain module to load the given scenery and his elements.
-} en_game_msg_type;
-
-/**
  *	\b Used to identify sender of the messages between modules.
  */
 typedef enum {
@@ -51,5 +39,32 @@ typedef enum {
 	GVIDEO_MOD_ID,				//!< Game video module identifier.
 	GCONTROL_MOD_ID,			//!< Game controller module identifier.
 } en_game_mod_id;
+
+/**
+ *	\b Define possible actions to be requested in a message.
+ */
+typedef enum {
+	/* System general actions. */
+	GAME_ACTION_HALT_MODULE = 1,		//!< Requests to the module to terminate and free his resources.
+	/* Screen related actions. */
+	GAME_ACTION_UPDATE_SCREEN,			//!< Requests to the game video module to update the screen.
+	GAME_ACTION_ADD_SCREEN_ELEM,		//!< Requests to the game video module to add a new element into the screen.
+	GAME_ACTION_REM_SCREEN_ELEM,		//!< Requests to the game video module to remove an element from the screen.
+	GAME_ACTION_UPD_SCREEN_ELEM_POS,	//!< Requests to the game video module to update a new element (position; image style).
+	GAME_ACTION_RET_SCREEN_ELEM,		//!< Used to send the result of the screen elements related requests.
+	/* Scenery related actions. */
+	GAME_ACTION_LOAD_SCENERY,			//!< Requests to the game brain module to load the given scenery and his elements.
+} en_game_msg_type;
+
+/**
+ *	\b Define possible answers to request messages.
+ */
+typedef enum {
+	GAME_MSG_RET_OP_SUCCESS = 100,			//!< The operation was successful executed and the structure has valid values.
+	GAME_MSG_RET_OP_FAILED,					//!< The operation was failed and the structure data is invalid to be used.
+	GAME_MSG_RET_ELEM_INVALID,				//!< Requested element is invalid.
+	GAME_MSG_RET_ELEM_NOTFOUND,				//!< Requested element was not found.
+} en_game_msg_ret;
+
 
 #endif /* GAME_DEFINES_HEADER*/
