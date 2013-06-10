@@ -124,9 +124,8 @@ static void gController_thread(void *data)
 	}
 
 	/* Free the resources. */
-	//gBrain_scenery_finish();
 	mixed_mqueue_close(&gcontroller_mqueue, GVIDEO_MQUEUE_NAME);
-	debug(Gcontroller_label, "Game controller module has finished successfully.");
+	debug(Gcontroller_label, "Finished successfully.");
 	pthread_exit(0);
 }
 

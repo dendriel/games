@@ -79,21 +79,27 @@ void gVideo_screen_finish(void)
 	if (Visual.initialized) {
 
 		unsigned int i;
+		unsigned int j;
 		st_list_item *list_item = NULL;
 		st_visual *elem = NULL;
 
 		/* Free allocated bitmaps for list elements. */
 		// TODO: this can be improved when we have a "get_next" function.
 		debug(Gvideo_label, "Free visual elements bitmaps.");
-		for(i = 0; i < Visual.list->item_counter; i++) {
+		for (i = 0; i < Visual.list->item_counter; i++) {
 			list_item = llist_get_item(Visual.list, i);
 			if (list_item == NULL) {
 				continue;
 			}
 			elem = (st_visual *)list_item->data;
-			debug_screen("Will remove the bitmap %p...", elem->image);
-			destroy_bitmap(elem->image);
-			elem->image = NULL;
+			for (j = 0; j < GVIDEO_MAX_ELEM_BMP; j++) {
+				if (elem->image[j] == NULL) {
+					continue;
+				}
+				debug_screen("Will remove the bitmap %p...", elem->image[j]);
+				destroy_bitmap(elem->image[j]);
+				elem->image[j] = NULL;
+			}
 		}
 
 		/* Free the linked list allocated memory. */
@@ -132,8 +138,8 @@ en_game_return_code gVideo_screen_update(void)
 	debug_screen("Draw scenery bitmap.");
 	list_item = llist_get_first(Visual.list);
 	gvideo_elem = (st_visual *)list_item->data;
-	debug_screen("scenery - bitmap %p.", gvideo_elem->image);
-	draw_sprite(Visual.screen_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
+	debug_screen("scenery - bitmap %p.", gvideo_elem->image[gvideo_elem->img_index]);
+	draw_sprite(Visual.screen_buffer, gvideo_elem->image[gvideo_elem->img_index], gvideo_elem->h, gvideo_elem->v);
 
 	/* Iterate the visual list. Index 0 is the scenery. */
 	for (i = 1; i < Visual.list->item_counter; i++) {
@@ -144,8 +150,8 @@ en_game_return_code gVideo_screen_update(void)
 			continue;
 		}
 		gvideo_elem = (st_visual *)list_item->data;
-		debug_screen("index %d - bitmap %p.", i, gvideo_elem->image);
-		draw_sprite(Visual.screen_buffer, gvideo_elem->image, gvideo_elem->h, gvideo_elem->v);
+		debug_screen("index %d - bitmap %p.", i, gvideo_elem->image[gvideo_elem->img_index]);
+		draw_sprite(Visual.screen_buffer, gvideo_elem->image[gvideo_elem->img_index], gvideo_elem->h, gvideo_elem->v);
 		debug_screen("Element added into the screen. Type: %d.", gvideo_elem->type);
 	}
 
@@ -186,7 +192,7 @@ int gVideo_screen_add_elem(st_visual *elem)
 			return item->index;
 		}
 		else {
-			debug(Gvideo_label, "The first item to be added must be a scenery element.");
+			error("The first item to be added must be a scenery element.");
 			return GAME_RET_ERROR;
 		}
 	}
@@ -218,7 +224,7 @@ en_game_return_code gVideo_screen_rem_elem(const unsigned int index)
 
 	v_elem = (st_visual *) elem->data;
 
-	destroy_bitmap(v_elem->image);
+	destroy_bitmap(v_elem->image[v_elem->img_index]);
 	mixed_llist_rem_elem(Visual.list, index);
 
 	return GAME_RET_SUCCESS;

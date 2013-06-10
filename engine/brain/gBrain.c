@@ -4,12 +4,16 @@
 #include "gBrain.h"
 #include "gBrain_defines.h"
 #include "gBrain_scenery.h"
+
 #include "game_defines.h"
 #include "game_structs.h"
+
+#include "gBrain_process.h"
 
 #include "mixedAPI.h"
 
 #include "debug.h"
+#include "macros.h"
 
 
 /**************************************************************************************************/
@@ -36,13 +40,20 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg);
 
 /**************************************************************************************************/
 /**
- *	\b Process game controller requests.
+ *	\b Process Controller requests.
  *	\p game_msg Data from the request.
  */
 static void gBrain_process_controller_message(st_game_msg *game_msg);
 
+/**************************************************************************************************/
+/**
+ *	\b Process System requests.
+ *	\p game_msg Data from the request.
+ */
+static en_game_return_code gBrain_process_system_message(st_game_msg *game_msg);
 
 /**************************************************************************************************/
+
 static void gBrain_process_controller_message(st_game_msg *game_msg)
 {
 	en_game_msg_type type;
@@ -53,6 +64,7 @@ static void gBrain_process_controller_message(st_game_msg *game_msg)
 		case GAME_ACTION_MOVE_ELEM:
 		{
 			debug(Gbrain_label, "Received a request to move an element. Direction: %d", game_msg->control.move);
+			gBrain_process_element_movement(&game_msg->control);
 		}
 		break;
 
@@ -60,6 +72,35 @@ static void gBrain_process_controller_message(st_game_msg *game_msg)
 			debug(Gbrain_label, "Invalid message type received from game Controller module. type: %d", type);
 		break;
 	}
+}
+
+/**************************************************************************************************/
+
+static en_game_return_code gBrain_process_system_message(st_game_msg *game_msg)
+{
+	en_game_msg_type type;
+
+	type = game_msg->type;
+	switch (type) {
+
+		case GAME_ACTION_HALT_MODULE:
+			return GAME_RET_HALT;
+		break;
+
+		case GAME_ACTION_LOAD_SCENERY:
+		{
+			debug(Gbrain_label, "Received a request to load a scenery.");
+			CHECK_ERROR_EXCEPT(gBrain_scenery_load(),
+								GAME_RET_HALT,
+								"Failed to process te load scenery request.");
+		}
+
+		default:
+			debug(Gbrain_label, "Invalid message type received from System module. type: %d", type);
+		break;
+	}
+
+	return GAME_RET_SUCCESS;
 }
 
 /**************************************************************************************************/
@@ -80,24 +121,7 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 		break;
 
 		case GSYSTEM_MOD_ID:
-			if (type == GAME_ACTION_HALT_MODULE) {
-				return GAME_RET_HALT;
-			}
-			else if (type == GAME_ACTION_LOAD_SCENERY) {
-				debug(Gbrain_label, "Received a request to load a scenery.");
-
-				en_game_return_code ret;
-				ret = gBrain_scenery_load();
-				if (ret == GAME_RET_HALT) {
-					return GAME_RET_HALT;
-				}
-				else if (ret != GAME_RET_SUCCESS){
-					debug(Gbrain_label, "Failed to process te load scenery request.");
-				}
-			}
-			else {
-				debug(Gbrain_label, "Unknown message received from gameSystem module. Type: %d.", type);
-			}
+			CHECK_EXCEPT(gBrain_process_system_message(game_msg), GAME_RET_HALT);
 		break;
 
 		case GCONTROLLER_MOD_ID:
@@ -112,7 +136,6 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 			debug(Gbrain_label, "Received message from invalid module. id: %d", id);
 		break;
 	}
-
 
 	return GAME_RET_SUCCESS;
 }

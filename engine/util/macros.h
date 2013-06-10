@@ -66,10 +66,13 @@
  */
 #define BRAIN_FILL_V_ELEM(dest, from)\
 	{\
+		unsigned int i;\
 		dest.type = from.type;\
 		dest.h = from.h;\
 		dest.v = from.v;\
-		dest.image = from.image;\
+		for (i = 0; i < GVIDEO_MAX_ELEM_BMP; i++) {\
+			dest.image[i] = from.image[i];\
+		}\
 	}
 
 /**************************************************************************************************/

@@ -79,7 +79,7 @@ static en_game_return_code gVideo_set_screen_trigger(int *alarm_entry)
 	memset(&gvideo_msg, 0, sizeof(st_game_msg));
 
 	/* Fill up alarm message. */
-	alarm.wait_time = GAMEVIDEO_SCREEN_UPDATE_US;
+	alarm.wait_time = GVIDEO_SCREEN_UPDATE_US;
 	alarm.repeat = true;
 	alarm.priority = GAME_MQUEUE_PRIO_1;
 	strncpy(alarm.dest_mqueue, GVIDEO_MQUEUE_NAME, sizeof(alarm.dest_mqueue));

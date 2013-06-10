@@ -10,7 +10,8 @@
 typedef struct {
 	int h;					//!< Horizontal position.
 	int v;					//!< Vertical position.
-	BITMAP *image;			//!< Bitmap that represents the element.
+	BITMAP *image[GVIDEO_MAX_ELEM_BMP];		//!< Bitmap that represents the element.
+	unsigned int img_index;	//!< Identify what image must be in the screen at the updated.
 	en_visual_type type;	//!< Type of the visual element (used to unpack the figures).
 	int key;				//!< Key to access this element (maybe unused).
 } st_visual;

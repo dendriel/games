@@ -49,7 +49,7 @@ en_game_return_code gBrain_gvideo_intf_add_elem(st_scen_elem *elem, st_list *ele
 	msg.id = GBRAIN_MOD_ID;
 	msg.type = GAME_ACTION_ADD_SCREEN_ELEM;
 	/* Copy element data into message. */
-	BRAIN_FILL_V_ELEM(msg.v_elem, elem->v_elem);
+	memcpy(&msg.v_elem, &elem->v_elem, sizeof(msg.v_elem));
 
 	/* Send the request. */
 	mret = mixed_mqueue_send(GVIDEO_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, &msg);
@@ -134,11 +134,13 @@ en_game_return_code gBrain_gvideo_intf_upd_elem_pos(
 
 	memset(&msg, 0, sizeof(msg));
 
-	/* Fill the message. */
+	/* Fill the message header. */
 	msg.id = GBRAIN_MOD_ID;
 	msg.type = GAME_ACTION_UPD_SCREEN_ELEM_POS;
-	/* Copy element data into message. */
-	BRAIN_FILLNLOAD_V_ELEM(msg.v_elem, 0, h, v, NULL, elem->v_elem.key);
+	/* Fill the message data. */
+	msg.v_elem.key = elem->v_elem.key;
+	msg.v_elem.h = h;
+	msg.v_elem.v = v;
 
 	/* Send the request. */
 	mret = mixed_mqueue_send(GVIDEO_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, &msg);

@@ -134,7 +134,7 @@ static void gSystem_test_load_scenery(void)
 	msg.type = GAME_ACTION_LOAD_SCENERY;
 
 	// Testing purpose only.
-	debug("", "Add scenary element into the screen...");
+	debug(Gsystem_label, "Add scenary element into the screen...");
 	mixed_mqueue_send(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_2, &msg);
 }
 
