@@ -2,16 +2,18 @@
 #include <fcntl.h>
 #include <pthread.h>
 
-#include "gBrain.h"
-#include "gBrain_defines.h"
+#include "gSystem.h"
+#include "gSystem_defines.h"
 
 #include "game_defines.h"
 #include "game_structs.h"
 
-#include "gSystem.h"
-#include "gSystem_defines.h"
 #include "gVideo.h"
 #include "gVideo_defines.h"
+#include "gBrain.h"
+#include "gBrain_defines.h"
+#include "gController.h"
+#include "gController_defines.h"
 
 #include "mixedAPI.h"
 #include "debug.h"
@@ -85,7 +87,7 @@ void gSystem_main(void)
 
 	sleep(1); // wait the gameVideo sub-module to take place.testing purpose
 	gSystem_test_load_scenery();
-	sleep(5);
+	sleep(3);
 
 	debug("Finishing the game system...");
 	gSystem_exit();
@@ -154,10 +156,21 @@ static void gSystem_init_modules(void)
 		gSystem_exit();
 		exit(-1);
 	}
+
+	debug("Initialize game module...");
+	ret = gController_init(&mod_th_list[GSYSTEM_CONTROLLER_TH_ID]);
+	if (ret != GAME_RET_SUCCESS) {
+		critical("Failed to initialize game controller module.");
+		gSystem_exit();
+		exit(-1);
+	}
+
 }
 
 /*************************************************************************************************/
-
+/* TODO: Make a more dynamic initialization and termination function (using a list with init 
+ *		and halt module function references.
+ */
 static void gSystem_finish_modules(void)
 {
 	unsigned int id;
@@ -168,6 +181,9 @@ static void gSystem_finish_modules(void)
 
 	debug("Sending halt solicitation to game brain module...");
 	gSystem_halt_module(GBRAIN_MQUEUE_NAME);
+
+	debug("Sending halt solicitation to game controller module...");
+	gSystem_halt_module(GCONTROLLER_MQUEUE_NAME);
 
 	for (id = 1; id < GSYSTEM_MAX_TH_ID; id++) {
 		pthread_join(mod_th_list[id], (void *)&th_ret);

@@ -10,6 +10,7 @@ MODULES = $(TOP)/modules
 SYSTEM = $(TOP)/system
 VIDEO = $(TOP)/video
 BRAIN = $(TOP)/brain
+CONTROLLER = $(TOP)/controller
 MIXEDAPI = $(MODULES)/mixedAPI
 
 include Makefile.hd
@@ -28,13 +29,17 @@ VIDEODEP = $(VIDEO_DEP:.c=.o)
 BRAIN_DEP = $(wildcard $(BRAIN)/*.c)
 BRAINDEP = $(BRAIN_DEP:.c=.o)
 
+CONTROLLER_DEP = $(wildcard $(CONTROLLER)/*.c)
+CONTROLLERDEP = $(CONTROLLER_DEP:.c=.o)
+
 MIXEDAPI_DEP = $(wildcard $(MIXEDAPI)/*.c)
 MIXEDAPIDEP = $(MIXEDAPI_DEP:.c=.o)
 
 INTOBJS =	$(SYSTEMDEP)\
 			$(VIDEODEP)\
 			$(BRAINDEP)\
-			$(MIXEDAPIDEP)\
+			$(CONTROLLERDEP)\
+			$(MIXEDAPIDEP)
 
 # External Objects Dependences #
 ALARMDEP = $(MODULES)/alarm/alarm.o
@@ -60,6 +65,7 @@ $(TARGET): $(SOURCE) $(VIDEODEP) $(SYSTEMDEP) $(ALARMDEP) $(MIXEDAPIDEP)
 	@make -C $(VIDEO)
 	@make -C $(SYSTEM)
 	@make -C $(BRAIN)
+	@make -C $(CONTROLLER)
 	@make -C $(MIXEDAPI)
 	$(CC) $(CFLAGS) $(LDOBJS) $(LDFLAGS) $(LDLIBS) $(SOURCE) $(INCLUDES) -o $(TARGET)
 

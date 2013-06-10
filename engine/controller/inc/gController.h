@@ -1,5 +1,5 @@
-#ifndef GBRAIN_HEADER
-#define GBRAIN_HEADER
+#ifndef GCONTROLLER_HEADER
+#define GCONTROLLER_HEADER
 
 #include "pthread.h"
 
@@ -7,11 +7,11 @@
 
 /*************************************************************************************************/
 /**
- *	\d Initialize the game brain module.
+ *	\d Initialize the game controller module.
  *	\p thread_id A reference to the thread to future thread return (join).
  *	\r GAMESYSTEM_RET_SUCCESS for successfuly execution;
  *	GAMESYSTEM_RET_ERROR for error in the execution.
  */
-en_game_return_code gBrain_init(pthread_t *thread_id);
+en_game_return_code gController_init(pthread_t *thread_id);
 
-#endif /* GBRAIN_HEADER */
+#endif /* GCONTROLLER_HEADER */

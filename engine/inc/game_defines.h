@@ -37,7 +37,7 @@ typedef enum {
 	GSYSTEM_MOD_ID = 100,		//!< Game system [main] module identifier.
 	GBRAIN_MOD_ID,				//!< Game brain module identifier.
 	GVIDEO_MOD_ID,				//!< Game video module identifier.
-	GCONTROL_MOD_ID,			//!< Game controller module identifier.
+	GCONTROLLER_MOD_ID,			//!< Game controller module identifier.
 } en_game_mod_id;
 
 /**

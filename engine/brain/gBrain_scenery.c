@@ -65,14 +65,13 @@ void gBrain_scenery_finish(void)
 en_game_return_code gBrain_scenery_load(void)
 {
 	st_scen_elem sc_elem;
-int i;
-for (i = 0; i < 2; i++) {
+
 	memset(&sc_elem, 0, sizeof(sc_elem));
 	/* Fill visual elements. */
 	BRAIN_FILLNLOAD_V_ELEM(sc_elem.v_elem,
 						GVIDEO_VTYPE_SCEN_STATIC,
-						500, 500,
-						"./media/img/800x600.bmp",
+						0, 0,
+						"./media/img/zelda_map.bmp",
 						GVIDEO_INVALID_KEY);
 
 	debug("Load scenary element.");
@@ -80,32 +79,8 @@ for (i = 0; i < 2; i++) {
 						GAME_RET_HALT,
 						"Failed to load an element.");
 
-	memset(&sc_elem, 0, sizeof(sc_elem));
-	/* Fill visual elements. */
-	BRAIN_FILLNLOAD_V_ELEM(sc_elem.v_elem,
-						GVIDEO_VTYPE_ELEM_STATIC,
-						90, 90,
-						"./media/img/espada.bmp",
-						GVIDEO_INVALID_KEY);
 
-	debug("Load sword element.");
-	CHECK_ERROR_EXCEPT(gBrain_gvideo_intf_add_elem(&sc_elem, Scenery.elem_list),
-						GAME_RET_HALT,
-						"Failed to load an element.");
-
-	memset(&sc_elem, 0, sizeof(sc_elem));
-	/* Fill visual elements. */
-	BRAIN_FILLNLOAD_V_ELEM(sc_elem.v_elem,
-						GVIDEO_VTYPE_ELEM_STATIC,
-						200, 200,
-						"./media/img/house.bmp",
-						GVIDEO_INVALID_KEY);
-
-	debug("Load house element.");
-	CHECK_ERROR_EXCEPT(gBrain_gvideo_intf_add_elem(&sc_elem, Scenery.elem_list),
-						GAME_RET_HALT,
-						"Failed to load an element.");
-
+#if 0
 	/* verify the elem. */
 	st_list_item *ll_elem = NULL;
 
@@ -119,7 +94,6 @@ for (i = 0; i < 2; i++) {
 	if (gBrain_gvideo_intf_rem_elem(2, Scenery.elem_list) != GAME_RET_SUCCESS) {
 		error("Element could not be removed!");
 	}
-}
 
 	/* Fill visual elements. */
 	unsigned int h = 95;
@@ -133,6 +107,7 @@ for (i = 0; i < 2; i++) {
 		v++;
 		usleep(100000);
 	}
+#endif
 
 	return GAME_RET_SUCCESS;
 }

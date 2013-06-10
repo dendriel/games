@@ -6,7 +6,6 @@ include $(TOP)/Makefile.hd
 INCLUDES +=	-I$(TOP)/inc\
 			-I$(TOP)/video/inc\
 			-I$(TOP)/brain/inc\
-			-I$(TOP)/controller/inc\
 			-I$(TOP)/util\
 			-I$(MODULES)/mixedAPI/inc\
 			-I$(MODULES)/llist/inc
