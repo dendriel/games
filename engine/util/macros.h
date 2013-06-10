@@ -45,15 +45,18 @@
 /**
  *	\b Fill the v_elem structure automatic loading the image.
  */
-#define BRAIN_FILLNLOAD_V_ELEM(elem, t, x, y, img)\
+#define BRAIN_FILLNLOAD_V_ELEM(elem, t, x, y, img, k)\
 	{\
-		elem.type = (t);\
+		elem.type = t;\
 		elem.h = x;\
 		elem.v = y;\
-		elem.image = load_bitmap(img, NULL);\
-		if (elem.image == NULL) {\
-			error("Failed to load bitmap.");\
-			return GAME_RET_ERROR;\
+		elem.key = k;\
+		if (img != NULL) {\
+			elem.image = load_bitmap(img, NULL);\
+			if (elem.image == NULL) {\
+				error("Failed to load bitmap.");\
+				return GAME_RET_ERROR;\
+			}\
 		}\
 	}
 

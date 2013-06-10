@@ -114,8 +114,8 @@ en_game_return_code gVideo_screen_update(void)
 	st_visual *gvideo_elem = NULL;
 	st_list_item *list_item= NULL;
 
-	// maybe will be used.
-	//clear_buffer(visual.screen_buffer);
+	/* Clear the buffer so the images will not be overlapped. */
+	clear(Visual.screen_buffer);
 
 	/* Return if there is nothing to put into the screen. */
 	if (Visual.list->item_counter == 0) {

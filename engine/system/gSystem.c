@@ -2,15 +2,16 @@
 #include <fcntl.h>
 #include <pthread.h>
 
-#include "gSystem.h"
-#include "gSystem_defines.h"
-#include "game_defines.h"
-#include "game_structs.h"
-#include "gVideo.h"
-#include "gVideo_defines.h"
-#include "gBrain_video_intf.h"
 #include "gBrain.h"
 #include "gBrain_defines.h"
+
+#include "game_defines.h"
+#include "game_structs.h"
+
+#include "gSystem.h"
+#include "gSystem_defines.h"
+#include "gVideo.h"
+#include "gVideo_defines.h"
 
 #include "mixedAPI.h"
 #include "debug.h"
@@ -84,7 +85,7 @@ void gSystem_main(void)
 
 	sleep(1); // wait the gameVideo sub-module to take place.testing purpose
 	gSystem_test_load_scenery();
-	sleep(3);
+	sleep(5);
 
 	debug("Finishing the game system...");
 	gSystem_exit();
