@@ -9,7 +9,8 @@
 #define GAME_MQUEUE_CRRECV_MODE		(O_CREAT|O_RDONLY)		//!< Create mqueue in recv (read) mode.
 #define GAME_MQUEUE_RECV_MODE		(O_RDONLY)				//!< Open mqueue in recv (read) mode.
 #define GAME_MQUEUE_SIZE			1024					//!< Message size to be received from a mqueue.
-#define GAME_MQUEUE_RECV_BUF_SIZE	GAME_MQUEUE_SIZE+1	//!< Receive buffer size.
+#define GAME_MQUEUE_RECV_BUF_SIZE	GAME_MQUEUE_SIZE+1		//!< Receive buffer size.
+#define GAME_MOD_LABEL_SIZE			32						//!< Module label maximum string size.
 
 /**
  *	\b Return codes for general use.

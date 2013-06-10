@@ -14,6 +14,12 @@
 
 /**************************************************************************************************/
 /**
+ *	\b Game brain module name. Used to debug.
+ */
+char Gbrain_label[GAME_MOD_LABEL_SIZE] = "";
+
+/**************************************************************************************************/
+/**
  *	\d Processing thread. Receive and process message commands.
  *	\p data Unused.
  */
@@ -43,7 +49,7 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 	switch (id) {
 
 		case GVIDEO_MOD_ID:
-			debug("Unknown message received from game video module. Type: %d.\n", type);
+			debug(Gbrain_label, "Unknown message received from game video module. Type: %d.\n", type);
 		break;
 
 		case GSYSTEM_MOD_ID:
@@ -51,7 +57,7 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 				return GAME_RET_HALT;
 			}
 			else if (type == GAME_ACTION_LOAD_SCENERY) {
-				debug("Received a request to load a scenery.");
+				debug(Gbrain_label, "Received a request to load a scenery.");
 
 				en_game_return_code ret;
 				ret = gBrain_scenery_load();
@@ -59,24 +65,24 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 					return GAME_RET_HALT;
 				}
 				else if (ret != GAME_RET_SUCCESS){
-					debug("Failed to process te load scenery request.");
+					debug(Gbrain_label, "Failed to process te load scenery request.");
 				}
 			}
 			else {
-				debug("Unknown message received from gameSystem module. Type: %d.", type);
+				debug(Gbrain_label, "Unknown message received from gameSystem module. Type: %d.", type);
 			}
 		break;
 
 		case GCONTROLLER_MOD_ID:
-			debug("Unknown message received from game controller module. Type: %d.", type);
+			debug(Gbrain_label, "Unknown message received from game controller module. Type: %d.", type);
 		break;
 
 		case GBRAIN_MOD_ID:
-			debug("Unknown message received from game brain module. Type: %d.", type);
+			debug(Gbrain_label, "Unknown message received from game brain module. Type: %d.", type);
 		break;
 
 		default:
-			debug("Received message from invalid module. id: %d", id);
+			debug(Gbrain_label, "Received message from invalid module. id: %d", id);
 		break;
 	}
 
@@ -95,7 +101,7 @@ static void gBrain_thread(void *data)
 	en_mixed_return_code mret;
 	mqd_t gbrain_mqueue;
 
-	debug("Initialize game brain scenery sub-module.");
+	debug(Gbrain_label, "Initialize game brain scenery sub-module.");
 	ret = gBrain_scenery_init();
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to initialized game brain scenery sub-module.");
@@ -103,7 +109,7 @@ static void gBrain_thread(void *data)
 	}
 
 	/* Setup mqueue. */
-	debug("Setup mqueue for receiving requests.");
+	debug(Gbrain_label, "Setup mqueue for receiving requests.");
 	mret = mixed_mqueue_create(&gbrain_mqueue,
 							GBRAIN_MQUEUE_NAME,
 							GAME_MQUEUE_SIZE,
@@ -128,7 +134,7 @@ static void gBrain_thread(void *data)
 
 		ret = gBrain_process_message(game_msg);
 		if (ret == GAME_RET_HALT) {
-			debug("Received halt solicitation. Will exit...");
+			debug(Gbrain_label, "Received halt solicitation. Will exit...");
 			/* Exiting message received. */
 			break;
 		}
@@ -137,19 +143,23 @@ static void gBrain_thread(void *data)
 	/* Free the resources. */
 	gBrain_scenery_finish();
 	mixed_mqueue_close(&gbrain_mqueue, GVIDEO_MQUEUE_NAME);
-	debug("Game brain module has finished successfully.");
+	debug(Gbrain_label, "Finished successfully.");
 	pthread_exit(0);
 }
 
 /*************************************************************************************************/
 
-en_game_return_code gBrain_init(pthread_t *thread_id)
+en_game_return_code gBrain_init(pthread_t *thread_id, const char mod_name[GAME_MOD_LABEL_SIZE])
 {
 	int ret;
 
+	if (strlen(mod_name)) {
+		strncpy(Gbrain_label, mod_name, sizeof(Gbrain_label));
+	}
+
 	ret = pthread_create(thread_id, NULL, (void *)gBrain_thread, NULL);
 	if (ret != 0) {
-		debug("Failed to create brain module thread.");
+		debug(Gbrain_label, "Failed to create module thread.");
 		return GAME_RET_ERROR;
 	}
 

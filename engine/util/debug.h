@@ -8,7 +8,7 @@
  */
 #if defined(DEBUG)
 #define DEBUG_HEADER_MSG "[debug]"
-#define debug(fmt,args...) (void)(printf("%s %15s:%3d -\t "fmt"\n",DEBUG_HEADER_MSG,__FILE__,__LINE__,##args))
+#define debug(mod,fmt,args...) (void)(printf("%s %10s - "fmt"\n",DEBUG_HEADER_MSG,(strlen(mod))?mod:__FILE__,##args))
 #else
 #define debug(...)
 #endif

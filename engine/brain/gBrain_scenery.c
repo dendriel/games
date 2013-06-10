@@ -17,6 +17,12 @@
 
 /**************************************************************************************************/
 /**
+ *	\b Extern from gVideo main module.
+ */
+extern char Gbrain_label[GAME_MOD_LABEL_SIZE];
+
+/**************************************************************************************************/
+/**
  *	\b Scenery elements list.
  */
 static struct {
@@ -50,13 +56,13 @@ void gBrain_scenery_finish(void)
 {
 	if (Scenery.initialized) {
 		/* Free the linked list allocated memory. */
-		debug("Free scenery elements list...");
+		debug(Gbrain_label, "Free scenery elements list...");
 		llist_destroy(&Scenery.elem_list);
 
 		/* Reset the structure (also, the initialized flag is set to false). */
 		memset(&Scenery, 0, sizeof(Scenery));
 	}
-	debug("Game brain scenery sub-module has finished successfully.");
+	debug(Gbrain_label, "Game brain scenery sub-module has finished successfully.");
 }
 
 /**************************************************************************************************/
@@ -74,7 +80,7 @@ en_game_return_code gBrain_scenery_load(void)
 						"./media/img/zelda_map.bmp",
 						GVIDEO_INVALID_KEY);
 
-	debug("Load scenary element.");
+	debug(Gbrain_label, "Load scenary element.");
 	CHECK_ERROR_EXCEPT(gBrain_gvideo_intf_add_elem(&sc_elem, Scenery.elem_list),
 						GAME_RET_HALT,
 						"Failed to load an element.");
@@ -88,9 +94,9 @@ en_game_return_code gBrain_scenery_load(void)
 	if (ll_elem == NULL) {
 		error("Failed to recover the element. Not found!");
 	}
-	debug("Element loaded %d", ((st_scen_elem *)ll_elem->data)->v_elem.key);
+	debug(Gbrain_label, "Element loaded %d", ((st_scen_elem *)ll_elem->data)->v_elem.key);
 
-	debug("Will remove an element!");
+	debug(Gbrain_label, "Will remove an element!");
 	if (gBrain_gvideo_intf_rem_elem(2, Scenery.elem_list) != GAME_RET_SUCCESS) {
 		error("Element could not be removed!");
 	}

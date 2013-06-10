@@ -4,6 +4,7 @@
 
 #include "gSystem.h"
 #include "gSystem_defines.h"
+#include "gSystem_structs.h"
 
 #include "game_defines.h"
 #include "game_structs.h"
@@ -21,10 +22,14 @@
 
 /*************************************************************************************************/
 /**
- *	\b Hold game modules threads ID. Used to whe halting the game (join the threads).
+ *	\b Hold game modules general informations. Keep order with en_gsystem_tid from gSystem_defines.
  */
-static pthread_t mod_th_list[GSYSTEM_MAX_TH_ID];
-
+static st_mod_data Gsystem_modules[] = {
+	{0, "System"	, GSYSTEM_MQUEUE_NAME		, NULL						, false	, false},
+	{0, "Brain"		, GBRAIN_MQUEUE_NAME		, (void *)gBrain_init		, true	, false},
+	{0, "Video"		, GVIDEO_MQUEUE_NAME		, (void *)gVideo_init		, true	, false},
+	{0, "Controller", GCONTROLLER_MQUEUE_NAME	, (void *)gController_init	, true	, false}
+};
 
 /*************************************************************************************************/
 /**
@@ -82,17 +87,17 @@ static void gSystem_test_load_scenery(void);
 
 void gSystem_main(void)
 {
-	debug("Starting the game system...");
+	debug("", "Starting the game system...");
 	gSystem_init();
 
 	sleep(1); // wait the gameVideo sub-module to take place.testing purpose
 	gSystem_test_load_scenery();
 	sleep(3);
 
-	debug("Finishing the game system...");
+	debug("", "Finishing the game system...");
 	gSystem_exit();
 
-	debug("Exiting...");
+	debug("", "Exiting...");
 }
 
 /*************************************************************************************************/
@@ -107,7 +112,7 @@ static void gSystem_test_load_scenery(void)
 	msg.type = GAME_ACTION_LOAD_SCENERY;
 
 	// Testing purpose only.
-	debug("Add scenary element into the screen...");
+	debug("", "Add scenary element into the screen...");
 	mixed_mqueue_send(GBRAIN_MQUEUE_NAME, GAME_MQUEUE_PRIO_2, &msg);
 }
 
@@ -117,14 +122,14 @@ static void gSystem_init(void)
 {
 	en_game_return_code ret;
 
-	debug("Initialize allegro engine general elements...");
+	debug("", "Initialize allegro engine general elements...");
 	ret = gSystem_engine_init();
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to initialize game system engine.");
 		exit(-1);
 	}
 
-	debug("Initialize allegro engine media...");
+	debug("", "Initialize allegro engine media...");
 	ret = gSystem_media_init();
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to initialize game media dependences.");
@@ -140,57 +145,51 @@ static void gSystem_init(void)
 static void gSystem_init_modules(void)
 {
 	en_game_return_code ret;
+	unsigned int mod;
 
-	debug("Initialize game video module...");
-	ret = gVideo_init(&mod_th_list[GSYSTEM_VIDEO_TH_ID]);
-	if (ret != GAME_RET_SUCCESS) {
-		critical("Failed to initialize game video module.");
-		gSystem_exit();
-		exit(-1);
+	/* Launch each module in the list. */
+	for(mod = 0; mod < GSYSTEM_MAX_TID; mod++) {
+
+		if (Gsystem_modules[mod].execute) {
+			debug("", "Initialize game %s module...", Gsystem_modules[mod].label);
+			ret = Gsystem_modules[mod].mod_init(&Gsystem_modules[mod].tid, Gsystem_modules[mod].label);
+
+			if (ret != GAME_RET_SUCCESS) {
+				critical("Failed to initialize game %s module.", Gsystem_modules[mod].label);
+				gSystem_exit();
+				exit(-1);
+			}
+			Gsystem_modules[mod].initialized = true;
+		}
 	}
-
-	debug("Initialize game brain module...");
-	ret = gBrain_init(&mod_th_list[GSYSTEM_BRAIN_TH_ID]);
-	if (ret != GAME_RET_SUCCESS) {
-		critical("Failed to initialize game brain module.");
-		gSystem_exit();
-		exit(-1);
-	}
-
-	debug("Initialize game module...");
-	ret = gController_init(&mod_th_list[GSYSTEM_CONTROLLER_TH_ID]);
-	if (ret != GAME_RET_SUCCESS) {
-		critical("Failed to initialize game controller module.");
-		gSystem_exit();
-		exit(-1);
-	}
-
 }
 
 /*************************************************************************************************/
-/* TODO: Make a more dynamic initialization and termination function (using a list with init 
- *		and halt module function references.
- */
+
 static void gSystem_finish_modules(void)
 {
-	unsigned int id;
+	unsigned int mod;
 	int th_ret;
 
-	debug("Sending halt solicitation to game video module...");
-	gSystem_halt_module(GVIDEO_MQUEUE_NAME);
+	/* Send halt solicitation. */
+	for (mod = 0; mod < GSYSTEM_MAX_TID; mod++) {
 
-	debug("Sending halt solicitation to game brain module...");
-	gSystem_halt_module(GBRAIN_MQUEUE_NAME);
-
-	debug("Sending halt solicitation to game controller module...");
-	gSystem_halt_module(GCONTROLLER_MQUEUE_NAME);
-
-	for (id = 1; id < GSYSTEM_MAX_TH_ID; id++) {
-		pthread_join(mod_th_list[id], (void *)&th_ret);
-		debug("Module %d has halted with value %d.", id, th_ret);
+		if (Gsystem_modules[mod].initialized) {
+			debug("", "Sending halt solicitation to game %s module...", Gsystem_modules[mod].label);
+			gSystem_halt_module(Gsystem_modules[mod].mqueue);
+		}
 	}
 
-	debug("The game modules were halted.");
+	/* Receive acknowledge. */
+	for (mod = 0; mod < GSYSTEM_MAX_TID; mod++) {
+
+		if (Gsystem_modules[mod].initialized) {
+			pthread_join(Gsystem_modules[mod].tid, (void *)&th_ret);
+			debug("", "Module %s has halted with value %d.", Gsystem_modules[mod].label, th_ret);
+		}
+	}
+
+	debug("", "The game modules were halted.");
 }
 
 /*************************************************************************************************/

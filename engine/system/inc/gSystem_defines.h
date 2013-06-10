@@ -17,11 +17,11 @@
  *	\b Define modules threads identifiers.
  */
 typedef enum {
-	GSYSTEM_SYSTEM_TH_ID = 0,	//!< Not used.
-	GSYSTEM_BRAIN_TH_ID,		//!< Position of brain thread id in the list.
-	GSYSTEM_VIDEO_TH_ID,		//!< Position of video thread id in the list.
-	GSYSTEM_CONTROLLER_TH_ID,	//!< Position of controller thread id in the list.
-	GSYSTEM_MAX_TH_ID			//!< List limit. Keep this as the last item!
-} en_gsystem_th_id;
+	GSYSTEM_SYSTEM_TID = 0,	//!< Not used.
+	GSYSTEM_BRAIN_TID,		//!< Position of brain thread id in the list.
+	GSYSTEM_VIDEO_TID,		//!< Position of video thread id in the list.
+	GSYSTEM_CONTROLLER_TID,	//!< Position of controller thread id in the list.
+	GSYSTEM_MAX_TID			//!< List limit. Keep this as the last item!
+} en_gsystem_tid;
 
 #endif /* GSYSTEM_DEFINES_HEADER */

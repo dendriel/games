@@ -18,6 +18,12 @@
 
 /**************************************************************************************************/
 /**
+ *	\b Extern from gVideo main module.
+ */
+extern char Gbrain_label[GAME_MOD_LABEL_SIZE];
+
+/**************************************************************************************************/
+/**
  *	\b Try to receive a message from the game video module to acknowledge the insert of the element 
  *	into the visual list.
  *	\p key Will hold the answer data if there is one.
@@ -62,7 +68,7 @@ en_game_return_code gBrain_gvideo_intf_add_elem(st_scen_elem *elem, st_list *ele
 		return GAME_RET_ERROR;
 	}
 
-	debug("Element added. Visual key: %d", ((st_scen_elem *)list_item->data)->v_elem.key);
+	debug(Gbrain_label, "Element added. Visual key: %d", ((st_scen_elem *)list_item->data)->v_elem.key);
 
 	return GAME_RET_SUCCESS;
 }
@@ -100,7 +106,7 @@ en_game_return_code gBrain_gvideo_intf_rem_elem(const unsigned int index, st_lis
 	/* Acknowledge was successful. Remove the element to the Scenery list. */
 	mixed_llist_rem_elem(elem_list, index);
 
-	debug("Element removed. Index was: %d", index); 
+	debug(Gbrain_label, "Element removed. Index was: %d", index); 
 
 	return GAME_RET_SUCCESS;
 }
@@ -146,7 +152,7 @@ en_game_return_code gBrain_gvideo_intf_upd_elem_pos(
 	elem->v_elem.h = h;
 	elem->v_elem.v = v;
 
-	debug("Element updated. Index: %d. New position h: %d, v: %d", index, elem->v_elem.h, elem->v_elem.v);
+	debug(Gbrain_label, "Element updated. Index: %d. New position h: %d, v: %d", index, elem->v_elem.h, elem->v_elem.v);
 
 	return GAME_RET_SUCCESS;
 }
@@ -188,25 +194,25 @@ static en_game_return_code gBrain_gvideo_intf_elem_ack(unsigned int *key)
 		game_msg = (st_game_msg *)recvd_data;
 
 		if (game_msg->type == GAME_ACTION_HALT_MODULE) {
-			debug("Received a halt solicitation while loading a scenery. Quitting...");
+			debug(Gbrain_label, "Received a halt solicitation while loading a scenery. Quitting...");
 			return GAME_RET_HALT;
 		}
 
 		if (game_msg->type != GAME_ACTION_RET_SCREEN_ELEM) {
-			debug("Received a message that cannot process. Message type: %d", game_msg->type);
+			debug(Gbrain_label, "Received a message that cannot process. Message type: %d", game_msg->type);
 			/* As received an invalid message, is fair to retry. */
 			if (retries < retry_max) {
-				debug("Will retry to receive the game video module answer.");
+				debug(Gbrain_label, "Will retry to receive the game video module answer.");
 				retries++;
 				continue;
 			}
 			else {
-				debug("Failed to receive the game video module answer. Stop reading...");
+				debug(Gbrain_label, "Failed to receive the game video module answer. Stop reading...");
 				return GAME_RET_ERROR;
 			}
 		}
 
-		debug("Received screen return msg. Operation %s.",
+		debug(Gbrain_label, "Received screen return msg. Operation %s.",
 			(game_msg->reply != GAME_MSG_RET_OP_SUCCESS)? "error":"success");
 
 		/* Close mqueue. */

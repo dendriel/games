@@ -25,6 +25,12 @@
 
 /**************************************************************************************************/
 /**
+ *	\b Game video module name. Used to debug.
+ */
+char Gvideo_label[GAME_MOD_LABEL_SIZE] = "";
+
+/**************************************************************************************************/
+/**
  *	\d Processing thread. Receive and process message commands.
  *	\p data Unused.
  */
@@ -80,7 +86,7 @@ static en_game_return_code gVideo_set_screen_trigger(int *alarm_entry)
 
 	gvideo_msg = (st_game_msg *) malloc(sizeof(st_game_msg));
 	if (!gvideo_msg) {
-		debug("Failed to allocate memory for gvideo_msg.");
+		debug(Gvideo_label, "Failed to allocate memory for gvideo_msg.");
 		return GAME_RET_ERROR;
 	}
 
@@ -93,7 +99,7 @@ static en_game_return_code gVideo_set_screen_trigger(int *alarm_entry)
 	/* Set the trigger alarm for drawing the buffer into screen. */
 	ret = alarm_set_trigger(&alarm, alarm_entry);
 	if (ret != ALARM_RET_SUCCESS) {
-		debug("Failed to setup update screen trigger. ret: %d", ret);
+		debug(Gvideo_label, "Failed to setup update screen trigger. ret: %d", ret);
 		return GAME_RET_ERROR;
 	}
 
@@ -108,7 +114,7 @@ static void gVideo_remove_screen_trigger(int alarm_entry)
 
 	ret = alarm_remove_trigger(alarm_entry);
 	if (ret != ALARM_RET_SUCCESS) {
-		debug("Failed to remove update screen alarm entry.");
+		debug(Gvideo_label, "Failed to remove update screen alarm entry.");
 	}
 }
 
@@ -126,7 +132,7 @@ static void gVideo_process_brain_message(st_game_msg *game_msg)
 
 		case GAME_ACTION_ADD_SCREEN_ELEM:
 		{
-			debug("Received solicitation to add an element to the visual list.");
+			debug(Gvideo_label, "Received solicitation to add an element to the visual list.");
 			int index;
 			index = gVideo_screen_add_elem(&game_msg->v_elem);
 			if (index == GAME_RET_ERROR) {
@@ -134,7 +140,7 @@ static void gVideo_process_brain_message(st_game_msg *game_msg)
 				game_msg->reply = GAME_MSG_RET_OP_FAILED;
 			}
 			else {
-				debug("Item type %d with index %d was added to visual list.", game_msg->v_elem.type, index);
+				debug(Gvideo_label, "Item type %d with index %d was added to visual list.", game_msg->v_elem.type, index);
 				game_msg->v_elem.key = index;
 			}
 		}
@@ -165,12 +171,12 @@ static void gVideo_process_brain_message(st_game_msg *game_msg)
 		break;
 
 		default:
-			debug("Invalid message type received from gameBrain module. type: %d", type);
+			debug(Gvideo_label, "Invalid message type received from gameBrain module. type: %d", type);
 		break;
 	}
 
 	/* Re-send the packet to the request with the same packet. */
-	debug("Re-send the message to game brain module. h: %d; v: %d; key: %d", 
+	debug(Gvideo_label, "Re-send the message to game brain module. h: %d; v: %d; key: %d", 
 		game_msg->v_elem.h, game_msg->v_elem.v, game_msg->v_elem.key);
 
 	game_msg->type = GAME_ACTION_RET_SCREEN_ELEM;
@@ -202,7 +208,7 @@ static en_game_return_code gVideo_process_message(st_game_msg *game_msg)
 				gVideo_screen_update();
 			}
 			else {
-				debug("Unknown message received from game video module. Type: %d.\n", type);
+				debug(Gvideo_label, "Unknown message received from game video module. Type: %d.\n", type);
 			}
 		break;
 
@@ -211,7 +217,7 @@ static en_game_return_code gVideo_process_message(st_game_msg *game_msg)
 				return GAME_RET_HALT;
 			}
 			else {
-				debug("Unknown message received from gameSystem module. Type: %d.\n", type);
+				debug(Gvideo_label, "Unknown message received from gameSystem module. Type: %d.\n", type);
 			}
 		break;
 
@@ -220,7 +226,7 @@ static en_game_return_code gVideo_process_message(st_game_msg *game_msg)
 		break;
 
 		default:
-			debug("Received message from invalid module. id: %d", id);
+			debug(Gvideo_label, "Received message from invalid module. id: %d", id);
 		break;
 	}
 
@@ -240,7 +246,7 @@ static void gVideo_thread(void *data)
 	mqd_t gvideo_mqueue;
 
 	/* Setup game video sub-module "screen". */
-	debug("Initialize game video screen sub-module.");
+	debug(Gvideo_label, "Initialize game video screen sub-module.");
 	ret = gVideo_screen_init();
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to initialize game video screen sub-module.");
@@ -248,7 +254,7 @@ static void gVideo_thread(void *data)
 	}
 
 	/* Setup update screen trigger. */
-	debug("Setup update screen alarm.");
+	debug(Gvideo_label, "Setup update screen alarm.");
 	ret = gVideo_set_screen_trigger(&alarm_entry);
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to setup screen alarm.");
@@ -257,13 +263,13 @@ static void gVideo_thread(void *data)
 	}
 
 	/* Setup mqueue. */
-	debug("Setup mqueue for receiving requests.");
+	debug(Gvideo_label, "Setup mqueue for receiving requests.");
 	mret = mixed_mqueue_create(&gvideo_mqueue,
 							GVIDEO_MQUEUE_NAME,
 							GAME_MQUEUE_SIZE,
 							GAME_MQUEUE_CRRECV_MODE);
 	if (mret != MIXED_RET_SUCCESS) {
-		debug("Failed to setup mqueue.");
+		debug(Gvideo_label, "Failed to setup mqueue.");
 		gVideo_remove_screen_trigger(alarm_entry);
 		gVideo_screen_finish();
 		exit(-1);
@@ -275,7 +281,7 @@ static void gVideo_thread(void *data)
         bytes_read = mq_receive(gvideo_mqueue, recvd_data, GAME_MQUEUE_RECV_BUF_SIZE, NULL);
 
 		if (bytes_read == -1) {
-			debug("Failed to receive message. errno: %d; msg: %s", errno, strerror(errno));
+			debug(Gvideo_label, "Failed to receive message. errno: %d; msg: %s", errno, strerror(errno));
 			continue;
 		}
 		game_msg = (st_game_msg *)recvd_data;
@@ -284,7 +290,7 @@ static void gVideo_thread(void *data)
 
 		ret = gVideo_process_message(game_msg);
 		if (ret == GAME_RET_HALT) {
-			debug("Received halt solicitation. Will exit...");
+			debug(Gvideo_label, "Received halt solicitation. Will exit...");
 			gVideo_remove_screen_trigger(alarm_entry);
 			/* Exiting message received. */
 			break;
@@ -294,19 +300,23 @@ static void gVideo_thread(void *data)
 	/* Free the resources. */
 	mixed_mqueue_close(&gvideo_mqueue, GVIDEO_MQUEUE_NAME);
 	gVideo_screen_finish();
-	debug("Game video module has finished successfully.");
+	debug(Gvideo_label, "Finished successfully.");
 	pthread_exit(0);
 }
 
 /*************************************************************************************************/
 
-en_game_return_code gVideo_init(pthread_t *thread_id)
+en_game_return_code gVideo_init(pthread_t *thread_id, const char mod_name[GAME_MOD_LABEL_SIZE])
 {
 	int ret;
 
+	if (strlen(mod_name)) {
+		strncpy(Gvideo_label, mod_name, sizeof(Gvideo_label));
+	}
+
 	ret = pthread_create(thread_id, NULL, (void *)gVideo_thread, NULL);
 	if (ret != 0) {
-		debug("Failed to create video module thread.");
+		debug(Gvideo_label, "Failed to create game %s module thread.", Gvideo_label);
 		return GAME_RET_ERROR;
 	}
 

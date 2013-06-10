@@ -28,6 +28,12 @@
 
 /**************************************************************************************************/
 /**
+ *	\b Define a debugging label.
+ */
+#define MIXEDAPI_LABEL "mixedAPI"
+
+/**************************************************************************************************/
+/**
  *	\b Allocate data and copy the given element.
  *	\p dest Will have data allocated and receive the element pointed by orig.
  *	\p orig From where to copy data.
@@ -147,7 +153,7 @@ const mode_t mq_mode)
 	/* Create the message queue. */
 	*mqueue = mq_open(mq_name, mq_mode, 0644, &attr);
 	if (*mqueue == (mqd_t)-1) {
-		debug("Failed to open mqueue. name: %s; errno: %d; msg: %s",
+		debug(MIXEDAPI_LABEL, "Failed to open mqueue. name: %s; errno: %d; msg: %s",
 			mq_name, errno, STRERROR_R(errno));
 		return MIXED_RET_ERROR;
 	}
@@ -163,7 +169,7 @@ void mixed_mqueue_close_sender(const mqd_t *mqueue, const char *mq_name)
 
 	ret = mq_close(*mqueue);
 	if (ret != 0) {
-		debug("Failed to close the mqueue. name: %s; errno: %d; msg: %s",
+		debug(MIXEDAPI_LABEL, "Failed to close the mqueue. name: %s; errno: %d; msg: %s",
 			mq_name, errno, STRERROR_R(errno));
 	}
 }
@@ -178,7 +184,7 @@ void mixed_mqueue_close(const mqd_t *mqueue, const char *mq_name)
 
 	ret = mq_unlink(mq_name);
 	if (ret != 0 && (errno != 2)) {
-		debug("Failed to unlink the mqueue. name: %s; errno: %d; msg: %s",
+		debug(MIXEDAPI_LABEL, "Failed to unlink the mqueue. name: %s; errno: %d; msg: %s",
 			mq_name, errno, STRERROR_R(errno));
 	}
 }

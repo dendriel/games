@@ -14,6 +14,12 @@
 
 /**************************************************************************************************/
 /**
+ *	\b Game controller module name. Used to debug.
+ */
+char Gcontroller_label[GAME_MOD_LABEL_SIZE] = "";
+
+/**************************************************************************************************/
+/**
  *	\d Processing thread. Receive and process message commands.
  *	\p data Unused.
  */
@@ -46,18 +52,18 @@ static en_game_return_code gController_process_message(st_game_msg *game_msg)
 				return GAME_RET_HALT;
 			}
 			else {
-				debug("Unknown message received from gameSystem module. Type: %d.", type);
+				debug(Gcontroller_label, "Unknown message received from gameSystem module. Type: %d.", type);
 			}
 		break;
 
 		case GVIDEO_MOD_ID:
 		case GCONTROLLER_MOD_ID:
 		case GBRAIN_MOD_ID:
-			debug("Received a message from an unauthorized module. Module ID: %d; Message type: %d", id, type);
+			debug(Gcontroller_label, "Received a message from an unauthorized module. Module ID: %d; Message type: %d", id, type);
 		break;
 
 		default:
-			debug("Received message from invalid module. id: %d", id);
+			debug(Gcontroller_label, "Received message from invalid module. id: %d", id);
 		break;
 	}
 
@@ -77,7 +83,7 @@ static void gController_thread(void *data)
 	mqd_t gcontroller_mqueue;
 
 #if 0
-	debug("Initialize game scenery sub-module.");
+	debug(Gcontroller_label, "Initialize game scenery sub-module.");
 	ret = gBrain_scenery_init();
 	if (ret != GAME_RET_SUCCESS) {
 		critical("Failed to initialized game brain scenery sub-module.");
@@ -86,7 +92,7 @@ static void gController_thread(void *data)
 #endif
 
 	/* Setup mqueue. */
-	debug("Setup mqueue for receiving requests.");
+	debug(Gcontroller_label, "Setup mqueue for receiving requests.");
 	mret = mixed_mqueue_create(&gcontroller_mqueue,
 							GCONTROLLER_MQUEUE_NAME,
 							GAME_MQUEUE_SIZE,
@@ -111,7 +117,7 @@ static void gController_thread(void *data)
 
 		ret = gController_process_message(game_msg);
 		if (ret == GAME_RET_HALT) {
-			debug("Received halt solicitation. Will exit...");
+			debug(Gcontroller_label, "Received halt solicitation. Will exit...");
 			/* Exiting message received. */
 			break;
 		}
@@ -120,19 +126,23 @@ static void gController_thread(void *data)
 	/* Free the resources. */
 	//gBrain_scenery_finish();
 	mixed_mqueue_close(&gcontroller_mqueue, GVIDEO_MQUEUE_NAME);
-	debug("Game controller module has finished successfully.");
+	debug(Gcontroller_label, "Game controller module has finished successfully.");
 	pthread_exit(0);
 }
 
 /*************************************************************************************************/
 
-en_game_return_code gController_init(pthread_t *thread_id)
+en_game_return_code gController_init(pthread_t *thread_id, const char mod_name[GAME_MOD_LABEL_SIZE])
 {
 	int ret;
 
+	if (strlen(mod_name)) {
+		strncpy(Gcontroller_label, mod_name, sizeof(Gcontroller_label));
+	}
+
 	ret = pthread_create(thread_id, NULL, (void *)gController_thread, NULL);
 	if (ret != 0) {
-		debug("Failed to create controller module thread.");
+		debug(Gcontroller_label, "Failed to create %s module thread.", Gcontroller_label);
 		return GAME_RET_ERROR;
 	}
 

@@ -19,6 +19,12 @@
 
 /**************************************************************************************************/
 /**
+ *	\b Extern from gVideo main module.
+ */
+extern char Gvideo_label[GAME_MOD_LABEL_SIZE];
+
+/**************************************************************************************************/
+/**
  *	\b Hold data used to process game screen issues.
  */
 static struct {
@@ -78,7 +84,7 @@ void gVideo_screen_finish(void)
 
 		/* Free allocated bitmaps for list elements. */
 		// TODO: this can be improved when we have a "get_next" function.
-		debug("Free visual elements bitmaps.");
+		debug(Gvideo_label, "Free visual elements bitmaps.");
 		for(i = 0; i < Visual.list->item_counter; i++) {
 			list_item = llist_get_item(Visual.list, i);
 			if (list_item == NULL) {
@@ -91,18 +97,18 @@ void gVideo_screen_finish(void)
 		}
 
 		/* Free the linked list allocated memory. */
-		debug("Free visual list...");
+		debug(Gvideo_label, "Free visual list...");
 		llist_destroy(&Visual.list);
 
 		/* Free screen buffer bitmap. */
-		debug("Destroy visual buffer bitmap...");
+		debug(Gvideo_label, "Destroy visual buffer bitmap...");
 		destroy_bitmap(Visual.screen_buffer);
 
 		/* Reset the structure (also, the initialized flag is set to false). */
 		memset(&Visual, 0, sizeof(Visual));
 	}
 
-	debug("Game video screen sub-module has finished successfully.");
+	debug(Gvideo_label, "Game video screen sub-module has finished successfully.");
 }
 
 /**************************************************************************************************/
@@ -160,7 +166,7 @@ int gVideo_screen_add_elem(st_visual *elem)
 	en_game_return_code ret;
 	ret = gVideo_screen_check_elem(elem);
 	if (ret != GAME_RET_SUCCESS) {
-		debug("The element solicited to be added contain invalid data.");
+		debug(Gvideo_label, "The element solicited to be added contain invalid data.");
 		return GAME_RET_ERROR;
 	}
 
@@ -180,7 +186,7 @@ int gVideo_screen_add_elem(st_visual *elem)
 			return item->index;
 		}
 		else {
-			debug("The first item to be added must be a scenery element.");
+			debug(Gvideo_label, "The first item to be added must be a scenery element.");
 			return GAME_RET_ERROR;
 		}
 	}
@@ -233,7 +239,7 @@ en_game_return_code gVideo_screen_update_elem_pos(st_visual *elem)
 
 	item = mixed_llist_get_elem(Visual.list, elem->key);
 	if (item == NULL) {
-		debug("Failed to retrieve the element from the list.");
+		debug(Gvideo_label, "Failed to retrieve the element from the list.");
 		return GAME_RET_ERROR;
 	}
 
