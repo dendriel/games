@@ -19,7 +19,7 @@
 
 /**************************************************************************************************/
 /**
- *	\b Extern from gVideo main module.
+ *	\b Extern from game video main module.
  */
 extern char Gvideo_label[GAME_MOD_LABEL_SIZE];
 

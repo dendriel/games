@@ -1,0 +1,14 @@
+#ifndef GCONTROLLER_ACTION_MOVE_HEADER
+#define GCONTROLLER_ACTION_MOVE_HEADER
+
+/**
+ *	\b Movement references.
+ */
+typedef enum {
+	GCTRL_MOVE_UP = 0,
+	GCTRL_MOVE_RIGHT,
+	GCTRL_MOVE_DOWN,
+	GCTRL_MOVE_LEFT
+} en_ctrl_move;
+
+#endif /* GCONTROLLER_ACTION_MOVE_HEADER */

@@ -34,6 +34,33 @@ static void gBrain_thread(void *data);
  */
 static en_game_return_code gBrain_process_message(st_game_msg *game_msg);
 
+/**************************************************************************************************/
+/**
+ *	\b Process game controller requests.
+ *	\p game_msg Data from the request.
+ */
+static void gBrain_process_controller_message(st_game_msg *game_msg);
+
+
+/**************************************************************************************************/
+static void gBrain_process_controller_message(st_game_msg *game_msg)
+{
+	en_game_msg_type type;
+
+	type = game_msg->type;
+	switch (type) {
+
+		case GAME_ACTION_MOVE_ELEM:
+		{
+			debug(Gbrain_label, "Received a request to move an element. Direction: %d", game_msg->control.move);
+		}
+		break;
+
+		default:
+			debug(Gbrain_label, "Invalid message type received from game Controller module. type: %d", type);
+		break;
+	}
+}
 
 /**************************************************************************************************/
 
@@ -74,7 +101,7 @@ static en_game_return_code gBrain_process_message(st_game_msg *game_msg)
 		break;
 
 		case GCONTROLLER_MOD_ID:
-			debug(Gbrain_label, "Unknown message received from game controller module. Type: %d.", type);
+			gBrain_process_controller_message(game_msg);
 		break;
 
 		case GBRAIN_MOD_ID:
@@ -101,10 +128,10 @@ static void gBrain_thread(void *data)
 	en_mixed_return_code mret;
 	mqd_t gbrain_mqueue;
 
-	debug(Gbrain_label, "Initialize game brain scenery sub-module.");
+	debug(Gbrain_label, "Initialize game brain sub-module scenery.");
 	ret = gBrain_scenery_init();
 	if (ret != GAME_RET_SUCCESS) {
-		critical("Failed to initialized game brain scenery sub-module.");
+		critical("Failed to initialized game brain sub-module scenery.");
 		exit(-1);
 	}
 

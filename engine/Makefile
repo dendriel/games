@@ -11,6 +11,7 @@ SYSTEM = $(TOP)/system
 VIDEO = $(TOP)/video
 BRAIN = $(TOP)/brain
 CONTROLLER = $(TOP)/controller
+ACTIONS = $(CONTROLLER)/actions
 MIXEDAPI = $(MODULES)/mixedAPI
 
 include Makefile.hd
@@ -32,6 +33,9 @@ BRAINDEP = $(BRAIN_DEP:.c=.o)
 CONTROLLER_DEP = $(wildcard $(CONTROLLER)/*.c)
 CONTROLLERDEP = $(CONTROLLER_DEP:.c=.o)
 
+ACTIONS_DEP = $(wildcard $(ACTIONS)/*.c)
+ACTIONSDEP = $(ACTIONS_DEP:.c=.o)
+
 MIXEDAPI_DEP = $(wildcard $(MIXEDAPI)/*.c)
 MIXEDAPIDEP = $(MIXEDAPI_DEP:.c=.o)
 
@@ -39,6 +43,7 @@ INTOBJS =	$(SYSTEMDEP)\
 			$(VIDEODEP)\
 			$(BRAINDEP)\
 			$(CONTROLLERDEP)\
+			$(ACTIONSDEP)\
 			$(MIXEDAPIDEP)
 
 # External Objects Dependences #

@@ -7,6 +7,8 @@
 #include "game_defines.h"
 #include "game_structs.h"
 
+#include "gController_keyboard.h"
+
 #include "mixedAPI.h"
 
 #include "debug.h"
@@ -67,7 +69,6 @@ static en_game_return_code gController_process_message(st_game_msg *game_msg)
 		break;
 	}
 
-
 	return GAME_RET_SUCCESS;
 }
 
@@ -75,6 +76,7 @@ static en_game_return_code gController_process_message(st_game_msg *game_msg)
 
 static void gController_thread(void *data)
 {
+	pthread_t gcontroller_keyboard_tid;
 	char recvd_data[GAME_MQUEUE_RECV_BUF_SIZE];
 	ssize_t bytes_read;
 	st_game_msg *game_msg = NULL;
@@ -82,14 +84,12 @@ static void gController_thread(void *data)
 	en_mixed_return_code mret;
 	mqd_t gcontroller_mqueue;
 
-#if 0
-	debug(Gcontroller_label, "Initialize game scenery sub-module.");
-	ret = gBrain_scenery_init();
-	if (ret != GAME_RET_SUCCESS) {
-		critical("Failed to initialized game brain scenery sub-module.");
+	debug(Gcontroller_label, "Initialize game controller keyboard sub-module.");
+	ret = pthread_create(&gcontroller_keyboard_tid, NULL, (void *)gController_keyboard_thread, NULL);
+	if (ret != 0) {
+		critical("Failed to create game controller keyboard sub-module thread.");
 		exit(-1);
 	}
-#endif
 
 	/* Setup mqueue. */
 	debug(Gcontroller_label, "Setup mqueue for receiving requests.");

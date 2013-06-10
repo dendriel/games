@@ -55,6 +55,8 @@ typedef enum {
 	GAME_ACTION_RET_SCREEN_ELEM,		//!< Used to send the result of the screen elements related requests.
 	/* Scenery related actions. */
 	GAME_ACTION_LOAD_SCENERY,			//!< Requests to the game brain module to load the given scenery and his elements.
+	/* Controller related actions. */
+	GAME_ACTION_MOVE_ELEM,				//!< Requests to the game brain to move an element (the player character).
 } en_game_msg_type;
 
 /**

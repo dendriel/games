@@ -18,7 +18,7 @@
 
 /**************************************************************************************************/
 /**
- *	\b Extern from gVideo main module.
+ *	\b Extern from game Brain main module.
  */
 extern char Gbrain_label[GAME_MOD_LABEL_SIZE];
 

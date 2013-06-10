@@ -1,12 +1,19 @@
 # Generic Makefile for compiling objects [tail].
 
 $(OBJS): $(SOURCE) $(INCDEP)
+ifdef DEPOBJS
+	@make -C $(DEPDIR)
+endif
 	$(CC) $(CFLAGS) -c $(INCLUDES) $(SOURCE)
 
 .PHONY: clean
 clean:
 	@echo "rm -f $(OBJS)"
 	@rm -f $(OBJS)
+ifdef DEPOBJS
+	@echo "rm -f $(DEPOBJS)"
+	@rm -f $(DEPOBJS)
+endif
 ifdef TARGET
 	@echo "rm -f $(TARGET)"
 	@rm -f $(TARGET)

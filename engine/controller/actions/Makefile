@@ -1,14 +1,14 @@
-TOP = ..
+TOP = ../..
 MODULES = $(TOP)/modules
 
 include $(TOP)/Makefile.hd
 
 INCLUDES +=	-I$(TOP)/inc\
+			-I./actions/inc\
 			-I$(TOP)/video/inc\
 			-I$(TOP)/brain/inc\
+			-I$(TOP)/system/inc\
 			-I$(TOP)/controller/inc\
-			-I$(TOP)/controller/actions/inc\
-			-I$(TOP)/util\
 			-I$(MODULES)/mixedAPI/inc\
 			-I$(MODULES)/llist/inc
 

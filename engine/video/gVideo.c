@@ -62,7 +62,7 @@ static en_game_return_code gVideo_process_message(st_game_msg *game_msg);
 
 /**************************************************************************************************/
 /**
- *	\b Process game video requests from brain module.
+ *	\b Process game brain requests.
  *	\p game_msg Data from the request.
  */
 static void gVideo_process_brain_message(st_game_msg *game_msg);

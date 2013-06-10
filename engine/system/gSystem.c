@@ -9,6 +9,7 @@
 #include "game_defines.h"
 #include "game_structs.h"
 
+#include "gSystem_loop.h"
 #include "gVideo.h"
 #include "gVideo_defines.h"
 #include "gBrain.h"
@@ -25,17 +26,23 @@
  *	\b Hold game modules general informations. Keep order with en_gsystem_tid from gSystem_defines.
  */
 static st_mod_data Gsystem_modules[] = {
-	{0, "System"	, GSYSTEM_MQUEUE_NAME		, NULL						, false	, false},
+	{0, "System"	, GSYSTEM_MQUEUE_NAME		, (void *)gSystem_init		, true	, false},
 	{0, "Brain"		, GBRAIN_MQUEUE_NAME		, (void *)gBrain_init		, true	, false},
 	{0, "Video"		, GVIDEO_MQUEUE_NAME		, (void *)gVideo_init		, true	, false},
 	{0, "Controller", GCONTROLLER_MQUEUE_NAME	, (void *)gController_init	, true	, false}
 };
 
+/**************************************************************************************************/
+/**
+ *	\b Game system module name. Used to debug.
+ */
+char Gsystem_label[GAME_MOD_LABEL_SIZE] = "";
+
 /*************************************************************************************************/
 /**
  *	\b Initialize game system basics and launch modules threads.
  */
-static void gSystem_init(void);
+static void gSystem_init_basics(void);
 
 /*************************************************************************************************/
 /**
@@ -88,16 +95,31 @@ static void gSystem_test_load_scenery(void);
 void gSystem_main(void)
 {
 	debug("", "Starting the game system...");
-	gSystem_init();
+	gSystem_init_basics();
 
 	sleep(1); // wait the gameVideo sub-module to take place.testing purpose
 	gSystem_test_load_scenery();
-	sleep(3);
 
-	debug("", "Finishing the game system...");
+	/* Go to game system main loop. */
+	gSystem_loop();
+
+	debug(Gsystem_label, "Finishing the game system...");
 	gSystem_exit();
 
-	debug("", "Exiting...");
+	debug(Gsystem_label, "Exiting...");
+}
+
+/*************************************************************************************************/
+
+en_game_return_code gSystem_init(pthread_t *thread_id, const char mod_name[GAME_MOD_LABEL_SIZE])
+{
+	if (strlen(mod_name)) {
+		strncpy(Gsystem_label, mod_name, sizeof(Gsystem_label));
+	}
+
+	*thread_id = -1;
+
+	return GAME_RET_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -118,7 +140,7 @@ static void gSystem_test_load_scenery(void)
 
 /*************************************************************************************************/
 
-static void gSystem_init(void)
+static void gSystem_init_basics(void)
 {
 	en_game_return_code ret;
 
@@ -151,7 +173,7 @@ static void gSystem_init_modules(void)
 	for(mod = 0; mod < GSYSTEM_MAX_TID; mod++) {
 
 		if (Gsystem_modules[mod].execute) {
-			debug("", "Initialize game %s module...", Gsystem_modules[mod].label);
+			debug(Gsystem_label, "Initialize game %s module...", Gsystem_modules[mod].label);
 			ret = Gsystem_modules[mod].mod_init(&Gsystem_modules[mod].tid, Gsystem_modules[mod].label);
 
 			if (ret != GAME_RET_SUCCESS) {
@@ -171,25 +193,25 @@ static void gSystem_finish_modules(void)
 	unsigned int mod;
 	int th_ret;
 
-	/* Send halt solicitation. */
-	for (mod = 0; mod < GSYSTEM_MAX_TID; mod++) {
+	/* Send halt solicitation. mod=0 is the own system module. */
+	for (mod = 1; mod < GSYSTEM_MAX_TID; mod++) {
 
 		if (Gsystem_modules[mod].initialized) {
-			debug("", "Sending halt solicitation to game %s module...", Gsystem_modules[mod].label);
+			debug(Gsystem_label, "Sending halt solicitation to game %s module...", Gsystem_modules[mod].label);
 			gSystem_halt_module(Gsystem_modules[mod].mqueue);
 		}
 	}
 
 	/* Receive acknowledge. */
-	for (mod = 0; mod < GSYSTEM_MAX_TID; mod++) {
+	for (mod = 1; mod < GSYSTEM_MAX_TID; mod++) {
 
 		if (Gsystem_modules[mod].initialized) {
 			pthread_join(Gsystem_modules[mod].tid, (void *)&th_ret);
-			debug("", "Module %s has halted with value %d.", Gsystem_modules[mod].label, th_ret);
+			debug(Gsystem_label, "Module %s has halted with value %d.", Gsystem_modules[mod].label, th_ret);
 		}
 	}
 
-	debug("", "The game modules were halted.");
+	debug(Gsystem_label, "The game modules were halted.");
 }
 
 /*************************************************************************************************/
@@ -244,7 +266,6 @@ static en_game_return_code gSystem_engine_init(void)
 
 	/* Init mouse support. TODO: maybe will not be used. */
     //install_mouse();
-
 
     return GAME_RET_SUCCESS;
 }
