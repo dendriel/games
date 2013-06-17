@@ -8,7 +8,6 @@ INCLUDES +=	-I$(TOP)/inc\
 			-I$(TOP)/system/inc\
 			-I$(TOP)/brain/inc\
 			-I$(TOP)/controller/inc\
-			-I$(TOP)/controller/actions/inc\
 			-I$(MODULES)/mixedAPI/inc\
 			-I$(MODULES)/llist/inc\
 			-I$(MODULES)/alarm/inc

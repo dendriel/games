@@ -51,12 +51,18 @@ typedef enum {
 	GAME_ACTION_UPDATE_SCREEN,			//!< Requests to the game video module to update the screen.
 	GAME_ACTION_ADD_SCREEN_ELEM,		//!< Requests to the game video module to add a new element into the screen.
 	GAME_ACTION_REM_SCREEN_ELEM,		//!< Requests to the game video module to remove an element from the screen.
-	GAME_ACTION_UPD_SCREEN_ELEM_POS,	//!< Requests to the game video module to update a new element (position; image style).
+	GAME_ACTION_UPD_SCREEN_ELEM,		//!< Requests to the game video module to update the element (position; image style).
+	GAME_ACTION_UPD_SCREEN_ELEM_POS,	//!< Requests to the game video module to update the element (position; image style).
+	GAME_ACTION_UPD_SCREEN_ELEM_VIEW,	//!< Requests to the game video module to update the element (position; image style).
 	GAME_ACTION_RET_SCREEN_ELEM,		//!< Used to send the result of the screen elements related requests.
 	/* Scenery related actions. */
 	GAME_ACTION_LOAD_SCENERY,			//!< Requests to the game brain module to load the given scenery and his elements.
 	/* Controller related actions. */
-	GAME_ACTION_MOVE_ELEM,				//!< Requests to the game brain to move an element (the player character).
+	GAME_ACTION_MOVE_UP,				//!< Requests to the game brain to move up (the player character).
+	GAME_ACTION_MOVE_RIGHT,				//!< Requests to the game brain to move right (the player character).
+	GAME_ACTION_MOVE_DOWN,				//!< Requests to the game brain to move down (the player character).
+	GAME_ACTION_MOVE_LEFT,				//!< Requests to the game brain to move left (the player character).
+	GAME_ACTION_MISC_EXIT,				//!< Requests to exit the game.
 } en_game_msg_type;
 
 /**

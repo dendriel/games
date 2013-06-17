@@ -4,12 +4,12 @@
 #include "gController_keyboard_defines.h"
 
 #include "game_defines.h"
+#include "game_structs.h"
 
-#include "gController_action_move.h"
-#include "gController_action_move_defines.h"
-#include "gController_action_misc.h"
-#include "gController_action_misc_defines.h"
 #include "gBrain_defines.h"
+#include "gSystem_defines.h"
+
+#include "mixedAPI.h"
 
 #include "debug.h"
 
@@ -33,6 +33,15 @@ static void gController_keyboard_move(const int key);
  *	\p key Reference to the event that will be processed.
  */
 static void gController_keyboard_misc(const int key);
+
+/**************************************************************************************************/
+/**
+ *	\b Send the key action to the brain module (not the key, but the corresponding action).
+ *	\p dest_mod The module queue name that will process the action.
+ *	\p action The action to be processed.
+ */
+static void gController_send(const char *dest_mod, const en_game_msg_type action);
+
 
 /**************************************************************************************************/
 
@@ -75,19 +84,19 @@ static void gController_keyboard_move(const int key)
 {
 	switch(key) {
 		case KEY_UP:
-			gController_action_move(GCTRL_MOVE_UP);
+			gController_send(GBRAIN_MQUEUE_NAME, GAME_ACTION_MOVE_UP);
 		break;
 
 		case KEY_RIGHT:
-			gController_action_move(GCTRL_MOVE_RIGHT);
+			gController_send(GBRAIN_MQUEUE_NAME, GAME_ACTION_MOVE_RIGHT);
 		break;
 
 		case KEY_DOWN:
-			gController_action_move(GCTRL_MOVE_DOWN);
+			gController_send(GBRAIN_MQUEUE_NAME, GAME_ACTION_MOVE_DOWN);
 		break;
 
 		case KEY_LEFT:
-			gController_action_move(GCTRL_MOVE_LEFT);
+			gController_send(GBRAIN_MQUEUE_NAME, GAME_ACTION_MOVE_LEFT);
 		break;
 
 		default:
@@ -102,7 +111,7 @@ static void gController_keyboard_misc(const int key)
 {
 	switch(key) {
 		case KEY_ESC:
-			gController_action_misc(GCTRL_MISC_EXIT);
+			gController_send(GSYSTEM_MQUEUE_NAME, GAME_ACTION_HALT_MODULE);
 		break;
 
 		case KEY_ENTER:
@@ -116,4 +125,26 @@ static void gController_keyboard_misc(const int key)
 }
 
 /**************************************************************************************************/
+
+
+/**************************************************************************************************/
+
+static void gController_send(const char *dest_mod, const en_game_msg_type action)
+{
+	st_game_msg msg;
+	en_mixed_return_code ret;
+
+	memset(&msg, 0, sizeof(msg));
+
+	msg.id = GCONTROLLER_MOD_ID;
+	msg.type = action;
+
+	/* Send the request. */
+	ret = mixed_mqueue_send(dest_mod, GAME_MQUEUE_PRIO_2, &msg);
+	if (ret != MIXED_RET_SUCCESS) {
+		return;
+	}
+
+	/* There is no need to receive any confirmation. */
+}
 

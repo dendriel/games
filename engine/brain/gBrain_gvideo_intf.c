@@ -36,7 +36,10 @@ static en_game_return_code gBrain_gvideo_intf_elem_ack(unsigned int *key);
 
 /**************************************************************************************************/
 
-en_game_return_code gBrain_gvideo_intf_add_elem(st_scen_elem *elem, st_list *elem_list)
+en_game_return_code gBrain_gvideo_intf_add_elem(
+	st_scen_elem *elem,
+	st_list *elem_list,
+	unsigned int *elem_index)
 {
 	unsigned int elem_key = -1;
 	st_list_item *list_item = NULL;
@@ -69,6 +72,8 @@ en_game_return_code gBrain_gvideo_intf_add_elem(st_scen_elem *elem, st_list *ele
 	}
 
 	debug(Gbrain_label, "Element added. Visual key: %d", ((st_scen_elem *)list_item->data)->v_elem.key);
+
+	*elem_index = ((st_scen_elem *)list_item->data)->v_elem.key;
 
 	return GAME_RET_SUCCESS;
 }
@@ -113,8 +118,9 @@ en_game_return_code gBrain_gvideo_intf_rem_elem(const unsigned int index, st_lis
 
 /**************************************************************************************************/
 
-en_game_return_code gBrain_gvideo_intf_upd_elem_pos(
-	const unsigned int index,
+en_game_return_code gBrain_gvideo_intf_upd_elem(
+	const unsigned int elem_index,
+	const unsigned int img_index,
 	const unsigned int h,
 	const unsigned int v,
 	st_list *elem_list)
@@ -123,24 +129,29 @@ en_game_return_code gBrain_gvideo_intf_upd_elem_pos(
 	en_mixed_return_code mret;
 	st_game_msg msg;
 	st_list_item *list_item= NULL;
-	st_scen_elem *elem = NULL;
+	st_scen_elem *local_elem = NULL;
 
-	list_item = mixed_llist_get_elem(elem_list, index);
+	if (elem_list == NULL) {
+		return GAME_RET_ERROR;
+	}
+
+	list_item = mixed_llist_get_elem(elem_list, elem_index);
 	if (list_item == NULL) {
 		return GAME_RET_ERROR;
 	}
 
-	elem = (st_scen_elem *)list_item->data;
+	local_elem = (st_scen_elem *)list_item->data;
 
 	memset(&msg, 0, sizeof(msg));
 
 	/* Fill the message header. */
 	msg.id = GBRAIN_MOD_ID;
-	msg.type = GAME_ACTION_UPD_SCREEN_ELEM_POS;
+	msg.type = GAME_ACTION_UPD_SCREEN_ELEM;
 	/* Fill the message data. */
-	msg.v_elem.key = elem->v_elem.key;
+	msg.v_elem.key = local_elem->v_elem.key;
 	msg.v_elem.h = h;
 	msg.v_elem.v = v;
+	msg.v_elem.img_index = img_index;
 
 	/* Send the request. */
 	mret = mixed_mqueue_send(GVIDEO_MQUEUE_NAME, GAME_MQUEUE_PRIO_1, &msg);
@@ -151,10 +162,12 @@ en_game_return_code gBrain_gvideo_intf_upd_elem_pos(
 	/* Receive and validate the answer. */
 	CHECK_EXCEPT(gBrain_gvideo_intf_elem_ack(&elem_key), GAME_RET_HALT);
 
-	elem->v_elem.h = h;
-	elem->v_elem.v = v;
+	local_elem->v_elem.h = h;
+	local_elem->v_elem.v = v;
+	local_elem->v_elem.img_index = img_index;
 
-	debug(Gbrain_label, "Element updated. Index: %d. New position h: %d, v: %d", index, elem->v_elem.h, elem->v_elem.v);
+	debug(Gbrain_label, "Element updated. Index: %d. New position h: %d, v: %d, image index: %d",
+			elem_index, local_elem->v_elem.h, local_elem->v_elem.v, local_elem->v_elem.img_index);
 
 	return GAME_RET_SUCCESS;
 }

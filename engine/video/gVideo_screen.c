@@ -235,8 +235,44 @@ en_game_return_code gVideo_screen_rem_elem(const unsigned int index)
 en_game_return_code gVideo_screen_update_elem_pos(st_visual *elem)
 {
 	CHECK_INITIALIZED(Visual.initialized);
-	if ((elem->h < GVIDEO_SCREEN_ORIG_H) || (GAMESYSTEM_MAX_X < elem->h) ||
-		(elem->v < GVIDEO_SCREEN_ORIG_V) || (GAMESYSTEM_MAX_Y < elem->v)) {
+
+	st_list_item *item;
+	st_visual *list_elem;
+
+	item = mixed_llist_get_elem(Visual.list, elem->key);
+	if (item == NULL) {
+		debug(Gvideo_label, "Failed to retrieve the element from the list.");
+		return GAME_RET_ERROR;
+	}
+
+	list_elem = (st_visual *) item->data;
+
+	/* TODO: This validation must be improved, because we are not considering the
+	 * element size (if we put close to the bottom, the image could be out
+	 * of the screen.
+	 */
+	/* Update element position. */
+	if ((elem->h >= GVIDEO_SCREEN_ORIG_H) && (GAMESYSTEM_MAX_X > elem->h) &&
+		(elem->v >= GVIDEO_SCREEN_ORIG_V) && (GAMESYSTEM_MAX_Y > elem->v)) {
+		list_elem->h = elem->h;
+		list_elem->v = elem->v;
+	}
+
+	if ((elem->img_index  > 0) && (elem->img_index < GVIDEO_MAX_ELEM_BMP)) {
+		list_elem->img_index = elem->img_index;
+	}
+
+	return GAME_RET_SUCCESS;
+}
+
+/**************************************************************************************************/
+
+en_game_return_code gVideo_screen_update_elem_view(st_visual *elem)
+{
+	CHECK_INITIALIZED(Visual.initialized);
+
+	/* Check if is a invalid index. */
+	if (elem->img_index >= GVIDEO_MAX_ELEM_BMP) {
 		return GAME_RET_ERROR;
 	}
 
@@ -251,10 +287,9 @@ en_game_return_code gVideo_screen_update_elem_pos(st_visual *elem)
 
 	list_elem = (st_visual *) item->data;
 
-	list_elem->h = elem->h;
-	list_elem->v = elem->v;
+	list_elem->img_index = elem->img_index;
 
-	debug_screen("New element position; h: %d, v: %d", elem->h, elem->v);
+	debug_screen("New element view: %d", elem->img_index);
 
 	return GAME_RET_SUCCESS;
 }

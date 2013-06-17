@@ -27,9 +27,10 @@ extern char Gbrain_label[GAME_MOD_LABEL_SIZE];
  *	\b Scenery elements list.
  */
 static struct {
-	bool initialized;		//!< Tells that the gameVideo_screen is initialized.
-	st_list *elem_list;		//!< Used to hold all the scenery elements.
-} Scenery = {false, NULL};
+	bool initialized;				//!< Tells that the gameVideo_screen is initialized.
+	st_list *elem_list;				//!< Used to hold all the scenery elements.
+	st_scen_elem *controller;		//!< Hold the controller scenery element reference.
+} Scenery = {false, NULL, NULL};
 
 /**************************************************************************************************/
 /**
@@ -51,7 +52,8 @@ static en_game_return_code gBrain_scenery_add_elem(
 	const char *img_path,
 	const unsigned int h_size,
 	const unsigned int v_size,
-	en_visual_image_pos direction);
+	en_visual_image_pos direction,
+	unsigned int *elem_index);
 
 /**************************************************************************************************/
 /**
@@ -67,7 +69,8 @@ static en_game_return_code gBrain_scenery_add_map(
 	const en_visual_type type,
 	const unsigned int h,
 	const unsigned int v,
-	const char *img_path);
+	const char *img_path,
+	unsigned int *elem_index);
 
 /**************************************************************************************************/
 
@@ -112,7 +115,8 @@ static en_game_return_code gBrain_scenery_add_elem(
 	const char *img_path,
 	const unsigned int h_size,
 	const unsigned int v_size,
-	en_visual_image_pos direction)
+	en_visual_image_pos direction,
+	unsigned int *elem_index)
 {
 	unsigned int h_ind;
 	unsigned int v_ind;
@@ -145,7 +149,7 @@ static en_game_return_code gBrain_scenery_add_elem(
 	sc_elem.v_elem.img_index = direction;
 
 	debug(Gbrain_label, "Load element.");
-	CHECK_ERROR_EXCEPT(gBrain_gvideo_intf_add_elem(&sc_elem, Scenery.elem_list),
+	CHECK_ERROR_EXCEPT(gBrain_gvideo_intf_add_elem(&sc_elem, Scenery.elem_list, elem_index),
 						GAME_RET_HALT,
 						"Failed to load an element.");
 
@@ -158,7 +162,8 @@ static en_game_return_code gBrain_scenery_add_map(
 	const en_visual_type type,
 	const unsigned int h,
 	const unsigned int v,
-	const char *img_path)
+	const char *img_path,
+	unsigned int *elem_index)
 {
 	st_scen_elem sc_elem;
 
@@ -176,40 +181,67 @@ static en_game_return_code gBrain_scenery_add_map(
 	sc_elem.v_elem.img_index = GVIDEO_IMG_SRC;
 
 	debug(Gbrain_label, "Load element.");
-	CHECK_ERROR_EXCEPT(gBrain_gvideo_intf_add_elem(&sc_elem, Scenery.elem_list),
+	CHECK_ERROR_EXCEPT(gBrain_gvideo_intf_add_elem(&sc_elem, Scenery.elem_list, elem_index),
 						GAME_RET_HALT,
 						"Failed to load an element.");
 
 	return GAME_RET_SUCCESS;
 }
+
 /**************************************************************************************************/
 
 // TESTING PURPOSE ONYL!!
 en_game_return_code gBrain_scenery_load(void)
 {
+	unsigned int map_index;
 	/* Load scenery. */
 	debug(Gbrain_label, "Load map element.");
 	CHECK_ERROR_EXCEPT(gBrain_scenery_add_map(GVIDEO_VTYPE_SCEN_STATIC,
 						0, 0,
-						"./media/img/zelda_map.bmp"),
+						"./media/img/zelda_map.bmp",
+						&map_index),
 						GAME_RET_HALT,
 						"Failed to load the map element.");
 
-int i;
+unsigned int hero_index;
 /*TODO: next move is create a update element image index into the video screen module, make
  * this loop use the function, then, make controller send requests to updated (only for testing).
  * The controller will just send the "move down" event and the brain will make it.
  */
-for (i = 1; i < 17; i++) {
 	/* Load hero. */
 	debug(Gbrain_label, "Load hero element.");
 	CHECK_ERROR_EXCEPT(gBrain_scenery_add_elem(GVIDEO_VTYPE_ELEM_STATIC,
-						90+i*20, 90+i*20,
+						90, 90,
 						"./media/img/warrior.bmp",
 						GVIDEO_ELEM_SIZE_H, GVIDEO_ELEM_SIZE_V,
-						i),
+						GVIDEO_IMG_FRONT_0,
+						&hero_index),
 						GAME_RET_HALT,
 						"Failed to load the warrior element.");
+
+int i;
+int j;
+int h = 90;
+int v = 90;
+for (i = 1; i < 17; i++) {
+
+	for (j = 0; j < 4; j+=2) {
+		gBrain_gvideo_intf_upd_elem(hero_index,
+							i,
+							h,
+							v,
+							Scenery.elem_list);
+		h +=j;
+		v +=j;
+		usleep(200*1000);
+	}
+
+//	const unsigned int elem_index,
+//	const unsigned int img_index,
+//	const unsigned int h,
+//	const unsigned int v,
+//	st_list *elem_list)
+
 	usleep(500*1000);
 }
 

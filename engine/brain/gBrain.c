@@ -61,10 +61,13 @@ static void gBrain_process_controller_message(st_game_msg *game_msg)
 	type = game_msg->type;
 	switch (type) {
 
-		case GAME_ACTION_MOVE_ELEM:
+		case GAME_ACTION_MOVE_UP:
+		case GAME_ACTION_MOVE_RIGHT:
+		case GAME_ACTION_MOVE_DOWN:
+		case GAME_ACTION_MOVE_LEFT:
 		{
-			debug(Gbrain_label, "Received a request to move an element. Direction: %d", game_msg->control.move);
-			gBrain_process_element_movement(&game_msg->control);
+			debug(Gbrain_label, "Received a request to move an element. Direction: %d", game_msg->type);
+			gBrain_process_element_movement(&game_msg->type);
 		}
 		break;
 
@@ -94,6 +97,7 @@ static en_game_return_code gBrain_process_system_message(st_game_msg *game_msg)
 								GAME_RET_HALT,
 								"Failed to process te load scenery request.");
 		}
+		break;
 
 		default:
 			debug(Gbrain_label, "Invalid message type received from System module. type: %d", type);

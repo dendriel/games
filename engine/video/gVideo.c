@@ -146,7 +146,9 @@ static void gVideo_process_brain_message(st_game_msg *game_msg)
 		}
 		break;
 
+		case GAME_ACTION_UPD_SCREEN_ELEM:
 		case GAME_ACTION_UPD_SCREEN_ELEM_POS:
+		case GAME_ACTION_UPD_SCREEN_ELEM_VIEW:
 		{
 			en_game_return_code ret;
 			ret = gVideo_screen_update_elem_pos(&game_msg->v_elem);
