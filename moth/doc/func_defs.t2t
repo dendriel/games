@@ -1,0 +1,136 @@
+
+= Functions =
+
+ This section intends to give the user an overview about all the functionalities of the Moth
+processor, showing some actions like initialization, functions to work on visual elements, and
+finishing the processor.
+
+== Initialization ==
+**TODO:** Improve this section.
+
+ The Moth Processor is "attached" on the use of the 
+[Allegro library https://www.allegro.cc], thus is needed to initialize this library before
+starting the processor. With that, we can call the processor initialization function that
+will return a pthread_id as identifier to monitor and halt the processor.
+
+ The screen size should be defined at the initialization, as function parameters that will
+be hold by the processor.
+
+
+== Finalization ==
+**TODO:** Improve this section.
+
+ To finalize the Moth Processor, is possible to use the own processor halt function, or use the
+thread id that is given at the processor initialization.
+
+ [**WARNING**] Do not finish Allegro library before the Moth Processor, because it will be
+using resources from the liballegro.
+
+
+== Working on Visual Elements ==
+
+ The Visual Elements are the processor subject of work. Nevertheless, the user does not have directly
+access to it, only receiving a //key// to access and interact over the element. Internally the processor
+will take care of the visual element.
+
+ Another element that is shaped by the processor is the **viewpoints** datatypes. This variables
+contain some data that is used by the visual elements, but it is also intended to be something
+abstract to the user. More about this element will be talk latter.
+
+ This section presents some basic functions that permits interation with visual elements in the
+Moth Processor. Advanced and more specific functions will be shown latter.
+
+=== Create ===
+
+ As seen in latter sections, the visual elements has few fields that the user have to know about,
+and other few that is used internally. The first must be specified at the elements creation
+and the most part can be changed after it.
+
+ The basic parameters that is needed to create a visual element is the following:
+
+- Horizontal (x) and vertical (y) positioning of the element in the screen;
+
+- The type of the element;
+
+- The **viewpoints** datatype, previously filled by another function that works with that (seen 
+latter in this section);
+
+- The visibility (display) of the element. With this parameter the user can hide or show the element
+at any moment of the game without removing it.
+
+ With these elements, we can ilustrate a creation function prototype:
+
+```
+key create_visual_element(x, y, type, viewpoints, visible);
+```
+
+The creation function will return a visual element key to latter access to the element.
+
+
+=== Remove ===
+
+ When removing a visual element all his data will be lost. To remove an element is needed his
+visual key received at element creation. The prototype of the remove element function is as
+follow.
+
+```
+void remove_visual_element(key);
+```
+
+
+=== Update ===
+
+ Updating a visual element probably will be the most frequently action requested to the Moth
+Processor. Thus, there is a set of specific updating functions intended to be less complex
+when changing an element attribute. The update function are:
+
+: ``update_visual_element_pos(x, y)``
+Used to change the position of the element in the screen.
+
+: ``update_visual_element_type(type)``
+Change the type of the element. If the element was created as //static//, changing him to dynamic
+will take no effect unless you change the //update interval// attribute from the ``viewpos``.
+
+: ``update_visual_element_view(index)``
+Change the //view// of the element in the screen.
+
+: ``update_visual_element_interval(time)``
+Alter or add a update interval that will be used to switch between views in dynamic visual 
+elements.
+
+: ``update_element_viewpos(viewpos)``
+Should permits that the visual element receive a new ``viewpos`` datatype. **OBS.:** Will not be
+implemented while there is no need of it. (this warning means that the function was not implemented
+yet =)
+
+
+=== Visibility ===
+
+ If there is need to temporarily stop displaying some element, the "hide element" function
+can be used. The function offers access to the element "display" attribute. Set this parameter
+to //false// when there is need to hide the element, and set to //true// to return the display of
+the element.
+
+```
+void display_visual_element
+```
+
+=== Layers Facility ===
+
+ When building some 2D games is needed to draw the images on the screen in an arbitrary order. The
+Moth Processor keep two priority lists of elements that, when filled, will be drawn into the screen
+independently of the order of the creation of the elements.
+
+ The is two elements list keep by the processor, the //under layer//and the //over layer//. The 
+//under layer// can be used to drawn floors, landscapes, bases of objects, etc. The //over layer//
+can be used to draw roofs, weater, flying elements, area effects as fog, and many others. Each
+layer list has 5 positions to be filled with the referece of visual elements that was already
+inserted in the processor.
+
+TODO: add layer functions prototypes and writte about the enums that is used to access then.
+
+
+**OBS.:** If an element that is in one of the layer's list is removed, his reference will be
+automatically removed too.
+
+

@@ -1,4 +1,4 @@
 games
 =====
 
-	In this repository were committed gamme related code and modules.
+	In this repository were committed game related code and modules.
