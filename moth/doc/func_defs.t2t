@@ -1,4 +1,3 @@
-
 = Functions =
 
  This section intends to give the user an overview about all the functionalities of the Moth
@@ -127,7 +126,24 @@ can be used to draw roofs, weater, flying elements, area effects as fog, and man
 layer list has 5 positions to be filled with the referece of visual elements that was already
 inserted in the processor.
 
-TODO: add layer functions prototypes and writte about the enums that is used to access then.
+ The layer's list can be access through the following functions prototypes.
+
+: ``set_under_layer_element(layer_priority, key)``
+: ``set_over_layer_element(layer_priority, key)``
+Will add the visual element pointed by ``key`` into the layer list. Read the about the datatype
+layer priority in the "Type Definitions" from "Basic Data" section.
+
+**OBS.:** If the requested priority is already occuped, it will be free and the new key added.
+
+: ``unset_under_layer_element(layer_priority)``
+: ``unset_over_layer_element(layer_priority)``
+Clear the key in the position pointed by ``layer_priority`` from layer's list.
+
+
+The under and over layers list are used by the processor do draw de first elements (under layer),
+starting with the element of higher priority to the element with less priority. The last elements
+will be drawn with the same characteristics. The element with higher priority will be drawn into
+screen first, and the element with less priority will be the last element drawn into the screen.
 
 
 **OBS.:** If an element that is in one of the layer's list is removed, his reference will be
