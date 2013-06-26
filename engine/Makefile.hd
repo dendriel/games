@@ -1,0 +1,11 @@
+# Generic Makefile for compiling objects [header].
+CC = gcc
+CFLAGS += -Wall -Werror
+
+SOURCE = $(wildcard *.c)
+OBJS = $(SOURCE:.c=.o)
+INCDEP = $(wildcard ./inc/*.h)
+
+INCLUDES = -I./inc
+
+include $(TOP)/defines.mk
