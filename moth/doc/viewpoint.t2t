@@ -1,0 +1,99 @@
+
+= Working on View datatypes =
+
+ In this section will be displayed and explained the functions used to create, update or delete
+``view`` datatypes and fill up the ``viewpoints`` attribute.
+
+== Create ==
+
+ There are 2 basic functions used to generate the ``view`` and ``viewpoints`` from raw **BITMAPS**,
+they are:
+
+: ``view *create_static_view(raw, views, positions, height, width)``
+
+ Will generate from ``raw``  a ``view`` datatype with ``views*positions`` viewpoints elements, wich
+have the same ``height`` and ``width`` and information that defines the element as static. The
+starting viewpoint of the element will be the default (first element) and can be changed through the
+``update_visual_element_viewpoint`` function.
+
+ The next figure illustrates how the raw **BITMAP** can be splitted in ``viewpoints`` elements.
+
+[./img/static_view.png]
+
+**OBS.:** ``views*positions`` can't be bigger than ``MAX_VIEWPOINTS``.
+
+
+: ``view *create_dynamic_view(raw, views, positions, height, width, interval)``
+
+ The same as the static create function, with the exception that will fill defines the element as
+dynamic type and save the ``interval`` that defines the update interval of the element viewpoints.
+ The animation of a dynamic object is made by switch the first view from the current position by
+the last view from the same position. In the past figure, that shows the "viewpoints from a bitmap",
+the animation would be achieved by switching between views 0-3, 4-7, 8-11 and 12-15. Thus,
+``views`` can't be less than 2 per position (at least the stand1 and stand2 that will switch each
+other).
+
+The next figure illustrate the possibly viewpoints for a standing object with 2 views and 2
+positions.
+
+[./img/dynamic_view.png]
+
+ **Attention:** To make a dynamic visual element moves in the screen is better that the element is
+changed to a static type, moves by the scenery, then received back the dynamic attribute. This will
+avoid that the viewpoints changes automatically when moving.
+
+ **TIP:** The ``interval`` attribute could be the same time as the element takes to move through the
+scenery (if is a moving element).
+
+
+: **TODO:** ``create_overlay_view(raw, views, positions, height, width, internal)``
+
+ This function **would** permit that the dynamic types to be less heavily. Will work having a base
+viewpoint that will be overlapped by others viewpoints. The viewpoints of overlap will have only the
+animated part. The concept is illustred bellow.
+
+[./img/overlay_view.png]
+
+
+== Update ==
+
+ The view functions are proposed to touch only once a ``view`` datatype and then the user could use
+the view to create the visual element. Anyway, if needed, there are a few functions that can be used
+to update the ``viewpoints`` from a ``view`` datatype. They are described as follow.
+
+: ``add_viewpoint(view, raw)``
+
+ Add the "viewpoint" image source at the end of the "viewpoints" attribute from "view". If there is
+no room for the new element, the function will fails.
+
+: ``add_viewpoint_index(view, raw, index)``
+
+ Where, "view" is the element that will be updated, "viewpoint" is the image reference and "index"
+is the position inside ``viewpoints`` that will receive the new reference. If the position pointed
+by "index" is already filled, the operation will fail. Used ``update_viewpoint`` function instead.
+
+: ``update_viewpoint(view, raw, index)``
+
+ Do the same as ``add_viewpoint``function. Except that if the position inside `viewpoints`` is
+occuped, it will be free and, after, filled with the new element.
+
+: ``remove_viewpoint(view, index)``
+
+ Remove the ``viewpoint``, from the "viewpoints" attribute, pointed by the "index" parameter. If the
+position isn't in use, will do nothing and return successfully.
+
+: ``add_viewpoint_offset(view, raw, index, start_x, start_y, height, width)``
+
+ This is the function that you should never need to use (if you need, he is here waiting for you).
+The function permits that you build a "viewpoint" directly from a raw source and add it to
+"viewpoints" at poisition pointed by the "index" parameter. The split of the source will start at
+``start_x``/``start_y`` and end at ``start_x+height``/``start_y+widht``.
+
+
+== Destroy ==
+
+ To complete the stack, there is a function that allows to destroy the ``view``datatype.
+
+: ``destroy_view(view)``
+ Will free all internal resources and the view itself.
+

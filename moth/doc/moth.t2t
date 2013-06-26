@@ -1,4 +1,4 @@
-Moth Game Video Processor
+Moth Processor
 
 
 [./img/logo.png]
@@ -16,4 +16,10 @@ Moth Game Video Processor
 -----------------------
 
 
-%!include: ./viewpos.t2t
+%!include: ./viewpoint.t2t
+
+
+-----------------------
+
+
+%!include: ./developer.t2t
