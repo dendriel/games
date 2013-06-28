@@ -3,3 +3,21 @@
 
  In this section will be registered the concepts of the system functioning. This includes the
 internal entities, use of libraries, some processing and performance issues.
+
+== What initialization initializes? ==
+
+When initialized throught the "init" function, the Moth Processor will launch 2 threads. One of
+them is the "interface" thread, that will receive commands and update the internal structures and
+lists, and the another is the "update screen" thread, that will be always updating the screen with
+the visual elements. To understand what really happes between these two threads and the user thread
+we can take a look at the squematic below.
+
+[./graph/moth_structure.dot.png]
+
+
+What happens is that the user will access the Moth Processor features throught the functions from
+interface module. According with the function, a message to the interface thread will be built. This
+message will contain the treated data specified by the user and will be used to update the internal
+structures and list for the processor to update the screen.
+
+

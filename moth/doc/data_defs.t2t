@@ -1,8 +1,9 @@
 
 = Basic data =
 
- This section presents and describes the data types and constants definitions used by the game video
-system.
+ This section presents and describes the data types and constants definitions used by the Moth
+Processor.
+
 
 == Structures ==
 
@@ -15,8 +16,6 @@ visual element that will be displayed in the screen, according with the data of 
 - [**st**] Position - Position of the visual element in the screen;
 
 - [**st**] View - Images of the element and how it should be displayed;
-
-- [**en**] Type - The type of the element that determines how the "view" data will be used;
 
 - [**tp**] Key - Key of the element in the list of visual elements.
 
@@ -36,15 +35,22 @@ visual element that will be displayed in the screen, according with the data of 
 be used and internal variables that are used in running time for control issues. The content of
 a View data type is the following:
 
-- [**tp**] Viewpoints -  Hold the element image viewpoints (see Type Image sub-section for more info);
+- [**tp**] Viewpoints -  Hold the element image viewpoints (see Type Definitions sub-section for
+more info);
+
+- [**tp**] Positions - Number of positions in the ``viewpoints`` attribute;
+
+- [**tp**] Views - Number of views per position;
 
 - [**tp**] Index - Used to access the Viewpoints type "Viewpoints[Index]";
 
 - [**tp**] Update time - For dynamic types, define the update viewpoints interval;
 
-- [**tp**] Update control - Used to "makes" the interval time. Each update screen loops has X milliseconds
-of interval. Each interval increments the control variable. When control*update_screen equals to
-update_time we have an update viewpoints event.
+- [**tp**] Update control - Used to "makes" the interval time. Each update screen loops has X 
+milliseconds of interval. Each interval increments the control variable. When control*update_screen
+equals to update_time we have an update viewpoints event.
+
+- [**en**] Type - The type of the element that determines how the "view" data will be used;
 
 
 == Types Definitions ==
@@ -74,7 +80,7 @@ and should be held by the user to have access and interact over an element. The 
 type is made as follow.
 
 ```
-unsigned int key
+unsigned int visual_key
 ```
 
 == Enumerations ==

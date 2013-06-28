@@ -5,44 +5,79 @@
 processor, showing some actions like initialization, functions to work on visual elements, and
 finishing the processor.
 
-== Initialization ==
-**TODO:** Improve this section.
+== General Functions ==
 
  The Moth Processor is "attached" on the use of the 
 [Allegro library https://www.allegro.cc], thus is needed to initialize this library before
 starting the processor. With that, we can call the processor initialization function that
-will return a pthread_id as identifier to monitor and halt the processor.
+will return a pthread_id as identifier to monitor and halt the processor. The initialization
+function prototype would be:
 
- The screen size should be defined at the initialization, as function parameters that will
-be hold by the processor.
+```
+moth_initialize(screen_height, screen_width, frame_rate)
+```
+
+ Both the screen size and frame rate (or Frames Per Second - FPS) must be defined at the
+initialization. The frame rate will be divided by 1 and we will have the update interval time,
+used by the "screen update" thread as illustrated in latter sections.
 
 
-== Finalization ==
-**TODO:** Improve this section.
+ To finalize the Moth Processor, is possible to use the finalize function, that will free the
+processor allocated resources and join the active threads. The function prototype is shown below.
 
- To finalize the Moth Processor, is possible to use the own processor halt function, or use the
-thread id that is given at the processor initialization.
+```
+moth_finalize(void)
+```
 
- [**WARNING**] Do not finish Allegro library before the Moth Processor, because it will be
+ **WARNING**: Do not finish Allegro library before the Moth Processor, because it will be
 using resources from the liballegro.
+
+ Another functions of general use are listed below.
+
+: ``screen_freeze(void)``
+
+ Will stop the screen updating until started again.
+
+: ``screen_start(void)``
+
+ Will start the screen updating. Will be needed only if the ``screen_freeze`` function is used,
+because the Moth Processor is initialized in the active (updating) status.
+
+: ``processor_status copy_processor_status(void)``
+
+ Return all the data contained in the processor at the request moment. There is possibility that
+if something is updated in the processor, the same thing will change in the returned data too
+(some allocated data that is accessed by referece, for example). If you halt the processor
+correctly, there is no need to worry about if you have called this function. Better, you need to
+worry if you are using something from this function.
+
+: ``save_processor_status(processor_status), file_name``
+
+ Can save all the content from a ``processor_status`` datatype in the file specified by file_name.
+The data can be loaded with the next function.
+
+: ``load_processor_status(file_name)``
+
+ Will load into the processor the ``processor_status`` data from the file specified by file_name.
+This operation will free all the current content contained by the processor.
 
 
 == Working on Visual Elements ==
 
- The Visual Elements are the processor subject of work. Nevertheless, the user does not have directly
-access to it, only receiving a //key// to access and interact over the element. Internally the processor
-will take care of the visual element.
+The Visual Elements are the processor subject of work. Nevertheless, the user does not have
+directly access to it, only receiving a //key// to access and interact over the element. Internally
+the processor will take care of it.
 
- Another element that is shaped by the processor is the **viewpoints** datatypes. This variables
-contain some data that is used by the visual elements, but it is also intended to be something
-abstract to the user. More about this element will be talk latter.
+Another element that is shaped by the processor is the **viewpoints** data types. This types contain
+some data that is used by the visual elements, but it is also intended to be something abstract to
+the user. More about this element will be talk latter.
 
- This section presents some basic functions that permits interation with visual elements in the
-Moth Processor. Advanced and more specific functions will be shown latter.
+This section presents some basic functions that permits interation with visual elements in the Moth
+Processor. Advanced and more specific functions will be shown latter.
 
 === Create ===
 
- As seen in latter sections, the visual elements has few fields that the user have to know about,
+As seen in previous sections, the visual elements has few fields that the user have to know about,
 and other few that is used internally. The first must be specified at the elements creation
 and the most part can be changed after it.
 
@@ -52,16 +87,17 @@ and the most part can be changed after it.
 
 - The type of the element;
 
-- The **viewpoints** datatype, previously filled by another function that works with that (seen 
+- The **viewpoints** data type, previously filled by another function that works with that (seen 
 latter in this section);
 
 - The visibility (display) of the element. With this parameter the user can hide or show the element
 at any moment of the game without removing it.
 
+
  With these elements, we can ilustrate a creation function prototype:
 
 ```
-key create_visual_element(x, y, type, viewpoints, visible);
+visual_key create_visual_element(x, y, type, viewpoints, visible);
 ```
 
 The creation function will return a visual element key to latter access to the element.
@@ -85,20 +121,25 @@ Processor. Thus, there is a set of specific updating functions intended to be le
 when changing an element attribute. The update function are:
 
 : ``update_visual_element_pos(x, y)``
+
 Used to change the position of the element in the screen.
 
 : ``update_visual_element_type(type)``
+
 Change the type of the element. If the element was created as //static//, changing him to dynamic
 will take no effect unless you change the //update interval// attribute from the ``viewpos``.
 
 : ``update_visual_element_view(index)``
+
 Change the //view// of the element in the screen.
 
 : ``update_visual_element_interval(time)``
+
 Alter or add a update interval that will be used to switch between views in dynamic visual 
 elements.
 
 : ``update_element_viewpos(viewpos)``
+
 Should permits that the visual element receive a new ``viewpos`` datatype. **OBS.:** Will not be
 implemented while there is no need of it. (this warning means that the function was not implemented
 yet =)
@@ -112,7 +153,7 @@ to //false// when there is need to hide the element, and set to //true// to retu
 the element.
 
 ```
-void display_visual_element
+void display_visual_element(bool)
 ```
 
 === Layers Facility ===
@@ -131,13 +172,14 @@ inserted in the processor.
 
 : ``set_under_layer_element(layer_priority, key)``
 : ``set_over_layer_element(layer_priority, key)``
-Will add the visual element pointed by ``key`` into the layer list. Read the about the datatype
-layer priority in the "Type Definitions" from "Basic Data" section.
 
-**OBS.:** If the requested priority is already occuped, it will be free and the new key added.
+Will add the visual element pointed by ``key`` into the layer list. Read the about the datatype
+layer priority in the "Type Definitions" from "Basic Data" section. **OBS.:** If the requested
+priority is already occuped, it will be free and the new key added.
 
 : ``unset_under_layer_element(layer_priority)``
 : ``unset_over_layer_element(layer_priority)``
+
 Clear the key in the position pointed by ``layer_priority`` from layer's list.
 
 
@@ -145,7 +187,6 @@ The under and over layers list are used by the processor do draw de first elemen
 starting with the element of higher priority to the element with less priority. The last elements
 will be drawn with the same characteristics. The element with higher priority will be drawn into
 screen first, and the element with less priority will be the last element drawn into the screen.
-
 
 **OBS.:** If an element that is in one of the layer's list is removed, his reference will be
 automatically removed too.
