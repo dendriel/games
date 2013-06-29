@@ -4,11 +4,64 @@
  When talking about screen positioning and element positons, we need to get clear the difference
 between what is draw in the screen and what is displayed in the screen. To unserstand what this
 means, we need to know that, actually, the screen can show only a part of the visual data, and the
-other part is hidden while configured to do. The displayed part is limited by the screen resolution.
+other part is hidden. The displayed part is limited by the screen resolution.
 
- Lets say that you have a screen with the resolutin of 400x300 pixels, and a land scenery (the
-visual element) with the size of 400x600 pixels. If we draw the scenery at the origin of the screen,
-that would be at x=0 and y=0 (x=horizontal, y=vertical), the botom half of the scenery won't be
-shown. The next figure ilustrate this paragraph.
+Lets say that you have a screen with the resolutin of 400x300 pixels, and a land scenery
+(the visual element) with the size of 400x600 pixels. If we draw the scenery at the origin of the
+screen, that would be at x=0 and y=0 (x=horizontal, y=vertical), the botom half of the scenery won't
+be shown. The **Figure 1** ilustrate this paragraph.
 
-[./img/screen_positioning.png]
+| [./img/screen_positioning.png]            | [./img/screen_positioning_offset.png]      |
+|| Figure 1: Scenery Positioning at origin. | Figure 2: Scenery Positioning plus offset. |
+
+ Now, if instead of drawing the landscape at the origin of the screen, we give an offset of x=0 and
+y=-300, we will shift the botom area, that was hidden, to the visible area. In a game that the main
+character position is thecenter of the screen, it will never move in the screen, what moves is the
+sceneryand whatever other visual elements that compose the scenery. Now, take a look at **Figure 2**
+and see how the coordinates works.
+
+To conclude, you can think about the screen as an infinite buffer where the visible part is the
+"real" part and the hidden part is the "virtual" part (despite the fact that everything is virtual
+here ;). See the Figures 3 and 4.
+
+| [./img/screen_real_virtual.png]    |-| [./img/screen_visible_hidden.png]   |
+|| Figure 3: Real and Virtual areas. |-| Figure 4: Visible and Hidden areas. |
+
+
+=== Relative and Absolute positioning ===
+
+ Going forward, we can introduce the concepts of **relative** and **absolute** positioning. The
+position of the visual element inside the ``screen buffer`` can be defined as __absolute__, and the
+position of the element inside a scenery is the __relative__ position of the element. Lets
+understand this in 3 steps.
+
+First, think about a large scenery for a game. Just think about the full bitmap image without
+limitations, and imagine a main character inside this scenery. Take a look at the figure below to
+materialize your had thought.
+
+| [./img/relative_position.png]                       |
+|| Figure 5: Range of the scenery 0x0 to 500x714)     |
+
+
+You can see the full scenery and the main character at some place of it. The position of the
+character talking about the full scenery, is his relative position, relative to the scenery. And
+now, if you had a window (the screen) with only the size of 400x300 pixels. What could be shown? See
+the next figure.
+
+| [./img/relative_position_window.png]               |
+|| Figure 6: Range of the screen 0x0 to 400x300      |
+
+**Notice** that the scenery only have an absolute position, because his only reference is the screen
+and his position is counted from the screen origin.
+
+
+What you need to get is that the scenery have one origin 0x0 and the screen have another. If you
+want to the main character to keep on the middle of the screen, you will move only the scenery
+element through the screen buffer and keep the main character in the same screen position. In other
+words, you change the scenery absolute position, but for the character, only the relative position
+will be changed. See the last figure below.
+
+| [./img/relative_position_window_offset.png] |
+| Figure 7: Difference between relative and absolute positions. |
+
+
