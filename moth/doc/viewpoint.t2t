@@ -52,7 +52,7 @@ scenery (if is a moving element).
 starting with the first until the last, from the current position with the specified interval
 between the images switch. The figure below illustrates the behavior of this type of element.
 
-[./img/animated_view.png]
+[./img/animated_view.jpeg]
 
  And the animation would be:
 

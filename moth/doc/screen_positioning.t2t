@@ -11,7 +11,7 @@ Lets say that you have a screen with the resolutin of 400x300 pixels, and a land
 screen, that would be at x=0 and y=0 (x=horizontal, y=vertical), the botom half of the scenery won't
 be shown. The **Figure 1** ilustrate this paragraph.
 
-| [./img/screen_positioning.png]            | [./img/screen_positioning_offset.png]      |
+| [./img/screen_positioning.jpeg]            | [./img/screen_positioning_offset.jpeg]      |
 || Figure 1: Scenery Positioning at origin. | Figure 2: Scenery Positioning plus offset. |
 
  Now, if instead of drawing the landscape at the origin of the screen, we give an offset of x=0 and
@@ -24,7 +24,7 @@ To conclude, you can think about the screen as an infinite buffer where the visi
 "real" part and the hidden part is the "virtual" part (despite the fact that everything is virtual
 here ;). See the Figures 3 and 4.
 
-| [./img/screen_real_virtual.png]    |-| [./img/screen_visible_hidden.png]   |
+| [./img/screen_real_virtual.jpeg]    |-| [./img/screen_visible_hidden.png]   |
 || Figure 3: Real and Virtual areas. |-| Figure 4: Visible and Hidden areas. |
 
 
@@ -39,7 +39,7 @@ First, think about a large scenery for a game. Just think about the full bitmap 
 limitations, and imagine a main character inside this scenery. Take a look at the figure below to
 materialize your had thought.
 
-| [./img/relative_position.png]                       |
+| [./img/relative_position.jpeg]                       |
 || Figure 5: Range of the scenery 0x0 to 500x714)     |
 
 
@@ -48,7 +48,7 @@ character talking about the full scenery, is his relative position, relative to 
 now, if you had a window (the screen) with only the size of 400x300 pixels. What could be shown? See
 the next figure.
 
-| [./img/relative_position_window.png]               |
+| [./img/relative_position_window.jpeg]               |
 || Figure 6: Range of the screen 0x0 to 400x300      |
 
 **Notice** that the scenery only have an absolute position, because his only reference is the screen
@@ -61,7 +61,7 @@ element through the screen buffer and keep the main character in the same screen
 words, you change the scenery absolute position, but for the character, only the relative position
 will be changed. See the last figure below.
 
-| [./img/relative_position_window_offset.png] |
+| [./img/relative_position_window_offset.jpeg] |
 | Figure 7: Difference between relative and absolute positions. |
 
 
