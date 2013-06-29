@@ -1,25 +1,13 @@
 Moth Processor
-
+Easy Gaming Video Processor
 
 [./img/logo.png]
 
 
-%!include: ./data_defs.t2t
+%!include: section_1.t2t
 
-
+=======================
+-----------------------
 -----------------------
 
-
-%!include: ./func_defs.t2t
-
-
------------------------
-
-
-%!include: ./viewpoint.t2t
-
-
------------------------
-
-
-%!include: ./developer.t2t
+%!include: section_2.t2t

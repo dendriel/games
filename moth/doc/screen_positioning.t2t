@@ -1,0 +1,14 @@
+
+== Screen Positioning Concepts ==
+
+ When talking about screen positioning and element positons, we need to get clear the difference
+between what is draw in the screen and what is displayed in the screen. To unserstand what this
+means, we need to know that, actually, the screen can show only a part of the visual data, and the
+other part is hidden while configured to do. The displayed part is limited by the screen resolution.
+
+ Lets say that you have a screen with the resolutin of 400x300 pixels, and a land scenery (the
+visual element) with the size of 400x600 pixels. If we draw the scenery at the origin of the screen,
+that would be at x=0 and y=0 (x=horizontal, y=vertical), the botom half of the scenery won't be
+shown. The next figure ilustrate this paragraph.
+
+[./img/screen_positioning.png]

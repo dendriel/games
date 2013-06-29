@@ -1,13 +1,13 @@
 
-= Basic data =
+== Basic data ==
 
  This section presents and describes the data types and constants definitions used by the Moth
 Processor.
 
 
-== Structures ==
+=== Structures ===
 
-=== Visual Element ===
+==== Visual Elements ====
 
  The visual element is the base data type that is used by the Moth Processor. It represents a
 visual element that will be displayed in the screen, according with the data of his parameters.
@@ -20,7 +20,7 @@ visual element that will be displayed in the screen, according with the data of 
 - [**tp**] Key - Key of the element in the list of visual elements.
 
 
-=== Position ===
+==== Position ====
 
  This data type is used to hold the visual element horizontal and vertical positions in the screen.
 
@@ -29,7 +29,7 @@ visual element that will be displayed in the screen, according with the data of 
 - [**tp**] Y - The vertical position of the element in the screen.
 
 
-=== View ===
+==== View ====
 
  The View data type contains the images that the element owns, informations how this data will
 be used and internal variables that are used in running time for control issues. The content of
@@ -53,9 +53,9 @@ equals to update_time we have an update viewpoints event.
 - [**en**] Type - The type of the element that determines how the "view" data will be used;
 
 
-== Types Definitions ==
+=== Types Definitions ===
 
-=== Viewpoints ===
+==== Viewpoints ====
 
  This type definitions is made from a BITMAP elements array, and is defined as follow.
 
@@ -68,12 +68,8 @@ to the Moth Processorfunctions. These functions will split a raw BITMAP and fill
 viewpoints position with splited images. After, the user can call any function to iteract over an
 element - or add one - and pass the "viewpoints" reference without doing anything by himself.
 
- The constant MAX_VIEWPOINTS that defines the maximum elements of "viewpoints" type should
-initillay be about the size of 25. The count is 4 directions (up, right, down and left) plus 4
-viewpoints (stand, left move, stand, right move), in addition to 9 extra positions to append
-whatever viewpoint the user want to do (emotions, dead body, transformations, etc).
 
-=== Key ===
+==== Key ====
 
  The key is just an abstraction type that represents the visual element internally (to the system)
 and should be held by the user to have access and interact over an element. The definition of this
@@ -83,9 +79,10 @@ type is made as follow.
 unsigned int visual_key
 ```
 
-== Enumerations ==
+=== Enumerations ===
 
-=== Type ===
+==== Type ====
+
  Type is an enumeration that is used to informs the visual element types. The types that an visual
 element can assume is listed bellow.
 
@@ -94,4 +91,33 @@ receives a requisition to do that.
 
 - Dynamic - The element viewpoint is dynamic and the processor will update the element viewpoint
 according with  "Update time" from View data.
+
+
+==== Layer Priority ====
+
+The Layer Priority enumeration is used to define in what order the landscape visual elements will
+be drawn in the screen. The highest priority layer will be drawn first, the lowest will be draw by
+the last. The order applies to both under and over layer elements list. There is five priorities
+listed below.
+
+- //priority_1// - The highest priority. The element in this position will be draw first;
+
+- //priority_2// - The element in this position will be draw second;
+
+- //priority_3// - The element in this position will be draw third;
+
+- //priority_4// - The element in this position will be draw fourth;
+
+- //priority_5// - The lowest priority. From the layer list, the element in this position will be
+draw by the last;
+
+
+=== Constants ===
+
+ Some constants that can be used when interacting with the Moth Processor.
+
+- **MAX_VIEWPOINTS** - The constant MAX_VIEWPOINTS that defines the maximum elements of "viewpoints"
+type should initillay be about the size of 25. The count is 4 directions (up, right, down and left)
+plus 4 viewpoints (stand, left move, stand, right move), in addition to 9 extra positions to append
+whatever viewpoint the user want to do (emotions, dead body, transformations, etc).
 

@@ -5,15 +5,16 @@
 TOPDIR = .
 GRAPHDIR = $(TOPDIR)/graph
 
-T2TC = txt2tags # t2t compiler
-FORMAT = html # Output docummentation format
+T2TC = txt2tags
 CFLAGS = --toc -n
+EXT = t2t
+FORMAT = html
 
 # moth.t2t is the index that include all the others t2t
-SRC = moth.t2t
-TARGET = moth.html
+SRC = moth.$(EXT)
+TARGET = moth.$(FORMAT)
 
-T2T_DEPS =  $(wildcard $(TOPDIR)/*.t2t)
+T2T_DEPS =  $(wildcard $(TOPDIR)/*.$(EXT))
 GRAPH_DEPS = $(wildcard $(GRAPHDIR)/*.dot)
 
 
@@ -30,5 +31,5 @@ $(TARGET): $(DEPS)
 .PHONY:
 
 clean:
-	rm -f $(TARGET)
+	rm -f *.$(FORMAT)
 	@cd $(GRAPHDIR); make clean; done
