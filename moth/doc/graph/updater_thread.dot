@@ -1,0 +1,19 @@
+digraph {
+	rankdir=TB
+	node [ shape=box ]
+
+	halt_flag [ style=filled fillcolor=lightblue shape=diamond label="Is halt flag set?" ]
+	freeze_flag [ style=filled fillcolor=lightblue shape=diamond label="Is freeze flag set?" ]
+	updt_screen [ style=filled fillcolor=lightblue label="Update Screen" ]
+	sleep [ style=filled fillcolor=lightblue label="Sleep Interval" ]
+	halt [ style=filled fillcolor=lightblue label="Halt" ]
+
+	halt_flag -> halt [ label="Yes" ]
+	halt_flag -> freeze_flag [ label="No" ]
+
+	freeze_flag -> sleep [label="Yes" ]
+	freeze_flag -> updt_screen [ label="No" ]
+
+	updt_screen -> sleep
+	sleep -> halt_flag
+}

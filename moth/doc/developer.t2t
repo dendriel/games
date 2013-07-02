@@ -1,18 +1,77 @@
 
 == What initialization initializes? ==
 
-When initialized throught the "init" function, the Moth Processor will launch 2 threads. One of
-them is the "interface" thread, that will receive commands and update the internal structures and
-lists, and the another is the "update screen" thread, that will be always updating the screen with
-the visual elements. To understand what really happes between these two threads and the user thread
-we can take a look at the squematic below.
+Basically, the Moth Processor is composed by 2 thread that work together over the same [shared] data
+and make the screen works. The first thread can be seen as an ``interface thread``, that received
+commands from the user throudh the //interface functions and update internal data. The second thread
+is the ``updater [screen] thread``, that mostly reads data and update the screen buffer. **Obs.:**
+the updater thread also updates data (the attributes related to visual elements). The data in focus
+is shared between the threads through a control memory module, that uses mutex to control the
+access. The first view of the Moth Processor arquitecture is illustrated as follow.
 
-[./graph/moth_structure.dot.png]
+
+// TODO //
 
 
-What happens is that the user will access the Moth Processor features throught the functions from
-interface module. According with the function, a message to the interface thread will be built. This
-message will contain the treated data specified by the user and will be used to update the internal
-structures and list for the processor to update the screen.
+== Interface Thread ==
 
+The interface thread is nothing more than a loop that will hold until reads something from his
+``message queue``. It existis in order to don't interrupt the updater screen process, that by
+himself is very "sensible" (depending the amount of data he needs to process).
+
+The responsible to send messages to the interface thread is the user, through the interface
+functions. These functions will build a message with the desired data and send it to the processor.
+The interface thread in its turn, will receive the message, process the content and update the
+shared memory.
+
+There is no bigger details in here. When the message is processed, the thread wll return
+the operation status and some data, if requested. The interface thread internal functioning is
+illustrated below.
+
+| [./graph/interface_thread.dot.png] |
+|| Interface thread: Receive common message flowchart ||
+
+
+== Updater Thread ==
+
+If the interface thread has a simples functioning, the updater thread is even more (maybe not :D).
+His functioning is divided in three steps: Read the control flags; Update the screen with visual
+elements from the visual list; sleep.
+
+=== Control Flags ===
+
+To be less heavly, the updater thread will not open any communication channel as a message queue,
+and will perceive events when reading the control variables. The events are listed below.
+
+: ``freeze``:
+
+When setm, this flag tells to the udpater that he will skip the step 2 and the screen won't be
+updated. **Obs:** The visual elements will not be protected from external [user] updates.
+
+
+: ``halt``:
+This flag tells the updater to halt imediatly. The updater thread is __not__ responsible to free any
+resource and will exit with the ``pthread_exit`` function.
+
+
+: ``fps``: **TODO**
+This variable allows to change the game FPS at running time, but will not implemented yet as i can't
+see any real use of this kind of feature.
+
+
+[**even below**]
+The time until reading a flag was updated depends on the time that takes to process all the visual
+elements (to draw then and update, if needed) plus the sleep internal. So, if we have something in
+the visual list, the maximum time to read the flags will be "process visual elements + sleep
+interval", and if the visual list is empty, we have the minimum time to read the flags, tha is, the
+sleep interval.
+
+The updater thread internal functioning is illustrated below.
+
+| [./graph/updater_thread.dot.png] |
+|| Updater thread basic functioning. |
+
+
+==== Update screen ====
+//TODO//
 
