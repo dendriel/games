@@ -1,0 +1,31 @@
+
+== Memory Access Control ==
+
+As talked latter, the two processor threads shares data using a module that controls the access of
+it. The module offers functions that permits to:
+
+- Set/unset flags variables;
+
+- Add/remove/update visual elements data;
+
+- Lock/Unlock the the access to the data. This point is associated with the next point. You should
+ever lock and unlock the data when accessing it directly.
+
+- Retrieve data references that permits a direct access to it;
+
+
+The kind of locks that the module have depends on the data that he holds. There are the following
+mutex that can be parallel locked.
+
+- **General lock**
+
+Used by the general variables (as the flags).
+
+- **Visual List lock**
+
+Used while accessing the visual list.
+
+
+In order to use this module, it needs to be initialized. And when halting the processor, the module
+can be halted and will free the allocated resources.
+

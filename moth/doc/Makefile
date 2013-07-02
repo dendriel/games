@@ -6,7 +6,7 @@ TOPDIR = .
 GRAPHDIR = $(TOPDIR)/graph
 
 T2TC = txt2tags
-CFLAGS = --toc -n
+CFLAGS = --toc -n --css-sugar
 EXT = t2t
 FORMAT = html
 

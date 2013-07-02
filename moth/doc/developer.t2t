@@ -10,68 +10,11 @@ is shared between the threads through a control memory module, that uses mutex t
 access. The first view of the Moth Processor arquitecture is illustrated as follow.
 
 
-// TODO //
+| [./graph/moth_proc_internal_arq.png] |
+|| Moth Processor arquitecture. |
 
+The "interface functions" block would be what is shown in section 1.2 "General Functions" and 1.3
+"Working on Visual Elements", and the "data processing functions" would be the section 1.4
+"Working on View data types".
 
-== Interface Thread ==
-
-The interface thread is nothing more than a loop that will hold until reads something from his
-``message queue``. It existis in order to don't interrupt the updater screen process, that by
-himself is very "sensible" (depending the amount of data he needs to process).
-
-The responsible to send messages to the interface thread is the user, through the interface
-functions. These functions will build a message with the desired data and send it to the processor.
-The interface thread in its turn, will receive the message, process the content and update the
-shared memory.
-
-There is no bigger details in here. When the message is processed, the thread wll return
-the operation status and some data, if requested. The interface thread internal functioning is
-illustrated below.
-
-| [./graph/interface_thread.dot.png] |
-|| Interface thread: Receive common message flowchart ||
-
-
-== Updater Thread ==
-
-If the interface thread has a simples functioning, the updater thread is even more (maybe not :D).
-His functioning is divided in three steps: Read the control flags; Update the screen with visual
-elements from the visual list; sleep.
-
-=== Control Flags ===
-
-To be less heavly, the updater thread will not open any communication channel as a message queue,
-and will perceive events when reading the control variables. The events are listed below.
-
-: ``freeze``:
-
-When setm, this flag tells to the udpater that he will skip the step 2 and the screen won't be
-updated. **Obs:** The visual elements will not be protected from external [user] updates.
-
-
-: ``halt``:
-This flag tells the updater to halt imediatly. The updater thread is __not__ responsible to free any
-resource and will exit with the ``pthread_exit`` function.
-
-
-: ``fps``: **TODO**
-This variable allows to change the game FPS at running time, but will not implemented yet as i can't
-see any real use of this kind of feature.
-
-
-[**even below**]
-The time until reading a flag was updated depends on the time that takes to process all the visual
-elements (to draw then and update, if needed) plus the sleep internal. So, if we have something in
-the visual list, the maximum time to read the flags will be "process visual elements + sleep
-interval", and if the visual list is empty, we have the minimum time to read the flags, tha is, the
-sleep interval.
-
-The updater thread internal functioning is illustrated below.
-
-| [./graph/updater_thread.dot.png] |
-|| Updater thread basic functioning. |
-
-
-==== Update screen ====
-//TODO//
 

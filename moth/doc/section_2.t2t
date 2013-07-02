@@ -6,3 +6,24 @@ internal entities, use of libraries, some processing and performance issues.
 
 
 %!include: ./developer.t2t
+
+
+-----------------------
+
+
+%!include: ./interface_thread.t2t
+
+
+-----------------------
+
+
+%!include: ./updater_thread.t2t
+
+
+-----------------------
+
+
+%!include: ./memory_control.t2t
+
+
+-----------------------

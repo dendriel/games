@@ -14,5 +14,5 @@ $(TARGET): $(DEPS)
 
 .PHONY:
 
-clean:
-	rm -f *.png
+#clean:
+#	rm -f *.png
