@@ -6,7 +6,8 @@ TOPDIR = .
 GRAPHDIR = $(TOPDIR)/graph
 
 T2TC = txt2tags
-CFLAGS = --toc -n --css-sugar
+CFLAGS = --toc -n
+STYLE = --style=./style.css
 EXT = t2t
 FORMAT = html
 
@@ -25,7 +26,7 @@ all: $(TARGET)
 
 $(TARGET): $(DEPS)
 	@make -C $(GRAPHDIR)
-	$(T2TC) -o $(TARGET) -t $(FORMAT) $(CFLAGS) -i $(SRC)
+	$(T2TC) -o $(TARGET) -t $(FORMAT) $(CFLAGS) $(STYLE) -i $(SRC)
 
 
 .PHONY:
