@@ -5,7 +5,7 @@
 #include "Video.h"
 #include "VisualElement.h"
 #include "Controller.h"
-#include "Critter.h"
+#include "GiantSpider.h"
 
 using namespace std;
 
@@ -28,20 +28,20 @@ int main(int argc, char* args[])
 	SDL_Surface *pView;
 	pView = SDL_LoadBMP("image/critter.bmp");
 	if (pView == NULL) {
-		cout << "Failed to initialize critter! Image path: \"" << path << "\"" << endl;
+		cout << "Failed to initialize Enemy! Image path: \"" << path << "\"" << endl;
 	}
 	VisualElement player;
 	player.set_viewpoint(pView, 0);
 
 
-	Critter crit(200, 200);
+	GiantSpider crit(200, 200);
 	video.add_visualElement(&crit);
 	video.add_visualElement(&player);
 
 	//controller.get_keyDown();
 	video.start();
 
-	//Critter *monster;
+	//Enemy *monster;
 
 	SDLKey key;
 	const unsigned char walk_len = 10;
@@ -67,7 +67,7 @@ int main(int argc, char* args[])
 						break;
 					// STAND
 					case SDLK_SPACE:
-						video.add_visualElement(new Critter(200, 200));
+						video.add_visualElement(new GiantSpider(200, 200));
 						usleep(m_Speed_ms*MILI);
 						break;
 					default:
