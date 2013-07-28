@@ -24,16 +24,15 @@
 	Video::~Video()
 	{
 		SDL_DestroyMutex(m_UpdateScreen_f_lock);
+		cout << "Video destroyed." << endl;
 	}
 
 
 /*************************************************************************************************/
 	void Video::add_visualElement(VisualElement *element)
-	{cout<< "elemenet added!" << endl;
+	{
 		assert(element != NULL);
-		cout<< "elemenet added!" << endl;
 		m_VisualElement_list.push_back(element);
-		cout<< "elemenet added!" << endl;
 	}
 
 /*************************************************************************************************/
@@ -89,7 +88,7 @@
 /*************************************************************************************************/
 	void Video::draw_underLayer(void)
 	{
-		// verificar offset.
+		// verificar offset. layers as visualElements instead of Surfaces.
 		for (vector<SDL_Surface *>::iterator iter = m_UnderLayer_list.begin();
 				iter != m_UnderLayer_list.end(); ++iter) {
 				SDL_BlitSurface(*iter, NULL, m_Screen, NULL);
@@ -114,8 +113,7 @@
 			if (get_updateScreen() == true) {
 				draw_underLayer();
 				draw_visualElements();
-			    SDL_Flip(m_Screen);
-			    cout << "Screen updated!!" << endl;
+				SDL_Flip(m_Screen);
 			}
 
 			usleep(m_UpdateInterval_ms*MILI);

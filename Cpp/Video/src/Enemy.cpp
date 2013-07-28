@@ -147,7 +147,6 @@
 				cout << "invalid action: " << action << endl;
 				break;
 			}
-			cout << "Action: " << action << endl;
 			usleep(m_Speed_ms*MILI);
 		}
 

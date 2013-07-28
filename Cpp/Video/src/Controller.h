@@ -13,6 +13,19 @@
 
 using namespace std;
 
+typedef enum {
+	CTRL_MOVE_UP = 100,		//!< Player is moving up.
+	CTRL_MOVE_RIGHT,		//!< Player is moving to the right.
+	CTRL_MOVE_LEFT,			//!< Player is moving to the left.
+	CTRL_MOVE_DOWN,			//!< Player is moving down.
+	CTRL_KEEP_MOVING,		//!< Player keep moving to the previous direction.
+	CTRL_STOP_MOVING,		//!< Player isn't moving anymore.
+	CTRL_SUMMON,			//!< Summon a thing (temporary).
+	CTRL_EXIT,				//!< Exit the game.
+	CTRL_NONE				//!< Nothing to do.
+} en_ctrl_actions;
+
+
 /*
  * \brief Interact with the player.
  */
@@ -30,14 +43,14 @@ public:
 	~Controller(void) {cout << "Controller destroyed." << endl;}
 
 	/*
-	 * \brief Get any key down.
+	 * \brief Get key down.
 	 */
-	void get_keyDown(void);
+	SDLKey get_keyDown(void);
 
 	/*
 	 * \brief Return an action from the player.
 	 */
-	SDLKey get_Action(void);
+	en_ctrl_actions get_action(void);
 
 };
 

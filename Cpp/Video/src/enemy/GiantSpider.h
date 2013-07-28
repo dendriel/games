@@ -8,21 +8,34 @@
 #ifndef GIANTSPIDER_H_
 #define GIANTSPIDER_H_
 
+#include <iostream>
 #include "Enemy.h"
 
+using namespace std;
 
-#define IMAGE_VIEWPOINTS_SOURCE_PATH "image/aranha_288x320.bmp"
+#define IMAGE_VIEWPOINTS_SOURCE_PATH (char *)"image/aranha_288x320.bmp"
 #define IMAGE_POSITIONS 4		//!< How much positions are in the image.
 #define IMAGE_VIEWS 3			//!< How much views are in the image.
 
 
+
+
 class GiantSpider: public Enemy {
 private:
+	static unsigned int s_Amount;
 
 public:
-	GiantSpider(const int x = 100, const int y = 100);
-private:
 
+	GiantSpider(const int x = 100, const int y = 100);
+	~GiantSpider(void);
+
+	/**
+	 * \brief Return the amount of this type of objects.
+	 */
+	static unsigned int get_amount(void)
+	{
+		return s_Amount;
+	}
 };
 
 
