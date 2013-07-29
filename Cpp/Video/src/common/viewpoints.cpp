@@ -4,10 +4,11 @@
  *  Created on: 25/07/2013
  *      Author: vitor
  */
+#include "viewpoints.h"
+
 #include <iostream>
 #include <assert.h>
 
-#include "SDL/SDL.h"
 
 #include "utils.h"
 
@@ -31,6 +32,7 @@ using namespace std;
 #define RED 255
 #define GREEN 0
 #define BLUE 255
+#define BPP 32
 
 int build_viewpoints(const char *source, const unsigned int positions, const unsigned int views, SDL_Surface **viewpoints)
 {
@@ -50,7 +52,7 @@ int build_viewpoints(const char *source, const unsigned int positions, const uns
 		for (unsigned char v_index = 1; v_index <= views; ++v_index) {
 
 			CHK_NULL((viewpoint = SDL_CreateRGBSurface(SDL_SWSURFACE, viewpoint_size.w, viewpoint_size.h,
-									32, rmask, gmask, bmask, amask)));
+					BPP, rmask, gmask, bmask, amask)));
 
 			SDL_SetColorKey(viewpoint , SDL_SRCCOLORKEY, SDL_MapRGB(viewpoint->format, RED, GREEN, BLUE));
 
@@ -67,5 +69,45 @@ int build_viewpoints(const char *source, const unsigned int positions, const uns
 		}
 	}
 
+	return 0;
+}
+
+/*************************************************************************************************/
+
+int build_mapview(SDL_Surface **mapview, const SDL_Rect& size, const string& source)
+{
+	SDL_Surface *source_tileset = NULL;
+	SDL_Surface *map_temp = NULL;
+	SDL_Rect tile_size;
+	SDL_Rect draw_offset;
+
+	tile_size.x = 32;
+	tile_size.y = 32;
+	tile_size.w = 32;
+	tile_size.h = 32;
+	draw_offset.x = 0;
+	draw_offset.y = 0;
+
+	/* Load map tileset. */
+	cout << "will loadBMP" << endl;
+	CHK_NULL((source_tileset = SDL_LoadBMP(source.c_str())));
+	if (mapview == NULL) {
+		cout << "erro!!!" << endl;
+	}
+
+	/* Create map surface.*/
+	CHK_NULL((map_temp = SDL_CreateRGBSurface(SDL_SWSURFACE, size.w, size.h,
+			BPP, rmask, gmask, bmask, amask)));
+
+	for (unsigned int i = 0; i < (size.w/32); ++i) {
+		draw_offset.x = 32*i;
+		for (unsigned int j = 0; j < (size.h/32); ++j) {
+			draw_offset.y = 32*j;
+			CHK(SDL_BlitSurface(source_tileset, &tile_size, map_temp, &draw_offset), -1);
+		}
+	}
+			cout << "Lol" << endl;
+	CHK_NULL((*mapview = SDL_DisplayFormat(map_temp)));
+	cout << "Lol" << endl;
 	return 0;
 }

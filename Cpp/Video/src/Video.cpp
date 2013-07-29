@@ -6,15 +6,19 @@
 
 /*************************************************************************************************/
 
-	Video::Video(int update_interval):
+	Video::Video(const int update_interval, string title):
 	m_UpdateInterval_ms(update_interval),
-	m_UpdateScreen_f(false)
+	m_UpdateScreen_f(false),
+	m_Title(title)
 	{
 		m_Screen = SDL_SetVideoMode(VIDEO_SCREEN_WIDTH, VIDEO_SCREEN_HEIGHT, VIDEO_SCREEN_BPP,
 				VIDEO_SCREEN_FLAGS);
 		if(m_Screen == NULL) {
 			cout << "Failed to set SDL Video Mode." << endl;
 		}
+
+		SDL_WM_SetCaption(m_Title.c_str(), NULL);
+
 		m_UpdateScreen_f_lock = SDL_CreateMutex();
 		m_Updater_tid = SDL_CreateThread(&video_thread_wrapper, this);
 		cout << "Thread launched!! " << m_Updater_tid << endl;

@@ -23,8 +23,17 @@ int main(int argc, char* args[])
 	if (background == NULL) {
 		cout << "Failed to initialize background! Image path: \"" << path << "\"" << endl;
 	}
-	video.push_under_layer(background);
+	//video.push_under_layer(background);
+	SDL_Surface *map = NULL;
+	SDL_Rect map_size;
 
+	map_size.w = VIDEO_SCREEN_WIDTH;
+	map_size.h = VIDEO_SCREEN_HEIGHT;
+
+	cout << "will load the map" << endl;
+	if (build_mapview(&map, map_size) == 0) {
+		video.push_under_layer(map);
+	}
 
 	SDL_Surface *pView;
 	pView = SDL_LoadBMP("image/critter.bmp");
