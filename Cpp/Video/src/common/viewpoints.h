@@ -28,7 +28,11 @@ typedef enum {
 	IMAGE_UP_LEFT
 } en_image_viewpoints;
 
-#define DEFAULT_TILESET_SOURCE "image/basic_tileset_128x128.bmp"
+//!< Default tile set data source.
+#define TILESET_SOURCE "image/basic_tileset_128x128.bmp"
+//!< Default tile size.
+#define TILE_SIZE 32
+
 
 /**
  * \brief Build a viewpoint array from the raw image.
@@ -38,12 +42,22 @@ typedef enum {
  * \param viewpoints The array that will be filled.
  * \return 0 if successfully filled the array; -1 if any error has occurred.
  */
-int build_viewpoints(const char *source, const unsigned int positions, const unsigned int views, SDL_Surface **viewpoints);
+int build_viewpoints(const char *source,
+		const unsigned int positions,
+		const unsigned int views,
+		SDL_Surface **viewpoints);
 
 /**
- * \brief Build the scenery view.
+ * \brief Build a scenery layer.
+ * \param layer The surface that will contain the builded layer.
+ * \param layer_bounds Contain the matrix maximum x and y.
+ * \param tile_list The tile array.
+ * \param source The tile set data source.
  * \return 0 for success; -1 for error.
  */
-int build_mapview(SDL_Surface **mapview, const SDL_Rect& size, const string& source=DEFAULT_TILESET_SOURCE);
+int build_layer(SDL_Surface **layer,
+		const SDL_Rect layer_bounds,
+		const unsigned int *tile_list,
+		const string& source=TILESET_SOURCE);
 
 #endif /* VIEWPOINTS_H_ */

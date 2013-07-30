@@ -5,6 +5,7 @@
 #include "Video.h"
 #include "VisualElement.h"
 #include "Controller.h"
+#include "Scenery.h"
 #include "GiantSpider.h"
 
 using namespace std;
@@ -16,37 +17,21 @@ int main(int argc, char* args[])
 
 	Video video;
 	Controller controller;
-
-	const char *path = "image/grassland_640x480.bmp";
-	SDL_Surface *background;
-	background = SDL_LoadBMP(path);
-	if (background == NULL) {
-		cout << "Failed to initialize background! Image path: \"" << path << "\"" << endl;
-	}
-	//video.push_under_layer(background);
-	SDL_Surface *map = NULL;
-	SDL_Rect map_size;
-
-	map_size.w = VIDEO_SCREEN_WIDTH;
-	map_size.h = VIDEO_SCREEN_HEIGHT;
-
-	cout << "will load the map" << endl;
-	if (build_mapview(&map, map_size) == 0) {
-		video.push_under_layer(map);
-	}
+	Scenery scen(video);
 
 	SDL_Surface *pView;
 	pView = SDL_LoadBMP("image/critter.bmp");
 	if (pView == NULL) {
-		cout << "Failed to initialize Enemy! Image path: \"" << path << "\"" << endl;
+		cout << "Failed to initialize player view!"<< endl;
 	}
 	VisualElement player;
 	player.set_viewpoint(pView, 0);
 
+	video.add_visualElement(&player);
+
 
 	GiantSpider crit(200, 200);
 	video.add_visualElement(&crit);
-	video.add_visualElement(&player);
 
 	video.start();
 
@@ -90,8 +75,6 @@ int main(int argc, char* args[])
 	controller.get_keyDown();
 	video.freeze();
 	controller.get_keyDown();
-
-	SDL_FreeSurface(background);
 
 	SDL_Quit();
 

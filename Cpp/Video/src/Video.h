@@ -8,6 +8,8 @@
 
 #include "VisualElement.h"
 
+#include "utils.h"
+
 using namespace std;
 
 #define VIDEO_SCREEN_WIDTH 640
@@ -15,7 +17,6 @@ using namespace std;
 #define VIDEO_SCREEN_BPP 32
 #define VIDEO_SCREEN_FLAGS SDL_SWSURFACE|SDL_DOUBLEBUF
 #define VIDEO_SCREEN_TITLE (string)"My Game"
-#define MILI 1000
 #define UNDERLAYER_MAX_SIZE 5
 
 class Video {

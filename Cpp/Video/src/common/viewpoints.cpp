@@ -34,7 +34,10 @@ using namespace std;
 #define BLUE 255
 #define BPP 32
 
-int build_viewpoints(const char *source, const unsigned int positions, const unsigned int views, SDL_Surface **viewpoints)
+int build_viewpoints(const char *source,
+		const unsigned int positions,
+		const unsigned int views,
+		SDL_Surface **viewpoints)
 {
 	SDL_Surface *image_source;
 	SDL_Rect viewpoint_size;
@@ -74,40 +77,41 @@ int build_viewpoints(const char *source, const unsigned int positions, const uns
 
 /*************************************************************************************************/
 
-int build_mapview(SDL_Surface **mapview, const SDL_Rect& size, const string& source)
+int build_layer(SDL_Surface **layer,
+		const SDL_Rect layer_bounds,
+		const unsigned int *tile_list,
+		const string& source)
 {
 	SDL_Surface *source_tileset = NULL;
-	SDL_Surface *map_temp = NULL;
-	SDL_Rect tile_size;
-	SDL_Rect draw_offset;
+	SDL_Surface *layer_temp = NULL;
+	SDL_Rect tile_data = {0, 0, TILE_SIZE, TILE_SIZE};
+	SDL_Rect draw_offset = {0, 0, 0, 0};
+	const unsigned int tile_list_size = layer_bounds.x * layer_bounds.y;
 
-	tile_size.x = 32;
-	tile_size.y = 32;
-	tile_size.w = 32;
-	tile_size.h = 32;
-	draw_offset.x = 0;
-	draw_offset.y = 0;
-
-	/* Load map tileset. */
-	cout << "will loadBMP" << endl;
+	/* Load map tile set. */
 	CHK_NULL((source_tileset = SDL_LoadBMP(source.c_str())));
-	if (mapview == NULL) {
-		cout << "erro!!!" << endl;
-	}
 
-	/* Create map surface.*/
-	CHK_NULL((map_temp = SDL_CreateRGBSurface(SDL_SWSURFACE, size.w, size.h,
+	/* Create layer surface.*/
+	CHK_NULL((layer_temp = SDL_CreateRGBSurface(SDL_SWSURFACE,
+			layer_bounds.x*TILE_SIZE, layer_bounds.y*TILE_SIZE,
 			BPP, rmask, gmask, bmask, amask)));
 
-	for (unsigned int i = 0; i < (size.w/32); ++i) {
-		draw_offset.x = 32*i;
-		for (unsigned int j = 0; j < (size.h/32); ++j) {
-			draw_offset.y = 32*j;
-			CHK(SDL_BlitSurface(source_tileset, &tile_size, map_temp, &draw_offset), -1);
-		}
+	for (unsigned int i = 0; i < tile_list_size; ++i) {
+		unsigned int x;
+		unsigned int y;
+
+		x = find_x(i, layer_bounds.x);
+		y = find_y(i, layer_bounds.x, x);
+		draw_offset.x = (x * TILE_SIZE);
+		draw_offset.y = (y * TILE_SIZE);
+
+		tile_data.x = TILE_SIZE * tile_list[i];
+		tile_data.y = TILE_SIZE * tile_list[i];
+
+		CHK(SDL_BlitSurface(source_tileset, &tile_data, layer_temp, &draw_offset), -1);
 	}
-			cout << "Lol" << endl;
-	CHK_NULL((*mapview = SDL_DisplayFormat(map_temp)));
-	cout << "Lol" << endl;
+
+	CHK_NULL((*layer = SDL_DisplayFormat(layer_temp)));
+
 	return 0;
 }
