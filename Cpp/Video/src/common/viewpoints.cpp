@@ -78,7 +78,7 @@ int build_viewpoints(const char *source,
 /*************************************************************************************************/
 
 int build_layer(SDL_Surface **layer,
-		const SDL_Rect layer_bounds,
+		const st_element_pos layer_bounds,
 		const unsigned int *tile_list,
 		const string& source)
 {
@@ -105,8 +105,8 @@ int build_layer(SDL_Surface **layer,
 		draw_offset.x = (x * TILE_SIZE);
 		draw_offset.y = (y * TILE_SIZE);
 
-		tile_data.x = TILE_SIZE * tile_list[i];
-		tile_data.y = TILE_SIZE * tile_list[i];
+		tile_data.x = TILE_SIZE * find_x(tile_list[i], 4);
+		tile_data.y = TILE_SIZE * find_y(tile_list[i], 4, (tile_data.x/TILE_SIZE));
 
 		CHK(SDL_BlitSurface(source_tileset, &tile_data, layer_temp, &draw_offset), -1);
 	}

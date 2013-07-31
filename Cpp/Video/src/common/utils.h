@@ -38,6 +38,12 @@
 /**************************************************************************************************
  * Math utilities.
  */
+
+/**
+ * \brief Determine the number of members inside an local array.
+ */
+#define array_length(_ar) (sizeof(_ar)/sizeof(_ar[0]))
+
 /**
  * \brief Find x from a matrix with the array index.
  * \param index The position of the element in array representation.

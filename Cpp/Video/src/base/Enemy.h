@@ -10,6 +10,7 @@
 #include "SDL/SDL.h"
 
 #include "VisualElement.h"
+#include "CollisionElement.h"
 #include "viewpoints.h"
 
 using namespace std;
@@ -22,7 +23,7 @@ using namespace std;
 #define DEFAULT_IMAGE_VIEWS 3
 
 
-class Enemy: public VisualElement {
+class Enemy: public VisualElement, public CollisionElement {
 private:
 	SDL_Thread *m_Enemy_tid;
 	unsigned int m_Speed_ms;

@@ -8,31 +8,13 @@
 #ifndef VIEWPOINTS_H_
 #define VIEWPOINTS_H_
 
-#include "SDL/SDL.h"
+#include "viewpoints_defines.h"
+
 #include <string>
 
+#include "SDL/SDL.h"
+
 using namespace std;
-
-typedef enum {
-	IMAGE_DOWN_STAND = 0,
-	IMAGE_DOWN_RIGHT,
-	IMAGE_DOWN_LEFT,
-	IMAGE_RIGHT_STAND,
-	IMAGE_RIGHT_RIGHT,
-	IMAGE_RIGHT_LEFT,
-	IMAGE_LEFT_STAND,
-	IMAGE_LEFT_RIGHT,
-	IMAGE_LEFT_LEFT,
-	IMAGE_UP_STAND,
-	IMAGE_UP_RIGHT,
-	IMAGE_UP_LEFT
-} en_image_viewpoints;
-
-//!< Default tile set data source.
-#define TILESET_SOURCE "image/basic_tileset_128x128.bmp"
-//!< Default tile size.
-#define TILE_SIZE 32
-
 
 /**
  * \brief Build a viewpoint array from the raw image.
@@ -56,7 +38,7 @@ int build_viewpoints(const char *source,
  * \return 0 for success; -1 for error.
  */
 int build_layer(SDL_Surface **layer,
-		const SDL_Rect layer_bounds,
+		const st_element_pos layer_bounds,
 		const unsigned int *tile_list,
 		const string& source=TILESET_SOURCE);
 
