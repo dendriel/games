@@ -8,8 +8,19 @@
 #ifndef COLLISIONELEMENT_H_
 #define COLLISIONELEMENT_H_
 
-class CollisionElement {
 
+typedef enum {
+	INANIMATED = 0,
+	ANIMATED
+} en_collElement_type;
+
+class CollisionElement {
+private:
+	const en_collElement_type m_Type;
+
+public:
+	CollisionElement(const en_collElement_type type = INANIMATED);
+	inline en_collElement_type type(void);
 };
 
 

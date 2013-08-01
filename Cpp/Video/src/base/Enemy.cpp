@@ -14,15 +14,16 @@
 
 /*************************************************************************************************/
 	Enemy::Enemy(const int x, const int y,
-			char *img_source, const unsigned int positions, const unsigned int views):
+			string img_source, const unsigned int positions, const unsigned int views):
 	VisualElement(x, y),
+	CollisionElement(ANIMATED),
 	m_Speed_ms(DEFAULT_SPEED_MS),
 	m_StandPosition(IMAGE_DOWN_STAND),
 	m_ImageSourcerPath(img_source),
 	m_ImagePositions(positions),
 	m_ImageViews(views)
 	{
-		if (build_viewpoints(m_ImageSourcerPath, m_ImagePositions, m_ImageViews, &m_Viewpoints[0]) < 0) {
+		if (build_viewpoints(m_ImageSourcerPath.c_str(), m_ImagePositions, m_ImageViews, &m_Viewpoints[0]) < 0) {
 			cout << "Failed to build Enemy viewpoints." << endl;
 			/* Free any allocated position and Build here with default parameters. */
 		}

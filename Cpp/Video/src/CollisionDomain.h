@@ -20,15 +20,21 @@ private:
 	vector <CollisionArea> *m_collAreas;
 
 public:
-
+	CollisionDomain(void);
 	~CollisionDomain(void);
 
 	/**
 	 * \brief Fill up the collision areas.
-	 * \param area_size The collision area size.
-	 * \retun 0 for successful operation; -1 if something went wrong.
+	 * \parameter area_size The collision area size.
+	 * \return 0 for successful operation; -1 if something went wrong.
 	 */
 	void build_collAreas(const st_element_pos& area_size);
+
+	/**
+	 * \brief Register the elements in the corresponding collision areas.
+	 * \parameter element The element to be added.
+	 */
+	void add_collisionElement(CollisionElement *element);
 
 };
 

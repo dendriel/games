@@ -13,12 +13,9 @@
 
 using namespace std;
 
-#define IMAGE_VIEWPOINTS_SOURCE_PATH (char *)"image/aranha_288x320.bmp"
-#define IMAGE_POSITIONS 4		//!< How much positions are in the image.
-#define IMAGE_VIEWS 3			//!< How much views are in the image.
-
-
-
+#define GS_IMAGE_VIEWPOINTS_SOURCE_PATH "image/aranha_288x320.bmp"
+#define GS_IMAGE_POSITIONS 4		//!< How much positions are in the image.
+#define GS_IMAGE_VIEWS 3			//!< How much views are in the image.
 
 class GiantSpider: public Enemy {
 private:

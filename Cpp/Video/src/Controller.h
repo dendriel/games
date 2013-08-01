@@ -40,7 +40,7 @@ public:
 	/*
 	 * \brief Free controller resources.
 	 */
-	~Controller(void) {cout << "Controller destroyed." << endl;}
+	~Controller(void);
 
 	/*
 	 * \brief Get key down.

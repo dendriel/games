@@ -6,14 +6,16 @@
  */
 
 #include "Scenery.h"
-#include "viewpoints.h"
 
+#include <unistd.h>
+
+#include "enemies.h"
+#include "viewpoints.h"
 
 /* Testing purpose only! */
 #include "utils.h"
 #include <time.h>
 #include "scen0.h"
-
 
 
 /*************************************************************************************************/
@@ -51,4 +53,64 @@ m_Video(video)
 Scenery::~Scenery(void)
 {
 	cout << "Scenery destroyed." << endl;
+}
+
+/*************************************************************************************************/
+
+void Scenery::add_element(void *element)
+{
+	m_Video.add_visualElement((VisualElement *)element);
+	m_CollDomain.add_collisionElement((CollisionElement *)element);
+	cout << "Element added to scenery." << endl;
+}
+
+/*************************************************************************************************/
+
+void Scenery::play(void)
+{
+	Character player;
+	this->add_element(&player);
+
+	GiantSpider crit(200, 200);
+	this->add_element(&crit);
+
+	m_Video.start();
+
+	en_ctrl_actions action;
+
+	while((action = m_Control.get_action()) != CTRL_EXIT) {
+		switch (action) {
+					// UP;
+					case CTRL_MOVE_UP:
+						player.move_up();
+						break;
+					// RIGHT
+					case CTRL_MOVE_RIGHT:
+						player.move_right();
+						break;
+					// DOWN:
+					case CTRL_MOVE_DOWN:
+						player.move_down();
+						break;
+					// LEFT
+					case CTRL_MOVE_LEFT:
+						player.move_left();
+						break;
+					case CTRL_NONE:
+						player.stand();
+						break;
+					// STAND
+					case CTRL_SUMMON:
+						m_Video.add_visualElement(new GiantSpider(200, 200));
+						break;
+					default:
+						cout << "invalid action: " << action << endl;
+						break;
+					}
+		usleep(player.m_Speed_ms*MILI);
+	}
+
+	m_Control.get_keyDown();
+	m_Video.freeze();
+	m_Control.get_keyDown();
 }

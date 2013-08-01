@@ -13,7 +13,7 @@ unsigned int GiantSpider::s_Amount = 0;
 
 /*************************************************************************************************/
 	GiantSpider::GiantSpider(const int x, const int y):
-	Enemy(x, y, IMAGE_VIEWPOINTS_SOURCE_PATH, IMAGE_POSITIONS, IMAGE_VIEWS)
+	Enemy(x, y, GS_IMAGE_VIEWPOINTS_SOURCE_PATH, GS_IMAGE_POSITIONS, GS_IMAGE_VIEWS)
 	{
 		s_Amount++;
 		cout << "Giant Spider created! Total: " << s_Amount << endl;

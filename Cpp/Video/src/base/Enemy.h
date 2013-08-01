@@ -28,13 +28,13 @@ private:
 	SDL_Thread *m_Enemy_tid;
 	unsigned int m_Speed_ms;
 	en_image_viewpoints m_StandPosition;
-	char *m_ImageSourcerPath;
+	string m_ImageSourcerPath;
 	unsigned int m_ImagePositions;
 	unsigned int m_ImageViews;
 
 public:
 	Enemy(const int x = 0, const int y = 0,
-			char *img_source = DEFAULT_IMAGE_SOURCE_PATH,
+			string img_source = DEFAULT_IMAGE_SOURCE_PATH,
 			const unsigned int postions = DEFAULT_IMAGE_POSITIONS,
 			const unsigned int views = DEFAULT_IMAGE_VIEWS);
 
