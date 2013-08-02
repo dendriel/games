@@ -22,7 +22,8 @@ using namespace std;
 class Scenery {
 private:
 	Controller m_Control;
-	CollisionDomain m_CollDomain;
+	CollisionDomain m_CollDomain_dynamic;
+	CollisionDomain m_CollDomain_static;
 	Video& m_Video;
 	vector <VisualElement *> m_UnderLayer_list;
 

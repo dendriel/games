@@ -21,6 +21,11 @@
 #define CHAR_DEFAULT_IMAGE_POSITIONS 4
 #define CHAR_DEFAULT_IMAGE_VIEWS 3
 
+const st_collVertex player_coll_vertices[] = {
+		/* Rect   -   Area ID*/
+		{{0,0,0,0}, -1}
+};
+
 class Character: public VisualElement, public CollisionElement {
 private:
 	en_image_viewpoints m_StandPosition;

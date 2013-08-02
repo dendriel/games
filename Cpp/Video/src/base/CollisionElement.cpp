@@ -14,7 +14,7 @@ m_Type(type) {}
 
 /*************************************************************************************************/
 
-inline en_collElement_type CollisionElement::type(void)
+void CollisionElement::add_vertex(const st_collVertex& vertex)
 {
-	return m_Type;
+	m_Vertices.push_back(vertex);
 }

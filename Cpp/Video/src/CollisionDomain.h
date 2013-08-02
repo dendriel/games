@@ -36,6 +36,13 @@ public:
 	 */
 	void add_collisionElement(CollisionElement *element);
 
+private:
+	/**
+	 * \brief Find where collision area the vertex are in.
+	 * \parameter vertex The vertex to be verified.
+	 * \return The collision area that should own the vertex.
+	 */
+	double find_vertex_area_position(st_collVertex& vertex);
 };
 
 

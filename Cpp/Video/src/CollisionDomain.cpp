@@ -13,7 +13,8 @@
 
 /*************************************************************************************************/
 
-CollisionDomain::CollisionDomain(void)
+CollisionDomain::CollisionDomain(void):
+m_collAreas(NULL)
 {
 	cout << "CollisionDomain created." << endl;
 }
@@ -40,6 +41,14 @@ void CollisionDomain::build_collAreas(const st_element_pos& bounds)
 
 void CollisionDomain::add_collisionElement(CollisionElement *element)
 {
+	cout << "entrou!! collision add element" << endl;
+	/* Do for all vertices. */
+	/*for (vector<st_collVertex>::iterator iter = element->m_Vertices.begin();
+			iter != element->m_Vertices.end(); ++iter) {
+
+		//double area_id = find_vertex_area_position(*iter);
+		//cout << area_id << endl;
+	}*/
 	/* retrieve the element bounds x,w; y,w; x,h; y,h
 	 * Find the area and insert the element into it for each point
 	 * Add a reference inside the collision element informing what area
@@ -49,3 +58,9 @@ void CollisionDomain::add_collisionElement(CollisionElement *element)
 }
 
 /*************************************************************************************************/
+/* Private Functions																			 */
+/*************************************************************************************************/
+double CollisionDomain::find_vertex_area_position(st_collVertex& vertex)
+{
+	return 0;
+}

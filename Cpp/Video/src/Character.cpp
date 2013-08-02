@@ -6,6 +6,7 @@
  */
 
 #include "Character.h"
+#include "utils.h"
 
 /*************************************************************************************************/
 Character::Character(const int x, const int y,
@@ -22,6 +23,11 @@ Character::Character(const int x, const int y,
 		cout << "Failed to build Character viewpoints." << endl;
 		/* Free any allocated position and Build here with default parameters. */
 	}
+
+	for (unsigned int i = 0; i < array_length(player_coll_vertices); ++i) {
+		add_vertex(player_coll_vertices[i]);
+	}
+
 	cout << "Character object created!" << endl;
 }
 

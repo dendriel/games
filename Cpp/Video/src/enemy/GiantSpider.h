@@ -17,6 +17,11 @@ using namespace std;
 #define GS_IMAGE_POSITIONS 4		//!< How much positions are in the image.
 #define GS_IMAGE_VIEWS 3			//!< How much views are in the image.
 
+const st_collVertex gs_coll_vertices[] = {
+		/* Rect   -   Area ID*/
+		{{0,0,0,0}, -1}
+};
+
 class GiantSpider: public Enemy {
 private:
 	static unsigned int s_Amount;
