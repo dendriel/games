@@ -14,6 +14,8 @@
 #include "Video.h"
 #include "Controller.h"
 #include "Character.h"
+#include "Object.h"
+#include "Enemy.h"
 #include "CollisionDomain.h"
 #include "VisualElement.h"
 
@@ -36,7 +38,9 @@ public:
 	 * CollisionDomain objects.
 	 * \parameter element An object that inherits the SceneryElement base-class.
 	 */
-	void add_element(void *element);
+	void add_element(Character *element);
+	void add_element(Object *element);
+	void add_element(Enemy *element);
 
 	/**
 	 * \brief Run the scenery main line.

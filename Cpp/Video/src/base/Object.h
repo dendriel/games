@@ -34,6 +34,8 @@ public:
 			const unsigned int positions = OBJECT_DEFAULT_IMAGE_POSITIONS,
 			const unsigned int views = OBJECT_DEFAULT_IMAGE_VIEWS,
 			const en_collElement_type type = INANIMATED);
+	
+	
 };
 
 #endif /* OBJECT_H_ */

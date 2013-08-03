@@ -34,7 +34,7 @@ public:
 	 * \brief Register the elements in the corresponding collision areas.
 	 * \parameter element The element to be added.
 	 */
-	void add_collisionElement(CollisionElement *element);
+	void add_collisionElement(CollisionElement &element);
 
 private:
 	/**

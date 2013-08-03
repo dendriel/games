@@ -4,6 +4,9 @@
  *  Created on: 23/07/2013
  *      Author: vitor
  */
+#ifndef ENEMY_H_
+#define ENEMY_H_
+
 #include <iostream>
 #include <assert.h>
 
@@ -53,3 +56,5 @@ public:
 private:
 	int ai_thread(void);
 };
+
+#endif /* ENEMY_H_ */

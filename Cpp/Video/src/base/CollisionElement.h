@@ -8,6 +8,7 @@
 #ifndef COLLISIONELEMENT_H_
 #define COLLISIONELEMENT_H_
 
+#include <iostream>
 #include <vector>
 #include "SDL/SDL.h"
 
@@ -31,10 +32,7 @@ private:
 public:
 	CollisionElement(const en_collElement_type type = INANIMATED);
 
-	inline en_collElement_type type(void)
-	{
-		return m_Type;
-	}
+	en_collElement_type type(void);
 
 	/**
 	 * \brief Add a vertex into the list.
