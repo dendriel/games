@@ -63,18 +63,14 @@ void Scenery::add_element(Character *element)
 {
 	m_Video.add_visualElement(element);
 
-	/*if (collElement->type() == INANIMATED) {
-		m_CollDomain_static.add_collisionElement(*collElement);
+	if (element->type() == INANIMATED) {
+		m_CollDomain_static.add_collisionElement(*element);
 	}
 	else {
-		m_CollDomain_dynamic.add_collisionElement(*collElement);
-	}*/
-	
-	//const unsigned int ar_size = collElement->m_Vertices.size();
-	cout << "Type: " << element->type() << endl;
-	//for (unsigned int i = 0; i < ar_size; ++i);
+		m_CollDomain_dynamic.add_collisionElement(*element);
+	}
 
-	cout << "Element added to scenery." << endl;
+	cout << "Character added to scenery." << endl;
 }
 
 /*************************************************************************************************/
@@ -83,18 +79,14 @@ void Scenery::add_element(Object *element)
 {
 	m_Video.add_visualElement(element);
 
-	/*if (collElement->type() == INANIMATED) {
-		m_CollDomain_static.add_collisionElement(*collElement);
+	if (element->type() == INANIMATED) {
+		m_CollDomain_static.add_collisionElement(*element);
 	}
 	else {
-		m_CollDomain_dynamic.add_collisionElement(*collElement);
-	}*/
-	
-	//const unsigned int ar_size = collElement->m_Vertices.size();
-	cout << "Type: " << element->type() << endl;
-	//for (unsigned int i = 0; i < ar_size; ++i);
+		m_CollDomain_dynamic.add_collisionElement(*element);
+	}
 
-	cout << "Element added to scenery." << endl;
+	cout << "Object added to scenery." << endl;
 }
 /*************************************************************************************************/
 
@@ -102,18 +94,14 @@ void Scenery::add_element(Enemy *element)
 {
 	m_Video.add_visualElement(element);
 
-	/*if (collElement->type() == INANIMATED) {
-		m_CollDomain_static.add_collisionElement(*collElement);
+	if (element->type() == INANIMATED) {
+		m_CollDomain_static.add_collisionElement(*element);
 	}
 	else {
-		m_CollDomain_dynamic.add_collisionElement(*collElement);
-	}*/
-	
-	//const unsigned int ar_size = collElement->m_Vertices.size();
-	cout << "Type: " << element->type() << endl;
-	//for (unsigned int i = 0; i < ar_size; ++i);
+		m_CollDomain_dynamic.add_collisionElement(*element);
+	}
 
-	cout << "Element added to scenery." << endl;
+	cout << "Enemy added to scenery." << endl;
 }
 
 
@@ -130,8 +118,6 @@ void Scenery::play(void)
 
 	Rock1 rock(120, 120);
 	this->add_element(&rock);
-	
-	//this->add_element(new Rock1(160, 160));
 
 	m_Video.start();
 

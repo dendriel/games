@@ -18,7 +18,7 @@
 
 const st_collVertex rock1_coll_vertices[] = {
 		/* Rect   -   Area ID*/
-		{{0,0,39,31}, -1}
+		{{0,0,39,31}, {-1,-1,-1,-1}}
 };
 
 

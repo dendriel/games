@@ -59,7 +59,7 @@ int build_viewpoints(const char *source,
 
 			SDL_SetColorKey(viewpoint , SDL_SRCCOLORKEY, SDL_MapRGB(viewpoint->format, RED, GREEN, BLUE));
 
-			position = ((((p_index*views)-views) + v_index) -1); // (((p*vmax)-vmax)+v)-1
+			position = find_index(p_index, v_index, views);
 			viewpoint_size.x = viewpoint_size.w*(v_index-1);
 			viewpoint_size.y = viewpoint_size.h*(p_index-1);;
 

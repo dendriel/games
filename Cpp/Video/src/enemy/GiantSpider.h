@@ -19,7 +19,7 @@ using namespace std;
 
 const st_collVertex gs_coll_vertices[] = {
 		/* Rect   -   Area ID*/
-		{{0,0,0,0}, -1}
+		{{0,0,0,0}, {-1,-1,-1,-1}}
 };
 
 class GiantSpider: public Enemy {

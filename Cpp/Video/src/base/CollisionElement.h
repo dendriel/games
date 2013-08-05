@@ -19,9 +19,17 @@ typedef enum {
 	ANIMATED
 } en_collElement_type;
 
+typedef enum {
+	VERTEX_POINT_UPLEFT = 0,
+	VERTEX_POINT_UPRIGHT = 1,
+	VERTEX_POINT_DOWNLEFT = 2,
+	VERTEX_POINT_DOWNRIGHT = 3,
+
+} en_vertex_points;
+
 typedef struct {
 	SDL_Rect point;
-	double area_id;
+	double area_id[4];	//!< One area ID for each vertex point.
 	// callback
 } st_collVertex;
 

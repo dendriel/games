@@ -23,7 +23,7 @@
 
 const st_collVertex player_coll_vertices[] = {
 		/* Rect   -   Area ID*/
-		{{0,0,0,0}, -1}
+		{{0,0,0,0}, {-1,-1,-1,-1}}
 };
 
 class Character: public VisualElement, public CollisionElement {

@@ -46,8 +46,8 @@
 
 /**
  * \brief Find x from a matrix with the array index.
- * \param index The position of the element in array representation.
- * \param x_max The width of the matrix.
+ * \parameter index The position of the element in array representation.
+ * \parameter x_max The width of the matrix.
  * \return The x coordinate in matrix representation.
  */
 inline unsigned int find_x(const unsigned int index, const unsigned int x_max)
@@ -56,14 +56,25 @@ inline unsigned int find_x(const unsigned int index, const unsigned int x_max)
 }
 /**
  * \brief Find y from a matrix with the array index.
- * \param index The position of the element in array representation.
- * \param x_max The width of the matrix.
- * \param x The x coordinate that must be previous calculated.
+ * \parameter index The position of the element in array representation.
+ * \parameter x_max The width of the matrix.
+ * \parameter x The x coordinate that must be previous calculated.
  * \return The y coordinate in matrix representation.
  */
 inline unsigned int find_y(const unsigned int index, const unsigned int x_max, const unsigned int x)
 {
 	return (((index - x)/x_max) );
+}
+
+/**
+ * \brief Find the array position from matrix coordinates.
+ * \parameter p The position (row) index.
+ * \parameter v The view (column) index.
+ * \return The array position.
+ */
+inline unsigned int find_index(const unsigned int p, const unsigned int v, const unsigned int vmax)
+{
+	return ((( (p * vmax) - vmax ) + v ) - 1);
 }
 
 /**

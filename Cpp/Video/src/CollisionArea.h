@@ -23,7 +23,7 @@ public:
 	/**
 	 * \brief Add an element into the collision area stack.
 	 */
-	void add_element(CollisionElement& element);
+	void add_element(CollisionElement *element);
 };
 
 

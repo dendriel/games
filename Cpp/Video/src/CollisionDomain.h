@@ -18,6 +18,7 @@ using namespace std;
 class CollisionDomain {
 private:
 	vector <CollisionArea> *m_collAreas;
+	st_element_pos m_collAreas_bounds;
 
 public:
 	CollisionDomain(void);
@@ -42,7 +43,7 @@ private:
 	 * \parameter vertex The vertex to be verified.
 	 * \return The collision area that should own the vertex.
 	 */
-	double find_vertex_area_position(st_collVertex& vertex);
+	void find_vertex_area_position(st_collVertex& vertex, CollisionElement *element);
 };
 
 
