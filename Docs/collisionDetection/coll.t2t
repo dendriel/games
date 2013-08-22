@@ -1,0 +1,252 @@
+Collision Detection System
+
+
+= Idealization =
+
+== Types ==
+There are three objects that compound the collision detection system, a ``domain``, an ``area`` and
+the ``element``, being an element can be in one o more areas, and a domain is composed by a fixed
+number of areas. The following sections describes in detail these interactions, the objects
+attributes and how is the collision detection processing.
+
+=== Collision Element ===
+
+Collision Element is the base data type that an object must have to be in the collision detection
+process. Is the type that the processing will work it and have the following attributes:
+
+- Vertices list - To be more accurate, this attribute is a list vertices that compound a
+rectangle, so, the type of variable that is inside of the list are rectangle coordinates;
+
+- Offset - This is a reference of the element in the map. It will be used to find the real position
+of the element when calculating the Collision Areas that he is into;
+
+- Collision Area list - This is a list of the collision areas that the object is in. This
+information will be used to erase the collision element references when the object cease to exist;
+
+- Type - Informs if the element is static and will not move around by his own will, or if it is
+dynamic, that will be changing his position in short intervals of time.
+
+- Collision Domain - A reference to the Collision Domain that the element is into. Will be used when
+the element needs to know if he can make move to a given direction*****;
+
+
+[*****] Doing this creeps me out. Maintaing a reference for the entity that holds your reference.
+But looks like necessary. The element needs a way to know where are the other elements. This could
+be done adding the Collision Domain by the higher type (the element that inherance the base-classe).
+But i think that would be better if the "system" avoid this overhead to the user and can do by
+itself).
+
+Then, what to do with this? With rectangles we can define the collision surface of an element. With
+one rectangle we can define a collision surface with 2 different sizes, width and height; with more
+rectangles we can give the element a more complex collision surface*****.
+
+The following figure try to describe the application of vertices from rectangles:
+
+// image here //
+**TODO:** Adicionar imagem com 1, 2 e 3 retangulos
+
+And with the type we can define what type of treatment the element will receive to detect if it is
+colliding with something.
+
+[*****] I believe that is perfectly possible to define another geometric forms, and add the logic to
+detect collision between them, but for simplicity sake and for not needing something like that
+(so far), this idealization will work only with rectangles forms.
+
+
+==== Element Type ====
+
+Dynamic; Static; Static that allows collision (a cactus, for example, that will harm anyone that
+collide with it).
+
+
+==== Rectangle Type ====
+
+This type is merely a structure that holds a matrix positioning and the size of the rectangle. These
+attributes are listed bellow:
+
+- X - Horizontal position of the rectangle in the map;
+- Y - Vertical position of the rectangle in the map;
+- Height - The height of the rectangle;
+- Width -  The width of the rectangle.
+- Collision Callback - This is the function that defines what happens when the elements collide wich
+each other. Could be defined also by vertice, edge or a composition of these and variants;
+- Collision Type - The kind of collision that another element will suffer if collide with this
+element's rectangle.
+
+
+With the rectangle attributes and the element Offset, we can define 4 vertices that will be used to
+find the collision area that the element is in. Here is how we can find the vertices of a rectangle:
+
+: #1 - (X + Offset), (Y + Offset);
+: #2 - (X + Offset + Width), (Y + Offset);
+: #3 - (X + Offset), (Y + Offset + Height);
+: #4 - (X + Offset + Width), (Y + Offset + Height).
+
+Illustration:
+
+[Imagem de um retangulo e seus vertices marcados];
+
+
+==== Collision Type ====
+
+
+=== Collision Area ===
+
+The Collision Area is the smallest surface of a map that collision elements can be and can collide
+with each other. This type have the following attributes:
+
+- Rectangle Type - That defines the area surface size;
+- Collision Elements List - A list of references with Collision Elements that has an edge/vertice
+inside the rectangle of a Collision Area. This information will be used to build up a list of what
+elements need to be checked for collision (in the detection for dynamic types, only);
+- Unique ID - That identifies the specific area within a list.
+
+
+As written in the reference paper (**TODO:** append the paper), this type of element would be
+sizeable according with the elements size that will be present in the game. In this way, there are
+many ways to define the size rectangle attributes for this type, but, again, for simplicity sake we
+will define  every Collision Area having the size of 100px by 100px (height and width).
+
+
+==== Collision Area Functions ====
+
+For this type is defined some functions to interact with his Collision Elements List. Just to give
+an idea, they are listed and summarized bellow:
+
+- Insert Element - Allows to insert a Collision Element reference into the list. Will be explained
+in the next sections how this data is used;
+- Delete Element- Delete a Collision Element from the list;
+- Dump Elements - Clean the list of all referecens (can't think now where this can be used, but
+"feel" that will be useful, hehe **TODO:** remove if no use situation is found);
+- Check Collision - Something related to check if there is more than one element in the area,
+meaning that they could had collided and need to be verified; (**TODO:** this really must be here?)
+- Apply Collision - (or a better name) Verify if two elements really had collided and take the
+necessary actions (call the callback and stuff); (**TODO:** this really must be here?).
+
+
+=== Collision Domain ===
+
+This is the big guy and the type that the user will interact with. A Collision Domain can be seen as
+a grid of Collision Areas that overlap the game map. To be really accurate, a Collision Domain build
+and maintain a list with Collision Areas enough to fill all the map size. The attributes of this
+type are listed bellow:
+
+- Collision Area List - A list of Collision Areas with N members defined from the map width and
+weight. The user can see as a grid, but internally there is no need to maintain the collision areas
+like that. Therefore, there is nothing special with it and the list members are indexed linearly
+(**TODO:** this description make sense?);
+
+
+==== Collision Domain Functions ====
+
+The basic functions for a Collision Domain type is:
+
+- Build Collision Area List - This must function must be called once at the creation of the
+Collision Domain. It will receive the map size and create the Collision Area List;
+- Add Collision Element - This function will find out what areas the element is contained and update
+them with the element reference (through the Insert Element function from Collision Area type);
+- Remove Collision Element - The inverse of the past function. But, it will consult the element to
+find out what Collision Areas need to be cleaned from his reference (maybe this is just a
+performance issue, multual references; every time we want to know we could verify what is the area
+the element is);
+
+== Collision Detection Scheme ==
+
+After the Collision types presentation we can have a big picture of their interaction:
+
+[**TODO:** Grid of a collision domain containing collision areas and collision elements]
+
+So, where to start? For introduction, we can think about...
+
+- Creating a Collision Domain and initialize it with the map size. Let's take as example a map of
+500x500 pixels;
+- Calling the function "Build Collision Area List" will create 25 Collision Areas numbered from 0 to
+24. So far, the Collision Domain is ready to go;
+- Then, we create two game elements that extends the base class "Collision Element". Right after, we
+call the Collision Domain function to add these elements inside the Collision Areas. This is made by
+iterating over the element rectangles and calculating the position of each vertice of each
+rectangle, and then, inserting the element reference in his related Collision Areas (and giving the
+reference of each area to the Collision Element);
+- We can't forget that these elements have an Offset that is always used within the calcultations.
+Let's assume that both elements have only one rectangle with the same size, but different offsets.
+
+
+To keep going and start to talk about processing, we now will enter in more specific sections.
+
+=== What Defines a Collision? ===
+**TODO**
+
+
+=== Collision Between MovingxStanding elements ===
+
+If we had two standing elements, there would be no need for collision detection, then, for the
+following explanation, we can give for one of the past created game elements the dynamic type, and
+for the another, the static type.
+
+Static type mean that the element, mostly, will not move, nevertheless it can do it*****. However,
+would be inefficient if we keep checking collision between elements that can't move and almost
+certainly will not move by another means. For this reason, we can keep the static type in a
+different Collision Domain, that we will call "Static Collision Domain". Since we named a Collision
+Domain for that specific type, we can define a domain for the other type "Dynamic Collision Domain"
+(i'm full of obvious names =D), and dynamic types will go in there.
+
+Ok, and again, there is no real need to keep checking collision between static elements, but the
+need exist for dynamic against static types. And here is how it can be done:
+
+- If a dynamic element wants to move anywere, it needs to find out if the path is blocked or
+free to go. This verification must be done first for the static elements, and then for the dynamic
+elements. For checking against static elements, the element will "ask" for the static domain if the
+next step he want to make, for the given direction, is possible. Getting a positive answer, the
+element can change his offset (that also, needless to say, will impact in the collision domain).
+
+
+[*****] For almost all cases, if the element don't move, or can't move, it is an unanimated element,
+and could be moved by another dynamic element. **TODO:** why this is important? because of the
+different collision domains that will be made up.
+
+
+=== Collision Between Moving elements ===
+
+The collision detection between dynamic elements is a bit more complicated than collision detection
+for static elements. In this new case, we wait for the elements to collide, so we can take the
+corresponding action (tell the elements by callback). The bigger problem is that we need to know
+that the element has collided right after it happened. Or else, the element can go away and nothing
+was made. For example, if the main character of a game touch a pool of lava. If the collision
+detection frequency is to low, the player can go through the lava, get off and the game system was
+not fast enough to process this (the player escape unharmed). **TODO: keep that??**Another example
+is if two elements starts to cross each other.
+
+==== Collision Detection ====
+
+So, we started to talk about frequency of collision detection without introduce the detection
+mechanism. When was told about waiting for two elements to collide, it was the start of the idea.
+The flow of a dynamic element movement would be:
+
+- Verify for static collision;
+- If the way is free to go, move to the desired direction.
+
+Suppose that there is another dynamic element in the direction that the first was moved. We will
+have a collision. What happens next? At this point, we need to have a entity responsible to find out
+that these elements had collided and call the corresponding elements callbacks.
+
+==== Collision Detection Frequency ====
+
+As you can imagine, the collision detection frequency is the interval time between the collision
+detection will act. If the interval is too long (a short frequency), the collision detection will be
+inefficient (as seen later). If the collision detection run every moment, the overhead would be
+unacceptable. So what? I believe (yeah, guessing) that the collision frequency should be related to
+the screen updating frequency, that is related to the game elements movement frequency (or velocity
+of thinking and acting).
+
+
+==== Element Type ====
+
+Dynamic; Static; Static that allows collision (a cactus, for example, that will harm anyone that
+collide with it).
+
+= Implementation =
+
+Any Collision Element has to be inside a Collision Area, that by his own is contained in a Collision
+Domain.
+
+
