@@ -8,7 +8,7 @@ Install the following to get the game working:
 TODO list:	Add the documentation;
 			Fix[Upgrade] the game "add element" in screen  action confirmation (doing 04/jun/2013);
 			Upgrade the project makefiles;
-			Plan the scenerey data storage;
+			Plan the scenery data storage;
 			Create a "load scenery" function;
 			Create the "controller" module;
 			Create a game map editor, maybe based on the previous created map editor (not commited).
