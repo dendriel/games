@@ -4,6 +4,7 @@ Collision Detection System
 = Idealization =
 
 == Types ==
+
 There are three objects that compound the collision detection system, a ``domain``, an ``area`` and
 the ``element``, being an element can be in one o more areas, and a domain is composed by a fixed
 number of areas. The following sections describes in detail these interactions, the objects
@@ -102,10 +103,10 @@ elements need to be checked for collision (in the detection for dynamic types, o
 - Unique ID - That identifies the specific area within a list.
 
 
-As written in the reference paper (**TODO:** append the paper), this type of element would be
-sizeable according with the elements size that will be present in the game. In this way, there are
-many ways to define the size rectangle attributes for this type, but, again, for simplicity sake we
-will define  every Collision Area having the size of 100px by 100px (height and width).
+As written in the reference paper [2], this type of element would be sizeable according with the
+elements size that will be present in the game. In this way, there are many ways to define the size
+rectangle attributes for this type, but, again, for simplicity sake we will define  every Collision
+Area having the size of 100px by 100px (height and width).
 
 
 ==== Collision Area Functions ====
@@ -150,7 +151,7 @@ find out what Collision Areas need to be cleaned from his reference (maybe this 
 performance issue, multual references; every time we want to know we could verify what is the area
 the element is);
 
-== Collision Detection Scheme ==
+== Global Collision Detection Scheme ==
 
 After the Collision types presentation we can have a big picture of their interaction:
 
@@ -226,8 +227,9 @@ The flow of a dynamic element movement would be:
 - If the way is free to go, move to the desired direction.
 
 Suppose that there is another dynamic element in the direction that the first was moved. We will
-have a collision. What happens next? At this point, we need to have a entity responsible to find out
-that these elements had collided and call the corresponding elements callbacks.
+have a collision. What happens next? At this point, we need to have an entity (i mean, a thread)
+responsible to find out that these elements had collided and call the corresponding elements
+callbacks.
 
 ==== Collision Detection Frequency ====
 
@@ -240,13 +242,44 @@ of thinking and acting).
 
 
 ==== Element Type ====
-
+**TODO, or toremove**
 Dynamic; Static; Static that allows collision (a cactus, for example, that will harm anyone that
 collide with it).
 
-= Implementation =
 
-Any Collision Element has to be inside a Collision Area, that by his own is contained in a Collision
-Domain.
+== Punctual Collision Detection Scheme ==
 
+These days I was wondering about a collision detection per element. I mean, every dynamic element
+while moving will know about what is around itself. It will have a "view field", that will be
+requested and checked before and after moving.
+
+Before moving, the element will check the path for static elements. If the path is free, the element
+can move freely. If in the first checking  (before moving) the path is blocked by a dynamic element,
+the element can make the move, but the second checking (after moving), the element will notice that
+is overlapping another element, then the collision was detected and the proper mechanics can take
+place.
+
+Cases that the collision can happen:
+
+- An dynamic element walk through a standing dynamic element. In this case, only the first will
+detect the collision and trigger the aftereffect;
+
+- Two dynamic elements go through each other. In this case both elements are in conditions to detect
+the collision, but we want that only one can do it. This can be achieved using flags to inform (to
+lock) that the element is already "being collided".
+
+
+==== Collision Aftereffect ====
+
+**TODO:** This section will give an idea on how the collision aftereffect mechanics use the elements
+callbacks to inform about the collision.
+
+
+= Reference =
+
+: [1] __Collision Detection Basics:__
+http://dev-scene.com/NDS/Tutorials_Collision_Detection
+
+: [2] Multithreaded Collision Detection in Java; Mark C. Lewis and Berna L. Massingill
+http://pdf.aminer.org/000/536/161/multithreaded_collision_detection_in_java.pdf
 
