@@ -1,0 +1,14 @@
+ Hello, folks. This is my workspace for Nintendo DS programming. Currently i'm studying how to
+develop NDS games in order to build my first complete game, aMaze'ing Game Wait for it. :)
+
+  So, i'm mainly writing this README to register the tools that i'm using to develop. There is
+ the tools specifications:
+ 
+  - IDE: Eclipse; Version: Kepler Release; Build id: 20130614-0229;
+  - Compiler: devKitArm binaries, building outside of eclipse with "make" and by hand;
+  - S.O. Windows 7 Professional;
+  - libraries: [msys] Version=1.0.17 [devkitARM]; Version=41; [libnds] Version=1.5.7.
+  
+  Finally, i believe that this is one of a few projects for this version of the libdns. All
+  my basis were from older tutorials, and what i could build up was from the own libdns
+  examples (plus the basis =}).

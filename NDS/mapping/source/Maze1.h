@@ -65,6 +65,10 @@ public:
 
 		//!< Background palette length.
 		m_PaletteLen = maze1SharedPalLen;
+
+		//!< Character starting point.
+		m_CharStartPoint.x = 3*GAME_TILE_SIZE;
+		m_CharStartPoint.y = 3*GAME_TILE_SIZE;
 	}
 };
 

@@ -38,6 +38,9 @@
 GameVideo::GameVideo(void):
 m_LoadedMap(0)
 {
+	m_LoadedMap_offset.x = 0;
+	m_LoadedMap_offset.y = 0;
+
 	videoSetMode(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG_0x06000000);
 }
@@ -45,6 +48,13 @@ m_LoadedMap(0)
 /*************************************************************************************************/
 
 void GameVideo::load_Map(GameMap *map)
+{
+	load_Map(map, map->m_CharStartPoint.x, map->m_CharStartPoint.y);
+}
+
+/*************************************************************************************************/
+
+void GameVideo::load_Map(GameMap *map, const int x, const int y)
 {
 	size_t i;
 
@@ -66,7 +76,7 @@ void GameVideo::load_Map(GameMap *map)
 	dmaCopy(map->m_Tiles, bgGetGfxPtr(map->m_Background[0].id), map->m_TilesLen);
 	dmaCopy(map->m_Palette, BG_PALETTE, map->m_PaletteLen);
 
-	/* Draw map. */
+	/* Draw map. TODO: maybe for smaller maps this will try to copy invalid data. */
 	for (i = 0; i < map->m_LayersCount; ++i) {
 
 		u16* background = (u16*)bgGetMapPtr(map->m_Background[i].id);
@@ -82,6 +92,7 @@ void GameVideo::load_Map(GameMap *map)
 	}
 
 	m_LoadedMap = map;
+	scroll_Background(x, y);
 }
 
 /*************************************************************************************************/
@@ -89,8 +100,20 @@ void GameVideo::load_Map(GameMap *map)
 void GameVideo::scroll_Background(const int x, const int y)
 {
 	unsigned int i;
+
+	/* Check bounds. Map will be always start at origin 0,0. */
+	if ( ((m_LoadedMap_offset.x + x) < 0) || ((m_LoadedMap_offset.y + y) < 0) ||
+		 ((m_LoadedMap_offset.x + x) > (int)SCREEN_DRAW_BOUND_X(m_LoadedMap->m_SizePixel.w)) ||
+		 ((m_LoadedMap_offset.y + y) > (int)SCREEN_DRAW_BOUND_Y(m_LoadedMap->m_SizePixel.h)) ) {
+		debug("Invalid bounds; x: %d; y: %d", (m_LoadedMap_offset.x + x), (m_LoadedMap_offset.y + y));
+		return;
+	}
+
+	m_LoadedMap_offset.x += x;
+	m_LoadedMap_offset.y += y;
+
 	for (i = 0; i < m_LoadedMap->m_LayersCount; ++i) {
-		bgSetScroll(m_LoadedMap->m_Background[i].id, x, y);
+		bgSetScroll(m_LoadedMap->m_Background[i].id, m_LoadedMap_offset.x, m_LoadedMap_offset.y);
 	}
 
 	bgUpdate();

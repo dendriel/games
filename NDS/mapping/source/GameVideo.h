@@ -17,6 +17,7 @@
 class GameVideo {
 private:
 	GameMap *m_LoadedMap;
+	st_offset m_LoadedMap_offset;
 
 public:
 
@@ -28,8 +29,12 @@ public:
 	/**
 	* \brief Load the given map into the game.
 	* \parameter map Map to be loaded.
+	* \parameter x Starting horizontal position of the map.
+	* \parameter y Starting vertical position of the map.
+	* \note First form will use the own map specified starting point.
 	*/
 	void load_Map(GameMap *map);
+	void load_Map(GameMap *map, const int x, const int y);
 
 	/**
 	 * \brief Scroll the Layer_index by x,y offset.

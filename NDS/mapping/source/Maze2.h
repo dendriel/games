@@ -18,7 +18,7 @@ public:
 	 */
 	Maze2(void)
 	{
-		const size_t bg_max = 1;
+		const size_t bg_max = 2;
 		const unsigned int tile_base = 1;
 
 		/* Map size in pixels. */
@@ -35,7 +35,7 @@ public:
 		/* Hold backgrounds data. */
 		for (size_t i = 0; i < bg_max; ++i) {
 			m_Background[i].layer = i;
-			m_Background[i].size = BgSize_T_256x256;
+			m_Background[i].size = BgSize_T_512x512;
 			m_Background[i].type = BgType_Text8bpp;
 			m_Background[i].tileBase = tile_base;
 			/* Inverse drawing priority. */

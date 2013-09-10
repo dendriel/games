@@ -25,8 +25,6 @@
 int main(void)
 {
 	GameVideo screen;
-	int x = 0;
-	int y = 0;
 
 	/* Initialize debugging console. */
 	consoleDemoInit();
@@ -43,6 +41,7 @@ int main(void)
 	GameCharacter persona((u8*)manTiles, SCREEN_CENTER_X-16, SCREEN_CENTER_Y-16);
 	dmaCopy(manPal, SPRITE_PALETTE, 512);
 
+	screen.load_Map(myMaze);
 
 	while(1) {
 		scanKeys();
@@ -50,41 +49,38 @@ int main(void)
 
 		if(keys & KEY_UP) {
 			persona.move(W_UP);
-			y--;
+			screen.scroll_Background(0, -1);
 		}
 
 		if(keys & KEY_DOWN) {
 			persona.move(W_DOWN);
-			y++;
+			screen.scroll_Background(0, 1);
 		}
 
 	    if(keys & KEY_LEFT) {
 	    	persona.move(W_LEFT);
-	    	x--;
+			screen.scroll_Background(-1, 0);
 	    }
 
 		if(keys & KEY_RIGHT) {
 			persona.move(W_RIGHT);
-			x++;
+			screen.scroll_Background(1, 0);
 		}
 
 		if(keys & KEY_A) {
 			screen.load_Map(myMaze2);
-			x = y = 0;
 		}
 
 
 		if(keys & KEY_B) {
 			screen.load_Map(myMaze);
-			x = y = 0;
+			//x = y = 0;
 		}
 
 		swiWaitForVBlank();
 		consoleClear();
 
-		screen.scroll_Background(x, y);
 		oamUpdate(&oamMain);
-		debug("x: %d; y: %d", x, y);
 	}
 
 	delete(myMaze);

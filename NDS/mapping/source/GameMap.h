@@ -14,6 +14,7 @@
 
 /* Definitions */
 #define MAX_MAP_BACKGROUNDS 4
+#define GAME_TILE_SIZE 32
 
 class GameMap {
 public:
@@ -40,6 +41,9 @@ public:
 
 	//!< Background palette length.
 	size_t m_PaletteLen;
+
+	//!< Character starting point. TODO: maybe this data will be in a more embracing class.
+	st_offset m_CharStartPoint;
 };
 
 
