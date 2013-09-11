@@ -65,6 +65,12 @@ private:
 			const size_t bg_weight_tiles,
 			const unsigned short *bg_data,
 			u16 *destination);
+	
+	void draw_LayerQuarter(
+		const en_screen_quarter screen_quarter,
+		const unsigned short *origin,
+		u16 *dest,
+		const size_t bg_weight_tiles);
 };
 
 #endif /* GAMEVIDEO_H_ */

@@ -1,5 +1,5 @@
  Hello, folks. This is my workspace for Nintendo DS programming. Currently i'm studying how to
-develop NDS games in order to build my first complete game, aMaze'ing Game Wait for it. :)
+develop NDS games in order to build my first complete game, aMaze'ing Game. Wait for it. :)
 
   So, i'm mainly writing this README to register the tools that i'm using to develop. There is
  the tools specifications:
@@ -8,7 +8,8 @@ develop NDS games in order to build my first complete game, aMaze'ing Game Wait 
   - Compiler: devKitArm binaries, building outside of eclipse with "make" and by hand;
   - S.O. Windows 7 Professional;
   - libraries: [msys] Version=1.0.17 [devkitARM]; Version=41; [libnds] Version=1.5.7.
+  - NDS Emulator: DeSmuME 0.0.9
   
   Finally, i believe that this is one of a few projects for this version of the libdns. All
-  my basis were from older tutorials, and what i could build up was from the own libdns
-  examples (plus the basis =}).
+  my basis were from older tutorials, and what i could build up was based on the own libdns
+  documentation examples (plus what i've got from the basis =}).

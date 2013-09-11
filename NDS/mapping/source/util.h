@@ -48,6 +48,23 @@ typedef enum {
 	W_RIGHT	= 1
 } en_facing;
 
+/*
+ * \brief Define the screen quarter that will be worked. For example:
+ * first|second
+ *  1111|2222
+ *  1111|2222
+ *  ---------
+ *  3333|4444
+ *  3333|4444
+ * third|fourth
+ */
+typedef enum {
+	FIRST_QUARTER = 0,
+	SECOND_QUARTER,
+	THIRD_QUARTER,
+	FOURTH_QUARTER
+} en_screen_quarter;
+
 /* Helpful definitions. */
 #define SCREEN_CENTER_X SCREEN_WIDTH/2
 #define SCREEN_CENTER_Y SCREEN_HEIGHT/2
