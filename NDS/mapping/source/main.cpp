@@ -78,7 +78,7 @@ int main(void)
 		}
 
 		swiWaitForVBlank();
-		consoleClear();
+		//consoleClear();
 
 		oamUpdate(&oamMain);
 	}

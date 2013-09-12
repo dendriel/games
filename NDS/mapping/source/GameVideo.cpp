@@ -77,18 +77,20 @@ void GameVideo::load_Map(GameMap *map, const int x, const int y)
 	dmaCopy(map->m_Palette, BG_PALETTE, map->m_PaletteLen);
 
 	/* Draw map. TODO: maybe for smaller maps this will try to copy invalid data. */
+
+	m_LoadedMap = map;
 	for (i = 0; i < map->m_LayersCount; ++i) {
 
 		u16* screen_mem = (u16*)bgGetMapPtr(map->m_Background[i].id);
 
-		draw_LayerQuarter(FIRST_QUARTER, map->m_Background[i].data, screen_mem,map->m_SizeTile.w);
-		draw_LayerQuarter(SECOND_QUARTER, map->m_Background[i].data, screen_mem,map->m_SizeTile.w);
-		draw_LayerQuarter(THIRD_QUARTER, map->m_Background[i].data, screen_mem,map->m_SizeTile.w);
-		draw_LayerQuarter(FOURTH_QUARTER, map->m_Background[i].data, screen_mem,map->m_SizeTile.w);
+		draw_LayerQuarter(FIRST_QUARTER, map->m_Background[i].data, screen_mem);
+		draw_LayerQuarter(SECOND_QUARTER, map->m_Background[i].data, screen_mem);
+		draw_LayerQuarter(THIRD_QUARTER, map->m_Background[i].data, screen_mem);
+		draw_LayerQuarter(FOURTH_QUARTER, map->m_Background[i].data, screen_mem);
 	}
 
-	m_LoadedMap = map;
-	scroll_Background(x, y);
+	// TODO: add draw_LoadedMap() function here!
+	//scroll_Background(x, y);
 }
 
 /*************************************************************************************************/
@@ -131,9 +133,7 @@ void GameVideo::scroll_Layer(const unsigned int layer_index, const int x, const 
 void GameVideo::draw_LayerQuarter(
 	const en_screen_quarter screen_quarter,
 	const unsigned short *origin,
-	u16 *dest,
-	const size_t bg_weight_tiles//, const unsigned int data_offset
-	)
+	u16 *dest)
 {
 	/*
 	 * TODO: I believe that the map data is organized as follow:
@@ -144,6 +144,7 @@ void GameVideo::draw_LayerQuarter(
 	 * 2222|4444
 	 *  Then, because of this whe can't copy the data continuously.
 	 */
+	const unsigned int map_width = m_LoadedMap->m_SizeTile.w;
 	const unsigned int mem_to_copy = TILES_TO_CP*TILE_LEN_BYTES;
 	int origin_offset = 0;
 	int dest_offset = 0;
@@ -153,6 +154,9 @@ void GameVideo::draw_LayerQuarter(
 	int dest_vertical_offset = 0;
 	
 	switch (screen_quarter) {
+	// Default choice.
+		case FIRST_QUARTER:
+		break;
 		case SECOND_QUARTER:
 			// TODO: Find out why these values.
 			origin_quarter_offset = 32;
@@ -165,8 +169,6 @@ void GameVideo::draw_LayerQuarter(
 			origin_vertical_offset = VERTICAL_OFFSET;
 			dest_vertical_offset = VERTICAL_OFFSET*VERTICAL_OFFSET*TILE_LEN_BYTES;
 		break;
-		// Default choice.
-		case FIRST_QUARTER:
 		default:
 			debug("Invalid quarter received.");
 		break;
@@ -174,7 +176,7 @@ void GameVideo::draw_LayerQuarter(
 	
 	for(int iy = 0; iy < 32; iy++) 	{
 
-		origin_offset = ((origin_vertical_offset + iy) * bg_weight_tiles) + origin_quarter_offset;
+		origin_offset = ((origin_vertical_offset + iy) * map_width) + origin_quarter_offset;
 		dest_offset = (iy * TILES_TO_CP) + dest_quarter_offset + dest_vertical_offset;
 		dmaCopy(origin + origin_offset, dest + dest_offset,  mem_to_copy);
 	}	

@@ -21,13 +21,17 @@ public:
 		const size_t bg_max = 3;
 		const unsigned int tile_base = 1;
 
-		/* Map size in pixels. */
+		/* Map size in 1x1 pixels. */
 		m_SizePixel.w = 1472;
 		m_SizePixel.h = 1408;
 
-		/* Map size in tiles 8px. */
-		m_SizeTile.w = 184;
-		m_SizeTile.h = 176;
+		/* Map size in tiles 8x8 pixels. */
+		m_SizeTile.w = m_SizePixel.w/8;
+		m_SizeTile.h = m_SizePixel.h/8;
+		
+		/* Map size in tiles 32x32 pixels. */
+		m_SizeTile32.w = m_SizeTile.w/4;
+		m_SizeTile32.h = m_SizeTile.h/4;
 
 		/* How much layers there is in the map. */
 		m_LayersCount = bg_max;
@@ -67,8 +71,8 @@ public:
 		m_PaletteLen = maze1SharedPalLen;
 
 		//!< Character starting point.
-		m_CharStartPoint.x = 3*GAME_TILE_SIZE;
-		m_CharStartPoint.y = 3*GAME_TILE_SIZE;
+		m_CharStartPoint.x = 3;
+		m_CharStartPoint.y = 3;
 	}
 };
 
