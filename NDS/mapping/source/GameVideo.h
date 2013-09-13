@@ -13,11 +13,25 @@
 #include "GameMap.h"
 #include "util.h"
 
+/**
+ *	\brief Generic direction enumeration.
+ */
+typedef enum {
+	DIRECT_NONE= 0,
+	DIRECT_LEFT,
+	DIRECT_UP,
+	DIRECT_RIGHT,
+	DIRECT_DOWN
+} en_direction;
 
+/**
+ *	\brief Hold screen and mapping issues.
+ */
 class GameVideo {
 private:
-	GameMap *m_LoadedMap;
-	st_offset m_LoadedMap_offset;
+	GameMap *m_LoadedMap;					//!< Loaded map object reference.
+	st_rect_size m_LoadedMap_data_offset;	//!< Map offset to copy data (in tiles 32x32).
+	st_rect_size m_ScrollOffset;			//!< Screen scrolling bounds and current offset (in px).
 
 public:
 
@@ -27,49 +41,48 @@ public:
 	GameVideo(void);
 
 	/**
-	* \brief Load the given map into the game.
-	* \parameter map Map to be loaded.
-	* \parameter x Starting horizontal position of the map.
-	* \parameter y Starting vertical position of the map.
-	* \note First form will use the own map specified starting point.
-	*/
+	 * \brief Load the given map into the game.
+	 * \parameter map Map to be loaded.
+	 * \parameter x Starting horizontal position of the map.
+	 * \parameter y Starting vertical position of the map.
+	 * \note First form will use the own map specified starting point.
+	 */
 	void load_Map(GameMap *map);
 	void load_Map(GameMap *map, const int x, const int y);
-
-	/**
-	 * \brief Scroll the Layer_index by x,y offset.
-	 * \parameter layer_index The layer index
-	 * \parameter x Horizontal offset.
-	 * \parameter x Vertical offset.
-	 */
-	void scroll_Layer(const unsigned int bg_index, const int x, const int y);
 
 	/**
 	 * \brief Scroll all the background layers by x,y offset.
 	 * \parameter x Horizontal offset.
 	 * \parameter x Vertical offset.
+	 * \note Scroll when it's possible, load data by demand.
 	 */
 	void scroll_Background(const int x, const int y);
 
 private:
 
 	/**
-	 * \brief Copy the half screen data from Layer_index.
-	 * \parameter vertical_offset used to copy the half-bottom screen data.
-	 * \parameter bg_weight_tiles Used to offset until the next line when copying a half.
-	 * \parameter bg_data The background data to copy.
-	 * \parameter destination A reference to the destination.
+	 * \brief Draw the loaded map into the screen.
 	 */
-	void copy_LayerChunk(
-			const int vertical_offset,
-			const size_t bg_weight_tiles,
-			const unsigned short *bg_data,
-			u16 *destination);
-	
+	void draw_LoadedMap(void);
+
+	/**
+	 * \brief Copy data to a quarter of the screen
+	 * \parameter screen_quarter What screen quarter to draw.
+	 * \parameter origin The background data to copy.
+	 * \parameter dest A reference to the destination.
+	 */
 	void draw_LayerQuarter(
 		const en_screen_quarter screen_quarter,
 		const unsigned short *origin,
 		u16 *dest);
+
+	/**
+	 * \brief Load map data with the addition of an offset.
+	 * \parameter direction Wich direction is the data offset.
+	 * \return 0 if the data was loaded; -1 if there is no more data to the given direction.
+	 */
+	int load_MapData(en_direction direction);
+
 };
 
 #endif /* GAMEVIDEO_H_ */

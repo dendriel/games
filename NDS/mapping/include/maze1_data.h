@@ -9,19 +9,19 @@
 //	External tile file: (null).
 //	Total size: 64768 = 64768
 //
-//	Time-stamp: 2013-09-07, 21:29:34
+//	Time-stamp: 2013-09-12, 22:07:46
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.10
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
 
-#ifndef MAZE1_GRIT_LAYER_1_H
-#define MAZE1_GRIT_LAYER_1_H
+#ifndef GRIT_LAYER_1_H
+#define GRIT_LAYER_1_H
 
 #define Layer_1MapLen 64768
 extern const unsigned short Layer_1Map[32384];
 
-#endif // MAZE1_GRIT_LAYER_1_H
+#endif // GRIT_LAYER_1_H
 
 //}}BLOCK(Layer_1)
 
@@ -35,19 +35,19 @@ extern const unsigned short Layer_1Map[32384];
 //	External tile file: (null).
 //	Total size: 64768 = 64768
 //
-//	Time-stamp: 2013-09-07, 21:29:34
+//	Time-stamp: 2013-09-12, 22:07:46
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.10
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
 
-#ifndef MAZE1_GRIT_LAYER_2_H
-#define MAZE1_GRIT_LAYER_2_H
+#ifndef GRIT_LAYER_2_H
+#define GRIT_LAYER_2_H
 
 #define Layer_2MapLen 64768
 extern const unsigned short Layer_2Map[32384];
 
-#endif // MAZE1_GRIT_LAYER_2_H
+#endif // GRIT_LAYER_2_H
 
 //}}BLOCK(Layer_2)
 
@@ -61,19 +61,19 @@ extern const unsigned short Layer_2Map[32384];
 //	External tile file: (null).
 //	Total size: 64768 = 64768
 //
-//	Time-stamp: 2013-09-07, 21:29:34
+//	Time-stamp: 2013-09-12, 22:07:47
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.10
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
 
-#ifndef MAZE1_GRIT_LAYER_3_H
-#define MAZE1_GRIT_LAYER_3_H
+#ifndef GRIT_LAYER_3_H
+#define GRIT_LAYER_3_H
 
 #define Layer_3MapLen 64768
 extern const unsigned short Layer_3Map[32384];
 
-#endif // MAZE1_GRIT_LAYER_3_H
+#endif // GRIT_LAYER_3_H
 
 //}}BLOCK(Layer_3)
 
@@ -81,13 +81,13 @@ extern const unsigned short Layer_3Map[32384];
 
 //======================================================================
 //
-//	maze1Shared, 8x568@8, 
+//	maze1Shared, 8x632@8, 
 //	Transparent color : 00,00,00
 //	+ palette 256 entries, not compressed
-//	+ 71 tiles not compressed
-//	Total size: 512 + 4544 = 5056
+//	+ 79 tiles not compressed
+//	Total size: 512 + 5056 = 5568
 //
-//	Time-stamp: 2013-09-07, 21:29:34
+//	Time-stamp: 2013-09-12, 22:07:47
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.10
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -96,8 +96,8 @@ extern const unsigned short Layer_3Map[32384];
 #ifndef GRIT_MAZE1SHARED_H
 #define GRIT_MAZE1SHARED_H
 
-#define maze1SharedTilesLen 4544
-extern const unsigned int maze1SharedTiles[1136];
+#define maze1SharedTilesLen 5056
+extern const unsigned int maze1SharedTiles[1264];
 
 #define maze1SharedPalLen 512
 extern const unsigned short maze1SharedPal[256];

@@ -30,8 +30,8 @@ public:
 		m_SizeTile.h = m_SizePixel.h/8;
 		
 		/* Map size in tiles 32x32 pixels. */
-		m_SizeTile32.w = m_SizeTile.w/4;
-		m_SizeTile32.h = m_SizeTile.h/4;
+		m_SizeTile32.w = m_SizePixel.w/32;
+		m_SizeTile32.h = m_SizePixel.h/32;
 
 		/* How much layers there is in the map. */
 		m_LayersCount = bg_max;
