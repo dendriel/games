@@ -43,38 +43,40 @@ int main(void)
 
 	screen.load_Map(myMaze);
 
+	bool jump = 0;
+	const int jump_value = 10;
+
 	while(1) {
 		scanKeys();
 		int keys = keysHeld();
 
 		if(keys & KEY_UP) {
 			persona.move(W_UP);
-			screen.scroll_Background(0, -1);
+			screen.scroll_Background(0, -1+(-1*jump_value*jump));
 		}
 
 		if(keys & KEY_DOWN) {
 			persona.move(W_DOWN);
-			screen.scroll_Background(0, 1);
+			screen.scroll_Background(0, 1+(jump_value*jump));
 		}
 
 	    if(keys & KEY_LEFT) {
 	    	persona.move(W_LEFT);
-			screen.scroll_Background(-1, 0);
+			screen.scroll_Background(-1+(-1*jump_value*jump), 0);
 	    }
 
 		if(keys & KEY_RIGHT) {
 			persona.move(W_RIGHT);
-			screen.scroll_Background(1, 0);
+			screen.scroll_Background(1+(jump_value*jump), 0);
 		}
-
-		if(keys & KEY_A) {
-			screen.load_Map(myMaze2);
-		}
-
 
 		if(keys & KEY_B) {
 			screen.load_Map(myMaze);
 			//x = y = 0;
+		}
+
+		if(keys & KEY_A) {
+			jump = !jump;
 		}
 
 		swiWaitForVBlank();
