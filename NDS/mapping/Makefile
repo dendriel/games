@@ -17,6 +17,7 @@ include $(DEVKITARM)/ds_rules
 # GRAPHICS is a list of directories containing files to be processed by grit
 # AUDIO is a list of directories containing files to be processed by mmutil
 # SOUNDBANK_NAME is the name of the maxmod generated soundbank
+# COMPILED is the data files that has already been made objects (before project compilation).
 #
 # All directories are specified relative to the project directory where
 # the makefile is found.
@@ -25,12 +26,13 @@ include $(DEVKITARM)/ds_rules
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCES		:=	source
-DATA		:=	
-INCLUDES	:=	include
+DATA		:=
+INCLUDES	:=	include maze
 GRAPHICS	:=	gfx
 SPRITES		:=  sprites
 AUDIO		:=	audio
 SOUNDBANK_NAME  :=	soundbank
+COMPILED 	:=  compiled
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -78,13 +80,13 @@ export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
-CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*))) $(SOUNDBANK_NAME).bin
 PNGFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.png)))
 BMPFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.bmp)))
 SPRITE_FILES   :=  $(foreach dir, $(SPRITES),$(notdir $(wildcard $(dir)/*.png)))
+COMPOBJS	:= $(foreach dir,$(COMPILED),$(notdir $(wildcard $(dir)/*.o)))
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
@@ -104,8 +106,8 @@ export OFILES		:=	$(addsuffix .o,$(BINFILES)) \
 				$(PNGFILES:.png=.o) \
 				$(BMPFILES:.bmp=.o) \
 				$(CPPFILES:.cpp=.o) \
-				$(CFILES:.c=.o) \
 				$(SFILES:.s=.o) \
+				$(COMPOBJS)
 
 export AUDIOFILES	:=	$(foreach dir,$(AUDIO),$(notdir $(wildcard $(dir)/*)))
  
@@ -121,6 +123,7 @@ export LIBPATHS		:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 #---------------------------------------------------------------------------------
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
+	cd $(COMPILED); make; cd ../
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
  
 #---------------------------------------------------------------------------------

@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 #include <nds.h>
+#include <iostream>
 
 /* References */
 #include "nds/arm9/video.h"
@@ -46,7 +47,8 @@ int main(void)
 	bool jump = 0;
 	const int jump_value = 10;
 
-	while(1) {
+	while(true)
+	{
 		scanKeys();
 		int keys = keysHeld();
 
@@ -77,6 +79,9 @@ int main(void)
 
 		if(keys & KEY_A) {
 			jump = !jump;
+			for (int j = 0; j < Layer_1MapLen; j++) {
+				std::cout << j;
+			}
 		}
 
 		swiWaitForVBlank();
