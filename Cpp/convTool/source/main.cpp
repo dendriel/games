@@ -1,17 +1,12 @@
-/*
- * main.cpp
- *
- *  Created on: 17/09/2013
- *      Author: vitor
- */
-
 #include "convProcessor.h"
+
 
 int main(int argc, char *argv[])
 {
-	convProcessor converter;
+	convProcessor processor;
 
-	converter.start();
+	processor.start();
 
 	return 0;
 }
+

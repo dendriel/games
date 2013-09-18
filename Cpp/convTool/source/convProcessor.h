@@ -8,7 +8,9 @@
 #ifndef CONVPROCESSOR_H_
 #define CONVPROCESSOR_H_
 
-
+/**
+ * \brief Engine class.
+ */
 class convProcessor {
 
 public:
