@@ -46,8 +46,8 @@ void convProcessor::start(void)
 
 	tileset.cushort_data = mytiles_map;
 	tileset.lenght = mytiles_mapLen;
-	tileset.size.w = mytiles_map_w;
-	tileset.size.h = mytiles_map_h;
+	tileset.size.w = mytiles_map_w*DATA_WIDTH;
+	tileset.size.h = mytiles_map_h*DATA_WIDTH;
 
 	conversor.convert(orig, dest, tileset);
 

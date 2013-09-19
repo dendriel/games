@@ -9,6 +9,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <fstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -17,6 +19,19 @@ using namespace std;
 void convConversor::convert(st_map_data& origin, st_map_data& dest, st_map_data& tileset)
 {
 	unsigned int i;
+	ofstream myTestFile;
+	myTestFile.open("./testFile.txt");
+	myTestFile << showbase // show the 0x prefix
+	         << internal << setfill('0'); // fill between the prefix and the number;
+
+
+	// testing purpose only!!
+	cout << showbase // show the 0x prefix
+		         << internal << setfill('0'); // fill between the prefix and the number;
+
+	for (i = 0; i < tileset.lenght; ++i) {
+		//print_tile(find_total_offset(i, tileset.size.w), tileset.size.w, tileset.cushort_data);
+	}
 
 	/* Create expanded destination map. */
 	dest.lenght = create_map(&dest.ushort_data, origin.lenght);
@@ -36,23 +51,42 @@ void convConversor::convert(st_map_data& origin, st_map_data& dest, st_map_data&
 		/* Find "to" position to copy. */
 		const unsigned int dest_offset = find_total_offset(i, origin.size.w);
 
-		copy_tile(tileset.size.w, (tileset.cushort_data + tileset_offset/2),
-					dest.size.w, (dest.ushort_data + dest_offset/2));
+		copy_tile(tileset.size.w, (tileset.cushort_data + tileset_offset),
+					dest.size.w, (dest.ushort_data + dest_offset));
 		cout << "i: " << i << " - tileset_offset: " << tileset_offset << endl;
 		cout << "i: " << i << " - dest_offset: " << dest_offset << endl << endl;;
 		// draw what
 		// draw where
 		//convert_index(tile_id, dest.data)
 	}
-	/* Find the starting point to draw data. */
+
+	unsigned int k;
+
+	for (k = 0; k < origin.lenght; ++k) {
+		for (i = 0; i < DATA_HEIGHT; ++i) {
+
+			const unsigned int height_offset = k + (dest.size.w * DATA_WIDTH * i);
+
+			for (unsigned width_offset = 0; width_offset < DATA_WIDTH; ++width_offset) {
+
+				const unsigned int origin_data_pos = height_offset + width_offset;
+
+				myTestFile << hex << setw(6) << dest.ushort_data[origin_data_pos] << ",";
+			}
+			myTestFile << endl;
+		}
+		myTestFile << endl;
+	}
+	myTestFile.close();
+
 }
 
 /**************************************************************************************************/
 
-void convConversor::print_tile(const unsigned int origin_offset, const unsigned int map_width)
+void convConversor::print_tile(const unsigned int origin_offset, const unsigned int map_width, const unsigned short *data)
 {
-#if 0
-	unsigned int i, j;
+
+	unsigned int i;
 
 	for (i = 0; i < DATA_HEIGHT; ++i) {
 
@@ -62,12 +96,12 @@ void convConversor::print_tile(const unsigned int origin_offset, const unsigned 
 
 			const unsigned int origin_data_pos = height_offset + width_offset;
 
-			//std::cout << mytiles_map[origin_data_pos] << " ";
+			std::cout << data[origin_data_pos] << " ";
 		}
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-#endif
+
 }
 
 /**************************************************************************************************/
@@ -90,18 +124,22 @@ void convConversor::copy_tile(const unsigned int tileset_width,
 {
 	unsigned int horiz, vert;
 
+	print_tile(0, tileset_width, tileset);
 	for (vert = 0; vert < DATA_HEIGHT; ++vert) {
 		/* Vertical offset */
-		tileset += vert*DATA_WIDTH*tileset_width;
-		dest += vert*DATA_WIDTH*dest_width;
+		tileset += tileset_width*DATA_WIDTH*vert;
+		dest += dest_width*DATA_WIDTH*vert;
+
+		cout << "vert_tileset: " << tileset_width*DATA_WIDTH*vert << " - vert_dest: " << dest_width*DATA_WIDTH*vert << endl;
 
 		for (horiz = 0; horiz < DATA_WIDTH; ++horiz) {
 			/* Horizontal offset. */
 			tileset += horiz;
 			dest += horiz;
-			cout << "vert: " << vert << " - horiz: " << horiz << endl;
-			cout << "tileset: " << tileset << " - dest: " << dest << endl;
-			memcpy(dest, tileset, sizeof(unsigned short));
+			//cout << "vert: " << vert << " - horiz: " << horiz << endl;
+			//cout << "tileset: " << tileset << " - dest: " << dest << endl;
+			memcpy(dest, tileset, 1);
+			cout << tileset[0] << ", " << dest[0] << endl;
 		}
 	}
 }

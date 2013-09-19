@@ -46,7 +46,7 @@ public:
 	/**
 	 * \brief Testing purpose function.
 	 */
-	void print_tile(const unsigned int origin_offset, const unsigned int map_width);
+	void print_tile(const unsigned int origin_offset, const unsigned int map_width, const unsigned short *data);
 
 	/**
 	 * \brief Convert an integer map array to an 8x8 tiled map array.
