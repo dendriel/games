@@ -18,32 +18,11 @@
 
 class GameMap {
 public:
-	//!< Map size in pixels.
-	st_rect_size m_SizePixel;
-
-	//!< Map size in tiles 8px.
-	st_rect_size m_SizeTile;
-	
-	//!< Map size in tiles 32x32 px.
-	st_rect_size m_SizeTile32;
-
 	//!< How much layers there is in the map.
 	size_t m_LayersCount;
 
 	//!< Hold backgrounds data.
 	st_map_bg m_Background[MAX_MAP_BACKGROUNDS];
-
-	//!< Hold the tiles palette for every background.
-	const unsigned int *m_Tiles;
-
-	//!< Hold the tiles length.
-	size_t m_TilesLen;
-
-	//!< Background palette.
-	const unsigned short *m_Palette;
-
-	//!< Background palette length.
-	size_t m_PaletteLen;
 
 	//!< Character starting point. TODO: maybe this data will be in a more embracing class.
 	st_offset m_CharStartPoint;

@@ -15,10 +15,11 @@
 #ifndef MYTILES_TILESET_H
 #define MYTILES_TILESET_H
 
-#define mytiles_mapLen 384
-#define mytiles_mapSize 768
-#define mytiles_map_w 8
-#define mytiles_map_h 3
+#define mytiles_len_memb 1248
+#define mytiles_len_bytes 4992
+#define mytiles_width_tiles 8
+#define mytiles_height_tiles 3
+
 extern const unsigned short mytiles_map[384];
 
 
@@ -39,7 +40,6 @@ extern const unsigned short mytiles_map[384];
 //======================================================================
 
 
-#define mytiles_sharedTilesLen 4992
 extern const unsigned int mytiles_sharedTiles[1248];
 
 #define mytiles_sharedPalLen 512

@@ -10,31 +10,12 @@
 
 #include <iostream>
 
+#include "util.h"
+
 /* Definitions */
 #define DATA_WIDTH 4
 #define DATA_HEIGHT 4
 #define TILE_DATA_SIZE DATA_WIDTH*DATA_HEIGHT
-
-/* Structures */
-
-//!< Hold data from an integer map and the current tile position.
-typedef struct {
-	//!< Position of an element in the array.
-	struct size {
-		int w;
-		int h;
-	} size;
-	union {
-		//!< Origin map data.
-		unsigned int *uint_data;
-		//!< Destination map data.
-		unsigned short *ushort_data;
-		//!< Tileset data.
-		const unsigned short *cushort_data;
-	};
-	//!< Map data lenght.
-	size_t lenght;
-} st_map_data;
 
 
 /**
@@ -46,24 +27,34 @@ public:
 	/**
 	 * \brief Testing purpose function.
 	 */
-	void print_tile(const unsigned int origin_offset, const unsigned int map_width, const unsigned short *data);
+	void print_tile(const unsigned int origin_offset_in_memb, const unsigned int map_width, const unsigned short *data);
 
 	/**
 	 * \brief Convert an integer map array to an 8x8 tiled map array.
 	 * \parameter origin Integer origin map.
 	 * \parameter dest Reference where the output map will be stored.
-	 * \paramter tileset Tile data source to the conversion.
 	 */
-	void convert(st_map_data& origin, st_map_data& dest, st_map_data& tileset);
+	void convert(const st_map_bg&  origin, st_map_data& dest);
+
+	/**
+	 * \brief Find total offset for a position.
+	 * \parameter pos The position in a unidimensional array.
+	 * \parameter map_width The size of each row in the matrix map view.
+	 * \return The total data offset.
+	 */
+	inline unsigned int find_total_offset(const unsigned int pos, const unsigned int map_width)
+	{
+		return find_h_offset(pos, map_width) + find_v_offset(pos, map_width);
+	}
 
 private:
 	/**
-	 * \brief Allocate and initialize enoungh data to hold the output map.
+	 * \brief Allocate and initialize enough data to hold the output map.
 	 * \parameter data Where to hold the allocated data.
-	 * \parameter size The size of the origin map.
+	 * \parameter size_in_tiles The size of the origin map.
 	 * \return The total size of the allocated data chunk.
 	 */
-	size_t create_map(unsigned short **data, const size_t size);
+	size_t create_map(unsigned short **data, const size_t size_in_tiles);
 
 	/**
 	 * \brief Copy a tile from tileset to destination map data.
@@ -97,17 +88,6 @@ private:
 	inline int find_v_offset(const unsigned int pos, const unsigned int map_width)
 	{
 		return ((pos / map_width) * map_width * DATA_WIDTH * DATA_HEIGHT);
-	}
-
-	/**
-	 * \brief Find total offset for a position.
-	 * \parameter pos The position in a unidimensional array.
-	 * \parameter map_width The size of each row in the matrix map view.
-	 * \return The total data offset.
-	 */
-	inline unsigned int find_total_offset(const unsigned int pos, const unsigned int map_width)
-	{
-		return find_h_offset(pos, map_width) + find_v_offset(pos, map_width);
 	}
 };
 

@@ -16,131 +16,110 @@ using namespace std;
 
 /**************************************************************************************************/
 
-void convConversor::convert(st_map_data& origin, st_map_data& dest, st_map_data& tileset)
+void convConversor::convert(const st_map_bg& origin, st_map_data& dest)
 {
-	unsigned int i;
-	ofstream myTestFile;
-	myTestFile.open("./testFile.txt");
-	myTestFile << showbase // show the 0x prefix
-	         << internal << setfill('0'); // fill between the prefix and the number;
-
-
-	// testing purpose only!!
-	cout << showbase // show the 0x prefix
-		         << internal << setfill('0'); // fill between the prefix and the number;
-
-	for (i = 0; i < tileset.lenght; ++i) {
-		//print_tile(find_total_offset(i, tileset.size.w), tileset.size.w, tileset.cushort_data);
-	}
+	size_t i;
 
 	/* Create expanded destination map. */
-	dest.lenght = create_map(&dest.ushort_data, origin.lenght);
-	dest.size.w = origin.size.w*DATA_WIDTH;
-	dest.size.h = origin.size.h*DATA_WIDTH;
+	dest.length_memb = create_map(&dest.ushort_data, origin.width_tiles*origin.height_tiles);
+	dest.size_tiles.w = origin.width_tiles*DATA_WIDTH;
+	dest.size_tiles.h = origin.height_tiles*DATA_HEIGHT;
 
-	for (i = 0; i < origin.lenght; ++i) {
-		const unsigned int tile_id = origin.uint_data[i];
+	const size_t origin_len_tiles = origin.width_tiles*origin.height_tiles;
+
+	debug("Allocated: %hu of ushorts.\n Origin length in tiles: %d\n", dest.length_memb, origin_len_tiles);
+
+	for (i = 0; i < origin_len_tiles; ++i) {
+
+		const unsigned int tile_id = origin.data[i];
 
 		/* Find "from" position to copy. */
-		unsigned int tileset_offset = find_total_offset(tile_id, tileset.size.w);
+		unsigned int tileset_offset = find_total_offset(tile_id, origin.tileset.dim_tiles.w);
+
 		/* Validate index. */
-		if (tileset_offset > (tileset.lenght - TILE_DATA_SIZE)) {
-			tileset_offset = tileset.lenght - TILE_DATA_SIZE;
+		if (tileset_offset > (origin.tileset.len_memb - TILE_DATA_SIZE)) {
+			tileset_offset = origin.tileset.len_memb - TILE_DATA_SIZE;
 		}
 
 		/* Find "to" position to copy. */
-		const unsigned int dest_offset = find_total_offset(i, origin.size.w);
+		const unsigned int dest_offset = find_total_offset(i, origin.width_tiles);
 
-		copy_tile(tileset.size.w, (tileset.cushort_data + tileset_offset),
-					dest.size.w, (dest.ushort_data + dest_offset));
-		cout << "i: " << i << " - tileset_offset: " << tileset_offset << endl;
-		cout << "i: " << i << " - dest_offset: " << dest_offset << endl << endl;;
-		// draw what
-		// draw where
-		//convert_index(tile_id, dest.data)
+		copy_tile(origin.tileset.dim_tiles.w, (origin.tileset.map + tileset_offset),
+					dest.size_tiles.w, (dest.ushort_data + dest_offset));
+
+		cout << "[i] " <<i << " - tileset_offset: " << tileset_offset;
+		cout << " - dest_offset: " << dest_offset << endl << endl;
+		print_tile(dest_offset, dest.size_tiles.w, dest.ushort_data);
+		cout << endl;
 	}
-
-	unsigned int k;
-
-	for (k = 0; k < origin.lenght; ++k) {
-		for (i = 0; i < DATA_HEIGHT; ++i) {
-
-			const unsigned int height_offset = k + (dest.size.w * DATA_WIDTH * i);
-
-			for (unsigned width_offset = 0; width_offset < DATA_WIDTH; ++width_offset) {
-
-				const unsigned int origin_data_pos = height_offset + width_offset;
-
-				myTestFile << hex << setw(6) << dest.ushort_data[origin_data_pos] << ",";
-			}
-			myTestFile << endl;
-		}
-		myTestFile << endl;
-	}
-	myTestFile.close();
-
 }
 
 /**************************************************************************************************/
 
-void convConversor::print_tile(const unsigned int origin_offset, const unsigned int map_width, const unsigned short *data)
+void convConversor::print_tile(const unsigned int origin_offset_in_memb, const unsigned int map_width, const unsigned short *data)
 {
 
 	unsigned int i;
 
+	cout << showbase << internal << setfill('0');
+
 	for (i = 0; i < DATA_HEIGHT; ++i) {
 
-		const unsigned int height_offset = origin_offset + (map_width * DATA_WIDTH * i);
+		const unsigned int height_offset = origin_offset_in_memb + (map_width * DATA_WIDTH * i);
 
 		for (unsigned width_offset = 0; width_offset < DATA_WIDTH; ++width_offset) {
 
 			const unsigned int origin_data_pos = height_offset + width_offset;
 
-			std::cout << data[origin_data_pos] << " ";
+			//cout << "[" << height_offset << "," << width_offset << "]";
+			cout << hex << setw(4) << data[origin_data_pos] << " ";
 		}
-		std::cout << std::endl;
+		cout << std::endl;
 	}
-	std::cout << std::endl;
-
+	cout << std::endl;
 }
 
 /**************************************************************************************************/
 /*	Private functions.																			*/
 /**************************************************************************************************/
 
-size_t convConversor::create_map(unsigned short **data, const size_t size)
+size_t convConversor::create_map(unsigned short **data, const size_t size_in_tiles)
 {
-	const unsigned int to_alloc = size*DATA_WIDTH*DATA_HEIGHT;
-	*data = (unsigned short *) calloc(to_alloc, sizeof(char));
+	/**
+	 * Need to allocated tiles of size of 4x4 plus the unsigned short size (2).
+	 */
+	const unsigned int to_alloc = size_in_tiles*DATA_WIDTH*DATA_HEIGHT;
+	*data = (unsigned short *) calloc(to_alloc, sizeof(unsigned short));
 	return to_alloc;
 }
 
 /**************************************************************************************************/
 
-void convConversor::copy_tile(const unsigned int tileset_width,
-				const unsigned short *tileset,
-				const unsigned int dest_width,
-				unsigned short *dest)
+void convConversor::copy_tile(
+		const unsigned int tileset_width,
+		const unsigned short *tileset,
+		const unsigned int dest_width,
+		unsigned short *dest)
 {
-	unsigned int horiz, vert;
+	unsigned int vert;
+	unsigned int tileset_index;
+	unsigned int dest_index;
 
-	print_tile(0, tileset_width, tileset);
+	cout << showbase << internal << setfill('0');
+
 	for (vert = 0; vert < DATA_HEIGHT; ++vert) {
 		/* Vertical offset */
-		tileset += tileset_width*DATA_WIDTH*vert;
-		dest += dest_width*DATA_WIDTH*vert;
+		tileset_index = tileset_width * DATA_WIDTH * vert; // find vertical offset?
+		dest_index    =    dest_width * DATA_WIDTH * vert;
 
-		cout << "vert_tileset: " << tileset_width*DATA_WIDTH*vert << " - vert_dest: " << dest_width*DATA_WIDTH*vert << endl;
+		//cout << "vert_tileset: " << tileset_index << " - vert_dest: " << dest_index << endl;
 
-		for (horiz = 0; horiz < DATA_WIDTH; ++horiz) {
-			/* Horizontal offset. */
-			tileset += horiz;
-			dest += horiz;
-			//cout << "vert: " << vert << " - horiz: " << horiz << endl;
-			//cout << "tileset: " << tileset << " - dest: " << dest << endl;
-			memcpy(dest, tileset, 1);
-			cout << tileset[0] << ", " << dest[0] << endl;
-		}
+		memcpy(&dest[dest_index], &tileset[tileset_index], DATA_WIDTH*sizeof(unsigned short));
+
+		cout << hex << setw(4) << dest[dest_index] << ",";
+		cout << hex << setw(4) << dest[dest_index+1] << ",";
+		cout << hex << setw(4) << dest[dest_index+2] << ",";
+		cout << hex << setw(4) << dest[dest_index+3] << "," << endl;
 	}
 }
 
