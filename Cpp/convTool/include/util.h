@@ -8,7 +8,7 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
-#include <stdio.h>
+#include <stddef.h>
 
 /* Macros */
 #define debug(fmt,args...) (void)(printf(fmt"\n",##args))
@@ -63,21 +63,11 @@ typedef struct {
 
 //!< Hold data from an integer map and the current tile position.
 typedef struct {
-	//!< Position of an element in the array.
-	struct size {
-		int w;
-		int h;
-	} size_tiles;
-	union {
-		//!< Origin map data.
-		unsigned int *uint_data;
-		//!< Destination map data.
-		unsigned short *ushort_data;
-		//!< Tileset data.
-		const unsigned short *cushort_data;
-	};
+	unsigned short *data;
 	//!< Map data length in members (unsigned short, 2 bytes each).
-	size_t length_memb;
+	size_t lenght_memb;
+	size_t width_memb;
+	size_t height_memb;
 } st_map_data;
 
 //!< Hold character facing direction.

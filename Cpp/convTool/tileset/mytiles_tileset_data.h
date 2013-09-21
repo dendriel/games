@@ -15,8 +15,6 @@
 #ifndef MYTILES_TILESET_H
 #define MYTILES_TILESET_H
 
-#define mytiles_len_memb 1248
-#define mytiles_len_bytes 4992
 #define mytiles_width_tiles 8
 #define mytiles_height_tiles 3
 
@@ -39,10 +37,10 @@ extern const unsigned short mytiles_map[384];
 //
 //======================================================================
 
-
+#define mytiles_sharedTilesLen_bytes 4992
 extern const unsigned int mytiles_sharedTiles[1248];
 
-#define mytiles_sharedPalLen 512
+#define mytiles_sharedPalLen_bytes 512
 extern const unsigned short mytiles_sharedPal[256];
 
 #endif /* MYTILES_TILESET_H */
