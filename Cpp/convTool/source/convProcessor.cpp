@@ -7,15 +7,15 @@
 #include "convProcessor.h"
 
 #include <stdlib.h>
-#include <string.h>
-
-#include "convConversor.h"
-#include "util.h"
+#include <string>
+#include <fstream>
 
 #include "Map1_mp.h"
 #include "Mytiles_ts.h"
 
 using namespace std;
+
+/**************************************************************************************************/
 
 void convProcessor::start(void)
 {
@@ -41,5 +41,32 @@ void convProcessor::start(void)
 		conversor.print_tile(offset, map1.width_tiles, dest.data);
 	}
 
+	save_data(dest, "map1_data");
+
 	free(dest.data);
 }
+
+/**************************************************************************************************/
+/* Private functions.                                                                             */
+/**************************************************************************************************/
+
+void convProcessor::save_data(const st_map_data& data, const string& file_name)
+{
+	ofstream dest_file;
+	string file_header = file_name + ".h";
+	const string file_code = file_name + ".cpp";
+
+	dest_file.open(file_header.c_str());
+
+	/* Dump header. */
+	{
+		dest_file << "#ifndef ";
+		dest_file << "_" << file_name << "_H" << endl;
+		dest_file << nouppercase << "#define " << uppercase << "_" << file_name << "_H" << endl;
+
+		dest_file << nouppercase << "#endif /* " << uppercase << "_" << file_name << "_H" << endl;
+	}
+
+}
+
+

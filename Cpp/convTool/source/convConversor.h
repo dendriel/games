@@ -9,16 +9,26 @@
 #define CONVCONVERSOR_H_
 
 #include <iostream>
+#include <stddef.h>
 
 #include "Tileset.h"
 #include "Map.h"
-#include "util.h"
 
 /* Definitions */
 #define DATA_WIDTH 4
 #define DATA_HEIGHT 4
 #define TILE_LEN_MEMB DATA_WIDTH*DATA_HEIGHT
 
+/* Structures */
+
+//!< Hold data from an integer map and the current tile position.
+typedef struct {
+	unsigned short *data;
+	//!< Map data length in members (unsigned short, 2 bytes each).
+	size_t lenght_memb;
+	size_t width_memb;
+	size_t height_memb;
+} st_map_data;
 
 /**
  * \brief Data conversor class.
