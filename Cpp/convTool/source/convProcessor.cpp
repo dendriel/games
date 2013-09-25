@@ -7,10 +7,14 @@
 #include "convProcessor.h"
 
 #include <stdlib.h>
+#include <string.h>
 #include <string>
 #include <fstream>
+#include <algorithm>
+#include <iomanip>
 
 #include "Map1_mp.h"
+#include "Maze1_mp.h"
 #include "Mytiles_ts.h"
 
 using namespace std;
@@ -25,7 +29,8 @@ void convProcessor::start(void)
 	// end.
 
 	convConversor conversor;
-	Map1_mp map1;
+	//Map1_mp map1;
+	Maze1_mp map1;
 	Mytiles_ts mytiles_ts;
 
 	st_map_data dest;
@@ -50,23 +55,71 @@ void convProcessor::start(void)
 /* Private functions.                                                                             */
 /**************************************************************************************************/
 
-void convProcessor::save_data(const st_map_data& data, const string& file_name)
+void convProcessor::save_data(const st_map_data& map, const string& file_name)
 {
 	ofstream dest_file;
 	string file_header = file_name + ".h";
 	const string file_code = file_name + ".cpp";
+	const string data_type = "const unsigned short";
 
+	/* Open header file. */
 	dest_file.open(file_header.c_str());
-
 	/* Dump header. */
 	{
-		dest_file << "#ifndef ";
-		dest_file << "_" << file_name << "_H" << endl;
-		dest_file << nouppercase << "#define " << uppercase << "_" << file_name << "_H" << endl;
+		string header_guard = file_name;
+		transform(header_guard.begin(), header_guard.end(), header_guard.begin(), ::toupper);
 
-		dest_file << nouppercase << "#endif /* " << uppercase << "_" << file_name << "_H" << endl;
+		/* #ifndef _HEADER_GUARD */
+		dest_file << "#ifndef _" << header_guard << "_H" << endl;
+		/* #define _HEADER_GUARD */
+		dest_file << "#define _" << header_guard << "_H" << endl << endl;
+
+		dest_file << "//!< Length in members." << endl;
+		dest_file << "#define " << file_name << "_len_memb " << map.lenght_memb << endl << endl;
+
+		dest_file << "//!< Width in members." << endl;
+		dest_file << "#define " << file_name << "_width_memb " << map.width_memb << endl << endl;
+
+		dest_file << "//!< Height in members. " << endl;
+		dest_file << "#define " << file_name << "_height_memb " << map.height_memb << endl << endl;
+
+		dest_file << "/* Tiles: " << map.width_memb/4 << "x" << map.height_memb/4 << " */" << endl;
+		/*extern const unsigned short file_name_map[len_memb] */
+		dest_file << "extern " << data_type << " " << file_name << "_map[" << map.lenght_memb << "];" << endl << endl;
+
+		/* #endif */
+		dest_file << "#endif /* _" << header_guard << "_H" << " */" << endl;
 	}
+	/* Close header file. */
+	dest_file.close();
 
+	/* Open source file. */
+	dest_file.open(file_code.c_str());
+	/* Dump source. */
+	{
+		dest_file << showbase << internal << setfill('0');
+		dest_file << "#include \"" << file_name << ".h\"" << endl;
+		dest_file << data_type << " " << file_name << "_map[" << map.lenght_memb << "] = {" << endl;
+
+		for (unsigned int i; i < map.lenght_memb; ++i) {
+
+			/* Put break line. */
+			if ((i%map.width_memb) == 0) {
+				dest_file << endl;
+			}
+
+			dest_file << hex << setw(6) << map.data[i];
+
+			/* Put comma. */
+			if (i < (map.lenght_memb-1)) {
+				dest_file << ", ";
+			}
+		}
+
+		dest_file << "};" << endl;
+	}
+	/* Close source file. */
+	dest_file.close();
 }
 
 

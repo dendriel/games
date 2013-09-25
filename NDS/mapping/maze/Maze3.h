@@ -1,29 +1,33 @@
 /*
- * Maze2.h
+ * Maze3.h
  *
- *  Created on: 08/09/2013
+ *  Created on: 24/09/2013
  *      Author: vitor
  */
 
-#ifndef MAZE2_H_
-#define MAZE2_H_
+#ifndef MAZE3_H_
+#define MAZE3_H_
 
-#include "maze2_data.h"
+#include "map1_data.h"
+#include "Mytiles_ts.h"
 
-class Maze2: public GameMap {
+class Maze3: public GameMap {
+private:
+	//TODO: this data don't need to be GameMap attributes.
+	Mytiles_ts m_Tileset;
 
 public:
 	/**
 	 * \brief Class constructor.
 	 */
-	Maze2(void)
+	Maze3(void)
 	{
-		const size_t bg_max = 2;
+		const size_t bg_max = 1;
 		const unsigned int tile_base = 1;
 
 		/* Map size in pixels. */
-		const unsigned int size_pixel_w = 512;
-		const unsigned int size_pixel_h = 512;
+		const unsigned int size_pixel_w = 184*64;
+		const unsigned int size_pixel_h = 176*64;
 
 		/* Map size in tiles 8x8 pixels. */
 		m_SizeTile.w = size_pixel_w/8;
@@ -46,8 +50,8 @@ public:
 			m_Background[i].prio = (bg_max-1)-i;
 		}
 
-		m_Background[0].data = maze2_layer1Map;
-		m_Background[1].data = maze2_layer2Map;
+		m_Background[0].data = map1_data_map;
+
 		for (size_t base = 4, old = 0, i = 0; i < bg_max; ++i) {
 			/* Which gives 0, 4, 12.
 			 * Just to refresh: "Thompson and Dennis Ritchie favored simplicity over perfection."
@@ -58,17 +62,18 @@ public:
 		}
 
 		//!< Hold the tiles palette for every background.
-		m_Tiles = maze2SharedTiles;
+		m_Tiles = m_Tileset.data;
 
 		//!< Hold the tiles length.
-		m_TilesLen = maze2SharedTilesLen;
+		m_TilesLen =  m_Tileset.data_len_bytes;
 
 		//!< Background palette.
-		m_Palette = maze2SharedPal;
+		m_Palette = m_Tileset.pallete;
 
 		//!< Background palette length.
-		m_PaletteLen = maze2SharedPalLen;
+		m_PaletteLen = m_Tileset.pallete_len_bytes;
 	}
 };
 
-#endif /* MAZE2_H_ */
+
+#endif /* MAZE3_H_ */

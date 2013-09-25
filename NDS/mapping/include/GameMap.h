@@ -18,9 +18,6 @@
 
 class GameMap {
 public:
-	//!< Map size in pixels.
-	st_rect_size m_SizePixel;
-
 	//!< Map size in tiles 8px.
 	st_rect_size m_SizeTile;
 	

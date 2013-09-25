@@ -18,6 +18,7 @@
 #include "GameCharacter.h"
 #include "Maze1.h"
 #include "Maze2.h"
+#include "Maze3.h"
 
 /* Game resources */
 #include "man.h"
@@ -33,6 +34,7 @@ int main(void)
 
 	Maze1 *myMaze = new(Maze1);
 	Maze2 *myMaze2 = new(Maze2);
+	Maze3 *myMaze3 = new(Maze3);
 
 	/* Initialize sprite manager*/
 	vramSetBankB(VRAM_B_MAIN_SPRITE_0x06400000);
@@ -42,7 +44,7 @@ int main(void)
 	GameCharacter persona((u8*)manTiles, SCREEN_CENTER_X-16, SCREEN_CENTER_Y-16);
 	dmaCopy(manPal, SPRITE_PALETTE, 512);
 
-	screen.load_Map(myMaze);
+	screen.load_Map(myMaze3);
 
 	bool jump = 0;
 	const int jump_value = 10;
@@ -92,6 +94,8 @@ int main(void)
 
 	delete(myMaze);
 	delete(myMaze2);
+	delete(myMaze3);
+
 	return 0;
 }
 
