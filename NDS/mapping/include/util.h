@@ -16,9 +16,12 @@
 /* Helpful structures. */
 
 //!< Hold screen matrix coordinates.
-typedef struct {
+typedef struct st_offset {
 	int x;
 	int y;
+	st_offset(int _x=0, int _y=0):
+		x(_x),
+		y(_y){};
 } st_offset;
 
 //!< Hold a rectangle size and screen positioning.
@@ -47,6 +50,11 @@ typedef enum {
 	W_DOWN	= 2,
 	W_RIGHT	= 1
 } en_facing;
+
+typedef enum {
+	STEP_RIGHT = 0,
+	STEP_LEFT = 1
+} en_cur_step;
 
 /*
  * \brief Define the screen quarter that will be worked. For example:

@@ -15,13 +15,11 @@
 /* Game related includes */
 #include "util.h"
 #include "GameVideo.h"
-#include "GameCharacter.h"
+#include "Jhon.h"
 #include "Maze1.h"
 #include "Maze2.h"
 #include "Maze3.h"
 
-/* Game resources */
-#include "man.h"
 
 
 int main(void)
@@ -41,13 +39,12 @@ int main(void)
 	oamInit(&oamMain, SpriteMapping_1D_128, false);
 
 	/* Initialize character. */
-	GameCharacter persona((u8*)manTiles, SCREEN_CENTER_X-16, SCREEN_CENTER_Y-16);
+	Jhon persona(SCREEN_CENTER_X-16, SCREEN_CENTER_Y-16);
 	dmaCopy(manPal, SPRITE_PALETTE, 512);
 
-	screen.load_Map(myMaze3);
+	screen.load_Map(myMaze);
 
-	bool jump = 0;
-	const int jump_value = 10;
+	int step_value = 3;
 
 	while(true)
 	{
@@ -56,40 +53,39 @@ int main(void)
 
 		if(keys & KEY_UP) {
 			persona.move(W_UP);
-			screen.scroll_Background(0, -1+(-1*jump_value*jump));
+			screen.scroll_Background(0, -1*step_value);
 		}
 
 		if(keys & KEY_DOWN) {
 			persona.move(W_DOWN);
-			screen.scroll_Background(0, 1+(jump_value*jump));
+			screen.scroll_Background(0, step_value);
 		}
 
 	    if(keys & KEY_LEFT) {
 	    	persona.move(W_LEFT);
-			screen.scroll_Background(-1+(-1*jump_value*jump), 0);
+			screen.scroll_Background(-1*step_value, 0);
 	    }
 
 		if(keys & KEY_RIGHT) {
 			persona.move(W_RIGHT);
-			screen.scroll_Background(1+(jump_value*jump), 0);
+			screen.scroll_Background(step_value, 0);
 		}
 
 		if(keys & KEY_B) {
-			screen.load_Map(myMaze);
+			step_value++;
+			debug("step_value: %d", step_value);
 			//x = y = 0;
 		}
 
 		if(keys & KEY_A) {
-			jump = !jump;
-			for (int j = 0; j < Layer_1MapLen; j++) {
-				std::cout << j;
-			}
+			step_value--;
+			debug("step_value: %d", step_value);
 		}
-
-		swiWaitForVBlank();
 		//consoleClear();
 
 		oamUpdate(&oamMain);
+		int count = 5;
+		while(count--) swiWaitForVBlank();
 	}
 
 	delete(myMaze);

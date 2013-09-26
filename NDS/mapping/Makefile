@@ -25,9 +25,9 @@ include $(DEVKITARM)/ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source
+SOURCES		:=	source base character
 DATA		:=
-INCLUDES	:=	include maze tileset
+INCLUDES	:=	include maze tileset base/include character/include
 GRAPHICS	:=	gfx
 SPRITES		:=  sprites
 AUDIO		:=	audio
