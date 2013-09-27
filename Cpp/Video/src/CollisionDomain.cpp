@@ -70,6 +70,9 @@ void CollisionDomain::find_vertex_area_position(st_collVertex& vertex, Collision
 {
 	unsigned int x_pos = vertex.point.x;
 	unsigned int y_pos = vertex.point.y;
+	// TODO: I believe that the code bellow should be:
+	// unsigned int x1_pos = x_pos + vertex.point.w;
+	//unsigned int y1_pos =  y_pos + vertex.point.h;
 	unsigned int x1_pos = x_pos + vertex.point.h;
 	unsigned int y1_pos =  y_pos + vertex.point.w;
 	double area_id;
