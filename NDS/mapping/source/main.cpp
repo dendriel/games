@@ -42,7 +42,7 @@ int main(void)
 	Jhon persona(SCREEN_CENTER_X-16, SCREEN_CENTER_Y-16);
 	dmaCopy(manPal, SPRITE_PALETTE, 512);
 
-	screen.load_Map(myMaze);
+	screen.load_Map(myMaze3);
 
 	int step_value = 3;
 
