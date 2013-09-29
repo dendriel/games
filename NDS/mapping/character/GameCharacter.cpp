@@ -6,6 +6,9 @@
  */
 
 #include "GameCharacter.h"
+#include "timming.h"
+
+#define CHAR_STEP_DELAY 2 // vsync cycles
 
 GameCharacter::GameCharacter(u8 *charset, int x, int y):
 VisualElement(charset, m_Pos),
@@ -42,8 +45,16 @@ void GameCharacter::move(en_facing direction)
 
 	case W_DOWN:
 		m_Facing = W_DOWN;
-		if(m_Step)
+		if(m_Step) {
+			offset = 6*SPRITE_LENGHT_BYTES;
+			update_sprite(offset);
+			GSLEEP(CHAR_STEP_DELAY);
+			offset = 8*SPRITE_LENGHT_BYTES;
+			update_sprite(offset);
+			GSLEEP(CHAR_STEP_DELAY);
 			offset = 7*SPRITE_LENGHT_BYTES;
+			update_sprite(offset);
+		}
 		else
 			offset = 6*SPRITE_LENGHT_BYTES;
 		break;

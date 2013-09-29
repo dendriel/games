@@ -14,6 +14,7 @@
 
 /* Game related includes */
 #include "util.h"
+#include "timming.h"
 #include "GameVideo.h"
 #include "Jhon.h"
 #include "Maze1.h"
@@ -46,6 +47,8 @@ int main(void)
 
 	int step_value = 3;
 
+	// TODO: the caracter class give delays inside its methods. Must be a control
+	// thread.
 	while(true)
 	{
 		scanKeys();
@@ -84,8 +87,7 @@ int main(void)
 		//consoleClear();
 
 		oamUpdate(&oamMain);
-		int count = 5;
-		while(count--) swiWaitForVBlank();
+		GSLEEP(1);
 	}
 
 	delete(myMaze);
