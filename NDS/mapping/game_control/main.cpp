@@ -1,30 +1,29 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include <assert.h>
 #include <string.h>
 #include <nds.h>
-#include <iostream>
+#include <iostream>*/
 
 /* References */
+/*
 #include "nds/arm9/video.h"
 #include "nds/arm9/console.h"
 #include "nds/arm9/input.h"
 #include "nds/arm9/background.h"
 #include "nds/arm9/sprite.h"
-#include "nds/system.h"
+#include "nds/system.h"*/
 
-/* Game related includes */
-#include "util.h"
-#include "timming.h"
-#include "GameVideo.h"
-#include "Jhon.h"
-#include "Maze1.h"
-#include "Maze2.h"
-#include "Maze3.h"
-
+#include "GameEngine.h"
 
 
 int main(void)
 {
+	GameEngine game_engine;
+
+	game_engine.start_game();
+
+	return 0;
+#if 0
 	GameVideo screen;
 
 	/* Initialize debugging console. */
@@ -93,7 +92,6 @@ int main(void)
 	delete(myMaze);
 	delete(myMaze2);
 	delete(myMaze3);
-
-	return 0;
+#endif
 }
 

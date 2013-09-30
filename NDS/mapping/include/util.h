@@ -46,9 +46,10 @@ typedef struct {
 //!< Hold character facing direction.
 typedef enum {
 	W_UP	= 0,
-	W_LEFT	= 3,
+	W_RIGHT	= 1,
 	W_DOWN	= 2,
-	W_RIGHT	= 1
+	W_LEFT	= 3,
+	W_DEFAULT		//!< None direction or keep the previous direction.
 } en_facing;
 
 typedef enum {

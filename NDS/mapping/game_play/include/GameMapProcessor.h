@@ -1,12 +1,12 @@
 /*
- * BackgroundControl.h
+ * GameMapProcessor.h
  *
  *  Created on: 07/09/2013
  *      Author: vitor
  */
 
-#ifndef GAMEVIDEO_H_
-#define GAMEVIDEO_H_
+#ifndef GAMEMAPPROCESSOR_H_
+#define GAMEMAPPROCESSOR_H_
 
 #include <nds.h>
 
@@ -27,7 +27,7 @@ typedef enum {
 /**
  *	\brief Hold screen and mapping issues.
  */
-class GameVideo {
+class GameMapProcessor {
 private:
 	GameMap *m_LoadedMap;					//!< Loaded map object reference.
 	st_rect_size m_LoadedMap_data_offset;	//!< Map offset to copy data (in tiles 32x32).
@@ -38,7 +38,7 @@ public:
 	/**
 	 * \brief Class constructor.
 	 */
-	GameVideo(void);
+	GameMapProcessor(void);
 
 	/**
 	 * \brief Load the given map into the game.
@@ -85,4 +85,4 @@ private:
 
 };
 
-#endif /* GAMEVIDEO_H_ */
+#endif /* GAMEMAPPROCESSOR_H_ */

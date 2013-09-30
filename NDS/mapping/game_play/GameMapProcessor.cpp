@@ -1,11 +1,11 @@
 /*
- * BackgroundControl.cpp
+ * GameMapProcessor.cpp
  *
  *  Created on: 07/09/2013
  *      Author: vitor
  */
 
-#include "GameVideo.h"
+#include "GameMapProcessor.h"
 
 #include <assert.h>
 #include <string.h>
@@ -36,7 +36,7 @@
 /* Public Functions Declaration																	 */
 /*************************************************************************************************/
 
-GameVideo::GameVideo(void):
+GameMapProcessor::GameMapProcessor(void):
 m_LoadedMap(0)
 {
 	memset(&m_ScrollOffset, 0, sizeof(m_ScrollOffset));
@@ -48,14 +48,14 @@ m_LoadedMap(0)
 
 /*************************************************************************************************/
 
-void GameVideo::load_Map(GameMap *map)
+void GameMapProcessor::load_Map(GameMap *map)
 {
 	load_Map(map, map->m_CharStartPoint.x, map->m_CharStartPoint.y);
 }
 
 /*************************************************************************************************/
 
-void GameVideo::load_Map(GameMap *map, const int x, const int y)
+void GameMapProcessor::load_Map(GameMap *map, const int x, const int y)
 {
 	size_t i;
 
@@ -98,7 +98,7 @@ void GameVideo::load_Map(GameMap *map, const int x, const int y)
 
 /*************************************************************************************************/
 
-void GameVideo::scroll_Background(const int x, const int y)
+void GameMapProcessor::scroll_Background(const int x, const int y)
 {
 	/* Can't offset more than 1 tile per frame. */
 	if ((x > TILE_SIZE || x < TILE_SIZE*-1) || (y > TILE_SIZE || y < TILE_SIZE*-1)) {
@@ -146,7 +146,7 @@ void GameVideo::scroll_Background(const int x, const int y)
 
 /*************************************************************************************************/
 
-int GameVideo::load_MapData(en_direction direction)
+int GameMapProcessor::load_MapData(en_direction direction)
 {
 	switch(direction) {
 		case DIRECT_LEFT:
@@ -202,7 +202,7 @@ int GameVideo::load_MapData(en_direction direction)
 /* Private Functions Declaration																 */
 /*************************************************************************************************/
 
-void GameVideo::draw_LoadedMap(void)
+void GameMapProcessor::draw_LoadedMap(void)
 {
 	unsigned int i;
 
@@ -223,20 +223,11 @@ void GameVideo::draw_LoadedMap(void)
 
 /*************************************************************************************************/
 
-void GameVideo::draw_LayerQuarter(
+void GameMapProcessor::draw_LayerQuarter(
 	const en_screen_quarter screen_quarter,
 	const unsigned short *origin,
 	u16 *dest)
 {
-	/*
-	 * TODO: I believe that the map data is organized as follow:
-	 * 1111|3333
-	 * 1111|3333
-	 * ---------
-	 * 2222|4444
-	 * 2222|4444
-	 *  Then, because of this whe can't copy the data continuously.
-	 */
 	const unsigned int map_width = m_LoadedMap->m_SizeTile.w;
 	const unsigned int mem_to_copy = TILES_TO_CP*TILE_LEN_BYTES;
 	const unsigned int map_data_offset = m_LoadedMap_data_offset.pos.x*4 + m_LoadedMap_data_offset.pos.y*m_LoadedMap->m_SizeTile.w*4;
