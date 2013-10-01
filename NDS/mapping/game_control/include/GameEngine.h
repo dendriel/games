@@ -11,6 +11,7 @@
 #include "GameMenu.h"
 #include "GameCredits.h"
 #include "GamePassword.h"
+#include "scenery.h"
 
 /**
  * \brief Main class. Hold the gaming interaction.
@@ -34,7 +35,11 @@ private:
 	 */
 	void execute_operation(const en_menu_options menu_choice);
 
-	void execute_opt_start_game(const int level);
+	/**
+	 * \brief Start a new game.
+	 * \parameter Starting level of the game.
+	 */
+	void execute_opt_start_game(const en_scen_level level);
 
 	/**
 	 * \brief Splash screen.

@@ -9,6 +9,7 @@
 
 /* References */
 #include "nds/arm9/sprite.h"
+#include "util.h"
 
 
 /*************************************************************************************************/
@@ -37,4 +38,5 @@ void VisualElement::update_oam(void)
 {
 	oamSet(&oamMain, 0, m_Pos.x, m_Pos.y, 0, 0, SpriteSize_32x32, SpriteColorFormat_256Color,
 			m_Sprite_mem, -1, false, false, false, false, false);
+	debug("update_oam; charset: %p; sprite_mem: %p", m_Charset_mem, m_Sprite_mem);
 }

@@ -43,15 +43,15 @@ public:
 	/**
 	 * \brief Load the given map into the game.
 	 * \parameter map Map to be loaded.
-	 * \parameter x Starting horizontal position of the map.
-	 * \parameter y Starting vertical position of the map.
+	 * \parameter x_offset_tiles Starting horizontal position of the map.
+	 * \parameter y_offset_tiles Starting vertical position of the map.
 	 * \note First form will use the own map specified starting point.
 	 */
 	void load_Map(GameMap *map);
-	void load_Map(GameMap *map, const int x, const int y);
+	void load_Map(GameMap *map, const int x_offset_tiles, const int y_offset_tiles);
 
 	/**
-	 * \brief Scroll all the background layers by x,y offset.
+	 * \brief Scroll all the background layers by x, y offset.
 	 * \parameter x Horizontal offset.
 	 * \parameter x Vertical offset.
 	 * \note Scroll when it's possible, load data by demand.

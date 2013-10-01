@@ -9,9 +9,13 @@
 #define UTIL_H_
 
 #include <stdio.h>
+#include <nds.h>
+#include "timming.h"
 
 /* Macros */
 #define debug(fmt,args...) (void)(iprintf(fmt"\n",##args))
+
+#define loop() while(1) GSLEEP(1);
 
 /* Helpful structures. */
 

@@ -21,6 +21,16 @@ public:
 	 * \return The held direction.
 	 */
 	en_facing get_held_direction(void);
+
+	/**
+	 * \brief Start the thread to read user actions.
+	 */
+	void start_polling(void);
+private:
+	/**
+	 * \brief Loop function to read user actions.
+	 */
+	int poll_user_actions(void);
 };
 
 

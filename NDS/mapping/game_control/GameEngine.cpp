@@ -34,7 +34,7 @@ void GameEngine::execute_operation(const en_menu_options menu_choice)
 			break;
 		case MENU_OPT_START_GAME:
 			/* Start the game play. */
-			this->execute_opt_start_game(-1);
+			this->execute_opt_start_game(SCEN_LEVEL_NONE);
 			break;
 		default:
 			break;
@@ -43,7 +43,7 @@ void GameEngine::execute_operation(const en_menu_options menu_choice)
 
 /*************************************************************************************************/
 
-void GameEngine::execute_opt_start_game(const int level)
+void GameEngine::execute_opt_start_game(const en_scen_level level)
 {
 	GamePlay game_play;
 	game_play.start(level);

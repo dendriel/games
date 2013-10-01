@@ -27,6 +27,8 @@
 #define TILE_LEN_BYTES 2
 #define TILES_TO_CP 32
 #define TILE_SIZE 32
+#define TILE_W_SIZE 32
+#define TILE_H_SIZE 32
 #define MAP_H_SIZE 184
 #define VERTICAL_OFFSET 32
 #define NO_VERTICAL_OFFSET 0
@@ -41,21 +43,18 @@ m_LoadedMap(0)
 {
 	memset(&m_ScrollOffset, 0, sizeof(m_ScrollOffset));
 	memset(&m_LoadedMap_data_offset, 0, sizeof(m_LoadedMap_data_offset));
-
-	videoSetMode(MODE_0_2D);
-	vramSetBankA(VRAM_A_MAIN_BG_0x06000000);
 }
 
 /*************************************************************************************************/
 
 void GameMapProcessor::load_Map(GameMap *map)
 {
-	load_Map(map, map->m_CharStartPoint.x, map->m_CharStartPoint.y);
+	load_Map(map, 0, 0);
 }
 
 /*************************************************************************************************/
 
-void GameMapProcessor::load_Map(GameMap *map, const int x, const int y)
+void GameMapProcessor::load_Map(GameMap *map, const int x_offset_tiles, const int y_offset_tiles)
 {
 	size_t i;
 
@@ -90,10 +89,15 @@ void GameMapProcessor::load_Map(GameMap *map, const int x, const int y)
 	m_LoadedMap_data_offset.w = (m_LoadedMap->m_SizeTile32.w - 512/32);
 	m_LoadedMap_data_offset.h = (m_LoadedMap->m_SizeTile32.h - 512/32);
 
-	m_ScrollOffset.pos.x = x;
-	m_ScrollOffset.pos.y = y;
+	m_ScrollOffset.pos.x = x_offset_tiles*TILE_W_SIZE;
+	m_ScrollOffset.pos.y = y_offset_tiles*TILE_H_SIZE;
 
-	draw_LoadedMap();
+
+	//TODO: Draw the loaded map at the given position. Differ character absolute position from relative position.
+	// Absolute position will be passed to oamSpriteManager, while relative position is passed to MapProcessor.
+	this->draw_LoadedMap();
+	GSLEEP(1);
+	this->scroll_Background(m_ScrollOffset.pos.x, m_ScrollOffset.pos.y);
 }
 
 /*************************************************************************************************/

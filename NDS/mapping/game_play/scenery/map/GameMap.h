@@ -41,9 +41,6 @@ public:
 
 	//!< Background palette length.
 	size_t m_PaletteLen;
-
-	//!< Character starting point. TODO: maybe this data will be in a more embracing class.
-	st_offset m_CharStartPoint;
 };
 
 

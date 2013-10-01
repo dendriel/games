@@ -10,10 +10,11 @@
 
 #define CHAR_STEP_DELAY 2 // vsync cycles
 
-GameCharacter::GameCharacter(u8 *charset, int x, int y):
+GameCharacter::GameCharacter(u8 *charset, size_t step_len_pixels, int x, int y):
 VisualElement(charset, m_Pos),
 m_Pos(x, y),
 m_Facing(W_DOWN),
+m_StepLen_pixes(step_len_pixels),
 m_Step(1)
 {
 	update_sprite(0);

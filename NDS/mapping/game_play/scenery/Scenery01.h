@@ -11,14 +11,16 @@
 #include "GameScenery.h"
 #include "Maze3.h"
 
-class Scenery01: private GameScenery {
+class Scenery01: public GameScenery {
 public:
 	/**
 	 * \brief Class constructor.
 	 */
 	Scenery01(void)
 	{
-		m_Map = new (Maze3);
+		m_Map = new Maze3;
+		m_CharStartPoint_tiles.x = 10;
+		m_CharStartPoint_tiles.y = 10;
 	}
 
 	/**
