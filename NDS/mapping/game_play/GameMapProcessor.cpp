@@ -89,15 +89,13 @@ void GameMapProcessor::load_Map(GameMap *map, const int x_offset_tiles, const in
 	m_LoadedMap_data_offset.w = (m_LoadedMap->m_SizeTile32.w - 512/32);
 	m_LoadedMap_data_offset.h = (m_LoadedMap->m_SizeTile32.h - 512/32);
 
-	m_ScrollOffset.pos.x = x_offset_tiles*TILE_W_SIZE;
-	m_ScrollOffset.pos.y = y_offset_tiles*TILE_H_SIZE;
+	m_ScrollOffset.pos.x = 0*TILE_W_SIZE;
+	m_ScrollOffset.pos.y = 0*TILE_H_SIZE;
 
-
-	//TODO: Draw the loaded map at the given position. Differ character absolute position from relative position.
-	// Absolute position will be passed to oamSpriteManager, while relative position is passed to MapProcessor.
 	this->draw_LoadedMap();
-	GSLEEP(1);
-	this->scroll_Background(m_ScrollOffset.pos.x, m_ScrollOffset.pos.y);
+
+	/* Draw the loaded map at the given position. */
+	this->scroll_Background_tiles(x_offset_tiles, y_offset_tiles);
 }
 
 /*************************************************************************************************/
@@ -145,7 +143,6 @@ void GameMapProcessor::scroll_Background(const int x, const int y)
 	}
 
 	draw_LoadedMap();
-	bgUpdate();
 }
 
 /*************************************************************************************************/
@@ -204,6 +201,19 @@ int GameMapProcessor::load_MapData(en_direction direction)
 
 /*************************************************************************************************/
 /* Private Functions Declaration																 */
+/*************************************************************************************************/
+
+void GameMapProcessor::scroll_Background_tiles(const int x_tiles, const int y_tiles)
+{
+	for (int i = 0; i <= x_tiles; ++i) {
+		this->scroll_Background(TILE_W_SIZE, 0);
+	}
+
+	for (int j = 0; j <= y_tiles; ++j) {
+		this->scroll_Background(0, TILE_H_SIZE);
+	}
+}
+
 /*************************************************************************************************/
 
 void GameMapProcessor::draw_LoadedMap(void)

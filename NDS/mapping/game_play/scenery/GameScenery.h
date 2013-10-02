@@ -17,7 +17,7 @@ class GameScenery {
 protected:
 	//!< Scenery map data.
 	GameMap *m_Map;
-	//!< Character starting point int tiles.
+	//!< Character starting point in tiles (Relative position).
 	st_offset m_CharStartPoint_tiles;
 	// StaticCollisionDomain
 	// DynamicCollisionDomain

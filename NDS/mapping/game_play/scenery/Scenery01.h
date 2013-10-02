@@ -10,6 +10,7 @@
 
 #include "GameScenery.h"
 #include "Maze3.h"
+#include "Maze2.h"
 
 class Scenery01: public GameScenery {
 public:

@@ -22,6 +22,5 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   
   last updated: 24/09/2013
   
-  - Remade the GameMap class. I believe that there is some chunk in there and is needed to assemble
-  the map static collision domain to it;
   - Add source codes instead of the compiled objects where is possible.
+  - Add paging to the background to remove the ugly scrolling effects.

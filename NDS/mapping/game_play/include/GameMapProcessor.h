@@ -53,12 +53,18 @@ public:
 	/**
 	 * \brief Scroll all the background layers by x, y offset.
 	 * \parameter x Horizontal offset.
-	 * \parameter x Vertical offset.
+	 * \parameter y Vertical offset.
 	 * \note Scroll when it's possible, load data by demand.
 	 */
 	void scroll_Background(const int x, const int y);
 
 private:
+	/**
+	 * \brief Scroll all the background layers by x, y in TILES.
+	 * \parameter x_tiles Horizontal offset.
+	 * \parameter y_tiles Vertical offset.
+	 */
+	void scroll_Background_tiles(const int x_tiles, const int y_tiles);
 
 	/**
 	 * \brief Draw the loaded map into the screen.

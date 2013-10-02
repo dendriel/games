@@ -35,8 +35,6 @@ public:
 	VisualElement(u8* charset = 0, st_offset& offset = ms_Offset);
 
 	void update_sprite(const unsigned int offset_bytes);
-
-	void update_oam(void);
 };
 
 #endif /* VISUALELEMENT_H_ */

@@ -23,7 +23,7 @@ void convConversor::convert(Map& origin, st_map_data& dest, Tileset& tileset)
 	for (size_t tile_pos = 0; tile_pos < origin.len_tiles; ++tile_pos) {
 
 		/* Mappy win32 set tile set 0 as transparent, so, we start counting by 1*/
-		const unsigned int tile_id = origin.tiles_map[tile_pos] + 1;
+		const unsigned int tile_id = origin.tiles_map[tile_pos] - 1;
 
 		/* Find "from" position to copy. */
 		const size_t tileset_offset = find_total_offset(tile_id, tileset.map_width_tiles);

@@ -64,6 +64,11 @@ private:
 	 * \parameter cur_scenery Current playing scenery.
 	 */
 	void interact(GameScenery *cur_scenery);
+
+	/**
+	 * \brief Process user action.
+	 */
+	void poll_user_interaction(void);
 };
 
 #endif /* GAMEPLAY_H_ */

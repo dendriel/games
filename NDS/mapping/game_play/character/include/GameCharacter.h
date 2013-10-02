@@ -20,6 +20,8 @@ private:
 public:
 	/**
 	 * \brief Class constructor.
+	 * \parameter x Character horizontal absolute position.
+	 * \parameter y Character vertical absolute position.
 	 */
 	GameCharacter(u8 *charset = 0, size_t step_len_pixels = 0, int x = 0, int y = 0);
 

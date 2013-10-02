@@ -55,7 +55,7 @@ void GamePlay::load_level(const en_scen_level level)
 			cur_scenery->get_CharStartPoint_y());
 
 	/* Load character. */
-	m_Character = new Jhon(SCREEN_CENTER_X-16, SCREEN_CENTER_Y-16);
+	m_Character = new Jhon();
 
 	/* Let the user play the game. =D */
 	this->interact(cur_scenery);
@@ -65,40 +65,49 @@ void GamePlay::load_level(const en_scen_level level)
 
 void GamePlay::interact(GameScenery *cur_scenery)
 {
-	const size_t step_len = m_Character->get_StepLen_pixels();
 
 	while(true) {
-		//TODO: the user interaction must be inside a thread.
-		en_facing action = m_Controller.get_held_direction();
 
-		switch (action) {
+		this->poll_user_interaction();
 
-		case W_UP:
-			m_Character->move(W_UP);
-			m_MapProcessor.scroll_Background(0, -1*step_len);
-			break;
-
-		case W_DOWN:
-			m_Character->move(W_DOWN);
-			m_MapProcessor.scroll_Background(0, step_len);
-			break;
-
-		case W_LEFT:
-			m_Character->move(W_LEFT);
-			m_MapProcessor.scroll_Background(-1*step_len, 0);
-			break;
-
-		case W_RIGHT:
-			m_Character->move(W_RIGHT);
-			m_MapProcessor.scroll_Background(step_len, 0);
-			break;
-
-		default:
-			break;
-		}
-
-		oamUpdate(&oamMain);
 		GSLEEP(1);
+		bgUpdate();
+		oamUpdate(&oamMain);
+	}
+}
+
+/*************************************************************************************************/
+
+void GamePlay::poll_user_interaction(void)
+{
+	//TODO: the user interaction should (=/) be inside a thread.
+	const size_t step_len = m_Character->get_StepLen_pixels();
+	en_facing action = m_Controller.get_held_direction();
+
+	switch (action) {
+
+	case W_UP:
+		m_Character->move(W_UP);
+		m_MapProcessor.scroll_Background(0, -1*step_len);
+		break;
+
+	case W_DOWN:
+		m_Character->move(W_DOWN);
+		m_MapProcessor.scroll_Background(0, step_len);
+		break;
+
+	case W_LEFT:
+		m_Character->move(W_LEFT);
+		m_MapProcessor.scroll_Background(-1*step_len, 0);
+		break;
+
+	case W_RIGHT:
+		m_Character->move(W_RIGHT);
+		m_MapProcessor.scroll_Background(step_len, 0);
+		break;
+
+	default:
+		break;
 	}
 }
 
@@ -117,7 +126,7 @@ GameScenery *GamePlay::create_scenery(en_scen_level level)
 	return NULL;
 }
 
-
+/*************************************************************************************************/
 
 void GamePlay::init_basics(void)
 {

@@ -81,6 +81,8 @@ typedef enum {
 /* Helpful definitions. */
 #define SCREEN_CENTER_X SCREEN_WIDTH/2
 #define SCREEN_CENTER_Y SCREEN_HEIGHT/2
+#define SPRITE_SCREEN_CENTER_X SCREEN_CENTER_X-16
+#define SPRITE_SCREEN_CENTER_Y SCREEN_CENTER_Y-16
 #define SCREEN_DRAW_BOUND_X(_size_x) _size_x - SCREEN_WIDTH
 #define SCREEN_DRAW_BOUND_Y(_size_y) _size_y - SCREEN_HEIGHT
 #define SCREEN_WIDTH_IN_TILES 8

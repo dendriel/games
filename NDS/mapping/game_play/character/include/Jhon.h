@@ -22,7 +22,7 @@ public:
 	/**
 	 * \brief Class constructor.
 	 */
-	Jhon(const unsigned int x = 0, const unsigned int y = 0);
+	Jhon(const unsigned int x = SPRITE_SCREEN_CENTER_X, const unsigned int y = SPRITE_SCREEN_CENTER_Y);
 };
 
 
