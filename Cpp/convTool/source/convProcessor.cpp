@@ -14,6 +14,7 @@
 #include <iomanip>
 
 #include "Map1_mp.h"
+#include "Map2_mp.h"
 #include "Maze1_mp.h"
 #include "Mytiles_ts.h"
 
@@ -23,7 +24,7 @@ using namespace std;
 
 void convProcessor::start(void)
 {
-	// Load data from files
+	// Load data from files (TODO)
 	// do conversion.
 	// Save data to files.
 	// end.
@@ -31,6 +32,7 @@ void convProcessor::start(void)
 	convConversor conversor;
 	//Map1_mp map1;
 	Maze1_mp map1;
+	//Map2_mp map1;
 	Mytiles_ts mytiles_ts;
 
 	st_map_data dest;
@@ -47,6 +49,8 @@ void convProcessor::start(void)
 	}
 
 	save_data(dest, "map1_data");
+
+	// Also must map collision domain from tile set and map object.
 
 	free(dest.data);
 }
@@ -101,7 +105,7 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 		dest_file << "#include \"" << file_name << ".h\"" << endl;
 		dest_file << data_type << " " << file_name << "_map[" << map.lenght_memb << "] = {" << endl;
 
-		for (unsigned int i; i < map.lenght_memb; ++i) {
+		for (unsigned int i = 0; i < map.lenght_memb; ++i) {
 
 			/* Put break line. */
 			if ((i%map.width_memb) == 0) {
@@ -110,7 +114,7 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 
 			dest_file << hex << setw(6) << map.data[i];
 
-			/* Put comma. */
+			/* Don't put comma if is the last member. */
 			if (i < (map.lenght_memb-1)) {
 				dest_file << ", ";
 			}
