@@ -9,6 +9,7 @@
 
 #include <assert.h>
 #include <string.h>
+#include <assert.h>
 
 /* References */
 #include "nds/arm9/video.h"
@@ -27,8 +28,6 @@
 #define TILE_LEN_BYTES 2
 #define TILES_TO_CP 32
 #define TILE_SIZE 32
-#define TILE_W_SIZE 32
-#define TILE_H_SIZE 32
 #define MAP_H_SIZE 184
 #define VERTICAL_OFFSET 32
 #define NO_VERTICAL_OFFSET 0
@@ -62,9 +61,17 @@ void GameMapProcessor::load_Map(GameMap *map)
 
 /*************************************************************************************************/
 
-void GameMapProcessor::load_Map(GameMap *map, const int x_offset_tiles, const int y_offset_tiles)
+void GameMapProcessor::load_Map(GameMap *map, const unsigned int x_offset_tiles, const unsigned  int y_offset_tiles)
 {
 	size_t i;
+
+	if ((x_offset_tiles < SPRITE_SCREEN_CENTER_X_TILES) || (y_offset_tiles < SPRITE_SCREEN_CENTER_Y_TILES) ||
+			(x_offset_tiles > (map->m_SizeTile32.w - SPRITE_SCREEN_CENTER_X_TILES)) ||
+			(y_offset_tiles > (map->m_SizeTile32.h - SPRITE_SCREEN_CENTER_Y_TILES))) {
+		debug("Invalid character starting point.");
+		assert(0);
+		return;
+	}
 
 	for (i = 0; i < map->m_LayersCount; ++i) {
 		/* Initialize the layers of the background. */
@@ -93,26 +100,25 @@ void GameMapProcessor::load_Map(GameMap *map, const int x_offset_tiles, const in
 		m_ScrollOffset.w = 512 - SCREEN_WIDTH;
 		m_ScrollOffset.h = 512 - SCREEN_HEIGHT;
 	//}
+
 	/* Find map data loading bounds. */
 	m_LoadedMap_data_offset.w = (m_LoadedMap->m_SizeTile32.w - 512/32);
 	m_LoadedMap_data_offset.h = (m_LoadedMap->m_SizeTile32.h - 512/32);
 
-	m_ScrollOffset.pos.x = 0*TILE_W_SIZE;
-	m_ScrollOffset.pos.y = 0*TILE_H_SIZE;
-
 	this->draw_LoadedMap();
 
 	/* Draw the loaded map at the given position. */
-	this->scroll_Background_tiles(x_offset_tiles, y_offset_tiles);
+	this->scroll_Background_tiles(	(x_offset_tiles - SPRITE_SCREEN_CENTER_X_TILES),
+									(y_offset_tiles - SPRITE_SCREEN_CENTER_Y_TILES));
 }
 
 /*************************************************************************************************/
 
-void GameMapProcessor::scroll_Background(const int x, const int y)
+int GameMapProcessor::scroll_Background(const int x, const int y)
 {
 	/* Can't offset more than 1 tile per frame. */
 	if ((x > TILE_SIZE || x < TILE_SIZE*-1) || (y > TILE_SIZE || y < TILE_SIZE*-1)) {
-		return;
+		return -2;
 	}
 
 	unsigned int i;
@@ -139,7 +145,7 @@ void GameMapProcessor::scroll_Background(const int x, const int y)
 		if (load_MapData(load_data) != 0) {
 			// map limits reached.
 			debug("Invalid bounds");
-			return;
+			return -1;
 		}
 	}
 
@@ -151,6 +157,8 @@ void GameMapProcessor::scroll_Background(const int x, const int y)
 	}
 
 	draw_LoadedMap();
+
+	return 0;
 }
 
 /*************************************************************************************************/
@@ -213,11 +221,11 @@ int GameMapProcessor::load_MapData(en_direction direction)
 
 void GameMapProcessor::scroll_Background_tiles(const int x_tiles, const int y_tiles)
 {
-	for (int i = 0; i <= x_tiles; ++i) {
+	for (int i = 0; i < x_tiles; ++i) {
 		this->scroll_Background(TILE_W_SIZE, 0);
 	}
 
-	for (int j = 0; j <= y_tiles; ++j) {
+	for (int j = 0; j < y_tiles; ++j) {
 		this->scroll_Background(0, TILE_H_SIZE);
 	}
 }

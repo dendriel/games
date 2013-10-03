@@ -74,6 +74,8 @@ void GamePlay::load_level(const en_scen_level level)
 
 	/* Load character. */
 	m_Character = new Jhon();
+	m_Character->set_m_Pos_relative(m_Scenery->get_CharStartPoint_x()*TILE_W_SIZE,
+									m_Scenery->get_CharStartPoint_y()*TILE_H_SIZE);
 	m_Character->set_map_processor(m_MapProcessor);
 }
 

@@ -53,15 +53,18 @@ public:
 	 * \note First form will use the own map specified starting point.
 	 */
 	void load_Map(GameMap *map);
-	void load_Map(GameMap *map, const int x_offset_tiles, const int y_offset_tiles);
+	void load_Map(GameMap *map, const unsigned  int x_offset_tiles, const unsigned  int y_offset_tiles);
 
 	/**
 	 * \brief Scroll all the background layers by x, y offset.
 	 * \parameter x Horizontal offset.
 	 * \parameter y Vertical offset.
 	 * \note Scroll when it's possible, load data by demand.
+	 * \return 0 if the could scroll the background;
+	 * -1 if there is no more background to load;
+	 * -2 if received an invalid parameter (x or y > TILE_SIZE; x or y < 0).
 	 */
-	void scroll_Background(const int x, const int y);
+	int scroll_Background(const int x, const int y);
 
 private:
 	/**

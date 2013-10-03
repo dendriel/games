@@ -14,9 +14,10 @@
 
 class GameCharacter: private VisualElement {
 private:
-	st_offset m_Pos;				//!< Position of the character in the screen (not the scenery. Absolute position).
+	st_offset m_Pos_absolute;	//!< Position of the character in the screen (not the scenery. Absolute position in Pixels).
+	st_offset m_Pos_relative;	//!< Position of the character in the screen (not the scenery. Relative position in Pixels).
 	en_facing m_Facing;				//!< Facing direction.
-	const size_t m_StepLen_pixes;	//!< Total Movement size in pixels.
+	const size_t m_StepLen_pixes;	//!< Total Movement size in pixels. The right step will have an increment of 1 pixel, so the total walked pixels is a full tile size.
 	GameMapProcessor *m_MapProcessor;
 
 public:
@@ -53,6 +54,20 @@ public:
 	{
 		return m_StepLen_pixes;
 	}
+
+	inline void set_m_Pos_relative(const int x_pixels, const int y_pixels)
+	{
+		m_Pos_relative.x = x_pixels;
+		m_Pos_relative.y = y_pixels;
+	}
+
+private:
+	/**
+	 * \brief Move the map and update character relative position.
+	 * \parameter x Character horizontal relative position.
+	 * \parameter y Character vertical relative position.
+	 */
+	void move_background(const int x_pixels, const int y_pixels);
 
 };
 

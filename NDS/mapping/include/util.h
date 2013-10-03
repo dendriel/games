@@ -79,13 +79,22 @@ typedef enum {
 } en_screen_quarter;
 
 /* Helpful definitions. */
-#define SCREEN_CENTER_X SCREEN_WIDTH/2
-#define SCREEN_CENTER_Y SCREEN_HEIGHT/2
-#define SPRITE_SCREEN_CENTER_X SCREEN_CENTER_X-16
-#define SPRITE_SCREEN_CENTER_Y SCREEN_CENTER_Y-16
-#define SCREEN_DRAW_BOUND_X(_size_x) _size_x - SCREEN_WIDTH
-#define SCREEN_DRAW_BOUND_Y(_size_y) _size_y - SCREEN_HEIGHT
+#define SCREEN_CENTER_X SCREEN_WIDTH/2		/* 256/2 = 128 = tile 4 */
+#define SCREEN_CENTER_Y SCREEN_HEIGHT/2		/* 192/2 = 96 = tile 3*/
+
+#define SPRITE_SCREEN_CENTER_X SCREEN_CENTER_X//-16
+#define SPRITE_SCREEN_CENTER_Y SCREEN_CENTER_Y-4
+
+#define SPRITE_SCREEN_CENTER_X_TILES 4
+#define SPRITE_SCREEN_CENTER_Y_TILES 3
+
 #define SCREEN_WIDTH_IN_TILES 8
 #define SCREEN_HEIGHT_IN_TILES 6
+
+#define TILE_W_SIZE 32
+#define TILE_H_SIZE TILE_W_SIZE
+
+#define SCREEN_DRAW_BOUND_X(_size_x) _size_x - SCREEN_WIDTH
+#define SCREEN_DRAW_BOUND_Y(_size_y) _size_y - SCREEN_HEIGHT
 
 #endif /* UTIL_H_ */
