@@ -22,9 +22,10 @@ void Timming::start(void)
 
 /*************************************************************************************************/
 
-void Timming::stop(void)
+unsigned int Timming::stop(void)
 {
-	(void) timerPause(0);
+
+	return ((timerPause(0)%TIMER_SPEED)*1000) /TIMER_SPEED;
 }
 
 /*************************************************************************************************/
@@ -32,6 +33,13 @@ void Timming::stop(void)
 void Timming::reset(void)
 {
 	m_Ticks = 0;
+}
+
+/*************************************************************************************************/
+
+void Timming::wait(const unsigned int time_ms)
+{
+	;;
 }
 
 

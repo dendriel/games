@@ -11,8 +11,8 @@
 //#include "Maze3.h"
 #include "scenery.h"
 
-//!< Max of 5 actions processing interactions before reading actions again.
-#define MAX_ACTIONS_INTERATIONS 5
+//!< Max of 10 actions processing interactions before reading actions again. Total of 160ms
+#define MAX_ACTIONS_INTERATIONS 10
 
 /*************************************************************************************************/
 
@@ -90,6 +90,7 @@ void GamePlay::unload_level(void)
 void GamePlay::play_game_loop(void)
 {
 	en_char_action char_action;
+	Timming timer;
 
 	while(true) {
 
@@ -102,11 +103,13 @@ void GamePlay::play_game_loop(void)
 		/* Process actions. */
 		do {
 
-			debug("%d", char_action);
+			//debug("%d", char_action);
 			m_Character->execute_action(char_action, process_action_cnt);
 			//ai.execute_action(char_action);
 			//TODO: background/m_Map.update(); // possibility animated frames.
 
+
+			//timer.start();
 			swiWaitForVBlank();
 			bgUpdate();
 			oamUpdate(&oamMain);
@@ -114,41 +117,6 @@ void GamePlay::play_game_loop(void)
 			process_action_cnt++;
 
 		} while (process_action_cnt <= MAX_ACTIONS_INTERATIONS);
-	}
-}
-
-/*************************************************************************************************/
-
-void GamePlay::poll_user_interaction(void)
-{
-	//TODO: the user interaction should (=/) be inside a thread.
-	const size_t step_len = m_Character->get_StepLen_pixels();
-	en_facing action = W_UP;//m_Controller.get_held_direction();
-
-	switch (action) {
-
-	case W_UP:
-		//m_Character->move(W_UP);
-		m_MapProcessor.scroll_Background(0, -1*step_len);
-		break;
-
-	case W_DOWN:
-		//m_Character->move(W_DOWN);
-		m_MapProcessor.scroll_Background(0, step_len);
-		break;
-
-	case W_LEFT:
-		//m_Character->move(W_LEFT);
-		m_MapProcessor.scroll_Background(-1*step_len, 0);
-		break;
-
-	case W_RIGHT:
-		//m_Character->move(W_RIGHT);
-		m_MapProcessor.scroll_Background(step_len, 0);
-		break;
-
-	default:
-		break;
 	}
 }
 

@@ -15,6 +15,7 @@
 #include "scenery.h"
 
 
+
 /**
  * \brief Handle the scenery loading and interactions.
  */
@@ -70,11 +71,6 @@ private:
 	 * \return TODO: should return the ending state of the level.
 	 */
 	void play_game_loop(void);
-
-	/**
-	 * \brief Process user action.
-	 */
-	void poll_user_interaction(void);
 };
 
 #endif /* GAMEPLAY_H_ */

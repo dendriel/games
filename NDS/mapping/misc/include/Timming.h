@@ -34,13 +34,19 @@ public:
 
 	/**
 	 * \brief Stop the counter.
+	 * \return Ellapsed time.
 	 */
-	void stop(void);
+	unsigned int  stop(void);
 
 	/**
 	 * \brief Reset the counter.
 	 */
 	void reset(void);
+
+	/**
+	 * \brief Wait x mili seconds.
+	 */
+	void wait(const unsigned int time_ms);
 
 	/**
 	 * \brief Must be called every interaction.

@@ -48,19 +48,19 @@ en_char_action GameController::get_user_action(void)
 	}
 
 	if(keys & KEY_UP) {
-		return ACTION_WALK_NORTH_LEFT;
+		return ACTION_WALK_NORTH_RIGHT;
 	}
 
 	if(keys & KEY_DOWN) {
-		return ACTION_WALK_SOUTH_LEFT;
+		return ACTION_WALK_SOUTH_RIGHT;
 	}
 
 	if(keys & KEY_LEFT) {
-		return ACTION_WALK_WEST_LEFT;
+		return ACTION_WALK_WEST_RIGHT;
 	}
 
 	if(keys & KEY_RIGHT) {
-		return ACTION_WALK_EAST_LEFT;
+		return ACTION_WALK_EAST_RIGHT;
 	}
 
 	return ACTION_NONE;
