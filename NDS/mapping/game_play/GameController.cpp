@@ -6,78 +6,64 @@
  */
 
 #include "GameController.h"
-#include <assert.h>
-#include "timming.h"
-
-/*************************************************************************************************/
-//TODO: Doesn't work right now
-void GameController::start_polling(void)
-{
-	/*assert(pthread_create(&m_Tid,
-			NULL,
-			(void *)this->poll_user_actions_wrapper(),
-			NULL) == 0);
-			*/
-}
 
 /*************************************************************************************************/
 
-//TODO: Doesn't work right now
-int GameController::poll_user_actions(void)
+en_char_action GameController::get_user_action(void)
 {
-	while(true) {
-		//TODO: the user interaction must be inside a thread.
-		en_facing action = this->get_held_direction();
-
-		switch (action) {
-
-		case W_UP:
-			break;
-
-		case W_DOWN:
-			break;
-
-		case W_LEFT:
-			break;
-
-		case W_RIGHT:
-			break;
-
-		default:
-			break;
-		}
-
-		GSLEEP(3);
-	}
-
-	return 0;
-}
-
-/*************************************************************************************************/
-
-en_facing GameController::get_held_direction(void)
-{
+	/*
+	  KEY_A      = BIT(0),  //!< Keypad A button.
+	  KEY_B      = BIT(1),  //!< Keypad B button.
+	  KEY_SELECT = BIT(2),  //!< Keypad SELECT button.
+	  KEY_START  = BIT(3),  //!< Keypad START button.
+	  KEY_RIGHT  = BIT(4),  //!< Keypad RIGHT button.
+	  KEY_LEFT   = BIT(5),  //!< Keypad LEFT button.
+	  KEY_UP     = BIT(6),  //!< Keypad UP button.
+	  KEY_DOWN   = BIT(7),  //!< Keypad DOWN button.
+	  KEY_R      = BIT(8),  //!< Right shoulder button.
+	  KEY_L      = BIT(9),  //!< Left shoulder button.
+	  KEY_X      = BIT(10), //!< Keypad X button.
+	  KEY_Y      = BIT(11), //!< Keypad Y button.
+	  KEY_TOUCH  = BIT(12), //!< Touchscreen pendown.
+*/
 	scanKeys();
-
 	int keys = keysHeld();
 
+	//TODO: Poll touch pad first.
+
+	if(keys & KEY_A) {
+		return ACTION_NONE;
+	}
+
+	if(keys & KEY_B) {
+		return ACTION_NONE;
+	}
+
+	if(keys & KEY_START) {
+		return ACTION_NONE;
+	}
+
+	if(keys & KEY_SELECT) {
+		return ACTION_NONE;
+	}
+
 	if(keys & KEY_UP) {
-		return W_UP;
+		return ACTION_WALK_NORTH_LEFT;
 	}
 
 	if(keys & KEY_DOWN) {
-		return W_DOWN;
+		return ACTION_WALK_SOUTH_LEFT;
 	}
 
 	if(keys & KEY_LEFT) {
-		return W_LEFT;
+		return ACTION_WALK_WEST_LEFT;
 	}
 
 	if(keys & KEY_RIGHT) {
-		return W_RIGHT;
+		return ACTION_WALK_EAST_LEFT;
 	}
 
-	return W_DEFAULT;
+	return ACTION_NONE;
 }
 
 /*************************************************************************************************/

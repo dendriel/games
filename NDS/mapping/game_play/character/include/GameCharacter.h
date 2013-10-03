@@ -9,13 +9,15 @@
 #define GAMECHARACTER_H_
 
 #include "VisualElement.h"
+#include "GameMapProcessor.h"
+#include "character_actions.h"
 
 class GameCharacter: private VisualElement {
 private:
 	st_offset m_Pos;				//!< Position of the character in the screen (not the scenery. Absolute position).
 	en_facing m_Facing;				//!< Facing direction.
 	const size_t m_StepLen_pixes;	//!< Total Movement size in pixels.
-	bool m_Step;					//!< Next step foot.
+	GameMapProcessor *m_MapProcessor;
 
 public:
 	/**
@@ -26,10 +28,22 @@ public:
 	GameCharacter(u8 *charset = 0, size_t step_len_pixels = 0, int x = 0, int y = 0);
 
 	/**
+	 * \brief Add the map processor reference.
+	 */
+	void set_map_processor(GameMapProcessor& processor);
+
+	/**
+	 * \brief Execute action and update the received parameter to the next action.
+	 * \action Action to execute.
+	 */
+	void execute_action(en_char_action& action, const unsigned int interaction);
+
+	/**
 	 * \brief Move the character.
+	 * \parameter action Contains information about where to move. Also will be change to the next action.
 	 * \parameter direction Which direction to move.
 	 */
-	void move(en_facing direction);
+	void move(en_char_action& action);
 	void move(const int x, const int y);
 
 	/**

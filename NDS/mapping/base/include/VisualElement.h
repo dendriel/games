@@ -15,6 +15,22 @@
 /* Definitions. */
 #define SPRITE_LENGHT_BYTES 32*32
 
+//!< Facility. Enumerate sprite positions.
+typedef enum sprite_character_positions {
+	SPRITE_FACING_NORTH_STEP_RIGHT = 0,
+	SPRITE_FACING_NORTH_STOPPED,
+	SPRITE_FACING_NORTH_STEP_LEFT,
+	SPRITE_FACING_EAST_STEP_RIGHT,
+	SPRITE_FACING_EAST_STOPPED,
+	SPRITE_FACING_EAST_STEP_LEFT,
+	SPRITE_FACING_SOUTH_STEP_RIGHT,
+	SPRITE_FACING_SOUTH_STOPPED,
+	SPRITE_FACING_WEST_STEP_RIGHT,
+	SPRITE_FACING_WEST_STOPPED,
+	SPRITE_FACING_WEST_STEP_LEFT,
+	SPRITE_FACING_NONE //!< Control purpose.
+} sprite_character_positions;
+
 /* Static values. */
 static st_offset ms_Offset;
 

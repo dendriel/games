@@ -21,8 +21,9 @@
 class GamePlay {
 private:
 	GameMapProcessor m_MapProcessor;
-	GameCharacter *m_Character;
 	GameController m_Controller;
+	GameScenery *m_Scenery;
+	GameCharacter *m_Character;
 
 public:
 	/**
@@ -53,6 +54,11 @@ private:
 	void load_level(const en_scen_level level);
 
 	/**
+	 * \brief Free current scenery resources.
+	 */
+	void unload_level(void);
+
+	/**
 	 * \brief Create the scenery matching with the level.
 	 * \parameter level The scenery reference.
 	 * \return The created scenery.
@@ -60,10 +66,10 @@ private:
 	GameScenery *create_scenery(const en_scen_level level);
 
 	/**
-	 * \brief Interact with the user.
-	 * \parameter cur_scenery Current playing scenery.
+	 * \brief Get and process gaming actions.
+	 * \return TODO: should return the ending state of the level.
 	 */
-	void interact(GameScenery *cur_scenery);
+	void play_game_loop(void);
 
 	/**
 	 * \brief Process user action.

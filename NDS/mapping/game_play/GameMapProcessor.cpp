@@ -41,6 +41,14 @@
 GameMapProcessor::GameMapProcessor(void):
 m_LoadedMap(0)
 {
+	this->clean_resources();
+}
+
+
+/*************************************************************************************************/
+
+void GameMapProcessor::clean_resources(void)
+{
 	memset(&m_ScrollOffset, 0, sizeof(m_ScrollOffset));
 	memset(&m_LoadedMap_data_offset, 0, sizeof(m_LoadedMap_data_offset));
 }

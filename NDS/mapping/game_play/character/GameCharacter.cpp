@@ -15,58 +15,88 @@ VisualElement(charset, m_Pos),
 m_Pos(x, y),
 m_Facing(W_DOWN),
 m_StepLen_pixes(step_len_pixels),
-m_Step(1)
+m_MapProcessor(0)
 {
 	update_sprite(0);
 }
 
-void GameCharacter::move(en_facing direction)
+/*************************************************************************************************/
+
+void GameCharacter::set_map_processor(GameMapProcessor& processor)
 {
-	// TODO: this code is just for testing purpose.
-	unsigned int  offset = 6*SPRITE_LENGHT_BYTES;
+	m_MapProcessor = &processor;
+}
 
-	switch (direction) {
+/*************************************************************************************************/
 
-	case W_UP:
-		m_Facing = W_UP;
-		if(m_Step)
-			offset =  2*SPRITE_LENGHT_BYTES;
-		else
-			offset =  1*SPRITE_LENGHT_BYTES;
+void GameCharacter::execute_action(en_char_action& action, const unsigned int interaction)
+{
+	switch(action) {
+
+	case ACTION_WALK_NORTH_RIGHT:
+		this->move(action);
 		break;
-
-	case W_RIGHT:
-		m_Facing = W_RIGHT;
-		if(m_Step)
-			offset = 4*SPRITE_LENGHT_BYTES;
-		else
-			offset = 3*SPRITE_LENGHT_BYTES;
-		break;
-
-	case W_DOWN:
-		m_Facing = W_DOWN;
-		if(m_Step) {
-			offset = 7*SPRITE_LENGHT_BYTES;
+	case ACTION_WALK_NORTH_LEFT:
+		if (interaction >= 4) {
+			this->move(action);
 		}
-		else
-			offset = 6*SPRITE_LENGHT_BYTES;
+		break;
+	case ACTION_WALK_NORTH_END:
+	case ACTION_WALK_SOUTH_RIGHT:
+	case ACTION_WALK_SOUTH_LEFT:
+	case ACTION_WALK_SOUTH_END:
+	case ACTION_WALK_EAST_RIGHT:
+	case ACTION_WALK_EAST_LEFT:
+	case ACTION_WALK_EAST_END:
+	case ACTION_WALK_WEST_RIGHT:
+	case ACTION_WALK_WEST_LEFT:
+	case ACTION_WALK_WEST_END:
+		this->move(action);
 		break;
 
-	case W_LEFT:
-		m_Facing = W_LEFT;
-		if(m_Step)
-			offset = 10*SPRITE_LENGHT_BYTES;
-		else
-			offset = 9*SPRITE_LENGHT_BYTES;
-		break;
-
+	case ACTION_NONE:
 	default:
 		break;
+	}
+}
 
+/*************************************************************************************************/
+
+void GameCharacter::move(en_char_action& action)
+{
+	//static sprite_character_positions previous_sprite_position = SPRITE_FACING_NONE;
+	sprite_character_positions sprite_position = SPRITE_FACING_NORTH_STEP_RIGHT;
+
+	switch(action) {
+
+	case ACTION_WALK_NORTH_RIGHT:
+		sprite_position = SPRITE_FACING_NORTH_STEP_RIGHT;
+		action = ACTION_WALK_NORTH_LEFT;
+		m_MapProcessor->scroll_Background(0, -1*m_StepLen_pixes);
+		break;
+
+	case ACTION_WALK_NORTH_LEFT:
+		sprite_position = SPRITE_FACING_NORTH_STEP_LEFT;
+		action = ACTION_WALK_NORTH_END;
+		m_MapProcessor->scroll_Background(0, -1*m_StepLen_pixes);
+		break;
+
+	case ACTION_WALK_NORTH_END:
+		action = ACTION_NONE;
+		break;
+
+	case ACTION_WALK_SOUTH_RIGHT:
+	case ACTION_WALK_SOUTH_LEFT:
+	case ACTION_WALK_SOUTH_END:
+	case ACTION_WALK_EAST_RIGHT:
+	case ACTION_WALK_EAST_LEFT:
+	case ACTION_WALK_EAST_END:
+	case ACTION_WALK_WEST_RIGHT:
+	case ACTION_WALK_WEST_LEFT:
+	case ACTION_WALK_WEST_END:
+	default:
+		return;
 	}
 
-	update_sprite(offset);
-
-	/* Change next step. */
-	m_Step = !m_Step;
+	update_sprite(sprite_position*SPRITE_LENGHT_BYTES);
 }

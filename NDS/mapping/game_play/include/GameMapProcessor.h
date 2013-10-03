@@ -41,6 +41,11 @@ public:
 	GameMapProcessor(void);
 
 	/**
+	 * \brief Clean Map Processor resources (initialization and re-initialization).
+	 */
+	void clean_resources(void);
+
+	/**
 	 * \brief Load the given map into the game.
 	 * \parameter map Map to be loaded.
 	 * \parameter x_offset_tiles Starting horizontal position of the map.

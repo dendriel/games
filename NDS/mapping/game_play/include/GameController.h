@@ -9,7 +9,7 @@
 #define GAMECONTROLLER_H_
 
 #include <nds.h>
-#include "util.h"
+#include "character_actions.h"
 
 /**
  * \brief Get player actions.
@@ -17,20 +17,10 @@
 class GameController {
 public:
 	/**
-	 * \brief Return if directional is held.
-	 * \return The held direction.
+	 * \brief Read and parser user actions.
 	 */
-	en_facing get_held_direction(void);
+	en_char_action get_user_action(void);
 
-	/**
-	 * \brief Start the thread to read user actions.
-	 */
-	void start_polling(void);
-private:
-	/**
-	 * \brief Loop function to read user actions.
-	 */
-	int poll_user_actions(void);
 };
 
 
