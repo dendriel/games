@@ -15,7 +15,6 @@
 #include "scenery.h"
 
 
-
 /**
  * \brief Handle the scenery loading and interactions.
  */

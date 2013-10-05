@@ -33,12 +33,12 @@ public:
 		return m_Map;
 	}
 
-	inline int get_CharStartPoint_x(void)
+	inline int get_CharStartPoint_x_tiles(void)
 	{
 		return m_CharStartPoint_tiles.x;
 	}
 
-	inline int get_CharStartPoint_y(void)
+	inline int get_CharStartPoint_y_tiles(void)
 	{
 		return m_CharStartPoint_tiles.y;
 	}

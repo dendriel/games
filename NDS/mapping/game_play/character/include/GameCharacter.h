@@ -55,7 +55,7 @@ public:
 		return m_StepLen_pixes;
 	}
 
-	inline void set_m_Pos_relative(const int x_pixels, const int y_pixels)
+	inline void set_relative_pos_pixels(const int x_pixels, const int y_pixels)
 	{
 		m_Pos_relative.x = x_pixels;
 		m_Pos_relative.y = y_pixels;

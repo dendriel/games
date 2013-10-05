@@ -57,6 +57,15 @@ void GameCharacter::execute_action(en_char_action& action, const unsigned int in
 			this->move(action);
 		}
 		break;
+	case ACTION_WALK_NORTH_LEFT2:
+	case ACTION_WALK_SOUTH_LEFT2:
+	case ACTION_WALK_EAST_LEFT2:
+	case ACTION_WALK_WEST_LEFT2:
+		if (interaction == 9) {
+			this->move(action);
+		}
+		break;
+
 	case ACTION_WALK_NORTH_END:
 	case ACTION_WALK_SOUTH_END:
 	case ACTION_WALK_EAST_END:
@@ -78,7 +87,6 @@ void GameCharacter::execute_action(en_char_action& action, const unsigned int in
 
 void GameCharacter::move(en_char_action& action)
 {
-	const size_t last_step_offset = 1;
 	static sprite_character_positions previous_sprite_position = SPRITE_FACING_NONE;
 	sprite_character_positions sprite_position = previous_sprite_position;
 
@@ -87,11 +95,12 @@ void GameCharacter::move(en_char_action& action)
 	case ACTION_WALK_NORTH_RIGHT:
 	case ACTION_WALK_NORTH_RIGHT2:
 		action++;
-		this->move_background(0, -1*(m_StepLen_pixes+last_step_offset));
+		this->move_background(0, -1*(m_StepLen_pixes));
 		sprite_position = SPRITE_FACING_NORTH_STEP_RIGHT;
 		break;
 
 	case ACTION_WALK_NORTH_LEFT:
+	case ACTION_WALK_NORTH_LEFT2:
 		action++;
 		this->move_background(0, -1*m_StepLen_pixes);
 		sprite_position = SPRITE_FACING_NORTH_STEP_LEFT;
@@ -100,11 +109,12 @@ void GameCharacter::move(en_char_action& action)
 	case ACTION_WALK_SOUTH_RIGHT:
 	case ACTION_WALK_SOUTH_RIGHT2:
 		action++;
-		this->move_background(0, m_StepLen_pixes+last_step_offset);
+		this->move_background(0, m_StepLen_pixes);
 		sprite_position = SPRITE_FACING_SOUTH_STEP_RIGHT;
 		break;
 
 	case ACTION_WALK_SOUTH_LEFT:
+	case ACTION_WALK_SOUTH_LEFT2:
 		action++;
 		this->move_background(0, m_StepLen_pixes);
 		sprite_position = SPRITE_FACING_SOUTH_STEP_LEFT;
@@ -113,11 +123,12 @@ void GameCharacter::move(en_char_action& action)
 	case ACTION_WALK_EAST_RIGHT:
 	case ACTION_WALK_EAST_RIGHT2:
 		action++;
-		this->move_background(m_StepLen_pixes+last_step_offset, 0);
+		this->move_background(m_StepLen_pixes, 0);
 		sprite_position = SPRITE_FACING_EAST_STEP_RIGHT;
 		break;
 
 	case ACTION_WALK_EAST_LEFT:
+	case ACTION_WALK_EAST_LEFT2:
 		action++;
 		this->move_background(m_StepLen_pixes, 0);
 		sprite_position = SPRITE_FACING_EAST_STEP_LEFT;
@@ -126,11 +137,12 @@ void GameCharacter::move(en_char_action& action)
 	case ACTION_WALK_WEST_RIGHT:
 	case ACTION_WALK_WEST_RIGHT2:
 		action++;
-		this->move_background(-1*(m_StepLen_pixes+last_step_offset), 0);
+		this->move_background(-1*(m_StepLen_pixes), 0);
 		sprite_position = SPRITE_FACING_WEST_STEP_RIGHT;
 		break;
 
 	case ACTION_WALK_WEST_LEFT:
+	case ACTION_WALK_WEST_LEFT2:
 		action++;
 		this->move_background(-1*m_StepLen_pixes, 0);
 		sprite_position = SPRITE_FACING_WEST_STEP_LEFT;
@@ -171,5 +183,6 @@ void GameCharacter::move_background(const int x_pixels, const int y_pixels)
 	m_Pos_relative.x += x_pixels;
 	m_Pos_relative.y += y_pixels;
 
-	debug("pos_rela: %d.%d", m_Pos_relative.x, m_Pos_relative.y);
+	debug("pos_rela: %d,%d | %d,%d",
+			m_Pos_relative.x, m_Pos_relative.y, m_Pos_relative.x/TILE_W_SIZE, m_Pos_relative.y/TILE_H_SIZE);
 }

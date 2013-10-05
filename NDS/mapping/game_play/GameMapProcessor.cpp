@@ -32,7 +32,6 @@
 #define VERTICAL_OFFSET 32
 #define NO_VERTICAL_OFFSET 0
 
-
 /*************************************************************************************************/
 /* Public Functions Declaration																	 */
 /*************************************************************************************************/
@@ -48,7 +47,7 @@ m_LoadedMap(0)
 
 void GameMapProcessor::clean_resources(void)
 {
-	memset(&m_ScrollOffset, 0, sizeof(m_ScrollOffset));
+	memset(&m_ScrollOffset_px, 0, sizeof(m_ScrollOffset_px));
 	memset(&m_LoadedMap_data_offset, 0, sizeof(m_LoadedMap_data_offset));
 }
 
@@ -85,21 +84,17 @@ void GameMapProcessor::load_Map(GameMap *map, const unsigned int x_offset_tiles,
 		bgSetPriority(map->m_Background[i].id, map->m_Background[i].prio);
 	}
 
-	//consoleInit(0, 3, BgType_Text4bpp, BgSize_T_512x512, 31, 3, true, true);
-
 	/* Set map palette. */
 	dmaCopy(map->m_Tiles, bgGetGfxPtr(map->m_Background[0].id), map->m_TilesLen);
 	dmaCopy(map->m_Palette, BG_PALETTE, map->m_PaletteLen);
 
 	/* Draw map. TODO: maybe for smaller maps this will try to copy invalid data. */
-
 	m_LoadedMap = map;
 
 	/* Find scroll bounds. */
-	//if (m_LoadedMap->m_background[0].size == BgSize_T_512x512) {
-		m_ScrollOffset.w = 512 - SCREEN_WIDTH;
-		m_ScrollOffset.h = 512 - SCREEN_HEIGHT;
-	//}
+	m_ScrollOffset_px.w = 512 - SCREEN_WIDTH;
+	m_ScrollOffset_px.h = 512 - SCREEN_HEIGHT;
+
 
 	/* Find map data loading bounds. */
 	m_LoadedMap_data_offset.w = (m_LoadedMap->m_SizeTile32.w - 512/32);
@@ -123,8 +118,8 @@ int GameMapProcessor::scroll_Background(const int x, const int y)
 
 	unsigned int i;
 	en_direction load_data = DIRECT_NONE;
-	const int new_scroll_x = m_ScrollOffset.pos.x + x;
-	const int new_scroll_y = m_ScrollOffset.pos.y + y;
+	const int new_scroll_x = m_ScrollOffset_px.pos.x + x;
+	const int new_scroll_y = m_ScrollOffset_px.pos.y + y;
 
 	/* Check bounds. Map will always start at origin 0,0. */
 	if (new_scroll_x < 0) {
@@ -133,10 +128,10 @@ int GameMapProcessor::scroll_Background(const int x, const int y)
 	else if (new_scroll_y < 0) {
 		load_data = DIRECT_UP;
 	}
-	else if (new_scroll_x > (int)m_ScrollOffset.w) {
+	else if (new_scroll_x > (int)m_ScrollOffset_px.w) {
 		load_data = DIRECT_RIGHT;
 	}
-	else if (new_scroll_y > (int)m_ScrollOffset.h) {
+	else if (new_scroll_y > (int)m_ScrollOffset_px.h) {
 		load_data = DIRECT_DOWN;
 	}
 
@@ -144,16 +139,19 @@ int GameMapProcessor::scroll_Background(const int x, const int y)
 		debug("Direction: %d", load_data);
 		if (load_MapData(load_data) != 0) {
 			// map limits reached.
-			debug("Invalid bounds");
+			//debug("Invalid bounds");
 			return -1;
 		}
 	}
 
-	m_ScrollOffset.pos.x += x;
-	m_ScrollOffset.pos.y += y;
+	if (load_data == DIRECT_NONE) {
+		m_ScrollOffset_px.pos.x += x;
+		m_ScrollOffset_px.pos.y += y;
 
-	for (i = 0; i < m_LoadedMap->m_LayersCount; ++i) {
-		bgSetScroll(m_LoadedMap->m_Background[i].id, m_ScrollOffset.pos.x, m_ScrollOffset.pos.y);
+		for (i = 0; i < m_LoadedMap->m_LayersCount; ++i) {
+			bgSetScroll(m_LoadedMap->m_Background[i].id, m_ScrollOffset_px.pos.x, m_ScrollOffset_px.pos.y);
+		}
+
 	}
 
 	draw_LoadedMap();
@@ -167,41 +165,40 @@ int GameMapProcessor::load_MapData(en_direction direction)
 {
 	switch(direction) {
 		case DIRECT_LEFT:
-			if ((m_LoadedMap_data_offset.pos.x - 1) < 0) {
+			if ((m_LoadedMap_data_offset.pos.x/4 - 1) < 0) {
 				/* There is no more tiles to the left. */
-				debug("data_offset.pos.x: %d", m_LoadedMap_data_offset.pos.x);
+				//debug("data_offset.pos.x: %d", m_LoadedMap_data_offset.pos.x);
+				debug("returned here left!!\n m_LoadedMap_data_offset.pos.x/4: %d", m_LoadedMap_data_offset.pos.x/4);
 				return -1;
 			}
 			m_LoadedMap_data_offset.pos.x -= 1;
-			m_ScrollOffset.pos.x += TILE_SIZE;
 		break;
 		case DIRECT_UP:
-			if ((m_LoadedMap_data_offset.pos.y - 1) < 0) {
+			if ((m_LoadedMap_data_offset.pos.y/4 - 1) < 0) {
 				/* There is no more tiles to the top. */
-				debug("data_offset.pos.y: %d", m_LoadedMap_data_offset.pos.y);
+				//debug("data_offset.pos.y: %d", m_LoadedMap_data_offset.pos.y);
+				debug("returned here up!!");
 				return -1;
 			}
 			m_LoadedMap_data_offset.pos.y -= 1;
-			m_ScrollOffset.pos.y += TILE_SIZE;
+			//m_ScrollOffset_px.pos.y += TILE_SIZE;
 		break;
 		case DIRECT_RIGHT:
-			if ((m_LoadedMap_data_offset.pos.x + 1) > (int)m_LoadedMap_data_offset.w) {
+			if ((m_LoadedMap_data_offset.pos.x/4 + 1) > (int)m_LoadedMap_data_offset.w) {
 				/* There is no more tiles to the right. */
-				debug("data_offset.pos.x: %d", m_LoadedMap_data_offset.pos.x);
-				debug("m_LoadedMap_data_offset.w: %d", m_LoadedMap_data_offset.w);
+				//debug("data_offset.pos.x: %d", m_LoadedMap_data_offset.pos.x);
+				//debug("m_LoadedMap_data_offset.w: %d", m_LoadedMap_data_offset.w);
 				return -1;
 			}
 			m_LoadedMap_data_offset.pos.x += 1;
-			m_ScrollOffset.pos.x -= TILE_SIZE;
 		break;
 		case DIRECT_DOWN:
-			if ((m_LoadedMap_data_offset.pos.y + 1) > (int)m_LoadedMap_data_offset.h) {
+			if ((m_LoadedMap_data_offset.pos.y/4 + 1) > (int)m_LoadedMap_data_offset.h) {
 				/* There is no more tiles to the bottom. */
-				debug("data_offset.pos.y: %d", m_LoadedMap_data_offset.pos.y);
+				//debug("data_offset.pos.y: %d", m_LoadedMap_data_offset.pos.y);
 				return -1;
 			}
 			m_LoadedMap_data_offset.pos.y += 1;
-			m_ScrollOffset.pos.y -= TILE_SIZE;
 		break;
 		default:
 			/* Unhandled direction. */
@@ -209,8 +206,8 @@ int GameMapProcessor::load_MapData(en_direction direction)
 		break;
 	}
 
-	debug("data_offset.pos.x: %d; scroll.x: %d", m_LoadedMap_data_offset.pos.x, m_ScrollOffset.pos.x);
-	debug("data_offset.pos.y: %d; scroll.y: %d", m_LoadedMap_data_offset.pos.y, m_ScrollOffset.pos.y);
+	//debug("data_offset.pos.x: %d; scroll.x: %d", m_LoadedMap_data_offset.pos.x, m_ScrollOffset_px.pos.x);
+	//debug("data_offset.pos.y: %d; scroll.y: %d", m_LoadedMap_data_offset.pos.y, m_ScrollOffset_px.pos.y);
 
 	return 0;
 }
@@ -258,9 +255,12 @@ void GameMapProcessor::draw_LayerQuarter(
 	const unsigned short *origin,
 	u16 *dest)
 {
+#define TILES_8PX_TO_LOAD 1
 	const unsigned int map_width = m_LoadedMap->m_SizeTile.w;
 	const unsigned int mem_to_copy = TILES_TO_CP*TILE_LEN_BYTES;
-	const unsigned int map_data_offset = m_LoadedMap_data_offset.pos.x*4 + m_LoadedMap_data_offset.pos.y*m_LoadedMap->m_SizeTile.w*4;
+	const unsigned int map_data_offset =
+			m_LoadedMap_data_offset.pos.x*TILES_8PX_TO_LOAD +
+			m_LoadedMap_data_offset.pos.y*m_LoadedMap->m_SizeTile.w*TILES_8PX_TO_LOAD;
 	int origin_offset = 0;
 	int dest_offset = 0;
 	int origin_quarter_offset = 0;

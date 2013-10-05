@@ -31,7 +31,7 @@ class GameMapProcessor {
 private:
 	GameMap *m_LoadedMap;					//!< Loaded map object reference.
 	st_rect_size m_LoadedMap_data_offset;	//!< Map offset to copy data (in tiles 32x32).
-	st_rect_size m_ScrollOffset;			//!< Screen scrolling bounds and current offset (in px).
+	st_rect_size m_ScrollOffset_px;			//!< Screen scrolling bounds and current offset (in px).
 
 public:
 
