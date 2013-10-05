@@ -21,8 +21,12 @@
 
 //!< Hold screen matrix coordinates.
 typedef struct st_offset {
-	int x;
-	int y;
+	union {
+		int x, w;
+	};
+	union {
+		int y, h;
+	};
 	st_offset(int _x=0, int _y=0):
 		x(_x),
 		y(_y){};
@@ -83,7 +87,7 @@ typedef enum {
 #define SCREEN_CENTER_Y SCREEN_HEIGHT/2		/* 192/2 = 96 = tile 3*/
 
 #define SPRITE_SCREEN_CENTER_X SCREEN_CENTER_X//-16
-#define SPRITE_SCREEN_CENTER_Y SCREEN_CENTER_Y-4
+#define SPRITE_SCREEN_CENTER_Y SCREEN_CENTER_Y//-4
 
 #define SPRITE_SCREEN_CENTER_X_TILES 4
 #define SPRITE_SCREEN_CENTER_Y_TILES 3
@@ -91,8 +95,29 @@ typedef enum {
 #define SCREEN_WIDTH_IN_TILES 8
 #define SCREEN_HEIGHT_IN_TILES 6
 
+#define MAP_WIDTH_128_8PX 128/8
+#define MAP_HEIGHT_128_8PX 128/8
+
+#define MAP_WIDTH_256_8PX 256/8
+#define MAP_HEIGHT_256_8PX 256/8
+
 #define TILE_W_SIZE 32
 #define TILE_H_SIZE TILE_W_SIZE
+
+#define TILE_SIZE_8PX 8
+#define TILE_SIZE_32PX 32
+#define TILE_8PX_IN_TILE_32PX 4
+#define TILE_32PX_IN_TILE_8PX 4
+
+/* From 32px tile to 8px tile; 5 tiles of 32px equal to 5*4 8px tiles */
+#define TILE_32PX_TO_8PX(_value) (_value)*TILE_8PX_IN_TILE_32PX
+#define TILE_8PX_TO_32PX(_value) (_value)/TILE_32PX_IN_TILE_8PX
+
+#define TILE_32PX_TO_PX(_value) (_value)*TILE_SIZE_32PX
+#define TILE_8PX_TO_PX(_value) (_value)*TILE_SIZE_8PX
+
+#define PIXEL_TO_TILE_8PX(_value) (_value)/TILE_SIZE_8PX
+#define PIXEL_TO_TILE_32PX(_value) (_value)/TILE_SIZE_32PX
 
 #define SCREEN_DRAW_BOUND_X(_size_x) _size_x - SCREEN_WIDTH
 #define SCREEN_DRAW_BOUND_Y(_size_y) _size_y - SCREEN_HEIGHT

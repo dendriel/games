@@ -22,7 +22,7 @@ protected:
 	 *  The minimum relative position can't be less than 4x3 tiles, that is the absolute position of the char.
 	 *  Therefore, the maximum position can't be more than map_h_tiles-4 and map_v_tiles-3.
 	 */
-	st_offset m_CharStartPoint_tiles;
+	st_offset m_CharStartPoint_32px;
 	// StaticCollisionDomain
 	// DynamicCollisionDomain
 
@@ -33,14 +33,14 @@ public:
 		return m_Map;
 	}
 
-	inline int get_CharStartPoint_x_tiles(void)
+	inline int get_CharStartPoint_x_32px(void)
 	{
-		return m_CharStartPoint_tiles.x;
+		return m_CharStartPoint_32px.x;
 	}
 
-	inline int get_CharStartPoint_y_tiles(void)
+	inline int get_CharStartPoint_y_32px(void)
 	{
-		return m_CharStartPoint_tiles.y;
+		return m_CharStartPoint_32px.y;
 	}
 };
 

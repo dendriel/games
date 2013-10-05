@@ -25,17 +25,13 @@ public:
 		const size_t bg_max = 1;
 		const unsigned int tile_base = 1;
 
-		/* Map size in pixels. */
-		//const unsigned int size_pixel_w = map1_data_width_memb*64;
-		//const unsigned int size_pixel_h = map1_data_height_memb*64;
-
 		/* Map size in tiles 8x8 pixels. */
-		m_SizeTile.w = map1_data_width_memb;
-		m_SizeTile.h = map1_data_height_memb;
+		m_SizeTile_8px.w = map1_data_width_memb;
+		m_SizeTile_8px.h = map1_data_height_memb;
 
 		/* Map size in tiles 32x32 pixels. */
-		m_SizeTile32.w = map1_data_width_memb/4;
-		m_SizeTile32.h = map1_data_height_memb/4;
+		m_SizeTile_32px.w = map1_data_width_memb/4;
+		m_SizeTile_32px.h = map1_data_height_memb/4;
 
 		/* How much layers there is in the map. */
 		m_LayersCount = bg_max;
@@ -43,7 +39,7 @@ public:
 		/* Hold backgrounds data. */
 		for (size_t i = 0; i < bg_max; ++i) {
 			m_Background[i].layer = i;
-			m_Background[i].size = BgSize_T_512x512;
+			m_Background[i].size = BgSize_T_256x256;
 			m_Background[i].type = BgType_Text8bpp;
 			m_Background[i].tileBase = tile_base;
 			/* Inverse drawing priority. */

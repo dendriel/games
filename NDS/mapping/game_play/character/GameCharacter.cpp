@@ -6,20 +6,22 @@
  */
 
 #include "GameCharacter.h"
+#include <assert.h>
 #include "timming.h"
 
 #include "util.h"
 
 
-GameCharacter::GameCharacter(u8 *charset, size_t step_len_pixels, int x, int y):
-VisualElement(charset, m_Pos_absolute),
-m_Pos_absolute(x, y),
-m_Pos_relative(0, 0),
+GameCharacter::GameCharacter(u8 *charset, int x_px, int y_px):
+VisualElement(charset, m_Pos_absolute_px),
+m_Pos_absolute_px(x_px, y_px),
+m_Pos_relative_8px(PIXEL_TO_TILE_8PX(x_px), PIXEL_TO_TILE_8PX(y_px)),
 m_Facing(W_DOWN),
-m_StepLen_pixes(step_len_pixels),
 m_MapProcessor(0)
 {
 	update_sprite(0);
+	debug("Initial relative pos: %d,%d", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),
+			TILE_8PX_TO_32PX(m_Pos_relative_8px.y));
 }
 
 /*************************************************************************************************/
@@ -79,8 +81,6 @@ void GameCharacter::execute_action(en_char_action& action, const unsigned int in
 	default:
 		break;
 	}
-
-	//if(action != ACTION_NONE) debug("action: %d; iteraction: %d", action, interaction);
 }
 
 /*************************************************************************************************/
@@ -95,56 +95,56 @@ void GameCharacter::move(en_char_action& action)
 	case ACTION_WALK_NORTH_RIGHT:
 	case ACTION_WALK_NORTH_RIGHT2:
 		action++;
-		this->move_background(0, -1*(m_StepLen_pixes));
+		this->move_background_8px(0, -1);
 		sprite_position = SPRITE_FACING_NORTH_STEP_RIGHT;
 		break;
 
 	case ACTION_WALK_NORTH_LEFT:
 	case ACTION_WALK_NORTH_LEFT2:
 		action++;
-		this->move_background(0, -1*m_StepLen_pixes);
+		this->move_background_8px(0, -1);
 		sprite_position = SPRITE_FACING_NORTH_STEP_LEFT;
 		break;
 
 	case ACTION_WALK_SOUTH_RIGHT:
 	case ACTION_WALK_SOUTH_RIGHT2:
 		action++;
-		this->move_background(0, m_StepLen_pixes);
+		this->move_background_8px(0, 1);
 		sprite_position = SPRITE_FACING_SOUTH_STEP_RIGHT;
 		break;
 
 	case ACTION_WALK_SOUTH_LEFT:
 	case ACTION_WALK_SOUTH_LEFT2:
 		action++;
-		this->move_background(0, m_StepLen_pixes);
+		this->move_background_8px(0, 1);
 		sprite_position = SPRITE_FACING_SOUTH_STEP_LEFT;
 		break;
 
 	case ACTION_WALK_EAST_RIGHT:
 	case ACTION_WALK_EAST_RIGHT2:
 		action++;
-		this->move_background(m_StepLen_pixes, 0);
+		this->move_background_8px(1, 0);
 		sprite_position = SPRITE_FACING_EAST_STEP_RIGHT;
 		break;
 
 	case ACTION_WALK_EAST_LEFT:
 	case ACTION_WALK_EAST_LEFT2:
 		action++;
-		this->move_background(m_StepLen_pixes, 0);
+		this->move_background_8px(1, 0);
 		sprite_position = SPRITE_FACING_EAST_STEP_LEFT;
 		break;
 
 	case ACTION_WALK_WEST_RIGHT:
 	case ACTION_WALK_WEST_RIGHT2:
 		action++;
-		this->move_background(-1*(m_StepLen_pixes), 0);
+		this->move_background_8px(-1, 0);
 		sprite_position = SPRITE_FACING_WEST_STEP_RIGHT;
 		break;
 
 	case ACTION_WALK_WEST_LEFT:
 	case ACTION_WALK_WEST_LEFT2:
 		action++;
-		this->move_background(-1*m_StepLen_pixes, 0);
+		this->move_background_8px(-1, 0);
 		sprite_position = SPRITE_FACING_WEST_STEP_LEFT;
 		break;
 
@@ -167,22 +167,45 @@ void GameCharacter::move(en_char_action& action)
 	}
 }
 
+void GameCharacter::set_relative_pos_32px(const int x, const int y)
+{
+	if ((x < SPRITE_SCREEN_CENTER_X_TILES) || (y < SPRITE_SCREEN_CENTER_Y_TILES)) {
+		debug("Invalid character starting point.");
+		assert(0);
+		return;
+	}
+
+	const int move_x_32px = x - SPRITE_SCREEN_CENTER_X_TILES;
+	const int move_y_32px = y - SPRITE_SCREEN_CENTER_Y_TILES;
+
+	m_Pos_relative_8px.x += TILE_32PX_TO_8PX(move_x_32px);
+	m_Pos_relative_8px.y += TILE_32PX_TO_8PX(move_y_32px);
+
+	debug("Moved to: %d,%d",x,y);
+
+	m_MapProcessor->move_map_32px(move_x_32px, move_y_32px);
+}
 
 /*************************************************************************************************/
 /* Private Functions.                                                                            */
 /*************************************************************************************************/
 
 
-void GameCharacter::move_background(const int x_pixels, const int y_pixels)
+void GameCharacter::move_background_8px(const int x, const int y)
 {
+
 	/* If can't scroll the background will not update the character relative position. */
-	if (m_MapProcessor->scroll_Background(x_pixels, y_pixels) != 0) {
-		return;
+	if (m_MapProcessor->move_map_8px(x, 0) == 0) {
+		m_Pos_relative_8px.x+=x;
 	}
 
-	m_Pos_relative.x += x_pixels;
-	m_Pos_relative.y += y_pixels;
+	if (m_MapProcessor->move_map_8px(0, y) == 0) {
+		m_Pos_relative_8px.y+=y;
+	}
 
-	debug("pos_rela: %d,%d | %d,%d",
-			m_Pos_relative.x, m_Pos_relative.y, m_Pos_relative.x/TILE_W_SIZE, m_Pos_relative.y/TILE_H_SIZE);
+	//debug("pos_rela: %d,%d | %d,%d", TILE_8PX_TO_PX(m_Pos_relative_8px.x), TILE_8PX_TO_PX(m_Pos_relative_8px.y), TILE_8PX_TO_32PX(m_Pos_relative_8px.x), TILE_8PX_TO_32PX(m_Pos_relative_8px.y));
+	//debug("posRela: %d,%d", m_Pos_relative_8px.x, m_Pos_relative_8px.y);
+	debug(" posRela: %d,%d", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),
+			TILE_8PX_TO_32PX(m_Pos_relative_8px.y));
+
 }

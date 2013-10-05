@@ -26,12 +26,12 @@ public:
 		const unsigned int size_pixel_h = 512;
 
 		/* Map size in tiles 8x8 pixels. */
-		m_SizeTile.w = size_pixel_w/8;
-		m_SizeTile.h = size_pixel_h/8;
+		m_SizeTile_8px.w = size_pixel_w/8;
+		m_SizeTile_8px.h = size_pixel_h/8;
 
 		/* Map size in tiles 32x32 pixels. */
-		m_SizeTile32.w = size_pixel_w/32;
-		m_SizeTile32.h = size_pixel_h/32;
+		m_SizeTile_32px.w = size_pixel_w/32;
+		m_SizeTile_32px.h = size_pixel_h/32;
 
 		/* How much layers there is in the map. */
 		m_LayersCount = bg_max;

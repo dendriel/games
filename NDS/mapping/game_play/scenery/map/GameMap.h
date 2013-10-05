@@ -19,10 +19,10 @@
 class GameMap {
 public:
 	//!< Map size in tiles 8px.
-	st_rect_size m_SizeTile;
+	st_offset m_SizeTile_8px;
 	
 	//!< Map size in tiles 32x32 px.
-	st_rect_size m_SizeTile32;
+	st_offset m_SizeTile_32px;
 
 	//!< How much layers there is in the map.
 	size_t m_LayersCount;

@@ -65,23 +65,17 @@ void GamePlay::start(const en_scen_level level)
 
 void GamePlay::load_level(const en_scen_level level)
 {
-	st_offset char_relative_pos_tiles;
-
 	m_Scenery = this->create_scenery(level);
 
-	char_relative_pos_tiles.x = m_Scenery->get_CharStartPoint_x_tiles();
-	char_relative_pos_tiles.y = m_Scenery->get_CharStartPoint_y_tiles();
-
 	/* Load map. */
-	m_MapProcessor.load_Map(m_Scenery->get_Map(),
-			char_relative_pos_tiles.x,
-			char_relative_pos_tiles.y);
+	m_MapProcessor.load_Map(m_Scenery->get_Map());
 
 	/* Load character. */
 	m_Character = new Jhon();
-	m_Character->set_relative_pos_pixels(char_relative_pos_tiles.x*TILE_W_SIZE,
-										char_relative_pos_tiles.y*TILE_H_SIZE);
 	m_Character->set_map_processor(m_MapProcessor);
+
+	m_Character->set_relative_pos_32px( m_Scenery->get_CharStartPoint_x_32px(),
+										m_Scenery->get_CharStartPoint_y_32px());
 }
 
 /*************************************************************************************************/
