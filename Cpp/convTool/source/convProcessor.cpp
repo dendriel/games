@@ -10,42 +10,49 @@
 #include <string.h>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <algorithm>
 #include <iomanip>
 
-#include "Map1_mp.h"
-#include "Map2_mp.h"
-#include "Maze1_mp.h"
+#include "Map.h"
 #include "Mytiles_ts.h"
 
 using namespace std;
 
 /**************************************************************************************************/
 
-void convProcessor::start(void)
+void convProcessor::start(const string& file_path, const unsigned int& array_width)
 {
-	// Load data from files (TODO)
+	// Load data from files (DONE)
 	// do conversion.
-	// Save data to files.
+	// Save data to files.  (TODO: save collision map to file)
 	// end.
-
 	convConversor conversor;
-	//Map1_mp map1;
-	Maze1_mp map1;
-	//Map2_mp map1;
+	Map raw_data;
 	Mytiles_ts mytiles_ts;
 
 	st_map_data dest;
 	memset(&dest, 0, sizeof(dest));
 
-	conversor.create_map(map1, dest);
 
-	conversor.convert(map1, dest, mytiles_ts);
+	if (this->load_data(file_path) != 0) {
+		cout << "Received invalid data file path." << endl;
+		return;
+	}
 
-	for (unsigned int pos = 0; pos < map1.len_tiles; ++pos) {
-		size_t offset = conversor.find_total_offset(pos, map1.width_tiles);
+	raw_data.tiles_map = &m_DataMap[0];
+	raw_data.len_tiles = m_DataMap.size();
+	raw_data.width_tiles = array_width;
+	raw_data.height_tiles = raw_data.len_tiles/raw_data.width_tiles;
+
+	conversor.create_map(raw_data, dest);
+
+	conversor.convert(raw_data, dest, mytiles_ts);
+
+	for (unsigned int pos = 0; pos < raw_data.len_tiles; ++pos) {
+		size_t offset = conversor.find_total_offset(pos, raw_data.width_tiles);
 		cout << "offset: " << offset << endl;
-		conversor.print_tile(offset, map1.width_tiles, dest.data);
+		conversor.print_tile(offset, raw_data.width_tiles, dest.data);
 	}
 
 	save_data(dest, "map1_data");
@@ -126,4 +133,106 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 	dest_file.close();
 }
 
+/**************************************************************************************************/
+
+int convProcessor::load_data(const string& file_path)
+{
+	string line;
+	ifstream input_file;
+
+	input_file.open(file_path.c_str());
+
+	if (!input_file.is_open()) {
+		return -1;
+	}
+
+	while (getline(input_file,line)) {
+		this->parse_line(line);
+	}
+
+	input_file.close();
+
+	return 0;
+}
+
+/**************************************************************************************************/
+
+void convProcessor::parse_line(const string& line)
+{
+	/* Set when found the first bracket. */
+	static bool save_memb = false;
+	/* First split. */
+	vector<string> splitted_line = split(line.c_str());
+
+	/* For each token separated by spaces, do: */
+	for (vector<string>::iterator iter_word = splitted_line.begin(); iter_word != splitted_line.end(); ++iter_word) {
+		/* Second split, by commas. */
+		vector<string> splitted_line = split((*iter_word).c_str(), ',');
+
+		/* For each token separated by comma, do: */
+		for (vector<string>::iterator iter_memb = splitted_line.begin(); iter_memb != splitted_line.end(); ++iter_memb) {
+			/* Last member [?] */
+			if ((*iter_memb).length() == 0) {
+				continue;
+			}
+
+			/* Start copying after this member. */
+			if ((*iter_memb).compare("{") == 0) {
+				save_memb = true;
+				continue;
+			}
+
+			if (save_memb == true) {
+				this->parse_memb(*iter_memb);
+			}
+		}
+	}
+}
+
+/**************************************************************************************************/
+
+void convProcessor::parse_memb(const string& memb)
+{
+	unsigned int value;
+
+	/* Last member. */
+	if ((memb.find("}") != string::npos) || (memb.find(";") != string::npos)) {
+
+		vector<string> rec_str = split(memb.c_str(), '}');
+		/* Recursive call. */
+
+		for (vector<string>::iterator iter = rec_str.begin(); iter != rec_str.end(); ++iter) {
+			/* MUST not call again for this characters, or else will start an infinite recursion. */
+			if (!((*iter).compare("}")) || !((*iter).compare(";"))) {
+				continue;
+			}
+
+			this->parse_memb(*iter);
+		}
+		return;
+	}
+
+	std::stringstream myStream(memb);
+	myStream >> value;
+	m_DataMap.push_back(value);
+}
+
+/**************************************************************************************************/
+
+vector<string> convProcessor::split(const char *str, char c)
+{
+	vector<string> result;
+
+	do {
+		const char *begin = str;
+
+		while(*str != c && *str) {
+			str++;
+		}
+
+		result.push_back(string(begin, str));
+	} while (0 != *str++);
+
+	return result;
+}
 

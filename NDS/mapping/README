@@ -20,7 +20,13 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   
   TODO list:
   
-  last updated: 24/09/2013
+  - Add static collision.
+  	- Improve map class;
+  	- make convToll read from files (almost DONE);
+  	- Add static domain to character class.
+  - Add GameMap class to Character constructor.
+  - Add level start/end calling (intro and exit "play scenes" functions)
   
+  last updated: 24/09/2013
   - Add source codes instead of the compiled objects where is possible.
-  - Add paging to the background to remove the ugly scrolling effects.
+  - Add paging to the background to remove the ugly scrolling effects [DONE].
