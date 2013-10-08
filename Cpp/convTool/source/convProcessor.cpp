@@ -72,6 +72,7 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 	string file_header = file_name + ".h";
 	const string file_code = file_name + ".cpp";
 	const string data_type = "const unsigned short";
+	const string raw_data_type = "const unsigned int";
 
 	/* Open header file. */
 	dest_file.open(file_header.c_str());
@@ -85,18 +86,20 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 		/* #define _HEADER_GUARD */
 		dest_file << "#define _" << header_guard << "_H" << endl << endl;
 
-		dest_file << "//!< Length in members." << endl;
+		dest_file << "//! Length in members." << endl;
 		dest_file << "#define " << file_name << "_len_memb " << map.lenght_memb << endl << endl;
 
-		dest_file << "//!< Width in members." << endl;
+		dest_file << "//! Width in members." << endl;
 		dest_file << "#define " << file_name << "_width_memb " << map.width_memb << endl << endl;
 
-		dest_file << "//!< Height in members. " << endl;
+		dest_file << "//! Height in members. " << endl;
 		dest_file << "#define " << file_name << "_height_memb " << map.height_memb << endl << endl;
 
-		dest_file << "/* Tiles: " << map.width_memb/4 << "x" << map.height_memb/4 << " */" << endl;
-		/*extern const unsigned short file_name_map[len_memb] */
+		/* extern const unsigned short file_name_map[len_memb] */
 		dest_file << "extern " << data_type << " " << file_name << "_map[" << map.lenght_memb << "];" << endl << endl;
+
+		/* extern const unsigned short file_name_map[len_memb/16] */
+		dest_file << "extern " << raw_data_type << " " << file_name << "_raw[" << m_DataMap.size() << "];" << endl << endl;
 
 		/* #endif */
 		dest_file << "#endif /* _" << header_guard << "_H" << " */" << endl;
@@ -110,6 +113,8 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 	{
 		dest_file << showbase << internal << setfill('0');
 		dest_file << "#include \"" << file_name << ".h\"" << endl;
+
+		/* Dump map data. */
 		dest_file << data_type << " " << file_name << "_map[" << map.lenght_memb << "] = {" << endl;
 
 		for (unsigned int i = 0; i < map.lenght_memb; ++i) {
@@ -127,7 +132,27 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 			}
 		}
 
-		dest_file << "};" << endl;
+		dest_file << "};" << endl << endl;
+
+		/* Dump raw map data. */
+		dest_file << raw_data_type << " " << file_name << "_raw[" << dec << setw(0) << m_DataMap.size() << "] = {" << endl;
+		const unsigned int *raw_vec = &m_DataMap[0];
+		/* Iterate raw data vector as array. */
+		for (unsigned int i = 0; i < m_DataMap.size(); ++i) {
+
+			/* Put break line. */
+			if ((i%(map.width_memb/DATA_WIDTH)) == 0) {
+				dest_file << endl;
+			}
+
+			dest_file << dec << setw(3) << raw_vec[i];
+
+			/* Don't put comma if is the last member. */
+			if (i < (m_DataMap.size()-1)) {
+				dest_file << ", ";
+			}
+		}
+		dest_file << "};" << endl << endl;
 	}
 	/* Close source file. */
 	dest_file.close();
@@ -209,6 +234,11 @@ void convProcessor::parse_memb(const string& memb)
 
 			this->parse_memb(*iter);
 		}
+		return;
+	}
+
+	/* Some of the recursive cases can fall here. */
+	if (memb.size() == 0) {
 		return;
 	}
 
