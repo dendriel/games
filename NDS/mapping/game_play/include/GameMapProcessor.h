@@ -72,6 +72,15 @@ public:
 	int move_map_8px(const int x, const int y);
 
 	/**
+	 * \brief Check if the next move is a static.
+	 * \parameter x Horizontal offset.
+	 * \parameter y Vertical offset.
+	 * \return 0 can make the move; 1 if the path is blocked.
+	 */
+	// TODO:
+	int check_static_collision(const int x, const int y);
+
+	/**
 	 * \brief Scroll all the background layers by x, y in TILES.
 	 * \parameter x Horizontal offset.
 	 * \parameter y Vertical offset.

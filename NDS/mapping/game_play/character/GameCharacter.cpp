@@ -94,6 +94,8 @@ void GameCharacter::move(en_char_action& action)
 
 	case ACTION_WALK_NORTH_RIGHT:
 	case ACTION_WALK_NORTH_RIGHT2:
+		// Get new relative position
+		// m_MapProcessor->check_static_collision(relative_x, relative_y);
 		action++;
 		this->move_background_8px(0, -1);
 		sprite_position = SPRITE_FACING_NORTH_STEP_RIGHT;

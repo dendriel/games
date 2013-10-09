@@ -8,16 +8,19 @@
  */
 class Tileset {
 public:
-	//!< Tile set data mapping.
+	//! Tile set data mapping.
 	const unsigned short *map;
 	size_t map_width_tiles;
 	size_t map_height_tiles;
 
-	//!< Tiles data.
+	//! Collision info about the tiles.
+	const unsigned int *collision_map;
+
+	//! Tiles data.
 	const unsigned int *data;
 	size_t data_len_bytes;
 	
-	//!< Tiles pallete.
+	//! Tiles pallete.
 	const unsigned short *pallete;
 	size_t pallete_len_bytes;
 	

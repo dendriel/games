@@ -20,6 +20,7 @@
 
 extern const unsigned short mytiles_map[384];
 
+extern const unsigned int mytiles_collision_map[24];
 
 //{{BLOCK(mytilesShared)
 

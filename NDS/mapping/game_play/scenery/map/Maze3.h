@@ -13,7 +13,7 @@
 
 class Maze3: public GameMap {
 private:
-	//TODO: this data don't need to be GameMap attributes.
+	//TODO: this data don't need to be a GameMap attribute (update: maybe must be).
 	Mytiles_ts m_Tileset;
 
 public:
@@ -44,6 +44,18 @@ public:
 			m_Background[i].tileBase = tile_base;
 			/* Inverse drawing priority. */
 			m_Background[i].prio = (bg_max-1)-i;
+
+			//< Just a stub for testing purpose!!!
+			const unsigned int map1_data_raw[/*map1_data_len_memb/16*/] = {};
+
+			/* Set Static Collision domain for this background. */
+			for (unsigned int pos = 0; pos < sizeof(map1_data_raw); pos++) {
+
+				const unsigned int coll_map_index = map1_data_raw[pos];
+				const int coll_type = m_Tileset.collision_map[coll_map_index];
+
+				m_CollisionMap[i].push_back(coll_type);
+			}
 		}
 
 		m_Background[0].data = map1_data_map;

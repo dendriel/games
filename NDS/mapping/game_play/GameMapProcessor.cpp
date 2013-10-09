@@ -189,8 +189,6 @@ int GameMapProcessor::load_MapData_8px(en_direction direction)
 }
 
 /*************************************************************************************************/
-/* Private Functions Declaration																 */
-/*************************************************************************************************/
 
 void GameMapProcessor::move_map_32px(const int x, const int y)
 {
@@ -207,6 +205,19 @@ void GameMapProcessor::move_map_32px(const int x, const int y)
 	}
 }
 
+/*************************************************************************************************/
+
+int GameMapProcessor::check_static_collision(const int x, const int y)
+{
+	// TODO:
+	for (unsigned int layer = 0; layer < m_LoadedMap->m_LayersCount; ++layer) {
+		//m_LoadedMap->m_CollisionMap[layer]
+	}
+	return 0;
+}
+
+/*************************************************************************************************/
+/* Private Functions Declaration																 */
 /*************************************************************************************************/
 
 void GameMapProcessor::draw_LoadedMap(void)

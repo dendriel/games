@@ -18,6 +18,8 @@ public:
 		map_width_tiles = mytiles_width_tiles;
 		map_height_tiles = mytiles_height_tiles;
 		
+		collision_map = mytiles_collision_map;
+
 		data = mytiles_sharedTiles;
 		data_len_bytes = mytiles_sharedTilesLen_bytes;
 		

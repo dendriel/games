@@ -9,6 +9,7 @@
 #define GAMEMAP_H_
 
 #include <stdio.h>
+#include <vector>
 
 #include "util.h"
 
@@ -29,6 +30,8 @@ public:
 
 	//!< Hold backgrounds data.
 	st_map_bg m_Background[MAX_MAP_BACKGROUNDS];
+
+	std::vector<unsigned int> m_CollisionMap[MAX_MAP_BACKGROUNDS];
 
 	//!< Hold the tiles palette for every background.
 	const unsigned int *m_Tiles;
