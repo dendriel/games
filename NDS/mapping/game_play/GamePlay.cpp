@@ -11,8 +11,6 @@
 //#include "Maze3.h"
 #include "scenery.h"
 
-//!< Max of 10 actions processing interactions before reading actions again. Total of 160ms
-#define MAX_ACTIONS_INTERATIONS 10
 
 /*************************************************************************************************/
 
@@ -95,28 +93,20 @@ void GamePlay::play_game_loop(void)
 
 	while(true) {
 
-		unsigned int process_action_cnt = 0;
-
-		/* Get actions. */
+/*+++++++++++++++++++++++++++++++++++++ Get actions. +++++++++++++++++++++++++++++++++++++*/
 		char_action = m_Controller.get_user_action();
 		//ai_action = ai.get_ai_action();
 
-		/* Process actions. */
-		while (process_action_cnt < MAX_ACTIONS_INTERATIONS) {
 
-			//debug("%d", char_action);
-			m_Character->execute_action(char_action, process_action_cnt);
-			//ai.execute_action(char_action);
-			//TODO: background/m_Map.update(); // possibility animated frames.
+/*+++++++++++++++++++++++++++++++++++ Process actions. +++++++++++++++++++++++++++++++++++*/
+		m_Character->execute_action(char_action);
+		//ai.execute_action(char_action);
 
+		//TODO: background/m_Map.update(); // possible animated frames.
 
-			//timer.start();
-			swiWaitForVBlank();
-			bgUpdate();
-			oamUpdate(&oamMain);
-
-			process_action_cnt++;
-		}
+		swiWaitForVBlank();
+		bgUpdate();
+		oamUpdate(&oamMain);
 	}
 }
 

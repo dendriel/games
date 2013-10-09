@@ -12,12 +12,16 @@
 #include "GameMapProcessor.h"
 #include "character_actions.h"
 
+
 class GameCharacter: private VisualElement {
 private:
 	st_offset m_Pos_absolute_px;	//!< Position of the character in the screen (not the scenery. Absolute position in Pixels).
 	st_offset m_Pos_relative_8px;	//!< Position of the character in the screen (not the scenery. Relative position).
 	en_facing m_Facing;				//!< Facing direction.
 	GameMapProcessor *m_MapProcessor;
+
+	/* Actions cool down. */
+	unsigned short m_ActionMove_cooldown;	//!< Cool down before moving action.
 
 public:
 	/**
@@ -34,9 +38,9 @@ public:
 
 	/**
 	 * \brief Execute action and update the received parameter to the next action.
-	 * \action Action to execute.
+	 * \parameter action Action to execute.
 	 */
-	void execute_action(en_char_action& action, const unsigned int interaction);
+	void execute_action(en_char_action& action);
 
 	/**
 	 * \brief Move the character.
@@ -58,6 +62,11 @@ private:
 	 * \parameter y Character vertical relative position.
 	 */
 	void move_background_8px(const int x, const int y);
+
+	/**
+	 * \brief Update all actions cool down.
+	 */
+	void update_actions_cooldown(void);
 
 };
 

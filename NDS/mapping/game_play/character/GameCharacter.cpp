@@ -11,13 +11,16 @@
 
 #include "util.h"
 
+#define ACTION_MOVE_COOLDOWN_CYCLES 6	//! *16ms
+
 
 GameCharacter::GameCharacter(u8 *charset, int x_px, int y_px):
 VisualElement(charset, m_Pos_absolute_px),
 m_Pos_absolute_px(x_px, y_px),
 m_Pos_relative_8px(PIXEL_TO_TILE_8PX(x_px), PIXEL_TO_TILE_8PX(y_px)),
 m_Facing(W_DOWN),
-m_MapProcessor(0)
+m_MapProcessor(0),
+m_ActionMove_cooldown(0)
 {
 	update_sprite(0);
 	debug("Initial relative pos: %d,%d", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),
@@ -33,52 +36,22 @@ void GameCharacter::set_map_processor(GameMapProcessor& processor)
 
 /*************************************************************************************************/
 
-void GameCharacter::execute_action(en_char_action& action, const unsigned int interaction)
+void GameCharacter::execute_action(en_char_action& action)
 {
+	this->update_actions_cooldown();
+
 	switch(action) {
 
-	case ACTION_WALK_NORTH_RIGHT:
-	case ACTION_WALK_SOUTH_RIGHT:
-	case ACTION_WALK_EAST_RIGHT:
-	case ACTION_WALK_WEST_RIGHT:
-		this->move(action);
-		break;
-	case ACTION_WALK_NORTH_LEFT:
-	case ACTION_WALK_SOUTH_LEFT:
-	case ACTION_WALK_EAST_LEFT:
-	case ACTION_WALK_WEST_LEFT:
-		if (interaction == 3) {
-			this->move(action);
-		}
-		break;
-	case ACTION_WALK_NORTH_RIGHT2:
-	case ACTION_WALK_SOUTH_RIGHT2:
-	case ACTION_WALK_EAST_RIGHT2:
-	case ACTION_WALK_WEST_RIGHT2:
-		if (interaction == 6) {
-			this->move(action);
-		}
-		break;
-	case ACTION_WALK_NORTH_LEFT2:
-	case ACTION_WALK_SOUTH_LEFT2:
-	case ACTION_WALK_EAST_LEFT2:
-	case ACTION_WALK_WEST_LEFT2:
-		if (interaction == 9) {
-			this->move(action);
-		}
-		break;
-
-	case ACTION_WALK_NORTH_END:
-	case ACTION_WALK_SOUTH_END:
-	case ACTION_WALK_EAST_END:
-	case ACTION_WALK_WEST_END:
-		this->move(action);
-		break;
-
+	/* Walk actions. */
+	case ACTION_WALK_NORTH:
+	case ACTION_WALK_SOUTH:
+	case ACTION_WALK_EAST:
+	case ACTION_WALK_WEST:
 	case ACTION_NONE:
 		this->move(action);
 		break;
 	default:
+		debug("Untreated action received.");
 		break;
 	}
 }
@@ -87,86 +60,65 @@ void GameCharacter::execute_action(en_char_action& action, const unsigned int in
 
 void GameCharacter::move(en_char_action& action)
 {
-	static sprite_character_positions previous_sprite_position = SPRITE_FACING_NONE;
-	sprite_character_positions sprite_position = previous_sprite_position;
-
-	switch(action) {
-
-	case ACTION_WALK_NORTH_RIGHT:
-	case ACTION_WALK_NORTH_RIGHT2:
-		// Get new relative position
-		// m_MapProcessor->check_static_collision(relative_x, relative_y);
-		action++;
-		this->move_background_8px(0, -1);
-		sprite_position = SPRITE_FACING_NORTH_STEP_RIGHT;
-		break;
-
-	case ACTION_WALK_NORTH_LEFT:
-	case ACTION_WALK_NORTH_LEFT2:
-		action++;
-		this->move_background_8px(0, -1);
-		sprite_position = SPRITE_FACING_NORTH_STEP_LEFT;
-		break;
-
-	case ACTION_WALK_SOUTH_RIGHT:
-	case ACTION_WALK_SOUTH_RIGHT2:
-		action++;
-		this->move_background_8px(0, 1);
-		sprite_position = SPRITE_FACING_SOUTH_STEP_RIGHT;
-		break;
-
-	case ACTION_WALK_SOUTH_LEFT:
-	case ACTION_WALK_SOUTH_LEFT2:
-		action++;
-		this->move_background_8px(0, 1);
-		sprite_position = SPRITE_FACING_SOUTH_STEP_LEFT;
-		break;
-
-	case ACTION_WALK_EAST_RIGHT:
-	case ACTION_WALK_EAST_RIGHT2:
-		action++;
-		this->move_background_8px(1, 0);
-		sprite_position = SPRITE_FACING_EAST_STEP_RIGHT;
-		break;
-
-	case ACTION_WALK_EAST_LEFT:
-	case ACTION_WALK_EAST_LEFT2:
-		action++;
-		this->move_background_8px(1, 0);
-		sprite_position = SPRITE_FACING_EAST_STEP_LEFT;
-		break;
-
-	case ACTION_WALK_WEST_RIGHT:
-	case ACTION_WALK_WEST_RIGHT2:
-		action++;
-		this->move_background_8px(-1, 0);
-		sprite_position = SPRITE_FACING_WEST_STEP_RIGHT;
-		break;
-
-	case ACTION_WALK_WEST_LEFT:
-	case ACTION_WALK_WEST_LEFT2:
-		action++;
-		this->move_background_8px(-1, 0);
-		sprite_position = SPRITE_FACING_WEST_STEP_LEFT;
-		break;
-
-	case ACTION_WALK_NORTH_END:
-	case ACTION_WALK_SOUTH_END:
-	case ACTION_WALK_EAST_END:
-	case ACTION_WALK_WEST_END:
-		action = ACTION_NONE;
-	case ACTION_NONE:
-		sprite_position = SPRITE_FACING_NONE;
-		// TODO TODO TODO
-	default:
+	/* If still in cool down. */
+	if (m_ActionMove_cooldown > 0) {
 		return;
 	}
 
-	if (sprite_position != SPRITE_FACING_NONE) {
-		/* Previous state will be and ending state if sprite_prosition is none. */
-		previous_sprite_position = sprite_position;
-		update_sprite(sprite_position*SPRITE_LENGHT_BYTES);
+	static bool is_right_step = false;
+	static en_char_action previous_action = ACTION_NONE;
+
+	sprite_character_positions sprite_position;
+
+	switch(action) {
+		case ACTION_WALK_NORTH:
+			this->move_background_8px(0, -1);
+			sprite_position =
+					(is_right_step)? SPRITE_FACING_NORTH_STEP_RIGHT : SPRITE_FACING_NORTH_STEP_LEFT;
+			break;
+
+		case ACTION_WALK_SOUTH:
+			this->move_background_8px(0, 1);
+			sprite_position =
+					(is_right_step)? SPRITE_FACING_SOUTH_STEP_RIGHT : SPRITE_FACING_SOUTH_STEP_LEFT;
+			break;
+
+		case ACTION_WALK_EAST:
+			this->move_background_8px(1, 0);
+			sprite_position =
+					(is_right_step)? SPRITE_FACING_EAST_STEP_RIGHT : SPRITE_FACING_EAST_STEP_LEFT;
+			break;
+
+		case ACTION_WALK_WEST:
+			this->move_background_8px(-1, 0);
+			sprite_position =
+					(is_right_step)? SPRITE_FACING_WEST_STEP_RIGHT : SPRITE_FACING_WEST_STEP_LEFT;
+			break;
+		case ACTION_NONE:
+			/* If was no previous action, sprite is already in standing position. */
+			if (previous_action == ACTION_NONE) {
+				return;
+			}
+
+			switch(previous_action) {
+				case ACTION_WALK_NORTH: sprite_position = SPRITE_FACING_NORTH_STOPPED; break;
+				case ACTION_WALK_SOUTH: sprite_position = SPRITE_FACING_SOUTH_STOPPED; break;
+				case ACTION_WALK_EAST: sprite_position = SPRITE_FACING_EAST_STOPPED; break;
+				case ACTION_WALK_WEST: sprite_position = SPRITE_FACING_WEST_STOPPED; break;
+				default: assert(0); break; /* Something is really wrong. */
+			}
+			break;
+		default:
+			debug("Invalid walk action received.");
+			return;
 	}
+
+	previous_action = action;
+	is_right_step = !is_right_step;
+	/* Updating the cool down here will add a delay to starting moving. */
+	m_ActionMove_cooldown = ACTION_MOVE_COOLDOWN_CYCLES;
+
+	update_sprite(sprite_position*SPRITE_LENGHT_BYTES);
 }
 
 void GameCharacter::set_relative_pos_32px(const int x, const int y)
@@ -183,7 +135,7 @@ void GameCharacter::set_relative_pos_32px(const int x, const int y)
 	m_Pos_relative_8px.x += TILE_32PX_TO_8PX(move_x_32px);
 	m_Pos_relative_8px.y += TILE_32PX_TO_8PX(move_y_32px);
 
-	debug("Moved to: %d,%d",x,y);
+	debug("Moved to: %d,%d (%d,%d)",x,y, m_Pos_relative_8px.x, m_Pos_relative_8px.y);
 
 	m_MapProcessor->move_map_32px(move_x_32px, move_y_32px);
 }
@@ -191,7 +143,6 @@ void GameCharacter::set_relative_pos_32px(const int x, const int y)
 /*************************************************************************************************/
 /* Private Functions.                                                                            */
 /*************************************************************************************************/
-
 
 void GameCharacter::move_background_8px(const int x, const int y)
 {
@@ -205,9 +156,16 @@ void GameCharacter::move_background_8px(const int x, const int y)
 		m_Pos_relative_8px.y+=y;
 	}
 
-	//debug("pos_rela: %d,%d | %d,%d", TILE_8PX_TO_PX(m_Pos_relative_8px.x), TILE_8PX_TO_PX(m_Pos_relative_8px.y), TILE_8PX_TO_32PX(m_Pos_relative_8px.x), TILE_8PX_TO_32PX(m_Pos_relative_8px.y));
-	//debug("posRela: %d,%d", m_Pos_relative_8px.x, m_Pos_relative_8px.y);
-	debug(" posRela: %d,%d", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),
-			TILE_8PX_TO_32PX(m_Pos_relative_8px.y));
+	debug(" posRela: %d,%d (%d,%d)", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),
+			TILE_8PX_TO_32PX(m_Pos_relative_8px.y), m_Pos_relative_8px.x, m_Pos_relative_8px.y);
+}
 
+/*************************************************************************************************/
+
+void GameCharacter::update_actions_cooldown(void)
+{
+	//TODO: could build a constructor to auto check if cooldown > 0
+	if (m_ActionMove_cooldown > 0) {
+		m_ActionMove_cooldown--;
+	}
 }
