@@ -48,12 +48,12 @@ void convProcessor::start(const string& file_path, const unsigned int& array_wid
 	conversor.create_map(raw_data, dest);
 
 	conversor.convert(raw_data, dest, mytiles_ts);
-
+/*
 	for (unsigned int pos = 0; pos < raw_data.len_tiles; ++pos) {
 		size_t offset = conversor.find_total_offset(pos, raw_data.width_tiles);
-		cout << "offset: " << offset << endl;
+		cout << "offset: " << offset << "; " << dec << offset << endl;
 		conversor.print_tile(offset, raw_data.width_tiles, dest.data);
-	}
+	}*/
 
 	save_data(dest, "map1_data");
 
@@ -145,7 +145,7 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 				dest_file << endl;
 			}
 
-			dest_file << dec << setw(3) << raw_vec[i];
+			dest_file << dec << raw_vec[i];
 
 			/* Don't put comma if is the last member. */
 			if (i < (m_DataMap.size()-1)) {
