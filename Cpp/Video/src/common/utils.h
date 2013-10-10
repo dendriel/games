@@ -74,6 +74,10 @@ inline unsigned int find_y(const unsigned int index, const unsigned int x_max, c
  */
 inline unsigned int find_index(const unsigned int p, const unsigned int v, const unsigned int vmax)
 {
+	/*
+	 * Can't remember if was working on the way that is.. but this new formula works very well:
+	 * return ((y * xmax) + x );
+	 */
 	return ((( (p * vmax) - vmax ) + v ) - 1);
 }
 
