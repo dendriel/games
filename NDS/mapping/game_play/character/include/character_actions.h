@@ -19,6 +19,7 @@ typedef enum en_char_action {
 	ACTION_WALK_SOUTH,
 	ACTION_WALK_EAST,
 	ACTION_WALK_WEST,
+	ACTION_CONSOLE_CLEAR, //!< Only for develop time.
 	ACTION_NONE				//!< No action selected.
 } en_char_action;
 

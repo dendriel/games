@@ -10,6 +10,7 @@
 
 #include "map1_data.h"
 #include "Mytiles_ts.h"
+#include "util.h"
 
 class Maze3: public GameMap {
 private:
@@ -45,14 +46,11 @@ public:
 			/* Inverse drawing priority. */
 			m_Background[i].prio = (bg_max-1)-i;
 
-			//< Just a stub for testing purpose!!!
-			const unsigned int map1_data_raw[/*map1_data_len_memb/16*/] = {};
-
 			/* Set Static Collision domain for this background. */
-			for (unsigned int pos = 0; pos < sizeof(map1_data_raw); pos++) {
+			for (unsigned int pos = 0; pos < (sizeof(map1_data_raw)/4); pos++) {
 
 				const unsigned int coll_map_index = map1_data_raw[pos];
-				const int coll_type = m_Tileset.collision_map[coll_map_index];
+				const unsigned int coll_type = m_Tileset.collision_map[coll_map_index];
 
 				m_CollisionMap[i].push_back(coll_type);
 			}

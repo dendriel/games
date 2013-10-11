@@ -207,12 +207,53 @@ void GameMapProcessor::move_map_32px(const int x, const int y)
 
 /*************************************************************************************************/
 
-int GameMapProcessor::check_static_collision(const int x, const int y)
+int GameMapProcessor::check_static_collision_px(const int x, const int y)
 {
-	// TODO:
+	const unsigned short x_index_32px = PIXEL_TO_TILE_32PX(x);
+	const unsigned short y_index_32px = PIXEL_TO_TILE_32PX(y);
+	const unsigned int coll_index = find_index (y_index_32px, x_index_32px, m_LoadedMap->m_SizeTile_32px.w);
+
+	//debug("Move to %d,%d : %d; is %s", x_index_32px, y_index_32px, coll_index, (m_LoadedMap->m_CollisionMap[0][coll_index])? "blocked":"free");
+
 	for (unsigned int layer = 0; layer < m_LoadedMap->m_LayersCount; ++layer) {
-		//m_LoadedMap->m_CollisionMap[layer]
+		debug("Move to %d,%d; is %s", x, y, (m_LoadedMap->m_CollisionMap[0][coll_index])? "blocked":"free");
+		if (m_LoadedMap->m_CollisionMap[layer][coll_index] != 0) {
+			return 1;
+		}
 	}
+
+	return 0;
+}
+
+/*************************************************************************************************/
+
+/* x,y    x1,y
+ *  +-----+
+ *  |     |
+ *  |     |
+ *  +-----+
+ * x,y1   x1,y1
+ */
+int GameMapProcessor::check_static_collision(st_rect& rect_elem)
+{
+	unsigned int x  = rect_elem.pos.x;
+	unsigned int y  = rect_elem.pos.y;
+	unsigned int x1 = rect_elem.pos.x + rect_elem.w;
+	unsigned int y1 = rect_elem.pos.y + rect_elem.h;
+
+	if (this->check_static_collision_px(x, y)) {
+		return 1;
+	}
+	else if (this->check_static_collision_px(x1, y)) {
+		return 1;
+	}
+	else if (this->check_static_collision_px(x, y1)) {
+		return 1;
+	}
+	else if (this->check_static_collision_px(x1, y1)) {
+		return 1;
+	}
+
 	return 0;
 }
 

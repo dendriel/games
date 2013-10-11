@@ -9,11 +9,12 @@
 #define GAMECHARACTER_H_
 
 #include "VisualElement.h"
+#include "CollisionElement.h"
 #include "GameMapProcessor.h"
 #include "character_actions.h"
 
 
-class GameCharacter: private VisualElement {
+class GameCharacter: private VisualElement, CollisionElement {
 private:
 	st_offset m_Pos_absolute_px;	//!< Position of the character in the screen (not the scenery. Absolute position in Pixels).
 	st_offset m_Pos_relative_8px;	//!< Position of the character in the screen (not the scenery. Relative position).
@@ -29,7 +30,7 @@ public:
 	 * \parameter x_px Character horizontal absolute position.
 	 * \parameter y_px Character vertical absolute position.
 	 */
-	GameCharacter(u8 *charset = 0, int x_px = 0, int y_px = 0);
+	GameCharacter( st_rect rect, u8 *charset = 0, int x_px = 0, int y_px = 0);
 
 	/**
 	 * \brief Add the map processor reference.

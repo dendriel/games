@@ -11,11 +11,12 @@
 
 #include "util.h"
 
-#define ACTION_MOVE_COOLDOWN_CYCLES 6	//! *16ms
+#define ACTION_MOVE_COOLDOWN_CYCLES 6 //!< *16ms
 
 
-GameCharacter::GameCharacter(u8 *charset, int x_px, int y_px):
+GameCharacter::GameCharacter(st_rect rect, u8 *charset, int x_px, int y_px):
 VisualElement(charset, m_Pos_absolute_px),
+CollisionElement(rect),
 m_Pos_absolute_px(x_px, y_px),
 m_Pos_relative_8px(PIXEL_TO_TILE_8PX(x_px), PIXEL_TO_TILE_8PX(y_px)),
 m_Facing(W_DOWN),
@@ -146,6 +147,16 @@ void GameCharacter::set_relative_pos_32px(const int x, const int y)
 
 void GameCharacter::move_background_8px(const int x, const int y)
 {
+	int relative_pos_x_px = TILE_8PX_TO_PX((m_Pos_relative_8px.x + x));
+	int relative_pos_y_px = TILE_8PX_TO_PX(m_Pos_relative_8px.y + y);
+
+	st_rect collision_element(m_CollRect.pos.x + relative_pos_x_px,
+								m_CollRect.pos.y + relative_pos_y_px,
+								m_CollRect.w, m_CollRect.h);
+
+	if (m_MapProcessor->check_static_collision(collision_element) == 1) {
+		return;
+	}
 
 	/* If can't scroll the background will not update the character relative position. */
 	if (m_MapProcessor->move_map_8px(x, 0) == 0) {
@@ -156,8 +167,7 @@ void GameCharacter::move_background_8px(const int x, const int y)
 		m_Pos_relative_8px.y+=y;
 	}
 
-	debug(" posRela: %d,%d (%d,%d)", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),
-			TILE_8PX_TO_32PX(m_Pos_relative_8px.y), m_Pos_relative_8px.x, m_Pos_relative_8px.y);
+	//debug(" posRela: %d,%d (%d,%d)", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),TILE_8PX_TO_32PX(m_Pos_relative_8px.y), m_Pos_relative_8px.x, m_Pos_relative_8px.y);
 }
 
 /*************************************************************************************************/

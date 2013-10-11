@@ -97,6 +97,9 @@ void GamePlay::play_game_loop(void)
 		char_action = m_Controller.get_user_action();
 		//ai_action = ai.get_ai_action();
 
+		if (char_action == ACTION_CONSOLE_CLEAR) {
+			consoleClear();
+		}
 
 /*+++++++++++++++++++++++++++++++++++ Process actions. +++++++++++++++++++++++++++++++++++*/
 		m_Character->execute_action(char_action);

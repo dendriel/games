@@ -77,8 +77,18 @@ public:
 	 * \parameter y Vertical offset.
 	 * \return 0 can make the move; 1 if the path is blocked.
 	 */
-	// TODO:
-	int check_static_collision(const int x, const int y);
+	int check_static_collision_px(const int x, const int y);
+
+	/**
+	 * \brief Verify if the coordinates (relative position) are inside a collision position of the
+	 * static domain.
+	 * \parameter rect_elem Rectangle data. All bounds will be checked and will return at the first
+	 * collision occurrence.
+	 * \parameter x_px Horizontal position to check in pixels.
+	 * \parameter y_px Vertical position to check in pixels.
+	 * \return True if collision was detected; False if is not a collision.
+	 */
+	int check_static_collision(st_rect& rect_elem);
 
 	/**
 	 * \brief Scroll all the background layers by x, y in TILES.

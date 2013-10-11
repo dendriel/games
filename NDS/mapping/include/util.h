@@ -19,7 +19,7 @@
 
 /* Helpful structures. */
 
-//!< Hold screen matrix coordinates.
+//!< Hold screen matrix coordinates or general sizes.
 typedef struct st_offset {
 	union {
 		int x, w;
@@ -33,11 +33,16 @@ typedef struct st_offset {
 } st_offset;
 
 //!< Hold a rectangle size and screen positioning.
-typedef struct {
-	st_offset pos;
+typedef struct st_rect_size {
 	size_t w;
 	size_t h;
-} st_rect_size;
+	st_offset pos;
+	st_rect_size(int _x=0, int _y=0, int _w=0, int _h=0):
+		w(_w),
+		h(_h),
+		pos(_x,_y)
+		{};
+} st_rect;
 
 //!< Hold data about a background (used to load it).
 typedef struct {
@@ -121,5 +126,16 @@ typedef enum {
 
 #define SCREEN_DRAW_BOUND_X(_size_x) _size_x - SCREEN_WIDTH
 #define SCREEN_DRAW_BOUND_Y(_size_y) _size_y - SCREEN_HEIGHT
+
+/**
+ * \brief Find the array position from matrix coordinates.
+ * \parameter y The position (row) index.
+ * \parameter x The view (column) index.
+ * \return The array position.
+ */
+inline unsigned int find_index(const unsigned int y, const unsigned int x, const unsigned int xmax)
+{
+	return ((y * xmax) + x );
+}
 
 #endif /* UTIL_H_ */

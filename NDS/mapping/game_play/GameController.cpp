@@ -40,7 +40,8 @@ en_char_action GameController::get_user_action(void)
 	}
 
 	if(keys & KEY_START) {
-		return ACTION_NONE;
+		return ACTION_CONSOLE_CLEAR;
+		//return ACTION_NONE;
 	}
 
 	if(keys & KEY_SELECT) {
