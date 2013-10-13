@@ -9,6 +9,7 @@
 
 /*************************************************************************************************/
 
-CollisionElement::CollisionElement(const st_rect rect):
-m_CollRect(rect)
+CollisionElement::CollisionElement(const st_rect rect, const st_rect action_rect):
+m_CollRect(rect),
+m_ActionCollRect(action_rect)
 {}

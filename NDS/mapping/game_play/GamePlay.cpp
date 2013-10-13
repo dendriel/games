@@ -9,9 +9,16 @@
 #include "timming.h"
 #include "Jack.h"
 #include "Jhon.h"
-//#include "Maze3.h"
 #include "scenery.h"
+#include "objects.h"
 
+#include "util.h"
+
+
+/*************************************************************************************************/
+
+st_sprite VisualElement::s_SpritePositions[SPRITE_POSITIONS];
+st_offset *VisualElement::s_PivotOffset_8px;
 
 /*************************************************************************************************/
 
@@ -69,12 +76,16 @@ void GamePlay::load_level(const en_scen_level level)
 	/* Load map. */
 	m_MapProcessor.load_Map(m_Scenery->get_Map());
 
+
 	/* Load character. */
 	m_Character = new Jack();
 	m_Character->set_map_processor(m_MapProcessor);
 
 	m_Character->set_relative_pos_32px( m_Scenery->get_CharStartPoint_x_32px(),
 										m_Scenery->get_CharStartPoint_y_32px());
+
+	/* Set pivot offset in order to get the sprite engine working. */
+	VisualElement::set_PivotOffset(&m_Character->m_Pos_relative_8px);
 }
 
 /*************************************************************************************************/
@@ -90,7 +101,9 @@ void GamePlay::unload_level(void)
 void GamePlay::play_game_loop(void)
 {
 	en_char_action char_action;
-	Timming timer;
+
+	// Testing purpose!!!!!
+	Torch torch(TILE_32PX_TO_8PX(22), TILE_32PX_TO_8PX(10));
 
 	while(true) {
 
@@ -100,10 +113,11 @@ void GamePlay::play_game_loop(void)
 
 		if (char_action == ACTION_CONSOLE_CLEAR) {
 			consoleClear();
+			char_action = ACTION_NONE;
 		}
 
 /*+++++++++++++++++++++++++++++++++++ Process actions. +++++++++++++++++++++++++++++++++++*/
-		m_Character->execute_action(char_action);
+		this->execute_action(char_action);
 		//ai.execute_action(char_action);
 
 		//TODO: background/m_Map.update(); // possible animated frames.
@@ -112,6 +126,46 @@ void GamePlay::play_game_loop(void)
 		bgUpdate();
 		oamUpdate(&oamMain);
 	}
+}
+
+/*************************************************************************************************/
+
+void GamePlay::execute_action(en_char_action& action)
+{
+	m_Character->update_actions_cooldown();
+
+	switch(action) {
+
+	/* Touch action. */
+	case ACTION_TOUCH:
+		this->touch_action();
+	break;
+
+	/* Walk actions. */
+	case ACTION_WALK_NORTH:
+	case ACTION_WALK_SOUTH:
+	case ACTION_WALK_EAST:
+	case ACTION_WALK_WEST:
+	case ACTION_NONE:
+		m_Character->move(action);
+		break;
+	default:
+		debug("Untreated action received.");
+		break;
+	}
+}
+
+/*************************************************************************************************/
+
+void GamePlay::touch_action(void)
+{
+	st_offset touching[2];
+
+	memset(touching, 0 , sizeof(touching));
+
+	m_Character->get_touch_position(touching);
+
+	debug("pa: %d,%d; pb: %d,%d", touching[0].x, touching[0].y, touching[1].x, touching[1].y);
 }
 
 /*************************************************************************************************/
@@ -144,5 +198,9 @@ void GamePlay::init_basics(void)
 	/* Map RAM and initialize sprite manager*/
 	vramSetBankB(VRAM_B_MAIN_SPRITE_0x06400000);
 	oamInit(&oamMain, SpriteMapping_1D_128, false);
+
+	VisualElement::init_SpritePositions();
+
 	dmaCopy(jack_charsetPal, SPRITE_PALETTE, jack_charsetPalLen);
+	//dmaCopy(torch_dataPal, SPRITE_PALETTE, torch_dataPalLen);
 }

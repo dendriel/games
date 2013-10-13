@@ -50,14 +50,34 @@
  *  a tile, and the x,y; x1,y; x,y1; x1,y1 is the relative position of the element plus its rectangle size. The
  *  x, y of the rectangle tells the offset of the inside the tile.
  *
+ *
+ * Next, the x's represents the touching points of a collision element. The represented area will be the
+ * "action collision area".
+ *
+ * 0   4   8  12  16  20  24  28  31
+ * +---+---+---+---+---+---+---+---
+ * |                  Y:
+ * | X: p1  p2p3  p4
+ * |
+ * |	    x x       p1
+ * |      +-----+
+ * |    x |     | x   p2
+ * |    x |     | x   p3
+ * |      +-----+
+ * |        x x       p4
+ * |
+ * |
+ * |
+ * +---+---+---+---+---+---+---+---
  */
 
 class CollisionElement {
 protected:
 	st_rect m_CollRect;
+	st_rect m_ActionCollRect;
 
 public:
-	CollisionElement(const st_rect rect);
+	CollisionElement(const st_rect rect, const st_rect action_rect);
 };
 
 

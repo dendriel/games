@@ -14,6 +14,8 @@
 
 /* Definitions. */
 #define SPRITE_LENGHT_BYTES 32*32
+#define SPRITE_POSITIONS 128
+#define SPRITE_PIVOT_INDEX 0
 
 //!< Facility. Enumerate sprite positions.
 typedef enum sprite_character_positions {
@@ -29,29 +31,77 @@ typedef enum sprite_character_positions {
 	SPRITE_FACING_WEST_STEP_RIGHT,
 	SPRITE_FACING_WEST_STOPPED,
 	SPRITE_FACING_WEST_STEP_LEFT,
-	SPRITE_FACING_NONE //!< Control purpose.
+	SPRITE_FACING_NONE = 0//!< Control purpose.
 } sprite_character_positions;
 
-/* Static values. */
-static st_offset ms_Offset;
+
+/* Structures */
+//!< Represent the possible sprite positions to be used.
+typedef struct {
+	bool in_use;
+	u16 *mem_addr;
+	u8 *charset_data;
+	st_offset *offset;			//!< Relative position.
+} st_sprite;
 
 /**
  * \brief Game character class.
  */
 class VisualElement {
 private:
-	st_offset& m_Pos;			//!< Absolute position.
-	u8*  m_Charset_mem;			//!< Holds all the sprite of the element.
-	u16* m_Sprite_mem;			//!< The current sprite that is being displayed.
+	int m_SpritePosition;		//!< Allocated sprite position.
+
+	static st_sprite s_SpritePositions[SPRITE_POSITIONS];	//!< Controls the sprite memory occupation.
+	/**
+	 * The first slot is the pivot slot. The oam memory region will be moving according to it. The the others sprites
+	 * will be given an offset relative to the pivot (that should be the main character).
+	 */
+	static st_offset *s_PivotOffset_8px;
 
 public:
 
 	/**
 	 * \brief Class constructor.
 	 */
-	VisualElement(u8* charset = 0, st_offset& offset = ms_Offset);
+	VisualElement(st_offset *offset, u8* charset = 0);
+
+	/**
+	 * \brief Class destructor.
+	 */
+	~VisualElement(void);
 
 	void update_sprite(const unsigned int offset_bytes);
+
+	void update_position(void);
+
+	bool alloc_SpriteData(int *sprite_position, u8 *charset, st_offset *offset);
+
+	void free_SpriteData(const int sprite_position);
+
+/*************************************************************************************************/
+/* Static Functions                                                                              */
+/*************************************************************************************************/
+
+public:
+
+/**
+ * \brief Allocate memory for sprite. Must be called during initialization.
+ */
+static void init_SpritePositions(void)
+{
+	for (unsigned int i = 0; i < SPRITE_POSITIONS; ++i) {
+		VisualElement::s_SpritePositions[i].mem_addr =  oamAllocateGfx(&oamMain, SpriteSize_32x32, SpriteColorFormat_256Color);
+		VisualElement::s_SpritePositions[i].in_use = false;
+	}
+}
+
+/*************************************************************************************************/
+
+static void set_PivotOffset(st_offset *offset_8px)
+{
+	VisualElement::s_PivotOffset_8px = offset_8px;
+}
+
 };
 
 #endif /* VISUALELEMENT_H_ */

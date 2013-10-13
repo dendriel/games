@@ -15,9 +15,11 @@
 
 
 class GameCharacter: private VisualElement, CollisionElement {
+public:
+	st_offset m_Pos_relative_8px;	//!< Position of the character in the screen (not the scenery. Relative position).
+
 private:
 	st_offset m_Pos_absolute_px;	//!< Position of the character in the screen (not the scenery. Absolute position in Pixels).
-	st_offset m_Pos_relative_8px;	//!< Position of the character in the screen (not the scenery. Relative position).
 	en_facing m_Facing;				//!< Facing direction.
 	GameMapProcessor *m_MapProcessor;
 
@@ -27,21 +29,17 @@ private:
 public:
 	/**
 	 * \brief Class constructor.
+	 * \parameter rect Collision rectangle of the character (also used as action collision rectangle).
+	 * \parameter charset Character charset data.
 	 * \parameter x_px Character horizontal absolute position.
 	 * \parameter y_px Character vertical absolute position.
 	 */
-	GameCharacter( st_rect rect, u8 *charset = 0, int x_px = 0, int y_px = 0);
+	GameCharacter(st_rect rect, u8 *charset = 0, int x_px = 0, int y_px = 0);
 
 	/**
 	 * \brief Add the map processor reference.
 	 */
 	void set_map_processor(GameMapProcessor& processor);
-
-	/**
-	 * \brief Execute action and update the received parameter to the next action.
-	 * \parameter action Action to execute.
-	 */
-	void execute_action(en_char_action& action);
 
 	/**
 	 * \brief Move the character.
@@ -56,6 +54,18 @@ public:
 	 */
 	void set_relative_pos_32px(const int x, const int y);
 
+	/**
+	 * \brief Update all actions cool down.
+	 */
+	void update_actions_cooldown(void);
+
+	/**
+	 * \brief Find where the character is touching.
+	 * \brief touching A 2 rows array (output).
+	 * \note Will fill the touching array with the touching points. See collisionElement class description.
+	 */
+	void get_touch_position(st_offset *touching);
+
 private:
 	/**
 	 * \brief Move the map and update character relative position.
@@ -63,11 +73,6 @@ private:
 	 * \parameter y Character vertical relative position.
 	 */
 	void move_background_8px(const int x, const int y);
-
-	/**
-	 * \brief Update all actions cool down.
-	 */
-	void update_actions_cooldown(void);
 
 };
 

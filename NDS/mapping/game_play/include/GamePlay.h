@@ -70,6 +70,18 @@ private:
 	 * \return TODO: should return the ending state of the level.
 	 */
 	void play_game_loop(void);
+
+
+	/**
+	 * \brief Execute action and update the received parameter to the next action.
+	 * \parameter action Action to execute.
+	 */
+	void execute_action(en_char_action& action);
+
+	/**
+	 * \brief Character touch action.
+	 */
+	void touch_action(void);
 };
 
 #endif /* GAMEPLAY_H_ */

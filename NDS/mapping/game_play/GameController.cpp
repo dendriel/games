@@ -31,36 +31,40 @@ en_char_action GameController::get_user_action(void)
 
 	//TODO: Poll touch pad first.
 
-	if(keys & KEY_A) {
+	if (keys & KEY_A) {
 		return ACTION_NONE;
 	}
 
-	if(keys & KEY_B) {
+	if (keys & KEY_B) {
 		return ACTION_NONE;
 	}
 
-	if(keys & KEY_START) {
+	if (keys & KEY_START) {
 		return ACTION_CONSOLE_CLEAR;
 		//return ACTION_NONE;
 	}
 
-	if(keys & KEY_SELECT) {
+	if (keys & KEY_SELECT) {
 		return ACTION_NONE;
 	}
 
-	if(keys & KEY_UP) {
+	if ((keys & KEY_L) || (keys & KEY_R)) {
+		return ACTION_TOUCH;
+	}
+
+	if (keys & KEY_UP) {
 		return ACTION_WALK_NORTH;
 	}
 
-	if(keys & KEY_DOWN) {
+	if (keys & KEY_DOWN) {
 		return ACTION_WALK_SOUTH;
 	}
 
-	if(keys & KEY_LEFT) {
+	if (keys & KEY_LEFT) {
 		return ACTION_WALK_WEST;
 	}
 
-	if(keys & KEY_RIGHT) {
+	if (keys & KEY_RIGHT) {
 		return ACTION_WALK_EAST;
 	}
 
