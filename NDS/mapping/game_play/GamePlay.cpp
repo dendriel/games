@@ -7,6 +7,7 @@
 
 #include "GamePlay.h"
 #include "timming.h"
+#include "Jack.h"
 #include "Jhon.h"
 //#include "Maze3.h"
 #include "scenery.h"
@@ -69,7 +70,7 @@ void GamePlay::load_level(const en_scen_level level)
 	m_MapProcessor.load_Map(m_Scenery->get_Map());
 
 	/* Load character. */
-	m_Character = new Jhon();
+	m_Character = new Jack();
 	m_Character->set_map_processor(m_MapProcessor);
 
 	m_Character->set_relative_pos_32px( m_Scenery->get_CharStartPoint_x_32px(),
@@ -143,5 +144,5 @@ void GamePlay::init_basics(void)
 	/* Map RAM and initialize sprite manager*/
 	vramSetBankB(VRAM_B_MAIN_SPRITE_0x06400000);
 	oamInit(&oamMain, SpriteMapping_1D_128, false);
-	dmaCopy(manPal, SPRITE_PALETTE, 512);
+	dmaCopy(jack_charsetPal, SPRITE_PALETTE, jack_charsetPalLen);
 }
