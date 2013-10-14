@@ -25,20 +25,22 @@ include $(DEVKITARM)/ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	base game_control game_play game_play/character game_play/objects misc
+SOURCES		:=	game_control game_play game_play/base game_play/character game_play/objects misc sprites
 DATA		:=
-INCLUDES	:=	include tileset base/include game_control/include\
+INCLUDES	:=	include tileset game_play/base/include game_control/include\
 											 game_play/include\
 											 game_play/character/include\
 											 game_play/scenery\
 											 game_play/scenery/map\
 											 game_play/objects/include\
-											 misc/include
+											 misc/include\
+											 sprites
 GRAPHICS	:=	gfx
 SPRITES		:=  sprites
 AUDIO		:=	audio
 SOUNDBANK_NAME  :=	soundbank
-COMPILED 	:=  compiled
+COMPILED 	:= compiled
+SPRITES		:= sprites
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -131,12 +133,14 @@ export LIBPATHS		:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	cd $(COMPILED); make; cd ../
+	make -C $(SPRITES)
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
  
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).arm9
+	@make clean -C $(SPRITES)
  
  
 #---------------------------------------------------------------------------------

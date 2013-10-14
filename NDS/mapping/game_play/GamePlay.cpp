@@ -8,9 +8,9 @@
 #include "GamePlay.h"
 #include "timming.h"
 #include "Jack.h"
-#include "Jhon.h"
 #include "scenery.h"
 #include "objects.h"
+#include "sprites_data.h"
 
 #include "util.h"
 
@@ -201,6 +201,6 @@ void GamePlay::init_basics(void)
 
 	VisualElement::init_SpritePositions();
 
-	dmaCopy(jack_charsetPal, SPRITE_PALETTE, jack_charsetPalLen);
+	dmaCopy(sprites_dataSharedPal, SPRITE_PALETTE, sprites_dataSharedPalLen);
 	//dmaCopy(torch_dataPal, SPRITE_PALETTE, torch_dataPalLen);
 }

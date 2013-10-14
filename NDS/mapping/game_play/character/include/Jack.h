@@ -11,9 +11,6 @@
 #include "GameCharacter.h"
 #include "util.h"
 
-/* Game resources */
-#include "jack_charset.h"
-
 /**
  * \brief Player character class.
  */

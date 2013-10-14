@@ -9,7 +9,6 @@
 #define TORCH_H_
 
 #include "GameObject.h"
-#include "torch_data.h"
 
 class Torch: GameObject {
 

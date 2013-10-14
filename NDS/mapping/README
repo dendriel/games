@@ -20,17 +20,27 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   
   TODO list:
   
+  
+  last updated: 13/10/2013
+  
+  - Review all the work made this weekend;
+  - Repaint the game sprites with 256 colors;
+  - Fix the Jack sprite. He step is to long and the walking effect is ugly;
+  - Remake the torch sprite (smaller);
+  - Finish the touch action.
+  
+  
   - First make the raw collision check. Later, make the MapProcessor function return the tile type,
   that will enable different effects for the tiles. Also will be good if the character walks 8px per
-  tiles..
+  tiles.. [DONE]
   
-  - Add static collision.
-  	- Improve map class;
-  	- make convToll read from files (almost DONE);
-  	- Add static domain to character class.
-  - Add GameMap class to Character constructor.
-  - Add level start/end calling (intro and exit "play scenes" functions)
+  - Add static collision. [OK]
+  	- Improve map class; [DONE]
+  	- make convToll read from files [DONE];
+  	- Add static domain to character class  [NOPE].
+  - Add GameMap class to Character constructor [Maybe].
+  - Add level start/end calling (intro and exit "play scenes" functions) [TODO]
   
   last updated: 24/09/2013
-  - Add source codes instead of the compiled objects where is possible.
+  - Add source codes instead of the compiled objects where is possible. [IN-PROGRESS..]
   - Add paging to the background to remove the ugly scrolling effects [DONE].

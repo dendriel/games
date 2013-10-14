@@ -11,7 +11,6 @@
 #include "nds/arm9/sprite.h"
 #include "util.h"
 
-
 /*************************************************************************************************/
 /* Public Functions Declaration                                                                  */
 /*************************************************************************************************/
@@ -81,8 +80,6 @@ void VisualElement::update_position(void)
 				continue;
 			}
 		}
-
-
 
 		oamSet(&oamMain,
 				i,
