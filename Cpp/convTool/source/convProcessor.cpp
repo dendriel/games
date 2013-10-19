@@ -245,7 +245,7 @@ void convProcessor::parse_memb(const string& memb)
 	std::stringstream myStream(memb);
 	myStream >> value;
 	/* Remove map editor offset. */
-	m_DataMap.push_back((value-1));
+	m_DataMap.push_back( (value > 0)? (value-1): value);
 }
 
 /**************************************************************************************************/
