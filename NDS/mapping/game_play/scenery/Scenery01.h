@@ -11,6 +11,7 @@
 #include "GameScenery.h"
 #include "Maze3.h"
 #include "Maze2.h"
+#include "Sewer_mp.h"
 
 class Scenery01: public GameScenery {
 public:
@@ -19,9 +20,9 @@ public:
 	 */
 	Scenery01(void)
 	{
-		m_Map = new Maze3;
-		m_CharStartPoint_32px.x = 5;
-		m_CharStartPoint_32px.y = 4;
+		m_Map = new Sewer_mp;
+		m_CharStartPoint_32px.x = 6;
+		m_CharStartPoint_32px.y = 6;
 	}
 
 	/**

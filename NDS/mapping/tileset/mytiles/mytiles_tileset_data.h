@@ -16,7 +16,7 @@
 #define MYTILES_TILESET_H
 
 #define mytiles_width_tiles 8
-#define mytiles_height_tiles 3
+#define mytiles_height_tiles 8
 
 extern const unsigned short mytiles_map[384];
 

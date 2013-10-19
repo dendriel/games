@@ -27,14 +27,23 @@ TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCES		:=	game_control game_play game_play/base game_play/character game_play/objects misc sprites
 DATA		:=
-INCLUDES	:=	include tileset game_play/base/include game_control/include\
+INCLUDES	:=	include sprites game_play/base/include\
+								game_control/include\
 											 game_play/include\
 											 game_play/character/include\
 											 game_play/scenery\
-											 game_play/scenery/map\
 											 game_play/objects/include\
-											 misc/include\
-											 sprites
+											 misc/include
+#Maps
+INCLUDES += map\
+			map/sewer
+
+# Tilesets
+INCLUDES += tileset\
+			tileset/mytiles\
+			tileset/sewer
+
+
 GRAPHICS	:=	gfx
 SPRITES		:=  sprites
 AUDIO		:=	audio
