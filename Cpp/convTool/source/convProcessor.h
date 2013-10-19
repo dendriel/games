@@ -27,7 +27,7 @@ public:
 	 * \parameter file_path Data file path.
 	 * \parameter array_witdh Array width.
 	 */
-	void start(const string& file_path, const unsigned int& array_width);
+	void start(const string& file_path, const unsigned int& array_width, const string& file_name="map1_data");
 
 private:
 	/**

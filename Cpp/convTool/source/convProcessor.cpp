@@ -16,12 +16,13 @@
 
 #include "Map.h"
 #include "Mytiles_ts.h"
+#include "Sewer_ts.h"
 
 using namespace std;
 
 /**************************************************************************************************/
 
-void convProcessor::start(const string& file_path, const unsigned int& array_width)
+void convProcessor::start(const string& file_path, const unsigned int& array_width, const string& file_name)
 {
 	// Load data from files (DONE)
 	// do conversion.
@@ -29,7 +30,7 @@ void convProcessor::start(const string& file_path, const unsigned int& array_wid
 	// end.
 	convConversor conversor;
 	Map raw_data;
-	Mytiles_ts mytiles_ts;
+	Tileset *tiles_ts = new (Sewer_ts);
 
 	st_map_data dest;
 	memset(&dest, 0, sizeof(dest));
@@ -47,7 +48,7 @@ void convProcessor::start(const string& file_path, const unsigned int& array_wid
 
 	conversor.create_map(raw_data, dest);
 
-	conversor.convert(raw_data, dest, mytiles_ts);
+	conversor.convert(raw_data, dest, *tiles_ts);
 /*
 	for (unsigned int pos = 0; pos < raw_data.len_tiles; ++pos) {
 		size_t offset = conversor.find_total_offset(pos, raw_data.width_tiles);
@@ -55,11 +56,12 @@ void convProcessor::start(const string& file_path, const unsigned int& array_wid
 		conversor.print_tile(offset, raw_data.width_tiles, dest.data);
 	}*/
 
-	save_data(dest, "map1_data");
+	save_data(dest, file_name);
 
 	// Also must map collision domain from tile set and map object.
 
 	free(dest.data);
+	delete(tiles_ts);
 }
 
 /**************************************************************************************************/
@@ -82,9 +84,9 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 		transform(header_guard.begin(), header_guard.end(), header_guard.begin(), ::toupper);
 
 		/* #ifndef _HEADER_GUARD */
-		dest_file << "#ifndef _" << header_guard << "_H" << endl;
+		dest_file << "#ifndef " << header_guard << "_H" << endl;
 		/* #define _HEADER_GUARD */
-		dest_file << "#define _" << header_guard << "_H" << endl << endl;
+		dest_file << "#define " << header_guard << "_H" << endl << endl;
 
 		dest_file << "//! Length in members." << endl;
 		dest_file << "#define " << file_name << "_len_memb " << map.lenght_memb << endl << endl;
@@ -102,7 +104,7 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 		dest_file << "extern " << raw_data_type << " " << file_name << "_raw[" << m_DataMap.size() << "];" << endl << endl;
 
 		/* #endif */
-		dest_file << "#endif /* _" << header_guard << "_H" << " */" << endl;
+		dest_file << "#endif /* " << header_guard << "_H" << " */" << endl;
 	}
 	/* Close header file. */
 	dest_file.close();

@@ -3,12 +3,14 @@
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
 		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.exe.debug.2026557619">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.exe.debug.2026557619" moduleId="org.eclipse.cdt.core.settings" name="Debug">
-				<externalSettings/>
+				<externalSettings>
+					<externalSetting/>
+				</externalSettings>
 				<extensions>
+					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
@@ -17,11 +19,12 @@
 						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.exe.debug.547514607" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.exe.debug">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.mingw.exe.debug.1017303673" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.exe.debug"/>
 							<builder buildPath="${workspace_loc:/convTool}/Debug" id="cdt.managedbuild.tool.gnu.builder.mingw.base.1316590711" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug.1802893884" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug">
+							<tool command="as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug.1802893884" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug">
 								<option id="gnu.both.asm.option.include.paths.341442710" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/source}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/tileset}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/maps}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/tileset/mytiles}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/tileset/sewer}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1290039542" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -32,6 +35,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.786752830" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/data}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/maps}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/tileset/mytiles}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/tileset}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\include&quot;"/>
@@ -39,6 +43,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\mingw32\4.8.1\include\c++&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\include\sys&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/tileset/sewer}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.nostdinc.621583417" name="Do not search system directories (-nostdinc)" superClass="gnu.cpp.compiler.option.preprocessor.nostdinc"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.preprocess.1819981523" name="Preprocess only (-E)" superClass="gnu.cpp.compiler.option.preprocessor.preprocess"/>
@@ -114,10 +119,10 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.exe.release.222947940" moduleId="org.eclipse.cdt.core.settings" name="Release">
 				<externalSettings/>
 				<extensions>
+					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
@@ -127,6 +132,12 @@
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.mingw.exe.release.1387923607" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.exe.release"/>
 							<builder buildPath="${workspace_loc:/convTool}/Release" id="cdt.managedbuild.tool.gnu.builder.mingw.base.2038693797" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release.1436894486" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release">
+								<option id="gnu.both.asm.option.include.paths.1341990474" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/source}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/tileset}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/tileset/mytiles}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/convTool/tileset/sewer}&quot;"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1922829039" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.630156440" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
