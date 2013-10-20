@@ -66,14 +66,16 @@ void VisualElement::update_position(void)
 		int new_x = sprite.offset->x;
 		int new_y = sprite.offset->y;
 
-		/* Give extra offset to correctly place the other sprites. */
+		/* Give extra offset to correctly place the other sprite. */
 		if (i != SPRITE_PIVOT_INDEX) {
 			//debug("new: %d,%d", new_x, new_y);
 			new_x +=  s_SpritePositions[SPRITE_PIVOT_INDEX].offset->x - TILE_8PX_TO_PX(VisualElement::s_PivotOffset_8px->x);
 			new_y +=  s_SpritePositions[SPRITE_PIVOT_INDEX].offset->y - TILE_8PX_TO_PX(VisualElement::s_PivotOffset_8px->y);
 			//debug("bef: %d,%d", new_x, new_y);
 
-			/* Verify if the sprite is inside the showing bounds (otherwise, it will be appearing every screen size offset)*/
+			/* Verify if the sprite is inside the showing bounds (otherwise, it will be appearing
+			 * every multiples of "screen size offset")
+			 */
 			if ( ((new_x + TILE_SIZE_32PX) < 0) || ((new_y + TILE_SIZE_32PX) < 0) ||
 					(new_x > SCREEN_WIDTH) || (new_y > SCREEN_HEIGHT)) {
 				oamClearSprite(&oamMain, i);
@@ -90,7 +92,7 @@ void VisualElement::update_position(void)
 				sprite.mem_addr,
 				-1, false, false, false, false, false);
 
-		debug("upd: %d", i);
+		//debug("show sprite: %d", i);
 	}
 }
 

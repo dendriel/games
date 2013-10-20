@@ -8,7 +8,9 @@
 #ifndef GAMESCENERY_H_
 #define GAMESCENERY_H_
 
+#include <vector>
 #include "GameMap.h"
+#include "GameObject.h"
 
 /**
  * \brief Hold all data from a scenery.
@@ -26,7 +28,37 @@ protected:
 	// StaticCollisionDomain
 	// DynamicCollisionDomain
 
+	//< Fill with all the objects from the game.
+	std::vector<GameObject *> m_ObjectsList;
+
 public:
+
+	/**
+	 * \brief Touch items on the scenery.
+	 * \parameter touching The touching points to be verified.
+	 */
+	void check_touch_points(st_offset touching[]);
+
+	/**
+	 * \brief Verify if the point is touching the area.
+	 * \parameter touching The touching point.
+	 * \parameter area The area to verify.
+	 * \return true if the area is being touched; false otherwise.
+	 */
+	bool check_touched_object(st_offset touching, st_rect area);
+
+	virtual ~GameScenery(void)
+	{
+		;;
+	}
+
+	/**
+	 * \brief Add the objects from the scenery.
+	 */
+	virtual void fill_objects_list(void)
+	{
+		;;
+	}
 
 	inline GameMap *get_Map(void)
 	{

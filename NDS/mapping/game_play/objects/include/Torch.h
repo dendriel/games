@@ -10,7 +10,7 @@
 
 #include "GameObject.h"
 
-class Torch: GameObject {
+class Torch: public GameObject {
 
 public:
 

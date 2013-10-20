@@ -12,6 +12,7 @@
 #include "util.h"
 
 #define ACTION_MOVE_COOLDOWN_CYCLES 6 //!< *16ms
+#define ACTION_TOUCH_COOLDOWN_CYCLES 10
 
 
 GameCharacter::GameCharacter(st_rect rect, u8 *charset, int x_px, int y_px):
@@ -21,7 +22,8 @@ m_Pos_relative_8px(PIXEL_TO_TILE_8PX(x_px), PIXEL_TO_TILE_8PX(y_px)),
 m_Pos_absolute_px(x_px, y_px),
 m_Facing(W_DOWN),
 m_MapProcessor(0),
-m_ActionMove_cooldown(0)
+m_ActionMove_cooldown(0),
+m_ActionTouch_cooldown(0)
 {
 	update_sprite(SPRITE_FACING_SOUTH_STOPPED*SPRITE_LENGHT_BYTES);
 	update_position();
@@ -100,12 +102,13 @@ void GameCharacter::move(en_char_action& action)
 
 	previous_action = action;
 	is_right_step = !is_right_step;
-	/* Updating the cool down here will add a delay to starting moving. */
-	m_ActionMove_cooldown = ACTION_MOVE_COOLDOWN_CYCLES;
 
 	update_sprite(sprite_position*SPRITE_LENGHT_BYTES);
 
 	update_position();
+
+	/* Updating the cool down here will add a delay to starting moving. */
+	m_ActionMove_cooldown = ACTION_MOVE_COOLDOWN_CYCLES;
 }
 
 void GameCharacter::set_relative_pos_32px(const int x, const int y)
@@ -157,7 +160,7 @@ void GameCharacter::get_touch_position(st_offset *touching)
 	yp1 = y - TOUCH_RANGE;
 	yp2 = (y + m_ActionCollRect.h/2) - HALF_TOUCH_RANGE;
 	yp3 = (y + m_ActionCollRect.h/2) + HALF_TOUCH_RANGE;
-	yp4 = y = x + m_ActionCollRect.h + TOUCH_RANGE;
+	yp4 = y + m_ActionCollRect.h + TOUCH_RANGE;
 
 	switch(m_Facing) {
 
@@ -228,4 +231,23 @@ void GameCharacter::update_actions_cooldown(void)
 	if (m_ActionMove_cooldown > 0) {
 		m_ActionMove_cooldown--;
 	}
+
+	if (m_ActionTouch_cooldown > 0) {
+		m_ActionTouch_cooldown--;
+	}
 }
+
+/*************************************************************************************************/
+
+unsigned short GameCharacter::get_action_touch_cooldown(void)
+{
+	return m_ActionTouch_cooldown;
+}
+
+/*************************************************************************************************/
+
+void GameCharacter::set_action_touch_cooldown(void)
+{
+	m_ActionTouch_cooldown = ACTION_TOUCH_COOLDOWN_CYCLES;
+}
+

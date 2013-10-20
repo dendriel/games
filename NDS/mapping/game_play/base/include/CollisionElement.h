@@ -72,12 +72,17 @@
  */
 
 class CollisionElement {
-protected:
+public:
 	st_rect m_CollRect;
 	st_rect m_ActionCollRect;
 
 public:
 	CollisionElement(const st_rect rect, const st_rect action_rect);
+
+	st_rect get_CollRect(void)
+	{
+		return m_CollRect;
+	}
 };
 
 

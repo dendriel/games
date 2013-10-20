@@ -25,7 +25,13 @@ include $(DEVKITARM)/ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	game_control game_play game_play/base game_play/character game_play/objects misc sprites
+SOURCES		:=	game_control game_play\
+				game_play/base\
+				game_play/character\
+				game_play/objects\
+				game_play/scenery\
+				misc sprites
+
 DATA		:=
 INCLUDES	:=	include sprites game_play/base/include\
 								game_control/include\
@@ -34,7 +40,7 @@ INCLUDES	:=	include sprites game_play/base/include\
 											 game_play/scenery\
 											 game_play/objects/include\
 											 misc/include
-#Maps
+# Maps
 INCLUDES += map\
 			map/sewer
 

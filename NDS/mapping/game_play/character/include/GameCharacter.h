@@ -25,6 +25,7 @@ private:
 
 	/* Actions cool down. */
 	unsigned short m_ActionMove_cooldown;	//!< Cool down before moving action.
+	unsigned short m_ActionTouch_cooldown;	//!< Cool down before touching action.
 
 public:
 	/**
@@ -65,6 +66,16 @@ public:
 	 * \note Will fill the touching array with the touching points. See collisionElement class description.
 	 */
 	void get_touch_position(st_offset *touching);
+
+	/**
+	 * \brief Get action touch cool down.
+	 */
+	unsigned short get_action_touch_cooldown(void);
+
+	/**
+	 * \brief Update touch action cool down to full value.
+	 */
+	void set_action_touch_cooldown(void);
 
 private:
 	/**

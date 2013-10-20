@@ -86,6 +86,8 @@ void GamePlay::load_level(const en_scen_level level)
 
 	/* Set pivot offset in order to get the sprite engine working. */
 	VisualElement::set_PivotOffset(&m_Character->m_Pos_relative_8px);
+
+	m_Scenery->fill_objects_list();
 }
 
 /*************************************************************************************************/
@@ -101,9 +103,6 @@ void GamePlay::unload_level(void)
 void GamePlay::play_game_loop(void)
 {
 	en_char_action char_action;
-
-	// Testing purpose!!!!!
-	Torch torch(TILE_32PX_TO_8PX(22), TILE_32PX_TO_8PX(10));
 
 	while(true) {
 
@@ -159,13 +158,22 @@ void GamePlay::execute_action(en_char_action& action)
 
 void GamePlay::touch_action(void)
 {
+	/* Check cool down. */
+	if (m_Character->get_action_touch_cooldown() > 0) {
+		//debug("cool down: %d", m_Character->get_action_touch_cooldown());
+		return;
+	}
+
 	st_offset touching[2];
 
 	memset(touching, 0 , sizeof(touching));
 
 	m_Character->get_touch_position(touching);
 
-	debug("pa: %d,%d; pb: %d,%d", touching[0].x, touching[0].y, touching[1].x, touching[1].y);
+	m_Scenery->check_touch_points(touching);
+
+	/* Update cool down. */
+	m_Character->set_action_touch_cooldown();
 }
 
 /*************************************************************************************************/

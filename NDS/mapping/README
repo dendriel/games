@@ -20,6 +20,28 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   
   TODO list:
   
+  last update: 20/10/2013
+  
+  - Draw the sewer map; [IN-PROGRESS]
+  - Make the sewer map work with layer changes (so the water became animated);
+  - Finish action touch. [DONE]
+  - Add invetory class;
+  - Add items IDs;
+  - Add the lever item to the sewer map;
+  - Add more actions to the game;
+  - Add action "give item" to the lever item;
+  - Add actions IDs;
+  - Add openning scene to the game;
+  - Add ending scene to the game;
+  - Add game over screen;
+  - Game initialization:
+  	-Display splash;
+  	-Display credits;
+  	-Display main menu;
+  - Add the darkness to the game...
+  - Add sounds;
+  - Add music.
+  
   
   last updated: 13/10/2013
   

@@ -53,7 +53,7 @@ private:
 
 	static st_sprite s_SpritePositions[SPRITE_POSITIONS];	//!< Controls the sprite memory occupation.
 	/**
-	 * The first slot is the pivot slot. The oam memory region will be moving according to it. The the others sprites
+	 * The first slot is the pivot slot. The oam memory region will be moving according to it. The others sprites
 	 * will be given an offset relative to the pivot (that should be the main character).
 	 */
 	static st_offset *s_PivotOffset_8px;

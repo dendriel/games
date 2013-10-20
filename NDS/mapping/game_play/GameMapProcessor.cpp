@@ -157,7 +157,6 @@ int GameMapProcessor::load_MapData_8px(en_direction direction)
 			if ((m_LoadedMap_offset_8px.y - 1) < 0) {
 				/* There is no more tiles to the top. */
 				//debug("data_offset.pos.y: %d", m_LoadedMap_data_offset.pos.y);
-				debug("returned here up!!");
 				return -1;
 			}
 			m_LoadedMap_offset_8px.y -= 1;
@@ -213,10 +212,8 @@ int GameMapProcessor::check_static_collision_px(const int x, const int y)
 	const unsigned short y_index_32px = PIXEL_TO_TILE_32PX(y);
 	const unsigned int coll_index = find_index (y_index_32px, x_index_32px, m_LoadedMap->m_SizeTile_32px.w);
 
-	//debug("Move to %d,%d : %d; is %s", x_index_32px, y_index_32px, coll_index, (m_LoadedMap->m_CollisionMap[0][coll_index])? "blocked":"free");
-
 	for (unsigned int layer = 0; layer < m_LoadedMap->m_LayersCount; ++layer) {
-		debug("Move to %d,%d; is %s", x, y, (m_LoadedMap->m_CollisionMap[0][coll_index])? "blocked":"free");
+		//debug("Move to %d,%d; is %s", x, y, (m_LoadedMap->m_CollisionMap[0][coll_index])? "blocked":"free");
 		if (m_LoadedMap->m_CollisionMap[layer][coll_index] != 0) {
 			return 1;
 		}
