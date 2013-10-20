@@ -26,8 +26,8 @@ public:
 	Scenery01(void)
 	{
 		m_Map = new Sewer_mp;
-		m_CharStartPoint_32px.x = 6;
-		m_CharStartPoint_32px.y = 6;
+		m_CharStartPoint_32px.x = 62;
+		m_CharStartPoint_32px.y = 62;
 	}
 
 	/**
@@ -43,7 +43,7 @@ public:
 
 	void fill_objects_list(void)
 	{
-		m_ObjectsList.push_back(new Torch(TILE_32PX_TO_8PX(6), TILE_32PX_TO_8PX(6)));
+		m_ObjectsList.push_back(new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(60)));
 	}
 };
 
