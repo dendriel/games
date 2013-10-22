@@ -28,6 +28,10 @@ public:
 		m_Map = new Sewer_mp;
 		m_CharStartPoint_32px.x = 62;
 		m_CharStartPoint_32px.y = 62;
+
+		// Testing purpose!!
+		//m_CharStartPoint_32px.x = 14;
+		//m_CharStartPoint_32px.y = 20;
 	}
 
 	/**
@@ -43,7 +47,12 @@ public:
 
 	void fill_objects_list(void)
 	{
+		/* Testing objects. */
 		m_ObjectsList.push_back(new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(60)));
+		m_ObjectsList.push_back(new Lever(TILE_32PX_TO_8PX(63), TILE_32PX_TO_8PX(60)));
+
+		/* Objects from the scenery. */
+		m_ObjectsList.push_back(new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22)));
 	}
 };
 

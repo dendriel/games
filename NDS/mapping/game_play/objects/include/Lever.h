@@ -1,16 +1,16 @@
 /*
- * Torch.h
+ * Lever.h
  *
- *  Created on: 13/10/2013
+ *  Created on: 21/10/2013
  *      Author: vitor
  */
 
-#ifndef TORCH_H_
-#define TORCH_H_
+#ifndef LEVER_H_
+#define LEVER_H_
 
 #include "GameObject.h"
 
-class Torch: public GameObject {
+class Lever: public GameObject {
 public:
 
 	/**
@@ -18,7 +18,7 @@ public:
 	 * \parameter x_8px Initial horizontal relative position.
 	 * \parameter y_8px Initial vertical relative position.
 	 */
-	Torch(const unsigned int x_8px, const unsigned int y_8px);
+	Lever(const unsigned int x_8px, const unsigned int y_8px);
 };
 
-#endif /* TORCH_H_ */
+#endif /* LEVER_H_ */

@@ -13,5 +13,6 @@
  */
 
 #include "Torch.h"
+#include "Lever.h"
 
 #endif /* OBJECTS_H_ */
