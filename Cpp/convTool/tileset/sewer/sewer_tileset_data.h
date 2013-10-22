@@ -43,8 +43,8 @@ extern const unsigned int sewer_tileset_collision_map[64];
 //
 //======================================================================
 
-#define sewer_tilesetSharedTilesLen_bytes 22656
-extern const unsigned int sewer_tilesetSharedTiles[5664];
+#define sewer_tilesetSharedTilesLen_bytes 24448
+extern const unsigned int sewer_tilesetSharedTiles[6112];
 
 #define sewer_tilesetSharedPalLen_bytes 512
 extern const unsigned short sewer_tilesetSharedPal[256];

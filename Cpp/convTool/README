@@ -1,0 +1,8 @@
+
+TODO:
+
+ last update 21/10/2013
+ 
+ - Use "getopt()" function to provide a more powerfull command line interface;
+ - Add built-in for the tilesets;
+ - Allow to pass the tileset as parameter.
