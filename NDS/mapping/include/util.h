@@ -9,6 +9,7 @@
 #define UTIL_H_
 
 #include <stdio.h>
+#include <vector>
 #include <nds.h>
 #include "timming.h"
 
@@ -136,6 +137,15 @@ typedef enum {
 inline unsigned int find_index(const unsigned int y, const unsigned int x, const unsigned int xmax)
 {
 	return ((y * xmax) + x );
+}
+
+
+// Push an object into a list.
+template <class Tlist, class Tobject>
+inline std::vector<Tlist>& operator<<(std::vector<Tlist>& list, Tobject *object)
+{
+	list.push_back(object);
+	return list;
 }
 
 #endif /* UTIL_H_ */

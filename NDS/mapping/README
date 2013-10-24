@@ -27,10 +27,10 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   	- LATER: Do when it's possible.
   
   - PRIO - DESC - STATE-
-  +------+------+-------
+  +------+------+-------   
    
   last update: 21/10/2013
-  - Find pretty tiles to the sewer map (bridges and pipes were the water will flow)
+  - Find pretty tiles to the sewer map (bridges and pipes were the water will flow) [DONE - but still ugly]
   
   last update: 20/10/2013
 
@@ -39,7 +39,7 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   - Finish action touch. [DONE]
   - HIGH - Add invetory class;
   - HIGH - Add items IDs;
-  - HIGH - Add the lever item to the sewer map;
+  - HIGH - Add the lever item to the sewer map [DONE];
   - HIGH - Add more actions to the game;
   - HIGH - Add action "give item" to the lever item;
   - HIGH - Add actions IDs;
@@ -60,7 +60,7 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   
   - LOW - Review all the work made this weekend;
   - MEDIUM - Repaint the game sprites with 256 colors;
-  - MEDIUM - Fix the Jack sprite. He step is to long and the walking effect is ugly;
+  - MEDIUM - Fix the Jack sprite. He step is to long and the walking effect is ugly [DONE];
   - LOW - Remake the torch sprite (smaller);
   - Finish the touch action [DONE].
   
@@ -79,3 +79,4 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   last updated: 24/09/2013
   - Add source codes instead of the compiled objects where is possible. [IN-PROGRESS..]
   - Add paging to the background to remove the ugly scrolling effects [DONE].
+  

@@ -48,11 +48,11 @@ public:
 	void fill_objects_list(void)
 	{
 		/* Testing objects. */
-		m_ObjectsList.push_back(new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(60)));
-		m_ObjectsList.push_back(new Lever(TILE_32PX_TO_8PX(63), TILE_32PX_TO_8PX(60)));
+		m_ObjectsList 	<< new Torch(TILE_32PX_TO_8PX(61), TILE_32PX_TO_8PX(60))
+						<< new Lever(TILE_32PX_TO_8PX(63), TILE_32PX_TO_8PX(61));
 
 		/* Objects from the scenery. */
-		m_ObjectsList.push_back(new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22)));
+		m_ObjectsList << new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
 	}
 };
 

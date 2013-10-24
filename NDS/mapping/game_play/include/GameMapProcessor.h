@@ -55,13 +55,6 @@ public:
 	void clean_resources(void);
 
 	/**
-	 * \brief Load the given map into the game.
-	 * \parameter map Map to be loaded.
-	 * \note Initial offset must be made separately.
-	 */
-	void load_Map(GameMap *map);
-
-	/**
 	 * \brief Scroll all the background layers by x, y offset.
 	 * \parameter x Horizontal offset.
 	 * \parameter y Vertical offset.
@@ -97,7 +90,20 @@ public:
 	 */
 	void move_map_32px(const int x, const int y);
 
+
+	void operator<<(GameMap *map)
+	{
+		this->load_Map(map);
+	}
+
 private:
+
+	/**
+	 * \brief Load the given map into the game.
+	 * \parameter map Map to be loaded.
+	 * \note Initial offset must be made separately.
+	 */
+	void load_Map(GameMap *map);
 
 	/**
 	 * \brief Draw the loaded map into the screen.

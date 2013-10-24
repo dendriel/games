@@ -74,7 +74,7 @@ void GamePlay::load_level(const en_scen_level level)
 	m_Scenery = this->create_scenery(level);
 
 	/* Load map. */
-	m_MapProcessor.load_Map(m_Scenery->get_Map());
+	m_MapProcessor << m_Scenery->get_Map();
 
 
 	/* Load character. */
