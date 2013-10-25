@@ -29,9 +29,13 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   - PRIO - DESC - STATE-
   +------+------+-------   
   
+  last update: 25/10/2013
+  - [LOW] Fix the right side of the sewer map (the walls).
+  - [HIGH] Make the GamePlay process the enqueued actions.
+  
   last update: 24/10/2013
   - [LOW] Get touchpad coordinates as moving directions.
-  - [HIGH] Add relation ACTION<->TRIGGER to objects.
+  - [HIGH] Add relation ACTION<->TRIGGER to objects. [DONE]
    
   last update: 21/10/2013
   - Find pretty tiles to the sewer map (bridges and pipes were the water will flow) [DONE - but still ugly]
@@ -44,9 +48,9 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   - HIGH - Add invetory class [DONE];
   - HIGH - Add items IDs [DONE - currID, typeID];
   - HIGH - Add the lever item to the sewer map [DONE];
-  - HIGH - Add more actions to the game;
-  - HIGH - Add action "give item" to the lever item;
-  - HIGH - Add actions IDs;
+  - HIGH - Add more actions to the game [DONE];
+  - HIGH - Add action "give item" to the lever item [DONE -for the torch];
+  - HIGH - Add actions IDs [DONE - changed the character_actions enum to game_actions];
   - LOW - Add openning scene to the game;
   - LOW - Add ending scene to the game;
   - LOW - Add game over screen;

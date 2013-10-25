@@ -9,7 +9,7 @@
 #define GAMECONTROLLER_H_
 
 #include <nds.h>
-#include "character_actions.h"
+#include "game_actions.h"
 
 /**
  * \brief Get player actions.
@@ -19,7 +19,7 @@ public:
 	/**
 	 * \brief Read and parser user actions.
 	 */
-	en_char_action get_user_action(void);
+	en_action get_user_action(void);
 
 };
 

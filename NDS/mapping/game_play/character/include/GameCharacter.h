@@ -12,7 +12,7 @@
 #include "CollisionElement.h"
 #include "GameMapProcessor.h"
 #include "Inventory.h"
-#include "character_actions.h"
+#include "game_actions.h"
 
 //testing purpose
 #include "objects.h"
@@ -52,7 +52,7 @@ public:
 	 * \parameter action Contains information about where to move. Also will be change to the next action.
 	 * \parameter direction Which direction to move.
 	 */
-	void move(en_char_action& action);
+	void move(en_action& action);
 	void move(const int x, const int y);
 
 	/**

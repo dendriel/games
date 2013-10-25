@@ -19,5 +19,13 @@ GameObject(Torch_rect_size,
 		SPRITE_FACING_NONE,
 		TORCH_OBJECT_NAME,
 		display)
-{}
+{
+	// In this way, all torches may be taken.
+	st_trigger give_item(ACTION_TOUCH,
+						ACTION_GIVE_OBJECT,
+						-1,
+						get_Id(),
+						NULL);
+	set_Trigger(give_item);
+}
 

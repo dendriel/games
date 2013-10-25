@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "util.h"
 
+using namespace std;
 
 /*************************************************************************************************/
 
@@ -24,4 +25,36 @@ m_Type(type)
 }
 
 /*************************************************************************************************/
+
+
+bool GameObject::get_reaction(en_action action, st_trigger& trigger)
+{
+	for (vector<st_trigger>::iterator iter = m_Triggers_list.begin();
+			iter != m_Triggers_list.end(); ++iter) {
+
+		debug("act %d != iter->trigger: %d ?", action, iter->trigger);
+		if (action != iter->trigger) {
+			debug("continue.");
+			continue;
+		}
+
+		// If there is charges.
+		if (iter->charges > 0) {
+			iter->charges--;
+			trigger = *iter;
+			return true;
+		}
+		// Not chargeable.
+		else if (iter->charges == -1) {
+			trigger = *iter;
+			return true;
+		}
+		// No more charges.
+		else {
+			return false;
+		}
+	}
+	// Trigger doesn't exist.
+	return false;
+}
 

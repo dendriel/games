@@ -8,29 +8,25 @@
 #ifndef GAMEOBJECT_H_
 #define GAMEOBJECT_H_
 
+#include <vector>
 #include <string>
 #include "VisualElement.h"
 #include "CollisionElement.h"
+#include "game_actions.h"
+
 
 class GameObject: protected VisualElement, public CollisionElement {
 private:
 	/**
-	 *  Position of the object in the screen. VisualElement needs a position in pixels, but work
-	 *  with it in 8px scale when it's possible.
+	 *  Position of the object in the screen. VisualElement needs a position in pixels, but you may
+	 *  work with in 8px scale whenever is possible.
 	 */
 	st_offset m_Pos_relative_px;
-
-	//! Printable object identifier.
-	std::string m_Name;
-
-	//! Current object ID.
-	long m_Id;
-
-	//! Object unique ID.
-	long m_Type;
-
-	//! IDs for distribute to objects.
-	static long s_Object_ids;
+	std::string m_Name;						//!< Printable object identifier.
+	long m_Id;								//!< Current object ID.
+	long m_Type;							//!< Object unique ID.
+	std::vector<st_trigger> m_Triggers_list;//!< Map reactions of the object to possible actions.
+	static long s_Object_ids;				//!< IDs for distribute to objects.
 
 public:
 	/**
@@ -52,6 +48,15 @@ public:
 			std::string name="<unamed>",
 			bool display=true);
 
+
+	/**
+	 * \brief Checks if there is an reaction registered for the given action.
+	 * \parameter action The action to be searched.
+	 * \return If there is a trigger for the action, decrement the trigger charges, fill the trigger
+	 *  parameter and return true; Otherwise, just return false.
+	 */
+	bool get_reaction(en_action action, st_trigger& trigger);
+
 	/**
 	 * \brief Get relative position in pixels attribute.
 	 */
@@ -61,7 +66,7 @@ public:
 	}
 
 	/**
-	 * \brief Get object name identifier.
+	 * \brief Get the object name identifier.
 	 */
 	std::string get_Name(void)
 	{
@@ -84,6 +89,14 @@ public:
 		return m_Type;
 	}
 
+	/**
+	 * \brief Add a trigger for the object.
+	 */
+	void set_Trigger(st_trigger& trigger)
+	{
+		m_Triggers_list.push_back(trigger);
+	}
+
 private:
 /*************************************************************************************************/
 /* Static Functions                                                                              */
@@ -97,10 +110,10 @@ private:
 	}
 };
 
-//! Objects types Types. *Don't start at zero as this is a default value for no value.
+//! Objects types Types. *Don't start at zero as this is a default value for "no value".
 enum {
 	GAMEOBJECT_TYPE_0 = 100, // Torch
-	GAMEOBJECT_TYPE_1,	 // Lever
+	GAMEOBJECT_TYPE_1,		 // Lever
 };
 
 #endif /* GAMEOBJECT_H_ */

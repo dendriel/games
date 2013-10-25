@@ -9,7 +9,7 @@
 
 /*************************************************************************************************/
 
-en_char_action GameController::get_user_action(void)
+en_action GameController::get_user_action(void)
 {
 	/*
 	  KEY_A      = BIT(0),  //!< Keypad A button.

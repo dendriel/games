@@ -41,7 +41,7 @@ void GameCharacter::set_map_processor(GameMapProcessor& processor)
 
 /*************************************************************************************************/
 
-void GameCharacter::move(en_char_action& action)
+void GameCharacter::move(en_action& action)
 {
 	/* If still in cool down. */
 	if (m_ActionMove_cooldown > 0) {
@@ -49,7 +49,7 @@ void GameCharacter::move(en_char_action& action)
 	}
 
 	static bool is_right_step = false;
-	static en_char_action previous_action = ACTION_NONE;
+	static en_action previous_action = ACTION_NONE;
 
 	sprite_character_positions sprite_position;
 

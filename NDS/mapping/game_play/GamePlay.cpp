@@ -17,12 +17,6 @@
 
 /*************************************************************************************************/
 
-st_sprite VisualElement::s_SpritePositions[SPRITE_POSITIONS];
-st_offset *VisualElement::s_PivotOffset_8px;
-long GameObject::s_Object_ids;
-
-/*************************************************************************************************/
-
 GamePlay::GamePlay(void):
 m_Scenery(0),
 m_Character(0)
@@ -30,12 +24,16 @@ m_Character(0)
 	;;
 }
 
-/*************************************************************************************************/
-
 GamePlay::~GamePlay(void)
 {
 	delete(m_Character);
 }
+
+/* Initialize static resources. */
+
+st_sprite VisualElement::s_SpritePositions[SPRITE_POSITIONS];
+st_offset *VisualElement::s_PivotOffset_8px;
+long GameObject::s_Object_ids;
 
 /*************************************************************************************************/
 
@@ -66,6 +64,52 @@ void GamePlay::start(const en_scen_level level)
 
 	} while (curr_level != SCEN_LEVEL_END);
 
+}
+
+/*************************************************************************************************/
+
+void GamePlay::play_game_loop(void)
+{
+	en_action char_action;
+
+	while(true) {
+
+		/* Input. */
+		char_action = m_Controller.get_user_action();
+
+		// testing purpose.
+		if (char_action == ACTION_CONSOLE_CLEAR) {
+			//consoleClear();
+			char_action = ACTION_NONE;
+			m_Character->get_Inventory();
+		}
+
+		/* Update. */
+		 /* Could enqueue the character action, but executing directly is more clearly. */
+		this->execute_action(char_action);
+		this->dequeue_actions();
+		//TODO: background/m_Map.update(); // possible animated frames.
+
+		/* Render. */
+		swiWaitForVBlank();
+		bgUpdate();
+		oamUpdate(&oamMain);
+	}
+}
+
+/*************************************************************************************************/
+
+GameScenery *GamePlay::create_scenery(en_scen_level level)
+{
+	switch(level) {
+		case SCEN_LEVEL0:
+			return new(Scenery01);
+			break;
+		default:
+			return NULL;
+	}
+
+	return NULL;
 }
 
 /*************************************************************************************************/
@@ -101,102 +145,6 @@ void GamePlay::unload_level(void)
 
 /*************************************************************************************************/
 
-void GamePlay::play_game_loop(void)
-{
-	en_char_action char_action;
-
-	while(true) {
-
-/*++++++++++++++++++++++++++++++++++++ Input. +++++++++++++++++++++++++++++++++++++*/
-		char_action = m_Controller.get_user_action();
-		//ai_action = ai.get_ai_action();
-
-		if (char_action == ACTION_CONSOLE_CLEAR) {
-			//consoleClear();
-			char_action = ACTION_NONE;
-			m_Character->get_Inventory();
-		}
-
-/*+++++++++++++++++++++++++++++++++++ Update. +++++++++++++++++++++++++++++++++++*/
-		this->execute_action(char_action);
-		//ai.execute_action(char_action);
-
-		//TODO: background/m_Map.update(); // possible animated frames.
-
-
-/*+++++++++++++++++++++++++++++++++++ Render. +++++++++++++++++++++++++++++++++++*/
-		swiWaitForVBlank();
-		bgUpdate();
-		oamUpdate(&oamMain);
-	}
-}
-
-/*************************************************************************************************/
-
-void GamePlay::execute_action(en_char_action& action)
-{
-	m_Character->update_actions_cooldown();
-
-	switch(action) {
-
-	/* Touch action. */
-	case ACTION_TOUCH:
-		this->touch_action();
-	break;
-
-	/* Walk actions. */
-	case ACTION_WALK_NORTH:
-	case ACTION_WALK_SOUTH:
-	case ACTION_WALK_EAST:
-	case ACTION_WALK_WEST:
-	case ACTION_NONE:
-		m_Character->move(action);
-		break;
-	default:
-		debug("Untreated action received.");
-		break;
-	}
-}
-
-/*************************************************************************************************/
-
-void GamePlay::touch_action(void)
-{
-	/* Check cool down. */
-	if (m_Character->get_action_touch_cooldown() > 0) {
-		//debug("cool down: %d", m_Character->get_action_touch_cooldown());
-		return;
-	}
-
-	st_offset touching[2];
-
-	memset(touching, 0 , sizeof(touching));
-
-	m_Character->get_touch_position(touching);
-
-	m_Scenery->check_touch_points(touching);
-
-	/* Update cool down. */
-	m_Character->set_action_touch_cooldown();
-}
-
-/*************************************************************************************************/
-
-GameScenery *GamePlay::create_scenery(en_scen_level level)
-{
-	switch(level) {
-		case SCEN_LEVEL0:
-			return new(Scenery01);
-			break;
-		default:
-			return NULL;
-	}
-
-	return NULL;
-}
-
-/*************************************************************************************************/
-
 void GamePlay::init_basics(void)
 {
 	/* Map RAM to video memory. */
@@ -214,5 +162,4 @@ void GamePlay::init_basics(void)
 	VisualElement::init_SpritePositions();
 
 	dmaCopy(sprites_dataSharedPal, SPRITE_PALETTE, sprites_dataSharedPalLen);
-	//dmaCopy(torch_dataPal, SPRITE_PALETTE, torch_dataPalLen);
 }

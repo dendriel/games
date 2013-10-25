@@ -8,11 +8,14 @@
 #ifndef GAMEPLAY_H_
 #define GAMEPLAY_H_
 
+#include <queue>
+
 #include "GameMapProcessor.h"
 #include "GameCharacter.h"
 #include "GameController.h"
 #include "GameScenery.h"
 #include "scenery.h"
+#include "game_actions.h"
 
 
 /**
@@ -24,6 +27,8 @@ private:
 	GameController m_Controller;
 	GameScenery *m_Scenery;
 	GameCharacter *m_Character;
+
+	std::queue<st_trigger> m_ActionsQueue;
 
 public:
 	/**
@@ -71,12 +76,16 @@ private:
 	 */
 	void play_game_loop(void);
 
+	/**
+	 * \brief Dequeue and execute all enqueued actions.
+	 */
+	void dequeue_actions(void);
 
 	/**
 	 * \brief Execute action and update the received parameter to the next action.
 	 * \parameter action Action to execute.
 	 */
-	void execute_action(en_char_action& action);
+	void execute_action(en_action& action);
 
 	/**
 	 * \brief Character touch action.
