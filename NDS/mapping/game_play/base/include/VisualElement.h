@@ -42,6 +42,7 @@ typedef struct {
 	u16 *mem_addr;
 	u8 *charset_data;
 	st_offset *offset;			//!< Relative position.
+	bool hide;
 } st_sprite;
 
 /**
@@ -63,7 +64,7 @@ public:
 	/**
 	 * \brief Class constructor.
 	 */
-	VisualElement(st_offset *offset, u8* charset = 0);
+	VisualElement(st_offset *offset, u8* charset = 0, bool display=true);
 
 	/**
 	 * \brief Class destructor.
@@ -74,7 +75,7 @@ public:
 
 	void update_position(void);
 
-	bool alloc_SpriteData(int *sprite_position, u8 *charset, st_offset *offset);
+	bool alloc_SpriteData(int *sprite_position, u8 *charset, st_offset *offset, bool display);
 
 	void free_SpriteData(const int sprite_position);
 
@@ -83,25 +84,22 @@ public:
 /*************************************************************************************************/
 
 public:
-
-/**
- * \brief Allocate memory for sprite. Must be called during initialization.
- */
-static void init_SpritePositions(void)
-{
-	for (unsigned int i = 0; i < SPRITE_POSITIONS; ++i) {
-		VisualElement::s_SpritePositions[i].mem_addr =  oamAllocateGfx(&oamMain, SpriteSize_32x32, SpriteColorFormat_256Color);
-		VisualElement::s_SpritePositions[i].in_use = false;
+	/**
+	 * \brief Allocate memory for sprite. Must be called during initialization.
+	 */
+	static void init_SpritePositions(void)
+	{
+		for (unsigned int i = 0; i < SPRITE_POSITIONS; ++i) {
+			VisualElement::s_SpritePositions[i].mem_addr =  oamAllocateGfx(&oamMain, SpriteSize_32x32, SpriteColorFormat_256Color);
+			VisualElement::s_SpritePositions[i].in_use = false;
+			VisualElement::s_SpritePositions[i].hide = false;
+		}
 	}
-}
 
-/*************************************************************************************************/
-
-static void set_PivotOffset(st_offset *offset_8px)
-{
-	VisualElement::s_PivotOffset_8px = offset_8px;
-}
-
+	static void set_PivotOffset(st_offset *offset_8px)
+	{
+		VisualElement::s_PivotOffset_8px = offset_8px;
+	}
 };
 
 #endif /* VISUALELEMENT_H_ */

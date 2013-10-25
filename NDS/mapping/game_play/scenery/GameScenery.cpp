@@ -26,11 +26,11 @@ void GameScenery::check_touch_points(st_offset touching[])
 
 		// Check p1.
 		if (this->check_touched_object(touching[0], relative_coor) == true) {
-			debug("Touched object %s!", object->get_Name().c_str());
+			debug("Touched object %s id: %ld!", object->get_Name().c_str(), object->get_Type());
 		}
 		// Check p2.
 		else if (this->check_touched_object(touching[1], relative_coor) == true) {
-			debug("Touched object %s!", object->get_Name().c_str());
+			debug("Touched object %s id: %ld!", object->get_Name().c_str(), object->get_Type());
 		}
 		else {
 //			debug("Touched nothing!");

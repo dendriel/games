@@ -15,9 +15,9 @@
 /* Public Functions Declaration                                                                  */
 /*************************************************************************************************/
 
-VisualElement::VisualElement(st_offset *offset, u8* charset)
+VisualElement::VisualElement(st_offset *offset, u8* charset, bool display)
 {
-	if (this->alloc_SpriteData(&m_SpritePosition, charset, offset) == false) {
+	if (this->alloc_SpriteData(&m_SpritePosition, charset, offset, display) == false) {
 		debug("There is no more free sprite positions to use.");
 		return;
 	}
@@ -48,7 +48,9 @@ void VisualElement::update_sprite(const unsigned int offset_bytes)
 			SpriteSize_32x32,
 			SpriteColorFormat_256Color,
 			sprite.mem_addr,
-			-1, false, false, false, false, false);
+			-1, false,
+			s_SpritePositions[m_SpritePosition].hide,
+			false, false, false);
 }
 
 /*************************************************************************************************/
@@ -90,7 +92,10 @@ void VisualElement::update_position(void)
 				SpriteSize_32x32,
 				SpriteColorFormat_256Color,
 				sprite.mem_addr,
-				-1, false, false, false, false, false);
+				-1,
+				false,
+				sprite.hide,
+				false, false, false);
 
 		//debug("show sprite: %d", i);
 	}
@@ -98,7 +103,7 @@ void VisualElement::update_position(void)
 
 /*************************************************************************************************/
 
-bool VisualElement::alloc_SpriteData(int *sprite_position, u8 *charset, st_offset *offset)
+bool VisualElement::alloc_SpriteData(int *sprite_position, u8 *charset, st_offset *offset, bool display)
 {
 	for (unsigned short i = 0; i < SPRITE_POSITIONS; ++i) {
 
@@ -107,6 +112,7 @@ bool VisualElement::alloc_SpriteData(int *sprite_position, u8 *charset, st_offse
 			VisualElement::s_SpritePositions[i].in_use = true;
 			VisualElement::s_SpritePositions[i].charset_data = charset;
 			VisualElement::s_SpritePositions[i].offset = offset;
+			VisualElement::s_SpritePositions[i].hide = !display;
 
 			*sprite_position = i;
 

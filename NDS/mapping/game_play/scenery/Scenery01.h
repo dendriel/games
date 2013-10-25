@@ -48,7 +48,7 @@ public:
 	void fill_objects_list(void)
 	{
 		/* Testing objects. */
-		m_ObjectsList 	<< new Torch(TILE_32PX_TO_8PX(61), TILE_32PX_TO_8PX(60))
+		m_ObjectsList 	<< new Torch(TILE_32PX_TO_8PX(61), TILE_32PX_TO_8PX(60)) << new Torch(TILE_32PX_TO_8PX(61), TILE_32PX_TO_8PX(61))
 						<< new Lever(TILE_32PX_TO_8PX(63), TILE_32PX_TO_8PX(61));
 
 		/* Objects from the scenery. */

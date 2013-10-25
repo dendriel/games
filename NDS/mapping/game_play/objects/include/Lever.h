@@ -18,7 +18,7 @@ public:
 	 * \parameter x_8px Initial horizontal relative position.
 	 * \parameter y_8px Initial vertical relative position.
 	 */
-	Lever(const unsigned int x_8px, const unsigned int y_8px);
+	Lever(const unsigned int x_8px, const unsigned int y_8px, bool display=true);
 };
 
 #endif /* LEVER_H_ */

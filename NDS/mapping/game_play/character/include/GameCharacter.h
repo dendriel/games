@@ -11,8 +11,12 @@
 #include "VisualElement.h"
 #include "CollisionElement.h"
 #include "GameMapProcessor.h"
+#include "Inventory.h"
 #include "character_actions.h"
 
+//testing purpose
+#include "objects.h"
+#include <iostream>
 
 class GameCharacter: private VisualElement, CollisionElement {
 public:
@@ -22,6 +26,7 @@ private:
 	st_offset m_Pos_absolute_px;	//!< Position of the character in the screen (not the scenery. Absolute position in Pixels).
 	en_facing m_Facing;				//!< Facing direction.
 	GameMapProcessor *m_MapProcessor;
+	Inventory m_Inventory;
 
 	/* Actions cool down. */
 	unsigned short m_ActionMove_cooldown;	//!< Cool down before moving action.
@@ -76,6 +81,28 @@ public:
 	 * \brief Update touch action cool down to full value.
 	 */
 	void set_action_touch_cooldown(void);
+
+	// Testing function.
+	void get_Inventory(void)
+	{
+		static bool ret = false;
+
+		if (ret) return;
+
+		m_Inventory << new Torch(TILE_32PX_TO_8PX(59), TILE_32PX_TO_8PX(59), false);
+		m_Inventory << new Lever(TILE_32PX_TO_8PX(62), TILE_32PX_TO_8PX(60), false);
+		vector<st_inventory_slot> slot_list = m_Inventory.get_Slot_list();
+
+		for (std::vector<st_inventory_slot>::iterator slot = slot_list.begin(); slot != slot_list.end(); ++slot) {
+			std::cout << "slot: ";
+			for (std::vector<GameObject *>::iterator obj = slot->objects_list.begin(); obj != slot->objects_list.end(); ++obj) {
+				std::cout << ((*obj)->get_Name()) << " (" << slot->objects_list.size() << ")";
+			}
+			std::cout << std::endl;
+		}
+
+		ret = true;
+	}
 
 private:
 	/**

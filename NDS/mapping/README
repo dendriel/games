@@ -28,6 +28,10 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   
   - PRIO - DESC - STATE-
   +------+------+-------   
+  
+  last update: 24/10/2013
+  - [LOW] Get touchpad coordinates as moving directions.
+  - [HIGH] Add relation ACTION<->TRIGGER to objects.
    
   last update: 21/10/2013
   - Find pretty tiles to the sewer map (bridges and pipes were the water will flow) [DONE - but still ugly]
@@ -37,8 +41,8 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   - Draw the sewer map [DONE ~Thanks to Marta P)];
   - LOW - Make the sewer map work with layer changes (so the water became animated);
   - Finish action touch. [DONE]
-  - HIGH - Add invetory class;
-  - HIGH - Add items IDs;
+  - HIGH - Add invetory class [DONE];
+  - HIGH - Add items IDs [DONE - currID, typeID];
   - HIGH - Add the lever item to the sewer map [DONE];
   - HIGH - Add more actions to the game;
   - HIGH - Add action "give item" to the lever item;
@@ -58,8 +62,8 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   
   last updated: 13/10/2013
   
-  - LOW - Review all the work made this weekend;
-  - MEDIUM - Repaint the game sprites with 256 colors;
+  - LOW - Review all the work made this weekend [DONE];
+  - MEDIUM - Repaint the game sprites with 256 colors [INVALID];
   - MEDIUM - Fix the Jack sprite. He step is to long and the walking effect is ugly [DONE];
   - LOW - Remake the torch sprite (smaller);
   - Finish the touch action [DONE].

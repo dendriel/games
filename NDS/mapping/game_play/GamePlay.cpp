@@ -19,6 +19,7 @@
 
 st_sprite VisualElement::s_SpritePositions[SPRITE_POSITIONS];
 st_offset *VisualElement::s_PivotOffset_8px;
+long GameObject::s_Object_ids;
 
 /*************************************************************************************************/
 
@@ -106,21 +107,24 @@ void GamePlay::play_game_loop(void)
 
 	while(true) {
 
-/*+++++++++++++++++++++++++++++++++++++ Get actions. +++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++ Input. +++++++++++++++++++++++++++++++++++++*/
 		char_action = m_Controller.get_user_action();
 		//ai_action = ai.get_ai_action();
 
 		if (char_action == ACTION_CONSOLE_CLEAR) {
-			consoleClear();
+			//consoleClear();
 			char_action = ACTION_NONE;
+			m_Character->get_Inventory();
 		}
 
-/*+++++++++++++++++++++++++++++++++++ Process actions. +++++++++++++++++++++++++++++++++++*/
+/*+++++++++++++++++++++++++++++++++++ Update. +++++++++++++++++++++++++++++++++++*/
 		this->execute_action(char_action);
 		//ai.execute_action(char_action);
 
 		//TODO: background/m_Map.update(); // possible animated frames.
 
+
+/*+++++++++++++++++++++++++++++++++++ Render. +++++++++++++++++++++++++++++++++++*/
 		swiWaitForVBlank();
 		bgUpdate();
 		oamUpdate(&oamMain);
