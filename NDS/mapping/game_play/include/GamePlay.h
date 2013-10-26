@@ -79,18 +79,27 @@ private:
 	/**
 	 * \brief Dequeue and execute all enqueued actions.
 	 */
-	void dequeue_actions(void);
+	void execute_queued_reactions(void);
 
 	/**
 	 * \brief Execute action and update the received parameter to the next action.
 	 * \parameter action Action to execute.
+	 * \parameter trigger Data from a triggered reaction.
 	 */
-	void execute_action(en_action& action);
+	void execute_action(en_action& action, st_trigger *trigger=NULL);
 
 	/**
 	 * \brief Character touch action.
 	 */
 	void touch_action(void);
+
+	/**
+	 * \brief Give an object to the character. Nothing will happen if there is no room in the
+	 * inventory. The object reference will be removed from the original place (scenery object list,
+	 * for example), and added into the character inventory.
+	 * \parameter object_id What object will be added to the character inventory.
+	 */
+	void give_object_action(const long& object_id);
 };
 
 #endif /* GAMEPLAY_H_ */

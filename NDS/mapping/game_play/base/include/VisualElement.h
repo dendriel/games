@@ -51,7 +51,6 @@ typedef struct {
 class VisualElement {
 private:
 	int m_SpritePosition;		//!< Allocated sprite position.
-
 	static st_sprite s_SpritePositions[SPRITE_POSITIONS];	//!< Controls the sprite memory occupation.
 	/**
 	 * The first slot is the pivot slot. The oam memory region will be moving according to it. The others sprites
@@ -71,13 +70,27 @@ public:
 	 */
 	~VisualElement(void);
 
-	void update_sprite(const unsigned int offset_bytes);
+	void update_sprite(const unsigned int offset_bytes=0);
 
 	void update_position(void);
 
 	bool alloc_SpriteData(int *sprite_position, u8 *charset, st_offset *offset, bool display);
 
 	void free_SpriteData(const int sprite_position);
+
+	/**
+	 * \brief Set visual element visibility.
+	 * \parameter display Display (true) or not (false) the element in the screen.
+	 */
+	inline void set_Display(const bool display)
+	{
+		st_sprite& sprite = s_SpritePositions[m_SpritePosition];
+		sprite.hide = !display;
+		/* Update right after so won't be needed to wait the character moving around to update the
+		 * sprite.
+		 */
+		update_sprite();
+	}
 
 /*************************************************************************************************/
 /* Static Functions                                                                              */

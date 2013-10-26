@@ -18,7 +18,8 @@ GameObject(Torch_rect_size,
 		GAMEOBJECT_TYPE_0,
 		SPRITE_FACING_NONE,
 		TORCH_OBJECT_NAME,
-		display)
+		display,
+		true)	// stackable
 {
 	// In this way, all torches may be taken.
 	st_trigger give_item(ACTION_TOUCH,

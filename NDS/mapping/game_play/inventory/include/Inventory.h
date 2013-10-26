@@ -30,7 +30,7 @@ typedef struct st_inventory_slot {
 
 class Inventory {
 private:
-	vector<st_inventory_slot> m_Slot_list;
+	vector<st_inventory_slot> m_Slot_list;	// Make slots list as queues.
 
 public:
 	/**
@@ -48,10 +48,10 @@ public:
 	 * \brief Add object into inventory.
 	 * \parameter object The item to be added.
 	 * \return true: if the object was added; false: if there is no more space in the inventory.
-	 * \note Behavior: Will stack the objects in the same slot until limit is reached. Can't have
-	 * two stacks of the same object.
+	 * \note Behavior: Will stack the objects with same type in the same slot until limit is
+	 * reached. Can't have two stacks of the same object.
 	 */
-	bool add_object(GameObject *object);
+	bool add_Object(GameObject *object);
 
 	vector<st_inventory_slot> get_Slot_list(void)
 	{
@@ -60,10 +60,10 @@ public:
 };
 
 // Overload Inventory so we can just "drop" items in it.
-inline Inventory& operator<<(Inventory& inv, GameObject *object)
+inline Inventory& operator<<(Inventory& inventory, GameObject *object)
 {
-	inv.add_object(object);
-	return inv;
+	(void) inventory.add_Object(object);
+	return inventory;
 }
 
 #endif /* INVENTORY_H_ */

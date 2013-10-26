@@ -49,7 +49,12 @@ public:
 	{
 		/* Testing objects. */
 		m_ObjectsList 	<< new Torch(TILE_32PX_TO_8PX(61), TILE_32PX_TO_8PX(60)) << new Torch(TILE_32PX_TO_8PX(61), TILE_32PX_TO_8PX(61))
-						<< new Lever(TILE_32PX_TO_8PX(63), TILE_32PX_TO_8PX(61));
+						<< new Lever(TILE_32PX_TO_8PX(63), TILE_32PX_TO_8PX(61))
+		<< new Lever(TILE_32PX_TO_8PX(63), TILE_32PX_TO_8PX(62))
+		<< new Torch(TILE_32PX_TO_8PX(59), TILE_32PX_TO_8PX(60))
+		<< new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(59))
+		<< new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(57))
+		<< new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(56));
 
 		/* Objects from the scenery. */
 		m_ObjectsList << new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));

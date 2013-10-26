@@ -34,14 +34,14 @@ typedef struct st_trigger {
 	int charges;		//!< How much times can repeat the trigger. (-1 will be infinite times)
 	// Some basic elements that the action may use.
 	struct {
-		long id;
-		void *data;	// maybe will be useful. just an idea so far.
+		long gen_id;	// Generic id for actions use (the id of given object, for example).
+		void *data;		// Maybe will be useful. just an idea so far.
 	};
 	st_trigger(en_action _t=ACTION_NONE, en_action _a=ACTION_NONE, int _ch=0, long _id=0, void *_dt=NULL):
 		trigger(_t),
 		reaction(_a),
 		charges(_ch),
-		id(_id),
+		gen_id(_id),
 		data(_dt){}
 } st_trigger;
 

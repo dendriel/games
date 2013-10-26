@@ -82,26 +82,27 @@ public:
 	 */
 	void set_action_touch_cooldown(void);
 
+	/**
+	 * \brief Add item to inventory.
+	 */
+	bool add_Object(GameObject *object)
+	{
+		return m_Inventory.add_Object(object);
+	}
+
 	// Testing function.
 	void get_Inventory(void)
 	{
-		static bool ret = false;
-
-		if (ret) return;
-
-		m_Inventory << new Torch(TILE_32PX_TO_8PX(59), TILE_32PX_TO_8PX(59), false);
-		m_Inventory << new Lever(TILE_32PX_TO_8PX(62), TILE_32PX_TO_8PX(60), false);
 		vector<st_inventory_slot> slot_list = m_Inventory.get_Slot_list();
 
 		for (std::vector<st_inventory_slot>::iterator slot = slot_list.begin(); slot != slot_list.end(); ++slot) {
 			std::cout << "slot: ";
 			for (std::vector<GameObject *>::iterator obj = slot->objects_list.begin(); obj != slot->objects_list.end(); ++obj) {
 				std::cout << ((*obj)->get_Name()) << " (" << slot->objects_list.size() << ")";
+				break; // just the first.
 			}
 			std::cout << std::endl;
 		}
-
-		ret = true;
 	}
 
 private:
@@ -113,5 +114,12 @@ private:
 	void move_background_8px(const int x, const int y);
 
 };
+
+// Overload game character to access the inventory overload.
+inline GameCharacter& operator<<(GameCharacter& character, GameObject *object)
+{
+	(void) character.add_Object(object);
+	return character;
+}
 
 #endif /* GAMECHARACTER_H_ */

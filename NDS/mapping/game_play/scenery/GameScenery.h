@@ -12,6 +12,8 @@
 #include "GameMap.h"
 #include "GameObject.h"
 
+#include "util.h"
+
 /**
  * \brief Hold all data from a scenery.
  */
@@ -54,6 +56,37 @@ public:
 	inline std::vector<GameObject *> *get_ObjectsList(void)
 	{
 		return &m_ObjectsList;
+	}
+
+	/**
+	 * \brief Get an object reference from the list pointed by its id.
+	 * return The object reference if found; or NULL if the object was not found in the list.
+	 */
+	inline GameObject *get_Object(const long id)
+	{
+		for(std::vector<GameObject *>::iterator iter = m_ObjectsList.begin();
+				iter != m_ObjectsList.end(); ++iter) {
+			GameObject *object = *iter;
+			if (object->get_Id() == id) {
+				return object;
+			}
+		}
+		return NULL;
+	}
+
+	/**
+	 * \brief Removes an object reference from the list pointed by its id.
+	 */
+	inline void del_Object(const long id)
+	{
+		for(std::vector<GameObject *>::iterator iter = m_ObjectsList.begin();
+				iter != m_ObjectsList.end(); ++iter) {
+			GameObject *object = *iter;
+			if (object->get_Id() == id) {
+				m_ObjectsList.erase(iter);
+				debug("scen objs: %d", m_ObjectsList.size());
+			}
+		}
 	}
 
 	inline int get_CharStartPoint_x_32px(void)

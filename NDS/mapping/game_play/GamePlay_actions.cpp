@@ -7,6 +7,7 @@
 
 #include "GamePlay.h"
 #include <vector>
+#include <cassert>
 
 using namespace std;
 
@@ -16,14 +17,23 @@ using namespace std;
 
 /*************************************************************************************************/
 
-void GamePlay::dequeue_actions(void)
+void GamePlay::execute_queued_reactions(void)
 {
-	;;
+	//debug("size: %d", m_ActionsQueue.size());
+	while(m_ActionsQueue.size() > 0) {
+
+		st_trigger& trigger = m_ActionsQueue.front();
+
+		this->execute_action(trigger.reaction, &trigger);
+
+		m_ActionsQueue.pop();
+		debug("Pop %d reaction.", trigger.reaction);
+	}
 }
 
 /*************************************************************************************************/
 
-void GamePlay::execute_action(en_action& action)
+void GamePlay::execute_action(en_action& action, st_trigger *trigger)
 {
 	m_Character->update_actions_cooldown();
 
@@ -34,6 +44,9 @@ void GamePlay::execute_action(en_action& action)
 	break;
 
 	case ACTION_GIVE_OBJECT:
+		assert(trigger != NULL);
+
+		this->give_object_action(trigger->gen_id);
 		break;
 
 	/* Walk actions. */
@@ -72,6 +85,7 @@ void GamePlay::touch_action(void)
 
 	if (check_touch_points(touching, m_Scenery->get_ObjectsList(), trigger_data) == true) {
 		m_ActionsQueue.push(trigger_data);
+		debug("Push %d reaction.", trigger_data.reaction);
 	}
 
 	/* Update cool down. */
@@ -117,6 +131,7 @@ static bool check_touch_points(st_offset touching[], vector<GameObject *> *objec
 		}
 
 		debug("Reaction: %d", trigger_data.reaction);
+		return true;
 	}
 
 	return false;
@@ -138,6 +153,34 @@ static bool check_touched_object(st_offset touching, st_rect area)
 	}
 
 	return false;
+}
+
+/*************************************************************************************************/
+
+void GamePlay::give_object_action(const long& obj_id)
+{
+	GameObject *object = m_Scenery->get_Object(obj_id);
+
+	/* If the object was not found, do nothing. If there is more lists that the object can be in,
+	 * add here and keep searching before returning.
+	 */
+	if (object == NULL) {
+		return;
+	}
+
+	// Add the item to the character.
+	if (m_Character->add_Object(object) != true) {
+		debug("no more space.");
+		// error message here!
+		return;
+	}
+
+	// The object was taken. Now it is in the inventory. TODO: update the inventory window.
+	// Set object visibility.
+	object->set_Visibility(false);
+
+	// Remove duplicated references.
+	m_Scenery->del_Object(obj_id);
 }
 
 /*************************************************************************************************/

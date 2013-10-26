@@ -12,7 +12,9 @@
 
 Inventory::Inventory(const size_t slot_max):
 	m_Slot_list(slot_max)
-{}
+{
+	debug("inv size: %d", m_Slot_list.size());
+}
 
 Inventory::~Inventory(void)
 {
@@ -21,7 +23,7 @@ Inventory::~Inventory(void)
 
 /*************************************************************************************************/
 
-bool Inventory::add_object(GameObject *object)
+bool Inventory::add_Object(GameObject *object)
 {
 	// iterate over inventory slots.
 	for (vector<st_inventory_slot>::iterator slot = this->m_Slot_list.begin();
@@ -36,7 +38,8 @@ bool Inventory::add_object(GameObject *object)
 					(slot->objects_list.size() < INVENTORY_DEFAULT_SLOT_SIZE)) {
 
 				slot->objects_list.push_back(object);
-				debug("Add stack obj: %s", object->get_Name().c_str());
+				debug("Stack obj: %s", object->get_Name().c_str());
+				debug("Stack size: %d", slot->objects_list.size());
 				return true;
 			}
 			// The stack is full.
@@ -53,7 +56,8 @@ bool Inventory::add_object(GameObject *object)
 		// If slot is free.
 		if (slot->objects_list.size() == 0) {
 			slot->objects_list.push_back(object);
-			debug("Add new obj: %s", object->get_Name().c_str());
+			slot->stackable = object->get_Stackable();
+			debug("New obj: %s", object->get_Name().c_str());
 			return true;
 		}
 	}

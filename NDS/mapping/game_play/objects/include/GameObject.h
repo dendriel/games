@@ -25,6 +25,7 @@ private:
 	std::string m_Name;						//!< Printable object identifier.
 	long m_Id;								//!< Current object ID.
 	long m_Type;							//!< Object unique ID.
+	bool m_Stackable;						//!< If in an inventory, is able to be stacked.
 	std::vector<st_trigger> m_Triggers_list;//!< Map reactions of the object to possible actions.
 	static long s_Object_ids;				//!< IDs for distribute to objects.
 
@@ -46,7 +47,8 @@ public:
 			long type,
 			unsigned int initial_sprite=SPRITE_FACING_NONE,
 			std::string name="<unamed>",
-			bool display=true);
+			bool display=true,
+			bool stackable=false);
 
 
 	/**
@@ -60,7 +62,7 @@ public:
 	/**
 	 * \brief Get relative position in pixels attribute.
 	 */
-	st_offset get_Pos_relative_px(void)
+	inline st_offset get_Pos_relative_px(void)
 	{
 		return m_Pos_relative_px;
 	}
@@ -68,7 +70,7 @@ public:
 	/**
 	 * \brief Get the object name identifier.
 	 */
-	std::string get_Name(void)
+	inline std::string get_Name(void)
 	{
 		return m_Name;
 	}
@@ -76,7 +78,7 @@ public:
 	/**
 	 * \brief Return object current ID.
 	 */
-	long get_Id(void)
+	inline long get_Id(void)
 	{
 		return m_Id;
 	}
@@ -84,7 +86,7 @@ public:
 	/**
 	 * \brief Return object type.
 	 */
-	long get_Type(void)
+	inline long get_Type(void)
 	{
 		return m_Type;
 	}
@@ -92,9 +94,26 @@ public:
 	/**
 	 * \brief Add a trigger for the object.
 	 */
-	void set_Trigger(st_trigger& trigger)
+	inline void set_Trigger(st_trigger& trigger)
 	{
 		m_Triggers_list.push_back(trigger);
+	}
+
+	/**
+	 * \brief Set visual element visibility.
+	 * \parameter display Display (true) or not (false) the element in the screen.
+	 */
+	inline void set_Visibility(const bool display)
+	{
+		set_Display(display);
+	}
+
+	/**
+	 * \brief Return the stackable property.
+	 */
+	inline bool get_Stackable(void)
+	{
+		return m_Stackable;
 	}
 
 private:

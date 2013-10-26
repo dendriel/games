@@ -22,7 +22,7 @@ VisualElement::VisualElement(st_offset *offset, u8* charset, bool display)
 		return;
 	}
 
-	debug("Allocated sprite pos: %d", m_SpritePosition);
+	//debug("Allocated sprite pos: %d", m_SpritePosition);
 }
 
 VisualElement::~VisualElement(void)
@@ -49,7 +49,7 @@ void VisualElement::update_sprite(const unsigned int offset_bytes)
 			SpriteColorFormat_256Color,
 			sprite.mem_addr,
 			-1, false,
-			s_SpritePositions[m_SpritePosition].hide,
+			sprite.hide,
 			false, false, false);
 }
 
@@ -96,8 +96,6 @@ void VisualElement::update_position(void)
 				false,
 				sprite.hide,
 				false, false, false);
-
-		//debug("show sprite: %d", i);
 	}
 }
 
