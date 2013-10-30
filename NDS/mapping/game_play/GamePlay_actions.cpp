@@ -22,21 +22,20 @@ void GamePlay::execute_queued_reactions(void)
 	//debug("size: %d", m_ActionsQueue.size());
 	while(m_ActionsQueue.size() > 0) {
 
-		st_trigger& trigger = m_ActionsQueue.front();
+		Trigger *trigger = m_ActionsQueue.front();
 
-		this->execute_action(trigger.reaction, &trigger);
+
+		debug("Pop %d reaction.", trigger->get_Reaction());
+		this->execute_action(trigger->get_Reaction(), trigger);
 
 		m_ActionsQueue.pop();
-		debug("Pop %d reaction.", trigger.reaction);
 	}
 }
 
 /*************************************************************************************************/
 
-void GamePlay::execute_action(en_action& action, st_trigger *trigger)
+void GamePlay::execute_action(en_action action, Trigger *trigger)
 {
-	m_Character->update_actions_cooldown();
-
 	switch(action) {
 
 	case ACTION_TOUCH:
@@ -46,22 +45,22 @@ void GamePlay::execute_action(en_action& action, st_trigger *trigger)
 	case ACTION_GIVE_OBJECT:
 		assert(trigger != NULL);
 
-		this->give_object_action(trigger->gen_id);
+		this->give_object_action(trigger->get_Gen_id());
 		break;
 
 	case ACTION_CHECK_OBJECT:
 		assert(trigger != NULL);
-		this->check_for_object_action(trigger->gen_id, trigger->next_reaction);
+		this->check_for_object_action(trigger->get_Gen_id(), trigger->get_Next_reaction());
 		break;
 
 	case ACTION_REMOVE_OBJECT:
 		assert(trigger != NULL);
-		this->remove_object_action(trigger->gen_id, trigger->next_reaction);
+		this->remove_object_action(trigger->get_Gen_id(), trigger->get_Next_reaction());
 		break;
 
 	case ACTION_CHANGE_SPRITE:
 		assert(trigger != NULL);
-		this->change_sprite_action(trigger->gen_id, *(static_cast<en_sprite_object_positions *>(trigger->data)), trigger->next_reaction);
+		this->change_sprite_action(trigger->get_Gen_id(), trigger->get_Gen_pos(), trigger->get_Next_reaction());
 		break;
 
 
@@ -74,14 +73,14 @@ void GamePlay::execute_action(en_action& action, st_trigger *trigger)
 		m_Character->move(action);
 		break;
 	default:
-		debug("Untreated action received.");
+		debug("Untreated action received. %d", action);
 		break;
 	}
 }
 
 /*************************************************************************************************/
 /* Declare touching action. */
-static bool check_touch_points(st_offset touching[], vector<GameObject *> *objects_list, st_trigger& trigger_data);
+static bool check_touch_points(st_offset touching[], vector<GameObject *> *objects_list, Trigger * &trigger_data);
 static bool check_touched_object(st_offset touching, st_rect area);
 
 void GamePlay::touch_action(void)
@@ -92,7 +91,7 @@ void GamePlay::touch_action(void)
 		return;
 	}
 
-	st_trigger trigger_data;
+	Trigger *trigger_data;
 	st_offset touching[2];
 
 	memset(touching, 0 , sizeof(touching));
@@ -101,7 +100,7 @@ void GamePlay::touch_action(void)
 
 	if (check_touch_points(touching, m_Scenery->get_ObjectsList(), trigger_data) == true) {
 		m_ActionsQueue.push(trigger_data);
-		debug("Push %d reaction.", trigger_data.reaction);
+		debug("Push %d reaction.", trigger_data->get_Reaction());
 	}
 
 	/* Update cool down. */
@@ -114,7 +113,7 @@ void GamePlay::touch_action(void)
  * \parameter objects_list List of objects in the scenery to check.
  * \return true if touched and filled the trigger parameter; false otherwise.
  */
-static bool check_touch_points(st_offset touching[], vector<GameObject *> *objects_list, st_trigger& trigger_data)
+static bool check_touch_points(st_offset touching[], vector<GameObject *> *objects_list, Trigger * &trigger_data)
 {
 	//debug("pa: %d,%d; pb: %d,%d", touching[0].x, touching[0].y, touching[1].x, touching[1].y);
 
@@ -136,17 +135,12 @@ static bool check_touch_points(st_offset touching[], vector<GameObject *> *objec
 		}
 
 		//debug("Touched object %s id: %ld!", object->get_Name().c_str(), object->get_Type());
-
-
-		debug("obj: %s", object->get_Name().c_str());
-
-
 		if (object->get_reaction(ACTION_TOUCH, trigger_data) != true) {
 			// Return if there is no reaction.
 			return false;
 		}
 
-		debug("Reaction: %d", trigger_data.reaction);
+		debug("Reaction: %d; pt: %p", trigger_data->get_Reaction(), trigger_data);
 		return true;
 	}
 
@@ -196,13 +190,13 @@ void GamePlay::give_object_action(const long& object_id)
 	object->set_Visibility(false);
 
 	// Remove duplicated references.
-	m_Scenery->del_Object(object_id);
+	m_Scenery->remove_Object(object_id);
 }
 
 /*************************************************************************************************/
 /* Declare check for object action. */
 
-void GamePlay::check_for_object_action(const long& object_id, st_trigger *next)
+void GamePlay::check_for_object_action(const long& object_id, Trigger *next)
 {
 	debug("Check of obj: %ld", object_id);
 	if (m_Character->check_object(object_id) != true) {
@@ -212,7 +206,7 @@ void GamePlay::check_for_object_action(const long& object_id, st_trigger *next)
 
 	// The player found the object. Set the next trigger.
 	if (next != NULL) {
-		m_ActionsQueue.push(*next);
+		m_ActionsQueue.push(next);
 	}
 	// maybe we will need to delete the "next" guy in some situations.
 }
@@ -220,19 +214,19 @@ void GamePlay::check_for_object_action(const long& object_id, st_trigger *next)
 /*************************************************************************************************/
 /* Declare remove object action. */
 
-void GamePlay::remove_object_action(const long& object_id, st_trigger *next)
+void GamePlay::remove_object_action(const long& object_id, Trigger *next)
 {
-	debug("Remove obj: %ld", object_id);
-	m_Character->remove_object(object_id);
+	debug("Delete obj: %ld", object_id);
+	m_Character->delete_object(object_id);
 
 	if (next != NULL) {
-		m_ActionsQueue.push(*next);
+		m_ActionsQueue.push(next);
 	}
 }
 
 /*************************************************************************************************/
 /* Declare change sprite action. */
-void GamePlay::change_sprite_action(const long& object_id, const int& new_sprite, st_trigger *next)
+void GamePlay::change_sprite_action(const long& object_id, const int& new_sprite, Trigger *next)
 {
 	GameObject *object = m_Scenery->get_Object(object_id);
 	if (object == NULL) {
@@ -242,6 +236,10 @@ void GamePlay::change_sprite_action(const long& object_id, const int& new_sprite
 	 * add here and keep searching before returning.
 	 */
 	object->set_sprite(new_sprite);
+
+	if (next != NULL) {
+		m_ActionsQueue.push(next);
+	}
 }
 
 /*************************************************************************************************/

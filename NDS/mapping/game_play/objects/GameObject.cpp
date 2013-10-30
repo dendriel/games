@@ -35,32 +35,37 @@ m_Stackable(stackable)
 
 GameObject::~GameObject(void)
 {
-	;; // TODO: Put here the triggers destruction, and delete the "void *data" according with the trigger reaction.
+	for (size_t i = 0; i < m_Triggers_list.size(); i++) {
+		delete m_Triggers_list[i];
+	}
+
+	m_Triggers_list.clear();
+
+	debug("Obj: %s destroyed.", this->get_Name().c_str());
 }
 
 /*************************************************************************************************/
 
 
-bool GameObject::get_reaction(en_action action, st_trigger& trigger)
+bool GameObject::get_reaction(en_action action, Trigger * &trigger)
 {
-	for (vector<st_trigger>::iterator iter = m_Triggers_list.begin();
+	for (vector<Trigger *>::iterator iter = m_Triggers_list.begin();
 			iter != m_Triggers_list.end(); ++iter) {
+		Trigger *curr = (*iter);
 
-		debug("act %d != iter->trigger: %d ?", action, iter->trigger);
-		if (action != iter->trigger) {
-			debug("continue.");
+		if (action != curr->get_Action()) {
 			continue;
 		}
 
 		// If there is charges.
-		if (iter->charges > 0) {
-			iter->charges--;
-			trigger = *iter;
+		if (curr->get_Charges() > 0) {
+			curr->decrement_Charges();
+			trigger = curr;
 			return true;
 		}
 		// Not chargeable.
-		else if (iter->charges == -1) {
-			trigger = *iter;
+		else if (curr->get_Charges() == -1) {
+			trigger = curr;
 			return true;
 		}
 		// No more charges.

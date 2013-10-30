@@ -14,6 +14,7 @@
 #include "GameCharacter.h"
 #include "GameController.h"
 #include "GameScenery.h"
+#include "Trigger.h"
 #include "scenery.h"
 #include "game_actions.h"
 
@@ -28,7 +29,7 @@ private:
 	GameScenery *m_Scenery;
 	GameCharacter *m_Character;
 
-	std::queue<st_trigger> m_ActionsQueue;
+	std::queue<Trigger *> m_ActionsQueue;
 
 public:
 	/**
@@ -86,7 +87,7 @@ private:
 	 * \parameter action Action to execute.
 	 * \parameter trigger Data from a triggered reaction.
 	 */
-	void execute_action(en_action& action, st_trigger *trigger=NULL);
+	void execute_action(en_action action, Trigger *trigger=NULL);
 
 	/**
 	 * \brief Character touch action.
@@ -106,14 +107,14 @@ private:
 	 * \parameter object_id What object will be added to the character inventory.
 	 * \parameter next The next trigger in the chain to be executed.
 	 */
-	void check_for_object_action(const long& object_id, st_trigger *next=NULL);
+	void check_for_object_action(const long& object_id, Trigger *next=NULL);
 
 	/**
 	 * \brief Remove the object from the player inventory.
 	 * \parameter object_id What object will be removed from the character inventory.
 	 * \parameter next The next trigger in the chain to be executed.
 	 */
-	void remove_object_action(const long& object_id, st_trigger *next=NULL);
+	void remove_object_action(const long& object_id, Trigger *next=NULL);
 
 	/**
 	 * \brief Change the object displayed sprite.
@@ -121,7 +122,7 @@ private:
 	 * \parameter new_sprite The sprite position to be displayed of the object char set.
 	 * \parameter next The next trigger in the chain to be executed.
 	 */
-	void change_sprite_action(const long& object_id, const int& new_sprite, st_trigger *next);
+	void change_sprite_action(const long& object_id, const int& new_sprite, Trigger *next=NULL);
 };
 
 #endif /* GAMEPLAY_H_ */

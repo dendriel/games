@@ -90,9 +90,9 @@ public:
 		return m_Inventory.add_Object(object);
 	}
 
-	void remove_object(const long& id)
+	void delete_object(const long& id)
 	{
-		m_Inventory.remove_object(id);
+		m_Inventory.delete_object(id);
 	}
 
 	/**

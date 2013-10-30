@@ -12,6 +12,7 @@
 #include <string>
 #include "VisualElement.h"
 #include "CollisionElement.h"
+#include "Trigger.h"
 #include "game_actions.h"
 
 
@@ -26,7 +27,7 @@ private:
 	long m_Id;								//!< Current object ID.
 	long m_Type;							//!< Object unique ID.
 	bool m_Stackable;						//!< If in an inventory, is able to be stacked.
-	std::vector<st_trigger> m_Triggers_list;//!< Map reactions of the object to possible actions.
+	std::vector<Trigger *> m_Triggers_list;//!< Map reactions of the object to possible actions.
 	static long s_Object_ids;				//!< IDs for distribute to objects.
 
 public:
@@ -62,7 +63,7 @@ public:
 	 * \return If there is a trigger for the action, decrement the trigger charges, fill the trigger
 	 *  parameter and return true; Otherwise, just return false.
 	 */
-	bool get_reaction(en_action action, st_trigger& trigger);
+	bool get_reaction(en_action action, Trigger* &trigger);
 
 	/**
 	 * \brief Get relative position in pixels attribute.
@@ -99,9 +100,14 @@ public:
 	/**
 	 * \brief Add a trigger for the object.
 	 */
-	inline void set_Trigger(st_trigger& trigger)
+	inline void set_Trigger(Trigger *trigger)
 	{
 		m_Triggers_list.push_back(trigger);
+	}
+
+	inline Trigger *get_Trigger_last(void)
+	{
+		return m_Triggers_list.back();
 	}
 
 	/**

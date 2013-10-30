@@ -75,9 +75,9 @@ public:
 	}
 
 	/**
-	 * \brief Removes an object reference from the list pointed by its id.
+	 * \brief Removes (but don't destroy) an object reference from the list pointed by its id.
 	 */
-	inline void del_Object(const long id)
+	inline void remove_Object(const long id)
 	{
 		for(std::vector<GameObject *>::iterator iter = m_ObjectsList.begin();
 				iter != m_ObjectsList.end(); ++iter) {

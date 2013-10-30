@@ -9,6 +9,8 @@
 #include "LeverHolder.h"
 #include "sprites_data.h"
 
+#include <iostream>
+
 static st_rect LeverHolder_rect_size(4,8,24,24);
 #define LEVERHOLDER_OBJECT_NAME "lever holder"
 
@@ -33,28 +35,32 @@ GameObject(LeverHolder_rect_size,
 {
 	// I believe that the data from these chain reactions will be lost (so far).
 	//!< Reaction chain.
-	en_sprite_object_positions *new_sprite_position = new en_sprite_object_positions();
-	*new_sprite_position = SPRITE_POSITION_3;
-	st_trigger *change_sprite_reaction = new st_trigger(ACTION_NONE,
+	Trigger *change_sprite_reaction = new Trigger(ACTION_NONE,
 								ACTION_CHANGE_SPRITE,
 								-1,
 								NULL,
 								this->get_Id(),
-								new_sprite_position);
+								SPRITE_POSITION_3);
+	set_Trigger(change_sprite_reaction);
+
+
+	//std::cout << "react: " << (*get_Trigger_last()).reaction << std::endl;
+
+
 	//!< Reaction chain.
-	st_trigger *remove_object_reaction = new st_trigger(ACTION_NONE,
+	Trigger *remove_object_reaction = new Trigger(ACTION_NONE,
 								ACTION_REMOVE_OBJECT,
 								-1,
-								change_sprite_reaction,
-								object_id,
-								NULL);
+								get_Trigger_last(),
+								object_id);
+	set_Trigger(remove_object_reaction);
 
 	//! Reaction initial trigger.
-	st_trigger check_for_object(ACTION_TOUCH,
+	Trigger *check_for_object = new Trigger(ACTION_TOUCH,
 								ACTION_CHECK_OBJECT,
 								-1,
-								remove_object_reaction,
-								object_id,
-								NULL);
+								get_Trigger_last(),
+								object_id);
 	set_Trigger(check_for_object);
+
 }

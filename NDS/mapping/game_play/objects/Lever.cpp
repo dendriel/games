@@ -21,11 +21,10 @@ GameObject(Lever_rect_size,
 		LEVER_OBJECT_NAME,
 		display)
 {
-	st_trigger give_item(ACTION_TOUCH,
+	Trigger *give_item = new Trigger(ACTION_TOUCH,
 						ACTION_GIVE_OBJECT,
 						1,
 						NULL,
-						get_Id(),
-						NULL);
+						get_Id());
 	set_Trigger(give_item);
 }

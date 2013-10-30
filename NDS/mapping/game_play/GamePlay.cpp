@@ -85,7 +85,8 @@ void GamePlay::play_game_loop(void)
 		}
 
 		/* Update. */
-		 /* Could enqueue the character action, but executing directly is more clearly. */
+		m_Character->update_actions_cooldown();
+		 /* Could enqueue the character action too, but executing directly is more clearly. */
 		this->execute_action(char_action);
 		this->execute_queued_reactions();
 		//TODO: background/m_Map.update(); // possible animated frames.

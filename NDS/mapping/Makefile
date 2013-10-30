@@ -42,7 +42,8 @@ INCLUDES	:=	include sprites\
 				game_play/character/include\
 				game_play/scenery\
 				game_play/objects/include\
-				game_play/inventory/include
+				game_play/inventory/include\
+				game_play/trigger/include
 
 # Maps
 INCLUDES += map\

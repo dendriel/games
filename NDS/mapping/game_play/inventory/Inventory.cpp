@@ -86,7 +86,7 @@ bool Inventory::check_object(const long& id)
 
 /*************************************************************************************************/
 
-void Inventory::remove_object(const long& id)
+void Inventory::delete_object(const long& id)
 {
 	// Slot.
 	for (std::vector<st_inventory_slot>::iterator slot = m_Slot_list.begin(); slot != m_Slot_list.end(); ++slot) {

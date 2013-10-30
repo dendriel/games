@@ -63,7 +63,7 @@ public:
 	 * \brief Remove the object if it is in the inventory.
 	 * \parameter id The id of the object to be removed.
 	 */
-	void remove_object(const long& id);
+	void delete_object(const long& id);
 
 	std::vector<st_inventory_slot> get_Slot_list(void)
 	{
