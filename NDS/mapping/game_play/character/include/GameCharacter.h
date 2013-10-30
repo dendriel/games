@@ -85,15 +85,30 @@ public:
 	/**
 	 * \brief Add item to inventory.
 	 */
-	bool add_Object(GameObject *object)
+	bool add_object(GameObject *object)
 	{
 		return m_Inventory.add_Object(object);
+	}
+
+	void remove_object(const long& id)
+	{
+		m_Inventory.remove_object(id);
+	}
+
+	/**
+	 * \brief Check if the character have the object in the inventory.
+	 * \parameter if The id of the object to be verified.
+	 * \return true if the object was found; false otherwise.
+	 */
+	bool check_object(const long& id)
+	{
+		return m_Inventory.check_object(id);
 	}
 
 	// Testing function.
 	void get_Inventory(void)
 	{
-		vector<st_inventory_slot> slot_list = m_Inventory.get_Slot_list();
+		std::vector<st_inventory_slot> slot_list = m_Inventory.get_Slot_list();
 
 		for (std::vector<st_inventory_slot>::iterator slot = slot_list.begin(); slot != slot_list.end(); ++slot) {
 			std::cout << "slot: ";
@@ -118,7 +133,7 @@ private:
 // Overload game character to access the inventory overload.
 inline GameCharacter& operator<<(GameCharacter& character, GameObject *object)
 {
-	(void) character.add_Object(object);
+	(void) character.add_object(object);
 	return character;
 }
 

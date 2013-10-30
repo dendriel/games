@@ -13,11 +13,10 @@
 
 #include "util.h"
 
-using namespace std;
 
 //! Slots of the inventory.
 typedef struct st_inventory_slot {
-	vector<GameObject *> objects_list;	//!< Objects in this slot.
+	std::vector<GameObject *> objects_list;	//!< Objects in this slot.
 	bool stackable;						//!< If the item is stackable. The first item will set this property.
 
 	st_inventory_slot(void):
@@ -30,7 +29,7 @@ typedef struct st_inventory_slot {
 
 class Inventory {
 private:
-	vector<st_inventory_slot> m_Slot_list;	// Make slots list as queues.
+	std::vector<st_inventory_slot> m_Slot_list;	// Make slots list as queues.
 
 public:
 	/**
@@ -53,7 +52,20 @@ public:
 	 */
 	bool add_Object(GameObject *object);
 
-	vector<st_inventory_slot> get_Slot_list(void)
+	/**
+	 * \brief Check if the object is in the inventory.
+	 * \parameter id The id of the object to be verified.
+	 * \return true if the object was found; false otherwise.
+	 */
+	bool check_object(const long& id);
+
+	/**
+	 * \brief Remove the object if it is in the inventory.
+	 * \parameter id The id of the object to be removed.
+	 */
+	void remove_object(const long& id);
+
+	std::vector<st_inventory_slot> get_Slot_list(void)
 	{
 		return this->m_Slot_list;
 	}

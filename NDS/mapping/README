@@ -29,9 +29,19 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   - PRIO - DESC - STATE-
   +------+------+-------   
   
+  last update: 29/10/2013
+  - [MEDIUM] Be able to process reactions by multiple interactions;
+  - [HIGH] Add condition infrastructure for the trigger[reactions] executions;
+  - [LOW] Add running key for the character;
+  - [LOW] Make walking trigger actions;
+  - [HIGH] Add static collision checking between objects.
+  - [HIGH] Add GameObject destructor to delete triggers.
+  - [HIGH] Add deactivate trigger from an object. So we can stop doing some reaction before what has to happen has happend. hehe
+  
+  
   last update: 25/10/2013
   - [LOW] Fix the right side of the sewer map (the walls).
-  - [HIGH] Make the GamePlay process the enqueued actions.
+  - [HIGH] Make the GamePlay process the enqueued actions [DONE].
   
   last update: 24/10/2013
   - [LOW] Get touchpad coordinates as moving directions.

@@ -23,6 +23,10 @@ typedef enum en_action {
 	ACTION_WALK_WEST,
 	ACTION_TOUCH,
 	ACTION_GIVE_OBJECT,
+	ACTION_CHECK_OBJECT,
+	ACTION_CHECK_REMOVE_OBJECT,
+	ACTION_REMOVE_OBJECT,
+	ACTION_CHANGE_SPRITE,
 	ACTION_CONSOLE_CLEAR, //!< Only for develop time.
 	ACTION_NONE				//!< No action selected.
 } en_action;
@@ -32,17 +36,19 @@ typedef struct st_trigger {
 	en_action trigger;	//!< What action is the trigger.
 	en_action reaction;	//!< The re-action.
 	int charges;		//!< How much times can repeat the trigger. (-1 will be infinite times)
+	st_trigger *next_reaction;	//!< Use to make reaction chains.
 	// Some basic elements that the action may use.
 	struct {
 		long gen_id;	// Generic id for actions use (the id of given object, for example).
 		void *data;		// Maybe will be useful. just an idea so far.
 	};
-	st_trigger(en_action _t=ACTION_NONE, en_action _a=ACTION_NONE, int _ch=0, long _id=0, void *_dt=NULL):
-		trigger(_t),
-		reaction(_a),
-		charges(_ch),
-		gen_id(_id),
-		data(_dt){}
+	st_trigger(en_action t=ACTION_NONE, en_action a=ACTION_NONE, int ch=0, st_trigger *next=NULL, long id=0, void *dt=NULL):
+		trigger(t),
+		reaction(a),
+		charges(ch),
+		next_reaction(next),
+		gen_id(id),
+		data(dt){}
 } st_trigger;
 
 //! Post fix to increment the action.

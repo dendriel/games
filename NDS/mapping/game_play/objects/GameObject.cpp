@@ -33,6 +33,11 @@ m_Stackable(stackable)
 	update_position();
 }
 
+GameObject::~GameObject(void)
+{
+	;; // TODO: Put here the triggers destruction, and delete the "void *data" according with the trigger reaction.
+}
+
 /*************************************************************************************************/
 
 

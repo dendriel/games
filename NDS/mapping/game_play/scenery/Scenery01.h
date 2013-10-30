@@ -30,8 +30,8 @@ public:
 		m_CharStartPoint_32px.y = 62;
 
 		// Testing purpose!!
-		//m_CharStartPoint_32px.x = 14;
-		//m_CharStartPoint_32px.y = 20;
+		m_CharStartPoint_32px.x = 33;
+		m_CharStartPoint_32px.y = 7;
 	}
 
 	/**
@@ -57,7 +57,10 @@ public:
 		<< new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(56));
 
 		/* Objects from the scenery. */
-		m_ObjectsList << new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
+		GameObject *lever = new Lever(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(5));//new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
+		LeverHolder *lever_holder = new LeverHolder(TILE_32PX_TO_8PX(33), TILE_32PX_TO_8PX(5), lever->get_Id());
+
+		m_ObjectsList << lever << lever_holder;
 	}
 };
 

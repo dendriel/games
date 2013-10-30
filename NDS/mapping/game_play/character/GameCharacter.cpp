@@ -51,7 +51,7 @@ void GameCharacter::move(en_action& action)
 	static bool is_right_step = false;
 	static en_action previous_action = ACTION_NONE;
 
-	sprite_character_positions sprite_position;
+	en_sprite_character_positions sprite_position;
 
 	switch(action) {
 		case ACTION_WALK_NORTH:

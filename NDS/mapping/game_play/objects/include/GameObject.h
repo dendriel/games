@@ -50,6 +50,11 @@ public:
 			bool display=true,
 			bool stackable=false);
 
+	/**
+	 * \brief Class destructor.
+	 */
+	~GameObject(void);
+
 
 	/**
 	 * \brief Checks if there is an reaction registered for the given action.
@@ -116,6 +121,15 @@ public:
 		return m_Stackable;
 	}
 
+	/**
+	 * \brief Change object displaying sprite.
+	 */
+	inline void set_sprite(const int& sprite)
+	{
+		update_sprite(sprite*SPRITE_LENGHT_BYTES);
+		update_position();
+	}
+
 private:
 /*************************************************************************************************/
 /* Static Functions                                                                              */
@@ -133,6 +147,7 @@ private:
 enum {
 	GAMEOBJECT_TYPE_0 = 100, // Torch
 	GAMEOBJECT_TYPE_1,		 // Lever
+	GAMEOBJECT_TYPE_2,		 // Lever Holder
 };
 
 #endif /* GAMEOBJECT_H_ */

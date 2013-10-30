@@ -49,6 +49,22 @@ void GamePlay::execute_action(en_action& action, st_trigger *trigger)
 		this->give_object_action(trigger->gen_id);
 		break;
 
+	case ACTION_CHECK_OBJECT:
+		assert(trigger != NULL);
+		this->check_for_object_action(trigger->gen_id, trigger->next_reaction);
+		break;
+
+	case ACTION_REMOVE_OBJECT:
+		assert(trigger != NULL);
+		this->remove_object_action(trigger->gen_id, trigger->next_reaction);
+		break;
+
+	case ACTION_CHANGE_SPRITE:
+		assert(trigger != NULL);
+		this->change_sprite_action(trigger->gen_id, *(static_cast<en_sprite_object_positions *>(trigger->data)), trigger->next_reaction);
+		break;
+
+
 	/* Walk actions. */
 	case ACTION_WALK_NORTH:
 	case ACTION_WALK_SOUTH:
@@ -156,10 +172,10 @@ static bool check_touched_object(st_offset touching, st_rect area)
 }
 
 /*************************************************************************************************/
-
-void GamePlay::give_object_action(const long& obj_id)
+/* Declare give object action. */
+void GamePlay::give_object_action(const long& object_id)
 {
-	GameObject *object = m_Scenery->get_Object(obj_id);
+	GameObject *object = m_Scenery->get_Object(object_id);
 
 	/* If the object was not found, do nothing. If there is more lists that the object can be in,
 	 * add here and keep searching before returning.
@@ -169,7 +185,7 @@ void GamePlay::give_object_action(const long& obj_id)
 	}
 
 	// Add the item to the character.
-	if (m_Character->add_Object(object) != true) {
+	if (m_Character->add_object(object) != true) {
 		debug("no more space.");
 		// error message here!
 		return;
@@ -180,7 +196,52 @@ void GamePlay::give_object_action(const long& obj_id)
 	object->set_Visibility(false);
 
 	// Remove duplicated references.
-	m_Scenery->del_Object(obj_id);
+	m_Scenery->del_Object(object_id);
+}
+
+/*************************************************************************************************/
+/* Declare check for object action. */
+
+void GamePlay::check_for_object_action(const long& object_id, st_trigger *next)
+{
+	debug("Check of obj: %ld", object_id);
+	if (m_Character->check_object(object_id) != true) {
+		// The player had not found the object yet.
+		return;
+	}
+
+	// The player found the object. Set the next trigger.
+	if (next != NULL) {
+		m_ActionsQueue.push(*next);
+	}
+	// maybe we will need to delete the "next" guy in some situations.
+}
+
+/*************************************************************************************************/
+/* Declare remove object action. */
+
+void GamePlay::remove_object_action(const long& object_id, st_trigger *next)
+{
+	debug("Remove obj: %ld", object_id);
+	m_Character->remove_object(object_id);
+
+	if (next != NULL) {
+		m_ActionsQueue.push(*next);
+	}
+}
+
+/*************************************************************************************************/
+/* Declare change sprite action. */
+void GamePlay::change_sprite_action(const long& object_id, const int& new_sprite, st_trigger *next)
+{
+	GameObject *object = m_Scenery->get_Object(object_id);
+	if (object == NULL) {
+		return;
+	}
+	/* If the object was not found, do nothing. If there is more lists that the object can be in,
+	 * add here and keep searching before returning.
+	 */
+	object->set_sprite(new_sprite);
 }
 
 /*************************************************************************************************/

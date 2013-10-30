@@ -100,6 +100,28 @@ private:
 	 * \parameter object_id What object will be added to the character inventory.
 	 */
 	void give_object_action(const long& object_id);
+
+	/**
+	 * \brief Check if the character have the object and, if it has, push the next reaction into the queue.
+	 * \parameter object_id What object will be added to the character inventory.
+	 * \parameter next The next trigger in the chain to be executed.
+	 */
+	void check_for_object_action(const long& object_id, st_trigger *next=NULL);
+
+	/**
+	 * \brief Remove the object from the player inventory.
+	 * \parameter object_id What object will be removed from the character inventory.
+	 * \parameter next The next trigger in the chain to be executed.
+	 */
+	void remove_object_action(const long& object_id, st_trigger *next=NULL);
+
+	/**
+	 * \brief Change the object displayed sprite.
+	 * \parameter object_id What object will be removed from the character inventory.
+	 * \parameter new_sprite The sprite position to be displayed of the object char set.
+	 * \parameter next The next trigger in the chain to be executed.
+	 */
+	void change_sprite_action(const long& object_id, const int& new_sprite, st_trigger *next);
 };
 
 #endif /* GAMEPLAY_H_ */

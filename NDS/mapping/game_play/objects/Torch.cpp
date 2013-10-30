@@ -16,7 +16,7 @@ GameObject(Torch_rect_size,
 		(u8*)torch_data_256Tiles,
 		x_8px, y_8px,
 		GAMEOBJECT_TYPE_0,
-		SPRITE_FACING_NONE,
+		SPRITE_POSITION_0,
 		TORCH_OBJECT_NAME,
 		display,
 		true)	// stackable
@@ -25,6 +25,7 @@ GameObject(Torch_rect_size,
 	st_trigger give_item(ACTION_TOUCH,
 						ACTION_GIVE_OBJECT,
 						-1,
+						NULL,
 						get_Id(),
 						NULL);
 	set_Trigger(give_item);

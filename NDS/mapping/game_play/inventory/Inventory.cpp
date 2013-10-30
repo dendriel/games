@@ -8,6 +8,8 @@
 #include "Inventory.h"
 #include "util.h"
 
+using namespace std;
+
 /*************************************************************************************************/
 
 Inventory::Inventory(const size_t slot_max):
@@ -57,7 +59,7 @@ bool Inventory::add_Object(GameObject *object)
 		if (slot->objects_list.size() == 0) {
 			slot->objects_list.push_back(object);
 			slot->stackable = object->get_Stackable();
-			debug("New obj: %s", object->get_Name().c_str());
+			debug("New obj: %s; id %ld", object->get_Name().c_str(), object->get_Id());
 			return true;
 		}
 	}
@@ -66,3 +68,37 @@ bool Inventory::add_Object(GameObject *object)
 }
 
 /*************************************************************************************************/
+
+bool Inventory::check_object(const long& id)
+{
+	// Slot.
+	for (std::vector<st_inventory_slot>::iterator slot = m_Slot_list.begin(); slot != m_Slot_list.end(); ++slot) {
+		// Stack.
+		for (std::vector<GameObject *>::iterator obj = slot->objects_list.begin(); obj != slot->objects_list.end(); ++obj) {
+			// Object.
+			if ((*obj)->get_Id() == id) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/*************************************************************************************************/
+
+void Inventory::remove_object(const long& id)
+{
+	// Slot.
+	for (std::vector<st_inventory_slot>::iterator slot = m_Slot_list.begin(); slot != m_Slot_list.end(); ++slot) {
+		// Stack.
+		for (std::vector<GameObject *>::iterator obj = slot->objects_list.begin(); obj != slot->objects_list.end(); ++obj) {
+			// Object.
+			if ((*obj)->get_Id() == id) {
+				debug("obj %ld removed,", (*obj)->get_Id());
+				slot->objects_list.erase(obj);
+				delete (*obj);
+				return;
+			}
+		}
+	}
+}

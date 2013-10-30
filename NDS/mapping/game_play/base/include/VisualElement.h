@@ -18,7 +18,7 @@
 #define SPRITE_PIVOT_INDEX 0
 
 //!< Facility. Enumerate sprite positions.
-typedef enum sprite_character_positions {
+typedef enum en_sprite_character_positions {
 	SPRITE_FACING_NORTH_STEP_RIGHT = 0,
 	SPRITE_FACING_NORTH_STOPPED,
 	SPRITE_FACING_NORTH_STEP_LEFT,
@@ -32,7 +32,15 @@ typedef enum sprite_character_positions {
 	SPRITE_FACING_WEST_STOPPED,
 	SPRITE_FACING_WEST_STEP_LEFT,
 	SPRITE_FACING_NONE = 0//!< Control purpose.
-} sprite_character_positions;
+} en_sprite_character_positions;
+
+typedef enum en_sprite_object_positions {
+	SPRITE_POSITION_0 = 0,
+	SPRITE_POSITION_1 = 1,
+	SPRITE_POSITION_2 = 2,
+	SPRITE_POSITION_3 = 3,
+	SPRITE_POSITION_4 = 4
+} en_sprite_object_positions;
 
 
 /* Structures */
