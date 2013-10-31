@@ -24,8 +24,7 @@ void GamePlay::execute_queued_reactions(void)
 
 		Trigger *trigger = m_ActionsQueue.front();
 
-
-		debug("Pop %d reaction.", trigger->get_Reaction());
+		//debug("Pop %d reaction.", trigger->get_Reaction());
 		this->execute_action(trigger->get_Reaction(), trigger);
 
 		m_ActionsQueue.pop();
@@ -61,6 +60,11 @@ void GamePlay::execute_action(en_action action, Trigger *trigger)
 	case ACTION_CHANGE_SPRITE:
 		assert(trigger != NULL);
 		this->change_sprite_action(trigger->get_Gen_id(), trigger->get_Gen_pos(), trigger->get_Next_reaction());
+		break;
+
+	case ACTION_CHANGE_REACTION:
+		assert(trigger != NULL);
+		this->change_reaction_action(trigger->get_Gen_id(), static_cast<en_action>(trigger->get_Gen_pos()), trigger->get_Next_reaction());
 		break;
 
 
@@ -191,6 +195,8 @@ void GamePlay::give_object_action(const long& object_id)
 
 	// Remove duplicated references.
 	m_Scenery->remove_Object(object_id);
+
+	debug("leaving");
 }
 
 /*************************************************************************************************/
@@ -243,3 +249,14 @@ void GamePlay::change_sprite_action(const long& object_id, const int& new_sprite
 }
 
 /*************************************************************************************************/
+
+void GamePlay::change_reaction_action(const long& object_id, const en_action& reaction, Trigger *new_trigger)
+{
+	GameObject *object = m_Scenery->get_Object(object_id);
+	if (object == NULL) {
+		return;
+	}
+
+	object->disable_All_trigger(reaction);
+	new_trigger->enable();
+}

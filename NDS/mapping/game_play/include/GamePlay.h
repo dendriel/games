@@ -123,6 +123,14 @@ private:
 	 * \parameter next The next trigger in the chain to be executed.
 	 */
 	void change_sprite_action(const long& object_id, const int& new_sprite, Trigger *next=NULL);
+
+	/**
+	 * \brief Change the current trigger from an object to the given one (the current will be deactivate and the new will be activated).
+	 * \parameter object_id What object will be removed from the character inventory.
+	 * \parameter reaction The reaction that will be activated.
+	 * \parameter next The next trigger in the chain to be executed.
+	 */
+	void change_reaction_action(const long& object_id, const en_action& reaction, Trigger *new_trigger);
 };
 
 #endif /* GAMEPLAY_H_ */

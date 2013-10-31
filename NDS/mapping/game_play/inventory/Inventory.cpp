@@ -46,6 +46,7 @@ bool Inventory::add_Object(GameObject *object)
 			}
 			// The stack is full.
 			else {
+				debug("Stack is full.");
 				return false;
 			}
 		}
@@ -63,6 +64,8 @@ bool Inventory::add_Object(GameObject *object)
 			return true;
 		}
 	}
+
+	debug("No free slot.");
 
 	return false;
 }
@@ -91,12 +94,14 @@ void Inventory::delete_object(const long& id)
 	// Slot.
 	for (std::vector<st_inventory_slot>::iterator slot = m_Slot_list.begin(); slot != m_Slot_list.end(); ++slot) {
 		// Stack.
-		for (std::vector<GameObject *>::iterator obj = slot->objects_list.begin(); obj != slot->objects_list.end(); ++obj) {
+		for (std::vector<GameObject *>::iterator iter = slot->objects_list.begin(); iter != slot->objects_list.end(); ++iter) {
+			GameObject *object = *iter;
 			// Object.
-			if ((*obj)->get_Id() == id) {
-				debug("obj %ld removed,", (*obj)->get_Id());
-				slot->objects_list.erase(obj);
-				delete (*obj);
+			if (object->get_Id() == id) {
+				debug("obj %ld removed,", object->get_Id());
+				slot->objects_list.erase(iter);
+				slot->stackable = true;	// This enable to add new objects in this slot.
+				delete object;
 				return;
 			}
 		}

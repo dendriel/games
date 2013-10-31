@@ -34,6 +34,7 @@ GamePlay::~GamePlay(void)
 st_sprite VisualElement::s_SpritePositions[SPRITE_POSITIONS];
 st_offset *VisualElement::s_PivotOffset_8px;
 long GameObject::s_Object_ids;
+long Trigger::s_Trigger_ids;
 
 /*************************************************************************************************/
 

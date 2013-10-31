@@ -85,6 +85,7 @@ public:
 			if (object->get_Id() == id) {
 				m_ObjectsList.erase(iter);
 				debug("scen objs: %d", m_ObjectsList.size());
+				return;
 			}
 		}
 	}

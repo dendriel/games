@@ -105,11 +105,6 @@ public:
 		m_Triggers_list.push_back(trigger);
 	}
 
-	inline Trigger *get_Trigger_last(void)
-	{
-		return m_Triggers_list.back();
-	}
-
 	/**
 	 * \brief Set visual element visibility.
 	 * \parameter display Display (true) or not (false) the element in the screen.
@@ -135,6 +130,12 @@ public:
 		update_sprite(sprite*SPRITE_LENGHT_BYTES);
 		update_position();
 	}
+
+	/**
+	 * \brief Disable all triggers that have the given reaction;
+	 * \parameter reaction Trigger type to be disabled.
+	 */
+	void disable_All_trigger(const en_action& reaction);
 
 private:
 /*************************************************************************************************/

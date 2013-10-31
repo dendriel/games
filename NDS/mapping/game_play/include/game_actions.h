@@ -29,6 +29,7 @@ typedef enum en_action {
 	ACTION_CHECK_REMOVE_OBJECT,
 	ACTION_REMOVE_OBJECT,
 	ACTION_CHANGE_SPRITE,
+	ACTION_CHANGE_REACTION,
 	ACTION_CONSOLE_CLEAR, //!< Only for develop time.
 	ACTION_NONE			 //!< 11 No action selected.
 } en_action;

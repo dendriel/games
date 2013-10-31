@@ -23,8 +23,9 @@ GameObject(Lever_rect_size,
 {
 	Trigger *give_item = new Trigger(ACTION_TOUCH,
 						ACTION_GIVE_OBJECT,
-						1,
+						-1,
 						NULL,
+						true,
 						get_Id());
 	set_Trigger(give_item);
 }

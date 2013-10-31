@@ -46,12 +46,15 @@ GameObject::~GameObject(void)
 
 /*************************************************************************************************/
 
-
 bool GameObject::get_reaction(en_action action, Trigger * &trigger)
 {
 	for (vector<Trigger *>::iterator iter = m_Triggers_list.begin();
 			iter != m_Triggers_list.end(); ++iter) {
 		Trigger *curr = (*iter);
+
+		if (curr->get_Enabled() != true) {
+			continue;
+		}
 
 		if (action != curr->get_Action()) {
 			continue;
@@ -75,5 +78,21 @@ bool GameObject::get_reaction(en_action action, Trigger * &trigger)
 	}
 	// Trigger doesn't exist.
 	return false;
+}
+
+/*************************************************************************************************/
+
+void GameObject::disable_All_trigger(const en_action& reaction)
+{
+	for (vector<Trigger *>::iterator iter = m_Triggers_list.begin();
+			iter != m_Triggers_list.end(); ++iter) {
+		Trigger *curr = (*iter);
+
+		if (reaction != curr->get_Action()) {
+			continue;
+		}
+
+		curr->disable();
+	}
 }
 

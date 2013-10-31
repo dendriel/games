@@ -56,11 +56,14 @@ public:
 		<< new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(57))
 		<< new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(56));
 
+		GameObject *lever2 = new Lever(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(6));//new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
+		LeverHolder *lever_holder2 = new LeverHolder(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(5), lever2->get_Id());
+
 		/* Objects from the scenery. */
-		GameObject *lever = new Lever(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(5));//new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
+		GameObject *lever = new Lever(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(7));//new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
 		LeverHolder *lever_holder = new LeverHolder(TILE_32PX_TO_8PX(33), TILE_32PX_TO_8PX(5), lever->get_Id());
 
-		m_ObjectsList << lever << lever_holder;
+		m_ObjectsList << lever << lever_holder << lever_holder2 << lever2;
 	}
 };
 
