@@ -20,6 +20,7 @@ GameObject::GameObject(
 		unsigned int initial_sprite,
 		std::string name,
 		bool display,
+		bool blockable,
 		bool stackable):
 VisualElement(&m_Pos_relative_px, sprite, display),
 CollisionElement(rect, rect),	/* Action rectangle will no be used. */
@@ -27,7 +28,8 @@ m_Pos_relative_px(TILE_8PX_TO_PX(x_8px), TILE_8PX_TO_PX(y_8px)),
 m_Name(name),
 m_Id(GameObject::generate_id()),
 m_Type(type),
-m_Stackable(stackable)
+m_Stackable(stackable),
+m_Blockable(blockable)
 {
 	update_sprite(initial_sprite*SPRITE_LENGHT_BYTES);
 	update_position();

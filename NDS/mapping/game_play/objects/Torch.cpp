@@ -19,6 +19,7 @@ GameObject(Torch_rect_size,
 		SPRITE_POSITION_0,
 		TORCH_OBJECT_NAME,
 		display,
+		false,	// blockable
 		true)	// stackable
 {}
 

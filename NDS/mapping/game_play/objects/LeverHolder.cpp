@@ -9,19 +9,18 @@
 #include "LeverHolder.h"
 #include "sprites_data.h"
 
-#include <iostream>
-
-static st_rect LeverHolder_rect_size(4,8,24,24);
+static st_rect LeverHolder_rect_size(4,8,24,23);
 #define LEVERHOLDER_OBJECT_NAME "lever holder"
 
-LeverHolder::LeverHolder(const unsigned int x_8px, const unsigned int y_8px, bool display):
+LeverHolder::LeverHolder(const unsigned int x_8px, const unsigned int y_8px, const bool display):
 GameObject(LeverHolder_rect_size,
 		(u8*)lever_data_256Tiles,
 		x_8px, y_8px,
 		GAMEOBJECT_TYPE_2,
 		SPRITE_POSITION_2,
 		LEVERHOLDER_OBJECT_NAME,
-		display)
+		display,
+		true)	// blockable
 {}
 
 LeverHolder::LeverHolder(const unsigned int x_8px, const unsigned int y_8px, const long object_id, const bool display):
@@ -31,7 +30,8 @@ GameObject(LeverHolder_rect_size,
 		GAMEOBJECT_TYPE_2,
 		SPRITE_POSITION_2,
 		LEVERHOLDER_OBJECT_NAME,
-		display)
+		display,
+		true)
 {
 	//! SECOND Reaction chain.
 	Trigger *activate_lever =

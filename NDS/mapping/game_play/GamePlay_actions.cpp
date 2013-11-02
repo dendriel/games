@@ -19,18 +19,24 @@ using namespace std;
  */
 
 /*************************************************************************************************/
+/* Static functions for general use. */
+static bool check_touched_object(st_offset touching, st_rect area);
+
+/*************************************************************************************************/
 
 void GamePlay::execute_queued_reactions(void)
 {
-	//debug("size: %d", m_ActionsQueue.size());
-	while(m_ActionsQueue.size() > 0) {
 
-		Trigger *trigger = m_ActionsQueue.front();
+	queue<Trigger *> actions_list(m_ActionsQueue);
+	//! Empty the queue for the next iteration (and so triggers can re-add reactions to be executed after).
+	m_ActionsQueue = queue<Trigger *>();
 
-		//debug("Pop %d reaction.", trigger->get_Reaction());
+	while(actions_list.size() > 0) {
+
+		Trigger *trigger = actions_list.front();
 		this->execute_action(trigger->get_Reaction(), trigger);
-
-		m_ActionsQueue.pop();
+		debug("Pop %d reaction.", trigger->get_Reaction());
+		actions_list.pop();
 	}
 }
 
@@ -154,6 +160,8 @@ void GamePlay::move_character_action(en_action& direction)
 	m_Character->set_action_move_cooldown(ACTION_MOVE_COOLDOWN_CYCLES);
 }
 
+/*************************************************************************************************/
+
 void GamePlay::move_background_8px(const int& x, const int& y)
 {
 	int relative_pos_x_px = TILE_8PX_TO_PX(m_Character->get_relative_pos_x_8px() + x);
@@ -164,7 +172,9 @@ void GamePlay::move_background_8px(const int& x, const int& y)
 								char_coll_rect.pos.y + relative_pos_y_px,
 								char_coll_rect.w, char_coll_rect.h);
 
-	if (m_MapProcessor.check_static_collision(collision_element) == 1) {
+	//! Check collision against the scenery's map. Check collision against objects.
+	if ((m_MapProcessor.check_static_collision(collision_element) == true) ||
+			(this->check_object_collision(collision_element) == true)) {
 		return;
 	}
 
@@ -180,10 +190,49 @@ void GamePlay::move_background_8px(const int& x, const int& y)
 	//debug(" posRela: %d,%d (%d,%d)", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),TILE_8PX_TO_32PX(m_Pos_relative_8px.y), m_Pos_relative_8px.x, m_Pos_relative_8px.y);
 }
 
+
+bool GamePlay::check_object_collision(st_rect& coll_char_rect)
+{
+	vector<GameObject *> *objects_list = m_Scenery->get_ObjectsList();
+	const unsigned int x  = coll_char_rect.pos.x;
+	const unsigned int y  = coll_char_rect.pos.y;
+	const unsigned int x1 = coll_char_rect.pos.x + coll_char_rect.w;
+	const unsigned int y1 = coll_char_rect.pos.y + coll_char_rect.h;
+
+	for (vector<GameObject *>::const_iterator curr = objects_list->begin(); curr != objects_list->end(); ++curr) {
+		GameObject *object = *curr;
+
+		//! Kind a broad checking. But so far, we could iterate over all objects.
+		if (object->get_Blockable() != true) {
+			continue;
+		}
+
+		//debug("Testing coll: %s", object->get_Name().c_str());
+
+		st_rect obj_relative_coor;
+
+		obj_relative_coor.pos.x = object->get_CollRect().pos.x + object->get_Pos_relative_px().x;
+		obj_relative_coor.pos.y = object->get_CollRect().pos.y + object->get_Pos_relative_px().y;
+		obj_relative_coor.w = obj_relative_coor.pos.x + object->get_CollRect().w;
+		obj_relative_coor.h = obj_relative_coor.pos.y + object->get_CollRect().h;
+
+		//! Check if one of the character new collision points is colliding with the object.
+		if (check_touched_object(st_offset(x,y),   obj_relative_coor) ||
+			check_touched_object(st_offset(x1,y),  obj_relative_coor) ||
+			check_touched_object(st_offset(x,y1),  obj_relative_coor) ||
+			check_touched_object(st_offset(x1,y1), obj_relative_coor)) {
+
+			// Push here an "on_collide" reaction for the obj.
+			return true;
+		}
+	}
+
+	return false;
+}
+
 /*************************************************************************************************/
 /* Declare touching action. */
 static bool check_touch_points(st_offset touching[], vector<GameObject *> *objects_list, Trigger * &trigger_data);
-static bool check_touched_object(st_offset touching, st_rect area);
 
 void GamePlay::touch_action(void)
 {
@@ -242,7 +291,7 @@ static bool check_touch_points(st_offset touching[], vector<GameObject *> *objec
 			return false;
 		}
 
-		debug("Reaction: %d; pt: %p", trigger_data->get_Reaction(), trigger_data);
+		//debug("Reaction: %d; pt: %p", trigger_data->get_Reaction(), trigger_data);
 		return true;
 	}
 
@@ -293,8 +342,6 @@ void GamePlay::give_object_action(const long& object_id)
 
 	// Remove duplicated references.
 	m_Scenery->remove_Object(object_id);
-
-	debug("leaving");
 }
 
 /*************************************************************************************************/

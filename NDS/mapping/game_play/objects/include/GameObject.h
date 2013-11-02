@@ -27,6 +27,7 @@ private:
 	long m_Id;								//!< Current object ID.
 	long m_Type;							//!< Object unique ID.
 	bool m_Stackable;						//!< If in an inventory, is able to be stacked.
+	bool m_Blockable;						//!< If the character will be blocked when running into the object.
 	std::vector<Trigger *> m_Triggers_list;//!< Map reactions of the object to possible actions.
 	static long s_Object_ids;				//!< IDs for distribute to objects.
 
@@ -49,6 +50,7 @@ public:
 			unsigned int initial_sprite=SPRITE_FACING_NONE,
 			std::string name="<unamed>",
 			bool display=true,
+			bool blockable=false,
 			bool stackable=false);
 
 	/**
@@ -115,11 +117,19 @@ public:
 	}
 
 	/**
-	 * \brief Return the stackable property.
+	 * \brief Return the stack able property.
 	 */
 	inline bool get_Stackable(void)
 	{
 		return m_Stackable;
+	}
+
+	/**
+	 * \brief Return the block able property.
+	 */
+	inline bool get_Blockable(void)
+	{
+		return m_Blockable;
 	}
 
 	/**

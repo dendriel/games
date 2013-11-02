@@ -81,7 +81,7 @@ public:
 	 * \parameter y_px Vertical position to check in pixels.
 	 * \return True if collision was detected; False if is not a collision.
 	 */
-	int check_static_collision(st_rect& rect_elem);
+	bool check_static_collision(st_rect& rect_elem);
 
 	/**
 	 * \brief Scroll all the background layers by x, y in TILES.

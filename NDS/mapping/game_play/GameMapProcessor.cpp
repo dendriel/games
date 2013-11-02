@@ -231,27 +231,27 @@ int GameMapProcessor::check_static_collision_px(const int x, const int y)
  *  +-----+
  * x,y1   x1,y1
  */
-int GameMapProcessor::check_static_collision(st_rect& rect_elem)
+bool GameMapProcessor::check_static_collision(st_rect& rect_elem)
 {
-	unsigned int x  = rect_elem.pos.x;
-	unsigned int y  = rect_elem.pos.y;
-	unsigned int x1 = rect_elem.pos.x + rect_elem.w;
-	unsigned int y1 = rect_elem.pos.y + rect_elem.h;
+	const unsigned int x  = rect_elem.pos.x;
+	const unsigned int y  = rect_elem.pos.y;
+	const unsigned int x1 = rect_elem.pos.x + rect_elem.w;
+	const unsigned int y1 = rect_elem.pos.y + rect_elem.h;
 
 	if (this->check_static_collision_px(x, y)) {
-		return 1;
+		return true;
 	}
 	else if (this->check_static_collision_px(x1, y)) {
-		return 1;
+		return true;
 	}
 	else if (this->check_static_collision_px(x, y1)) {
-		return 1;
+		return true;
 	}
 	else if (this->check_static_collision_px(x1, y1)) {
-		return 1;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
 /*************************************************************************************************/

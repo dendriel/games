@@ -83,6 +83,20 @@ private:
 	void set_character_relative_pos_32px(const int& x, const int& y);
 
 	/**
+	 * \brief Move the map and update character relative position.
+	 * \parameter x Character horizontal relative position.
+	 * \parameter y Character vertical relative position.
+	 */
+	void move_background_8px(const int& x, const int& y);
+
+	/**
+	 * \brief Verify if the next character movement is colliding with an object.
+	 * \parameter coll_char_rect The collision rectangle in the new position to be checked.
+	 * \return true if collision occur; false otherwise
+	 */
+	bool check_object_collision(st_rect& coll_char_rect);
+
+	/**
 	 * \brief Dequeue and execute all enqueued actions.
 	 */
 	void execute_queued_reactions(void);
@@ -190,15 +204,6 @@ private:
 					ACTION_TOUCH);				//! What action will be changed.
 	 */
 	void change_reaction_action(const long& object_id, const en_action& reaction, Trigger *new_trigger);
-
-private:
-
-	/**
-	 * \brief Move the map and update character relative position.
-	 * \parameter x Character horizontal relative position.
-	 * \parameter y Character vertical relative position.
-	 */
-	void move_background_8px(const int& x, const int& y);
 };
 
 #endif /* GAMEPLAY_H_ */
