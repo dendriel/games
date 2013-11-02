@@ -78,6 +78,11 @@ private:
 	void play_game_loop(void);
 
 	/**
+	 * \brief Update the character position (use at the start of the scenery to correctly place the character).
+	 */
+	void set_character_relative_pos_32px(const int& x, const int& y);
+
+	/**
 	 * \brief Dequeue and execute all enqueued actions.
 	 */
 	void execute_queued_reactions(void);
@@ -88,6 +93,12 @@ private:
 	 * \parameter trigger Data from a triggered reaction.
 	 */
 	void execute_action(en_action action, Trigger *trigger=NULL);
+
+	/**
+	 * \brief Move the character.
+	 * \parameter direction Which direction to move.
+	 */
+	void move_character_action(en_action& direction);
 
 	/**
 	 * \brief Character touch action.
@@ -179,6 +190,15 @@ private:
 					ACTION_TOUCH);				//! What action will be changed.
 	 */
 	void change_reaction_action(const long& object_id, const en_action& reaction, Trigger *new_trigger);
+
+private:
+
+	/**
+	 * \brief Move the map and update character relative position.
+	 * \parameter x Character horizontal relative position.
+	 * \parameter y Character vertical relative position.
+	 */
+	void move_background_8px(const int& x, const int& y);
 };
 
 #endif /* GAMEPLAY_H_ */

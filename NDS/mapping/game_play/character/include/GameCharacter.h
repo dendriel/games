@@ -25,9 +25,7 @@ public:
 private:
 	st_offset m_Pos_absolute_px;	//!< Position of the character in the screen (not the scenery. Absolute position in Pixels).
 	en_facing m_Facing;				//!< Facing direction.
-	GameMapProcessor *m_MapProcessor;
-	Inventory m_Inventory;
-
+	Inventory m_Inventory;			//!< Character objects inventory.
 	/* Actions cool down. */
 	unsigned short m_ActionMove_cooldown;	//!< Cool down before moving action.
 	unsigned short m_ActionTouch_cooldown;	//!< Cool down before touching action.
@@ -41,24 +39,6 @@ public:
 	 * \parameter y_px Character vertical absolute position.
 	 */
 	GameCharacter(st_rect rect, u8 *charset = 0, int x_px = 0, int y_px = 0);
-
-	/**
-	 * \brief Add the map processor reference.
-	 */
-	void set_map_processor(GameMapProcessor& processor);
-
-	/**
-	 * \brief Move the character.
-	 * \parameter action Contains information about where to move. Also will be change to the next action.
-	 * \parameter direction Which direction to move.
-	 */
-	void move(en_action& action);
-	void move(const int x, const int y);
-
-	/**
-	 * \brief Set character relative position. Also move the map.
-	 */
-	void set_relative_pos_32px(const int x, const int y);
 
 	/**
 	 * \brief Update all actions cool down.
@@ -75,24 +55,83 @@ public:
 	/**
 	 * \brief Get action touch cool down.
 	 */
-	unsigned short get_action_touch_cooldown(void);
+	inline unsigned short get_action_touch_cooldown(void)
+	{
+		return m_ActionTouch_cooldown;
+	}
 
 	/**
 	 * \brief Update touch action cool down to full value.
 	 */
-	void set_action_touch_cooldown(void);
+	inline void set_action_touch_cooldown(const unsigned int& cooldown_vsync_cycles)
+	{
+		m_ActionTouch_cooldown = cooldown_vsync_cycles;
+	}
+
+	/**
+	 * \brief Return the cool down before moving again.
+	 */
+	inline unsigned short get_action_move_cooldown(void)
+	{
+		return m_ActionMove_cooldown;
+	}
+
+	/**
+	 * \brief Update touch action cool down to full value.
+	 */
+	inline void set_action_move_cooldown(const unsigned int& cooldown_vsync_cycles)
+	{
+		m_ActionMove_cooldown = cooldown_vsync_cycles;
+	}
 
 	/**
 	 * \brief Add item to inventory.
 	 */
-	bool add_object(GameObject *object)
+	inline bool add_object(GameObject *object)
 	{
 		return m_Inventory.add_Object(object);
 	}
 
-	void delete_object(const long& id)
+	/**
+	 * \brief Delete item from inventory.
+	 */
+	inline void delete_object(const long& id)
 	{
 		m_Inventory.delete_object(id);
+	}
+
+	inline int get_relative_pos_x_8px(void)
+	{
+		return m_Pos_relative_8px.x;
+	}
+
+	/**
+	 * \brief Increment the relative horizontal position (can be a negative increment).
+	 */
+	inline void add_relative_pos_x_8px(const int& offset)
+	{
+		m_Pos_relative_8px.x += offset;
+	}
+
+	inline int get_relative_pos_y_8px(void)
+	{
+		return m_Pos_relative_8px.y;
+	}
+
+	/**
+	 * \brief Increment the relative vertical position (can be a negative increment).
+	 */
+	inline void add_relative_pos_y_8px(const int& offset)
+	{
+		m_Pos_relative_8px.y += offset;
+	}
+
+	/**
+	 * \brief Get the character collision rectangle.
+	 */
+	inline st_rect get_collision_rect(void)
+	{
+		return get_CollRect();
 	}
 
 	/**
@@ -100,14 +139,39 @@ public:
 	 * \parameter if The id of the object to be verified.
 	 * \return true if the object was found; false otherwise.
 	 */
-	bool check_object(const long& id)
+	inline bool check_object(const long& id)
 	{
 		return m_Inventory.check_object(id);
+	}
+
+	/**
+	 * \brief Set where to the character is looking.
+	 */
+	inline void set_facing_direction(const en_facing& direction)
+	{
+		m_Facing = direction;
+	}
+
+	/**
+	 * \brief Change object displaying sprite.
+	 */
+	inline void set_sprite(const int& sprite)
+	{
+		update_sprite(sprite*SPRITE_LENGHT_BYTES);
+		update_position();
 	}
 
 	// Testing function.
 	void get_Inventory(void)
 	{
+		const size_t cooldown_size = 10;
+		static unsigned int cooldown = cooldown_size;
+
+		if (cooldown > 0) {
+			cooldown--;
+			return;
+		}
+
 		std::vector<st_inventory_slot> slot_list = m_Inventory.get_Slot_list();
 
 		for (std::vector<st_inventory_slot>::iterator slot = slot_list.begin(); slot != slot_list.end(); ++slot) {
@@ -118,16 +182,9 @@ public:
 			}
 			std::cout << std::endl;
 		}
+
+		cooldown = cooldown_size;
 	}
-
-private:
-	/**
-	 * \brief Move the map and update character relative position.
-	 * \parameter x Character horizontal relative position.
-	 * \parameter y Character vertical relative position.
-	 */
-	void move_background_8px(const int x, const int y);
-
 };
 
 // Overload game character to access the inventory overload.

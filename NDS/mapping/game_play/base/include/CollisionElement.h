@@ -72,9 +72,8 @@
  */
 
 class CollisionElement {
-public:
+private:
 	st_rect m_CollRect;
-	st_rect m_ActionCollRect;
 
 public:
 	CollisionElement(const st_rect rect, const st_rect action_rect);
@@ -83,6 +82,8 @@ public:
 	{
 		return m_CollRect;
 	}
+public:
+	st_rect m_ActionCollRect;
 };
 
 

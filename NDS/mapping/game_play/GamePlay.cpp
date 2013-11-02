@@ -5,6 +5,7 @@
  *      Author: marta
  */
 
+#include <assert.h>
 #include "GamePlay.h"
 #include "timming.h"
 #include "Jack.h"
@@ -126,15 +127,36 @@ void GamePlay::load_level(const en_scen_level level)
 
 	/* Load character. */
 	m_Character = new Jack();
-	m_Character->set_map_processor(m_MapProcessor);
 
-	m_Character->set_relative_pos_32px( m_Scenery->get_CharStartPoint_x_32px(),
+	this->set_character_relative_pos_32px(m_Scenery->get_CharStartPoint_x_32px(),
 										m_Scenery->get_CharStartPoint_y_32px());
 
 	/* Set pivot offset in order to get the sprite engine working. */
 	VisualElement::set_PivotOffset(&m_Character->m_Pos_relative_8px);
 
 	m_Scenery->fill_objects_list();
+}
+
+/*************************************************************************************************/
+
+void GamePlay::set_character_relative_pos_32px(const int& x, const int& y)
+{
+	if ((x < SPRITE_SCREEN_CENTER_X_TILES) || (y < SPRITE_SCREEN_CENTER_Y_TILES)) {
+		debug("Invalid character starting point.");
+		assert(0);
+		return;
+	}
+
+	const int move_x_32px = x - SPRITE_SCREEN_CENTER_X_TILES;
+	const int move_y_32px = y - SPRITE_SCREEN_CENTER_Y_TILES;
+
+	m_Character->add_relative_pos_x_8px(TILE_32PX_TO_8PX(move_x_32px));
+	m_Character->add_relative_pos_y_8px(TILE_32PX_TO_8PX(move_y_32px));
+
+	//debug("Moved to: %d,%d (%d,%d)",x,y, m_Pos_relative_8px.x, m_Pos_relative_8px.y);
+
+	m_MapProcessor.move_map_32px(move_x_32px, move_y_32px);
+
 }
 
 /*************************************************************************************************/

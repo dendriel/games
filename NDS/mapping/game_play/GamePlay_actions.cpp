@@ -11,6 +11,9 @@
 
 using namespace std;
 
+#define ACTION_MOVE_COOLDOWN_CYCLES 6 //!< *16ms
+#define ACTION_TOUCH_COOLDOWN_CYCLES 10
+
 /**
  * Created this module just to clearly divide some types of functions of the Game Play .
  */
@@ -68,18 +71,113 @@ void GamePlay::execute_action(en_action action, Trigger *trigger)
 		break;
 
 
-	/* Walk actions. */
+	/* Walk actions (ACTION_NONE == stand the character). */
 	case ACTION_WALK_NORTH:
 	case ACTION_WALK_SOUTH:
 	case ACTION_WALK_EAST:
 	case ACTION_WALK_WEST:
 	case ACTION_NONE:
-		m_Character->move(action);
+		this->move_character_action(action);
 		break;
 	default:
 		debug("Untreated action received. %d", action);
 		break;
 	}
+}
+
+/*************************************************************************************************/
+/* Declare moving action. */
+void GamePlay::move_character_action(en_action& direction)
+{
+
+	static bool is_right_step = false;
+	static en_action previous_action = ACTION_NONE;
+	int horizontal = 0;
+	int vertical = 0;
+	en_facing facing = W_DEFAULT;
+
+	/* If still in cool down or in standing state. */
+	if ((m_Character->get_action_move_cooldown() > 0) ||
+		((direction == ACTION_NONE) && (previous_action == ACTION_NONE))) {
+		return;
+	}
+
+	en_sprite_character_positions sprite_position;
+
+	switch(direction) {
+		case ACTION_WALK_NORTH:
+			horizontal = 0; vertical = -1; facing = W_UP;
+			sprite_position =
+					(is_right_step)? SPRITE_FACING_NORTH_STEP_RIGHT : SPRITE_FACING_NORTH_STEP_LEFT;
+			break;
+
+		case ACTION_WALK_SOUTH:
+			horizontal = 0; vertical = 1; facing = W_DOWN;
+			sprite_position =
+					(is_right_step)? SPRITE_FACING_SOUTH_STEP_RIGHT : SPRITE_FACING_SOUTH_STEP_LEFT;
+			break;
+
+		case ACTION_WALK_EAST:
+			horizontal = 1; vertical = 0; facing = W_RIGHT;
+			sprite_position =
+					(is_right_step)? SPRITE_FACING_EAST_STEP_RIGHT : SPRITE_FACING_EAST_STEP_LEFT;
+			break;
+
+		case ACTION_WALK_WEST:
+			horizontal = -1; vertical = 0; facing = W_LEFT;
+			sprite_position =
+					(is_right_step)? SPRITE_FACING_WEST_STEP_RIGHT : SPRITE_FACING_WEST_STEP_LEFT;
+			break;
+		case ACTION_NONE:
+			switch(previous_action) {
+				case ACTION_WALK_NORTH: sprite_position = SPRITE_FACING_NORTH_STOPPED; break;
+				case ACTION_WALK_SOUTH: sprite_position = SPRITE_FACING_SOUTH_STOPPED; break;
+				case ACTION_WALK_EAST: sprite_position = SPRITE_FACING_EAST_STOPPED; break;
+				case ACTION_WALK_WEST: sprite_position = SPRITE_FACING_WEST_STOPPED; break;
+				default: assert(0); break; /* Something is really wrong. */
+			}
+			break;
+		default:
+			debug("Invalid walk action received.");
+			return;
+	}
+
+	if (direction != ACTION_NONE) {
+		this->move_background_8px(horizontal, vertical);
+		m_Character->set_facing_direction(facing);
+	}
+
+	previous_action = direction;
+	is_right_step = !is_right_step;
+
+	m_Character->set_sprite(sprite_position);
+	m_Character->set_action_move_cooldown(ACTION_MOVE_COOLDOWN_CYCLES);
+}
+
+void GamePlay::move_background_8px(const int& x, const int& y)
+{
+	int relative_pos_x_px = TILE_8PX_TO_PX(m_Character->get_relative_pos_x_8px() + x);
+	int relative_pos_y_px = TILE_8PX_TO_PX(m_Character->get_relative_pos_y_8px() + y);
+
+	const st_rect char_coll_rect = m_Character->get_collision_rect();
+	st_rect collision_element(char_coll_rect.pos.x + relative_pos_x_px,
+								char_coll_rect.pos.y + relative_pos_y_px,
+								char_coll_rect.w, char_coll_rect.h);
+
+	if (m_MapProcessor.check_static_collision(collision_element) == 1) {
+		return;
+	}
+
+	/* If can't scroll the background will not update the character relative position. */
+	if (m_MapProcessor.move_map_8px(x, 0) == 0) {
+		m_Character->add_relative_pos_x_8px(x);
+	}
+
+	if (m_MapProcessor.move_map_8px(0, y) == 0) {
+		m_Character->add_relative_pos_y_8px(y);
+	}
+
+	//debug(" posRela: %d,%d (%d,%d)", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),TILE_8PX_TO_32PX(m_Pos_relative_8px.y), m_Pos_relative_8px.x, m_Pos_relative_8px.y);
 }
 
 /*************************************************************************************************/
@@ -108,7 +206,7 @@ void GamePlay::touch_action(void)
 	}
 
 	/* Update cool down. */
-	m_Character->set_action_touch_cooldown();
+	m_Character->set_action_touch_cooldown(ACTION_TOUCH_COOLDOWN_CYCLES);
 }
 
 /**
