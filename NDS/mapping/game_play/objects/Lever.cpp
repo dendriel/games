@@ -26,6 +26,6 @@ GameObject(Lever_rect_size,
 						-1,
 						NULL,
 						true,
-						get_Id());
+						this->get_Id());
 	set_Trigger(give_item);
 }

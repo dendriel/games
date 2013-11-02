@@ -99,6 +99,15 @@ private:
 	 * inventory. The object reference will be removed from the original place (scenery object list,
 	 * for example), and added into the character inventory.
 	 * \parameter object_id What object will be added to the character inventory.
+	 *
+	 * \note: Trigger setup:
+	 *
+	 * new Trigger(ACTION_TOUCH,			//! Triggering action (use ACTION_NONE if is a chain reaction);
+	 *				ACTION_GIVE_OBJECT,		//! Reaction;
+	 *				-1,						//! Repeat flag;
+	 *				next_reaction,			//! Chain reaction (optional);
+	 *				true,					//! Enabled flag (use 'false' if is a chain reaction);
+	 *				get_Id());				//! What object to give from scenery to the character (use the object unique id).
 	 */
 	void give_object_action(const long& object_id);
 
@@ -106,13 +115,32 @@ private:
 	 * \brief Check if the character have the object and, if it has, push the next reaction into the queue.
 	 * \parameter object_id What object will be added to the character inventory.
 	 * \parameter next The next trigger in the chain to be executed.
+	 *
+	 * \note: Trigger setup:
+	 *
+	 * new Trigger(ACTION_TOUCH,				//! Triggering action (use ACTION_NONE if is a chain reaction);
+	 *				ACTION_CHECK_OBJECT,		//! Reaction;
+	 *				-1,							//! Repeat flag;
+	 *				next_reaction,				//! Chain reaction (if NULL, the trigger will have no practical effect);
+	 *				true,						//! Enabled flag (use 'false' if is a chain reaction);
+	 *				object_id);					//!  What object to check in the character inventory (use the object unique id).
+	 *
 	 */
 	void check_for_object_action(const long& object_id, Trigger *next=NULL);
 
 	/**
-	 * \brief Remove the object from the player inventory.
+	 * \brief Remove the object from the character inventory.
 	 * \parameter object_id What object will be removed from the character inventory.
 	 * \parameter next The next trigger in the chain to be executed.
+	 *
+	 * \note: Trigger setup:
+	 *
+	 * new Trigger(ACTION_NONE,					//! Triggering action (use ACTION_NONE if is a chain reaction);
+	 *				ACTION_REMOVE_OBJECT,		//! Reaction;
+	 *				-1,							//! Repeat flag;
+	 *				next_reaction,				//! Chain reaction (optional);
+	 *				true,						//! Enabled flag (use 'false' if is a chain reaction);
+	 *				object_id);					//!  What object to remove in the character inventory (use the object unique id).
 	 */
 	void remove_object_action(const long& object_id, Trigger *next=NULL);
 
@@ -121,6 +149,16 @@ private:
 	 * \parameter object_id What object will be removed from the character inventory.
 	 * \parameter new_sprite The sprite position to be displayed of the object char set.
 	 * \parameter next The next trigger in the chain to be executed.
+	 *
+	 * \note: Trigger setup:
+	 *
+	 * new Trigger(ACTION_NONE,					//! Triggering action (use ACTION_NONE if is a chain reaction);
+	 *				ACTION_CHANGE_SPRITE,		//! Reaction;
+	 *				-1,							//! Repeat flag;
+	 *				next_reaction,				//! Chain reaction (optional);
+	 *				true,						//! Enabled flag (use 'false' if is a chain reaction);
+	 *				get_Id(),					//! What object in the scenery to change the sprite (use the object unique id).
+	 *				SPRITE_POSITION_3);			//! The new sprite to be displayed.
 	 */
 	void change_sprite_action(const long& object_id, const int& new_sprite, Trigger *next=NULL);
 
@@ -129,6 +167,16 @@ private:
 	 * \parameter object_id What object will be removed from the character inventory.
 	 * \parameter reaction The reaction that will be activated.
 	 * \parameter next The next trigger in the chain to be executed.
+	 *
+	 * \note: Trigger setup:
+	 *
+	 * new Trigger(ACTION_NONE,					//! Triggering action (use ACTION_NONE if is a chain reaction);
+					ACTION_CHANGE_REACTION,		//! Reaction;
+					-1,							//! Repeat flag;
+					next_reaction,				//! Chain reaction (optional);
+					false,						//! Enabled flag (use 'false' if is a chain reaction);
+					this->get_Id(),				//! What object in the scenery to change the trigger (use the object unique id);
+					ACTION_TOUCH);				//! What action will be changed.
 	 */
 	void change_reaction_action(const long& object_id, const en_action& reaction, Trigger *new_trigger);
 };
