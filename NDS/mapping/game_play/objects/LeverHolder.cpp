@@ -7,6 +7,7 @@
 
 
 #include "LeverHolder.h"
+#include "triggers.h"
 #include "sprites_data.h"
 
 static st_rect LeverHolder_rect_size(4,8,24,23);
@@ -34,56 +35,33 @@ GameObject(LeverHolder_rect_size,
 		true)
 {
 	//! SECOND Reaction chain.
-	Trigger *activate_lever =
-				new Trigger(ACTION_TOUCH,
-						ACTION_CHANGE_SPRITE,
-						1,
-						NULL,
-						false,
-						this->get_Id(),
-						SPRITE_POSITION_4);
+	Trigger_change_sprite *activate_lever = new Trigger_change_sprite(this->get_Id(),
+									SPRITE_POSITION_4,
+									NULL,
+									ACTION_TOUCH);
 	set_Trigger(activate_lever);
 
 	//! SECOND Reaction chain.
-	Trigger *change_reaction =
-			new Trigger(ACTION_NONE,
-						ACTION_CHANGE_REACTION,
-						-1,
-						activate_lever,
-						false,
-						this->get_Id(),
-						ACTION_TOUCH);
+	Trigger_change_reaction *change_reaction = new Trigger_change_reaction(this->get_Id(),
+										ACTION_TOUCH,
+										activate_lever);
 	set_Trigger(change_reaction);
 
 	//! FIRST Reaction chain.
-	Trigger *change_sprite_reaction =
-			new Trigger(ACTION_NONE,
-						ACTION_CHANGE_SPRITE,
-						-1,
-						change_reaction,
-						false,
-						this->get_Id(),
-						SPRITE_POSITION_3);
-	set_Trigger(change_sprite_reaction);
+	Trigger_change_sprite *change_sprite = new Trigger_change_sprite(this->get_Id(),
+									SPRITE_POSITION_3,
+									change_reaction);
+	set_Trigger(change_sprite);
 
 	//!< FIRST Reaction chain.
-	Trigger *remove_object_reaction =
-			new Trigger(ACTION_NONE,
-						ACTION_REMOVE_OBJECT,
-						-1,
-						change_sprite_reaction,
-						false,
-						object_id);
-	set_Trigger(remove_object_reaction);
+	Trigger_remove_object *remove_object = new Trigger_remove_object(object_id, change_sprite);
+	set_Trigger(remove_object);
 
 	//! FIRST Reaction initial trigger.
-	Trigger *check_for_object =
-			new Trigger(ACTION_TOUCH,
-						ACTION_CHECK_OBJECT,
-						-1,
-						remove_object_reaction,
-						true,
-						object_id);
-	set_Trigger(check_for_object);
+	Trigger_check_object *check_object = new Trigger_check_object(object_id,
+									remove_object,
+									ACTION_TOUCH,
+									true);
+	set_Trigger(check_object);
 
 }

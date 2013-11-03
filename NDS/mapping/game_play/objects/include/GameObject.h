@@ -165,6 +165,7 @@ enum {
 	GAMEOBJECT_TYPE_0 = 100, // Torch
 	GAMEOBJECT_TYPE_1,		 // Lever
 	GAMEOBJECT_TYPE_2,		 // Lever Holder
+	GAMEOBJECT_TYPE_3,		 // Spikes
 };
 
 #endif /* GAMEOBJECT_H_ */

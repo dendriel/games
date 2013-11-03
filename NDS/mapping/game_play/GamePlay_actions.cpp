@@ -12,6 +12,7 @@
 using namespace std;
 
 #define ACTION_MOVE_COOLDOWN_CYCLES 6 //!< *16ms
+#define ACTION_RUN_COOLDOWN_CYCLES 3 //!< *16ms
 #define ACTION_TOUCH_COOLDOWN_CYCLES 10
 
 /**
@@ -35,7 +36,7 @@ void GamePlay::execute_queued_reactions(void)
 
 		Trigger *trigger = actions_list.front();
 		this->execute_action(trigger->get_Reaction(), trigger);
-		debug("Pop %d reaction.", trigger->get_Reaction());
+		//debug("Pop %d reaction.", trigger->get_Reaction());
 		actions_list.pop();
 	}
 }
@@ -52,39 +53,50 @@ void GamePlay::execute_action(en_action action, Trigger *trigger)
 
 	case ACTION_GIVE_OBJECT:
 		assert(trigger != NULL);
-
-		this->give_object_action(trigger->get_Gen_id());
+		this->give_object_action(static_cast<Trigger_give_object *>(trigger));
 		break;
 
 	case ACTION_CHECK_OBJECT:
 		assert(trigger != NULL);
-		this->check_for_object_action(trigger->get_Gen_id(), trigger->get_Next_reaction());
+		this->check_object_action(static_cast<Trigger_check_object *>(trigger));
 		break;
 
 	case ACTION_REMOVE_OBJECT:
 		assert(trigger != NULL);
-		this->remove_object_action(trigger->get_Gen_id(), trigger->get_Next_reaction());
+		this->remove_object_action(static_cast<Trigger_remove_object *>(trigger));
 		break;
 
 	case ACTION_CHANGE_SPRITE:
 		assert(trigger != NULL);
-		this->change_sprite_action(trigger->get_Gen_id(), trigger->get_Gen_pos(), trigger->get_Next_reaction());
+		this->change_sprite_action(static_cast<Trigger_change_sprite *>(trigger));
 		break;
 
 	case ACTION_CHANGE_REACTION:
 		assert(trigger != NULL);
-		this->change_reaction_action(trigger->get_Gen_id(), static_cast<en_action>(trigger->get_Gen_pos()), trigger->get_Next_reaction());
+		this->change_reaction_action(static_cast<Trigger_change_reaction *>(trigger));
+		break;
+
+	case ACTION_DELAY:
+		assert(trigger != NULL);
+		this->delay_action(static_cast<Trigger_delay *>(trigger));
 		break;
 
 
-	/* Walk actions (ACTION_NONE == stand the character). */
+	/* Walk/run actions (ACTION_NONE == stand the character). */
 	case ACTION_WALK_NORTH:
 	case ACTION_WALK_SOUTH:
 	case ACTION_WALK_EAST:
 	case ACTION_WALK_WEST:
 	case ACTION_NONE:
-		this->move_character_action(action);
+		this->move_character_action(action, ACTION_MOVE_COOLDOWN_CYCLES);
 		break;
+	case ACTION_RUN_NORTH:
+	case ACTION_RUN_SOUTH:
+	case ACTION_RUN_EAST:
+	case ACTION_RUN_WEST:
+		this->move_character_action(action, ACTION_RUN_COOLDOWN_CYCLES);
+		break;
+
 	default:
 		debug("Untreated action received. %d", action);
 		break;
@@ -93,7 +105,7 @@ void GamePlay::execute_action(en_action action, Trigger *trigger)
 
 /*************************************************************************************************/
 /* Declare moving action. */
-void GamePlay::move_character_action(en_action& direction)
+void GamePlay::move_character_action(en_action& direction, const unsigned int& move_cooldown)
 {
 
 	static bool is_right_step = false;
@@ -112,35 +124,58 @@ void GamePlay::move_character_action(en_action& direction)
 
 	switch(direction) {
 		case ACTION_WALK_NORTH:
+		case ACTION_RUN_NORTH:
 			horizontal = 0; vertical = -1; facing = W_UP;
 			sprite_position =
 					(is_right_step)? SPRITE_FACING_NORTH_STEP_RIGHT : SPRITE_FACING_NORTH_STEP_LEFT;
 			break;
 
 		case ACTION_WALK_SOUTH:
+		case ACTION_RUN_SOUTH:
 			horizontal = 0; vertical = 1; facing = W_DOWN;
 			sprite_position =
 					(is_right_step)? SPRITE_FACING_SOUTH_STEP_RIGHT : SPRITE_FACING_SOUTH_STEP_LEFT;
 			break;
 
 		case ACTION_WALK_EAST:
+		case ACTION_RUN_EAST:
 			horizontal = 1; vertical = 0; facing = W_RIGHT;
 			sprite_position =
 					(is_right_step)? SPRITE_FACING_EAST_STEP_RIGHT : SPRITE_FACING_EAST_STEP_LEFT;
 			break;
 
 		case ACTION_WALK_WEST:
+		case ACTION_RUN_WEST:
 			horizontal = -1; vertical = 0; facing = W_LEFT;
 			sprite_position =
 					(is_right_step)? SPRITE_FACING_WEST_STEP_RIGHT : SPRITE_FACING_WEST_STEP_LEFT;
 			break;
+
 		case ACTION_NONE:
 			switch(previous_action) {
-				case ACTION_WALK_NORTH: sprite_position = SPRITE_FACING_NORTH_STOPPED; break;
-				case ACTION_WALK_SOUTH: sprite_position = SPRITE_FACING_SOUTH_STOPPED; break;
-				case ACTION_WALK_EAST: sprite_position = SPRITE_FACING_EAST_STOPPED; break;
-				case ACTION_WALK_WEST: sprite_position = SPRITE_FACING_WEST_STOPPED; break;
-				default: assert(0); break; /* Something is really wrong. */
+				case ACTION_WALK_NORTH:
+				case ACTION_RUN_NORTH:
+					sprite_position = SPRITE_FACING_NORTH_STOPPED;
+					break;
+
+				case ACTION_WALK_SOUTH:
+				case ACTION_RUN_SOUTH:
+					sprite_position = SPRITE_FACING_SOUTH_STOPPED;
+					break;
+
+				case ACTION_WALK_EAST:
+				case ACTION_RUN_EAST:
+					sprite_position = SPRITE_FACING_EAST_STOPPED;
+					break;
+
+				case ACTION_WALK_WEST:
+				case ACTION_RUN_WEST:
+					sprite_position = SPRITE_FACING_WEST_STOPPED;
+					break;
+
+				default:
+					assert(0);
+					break; /* Something is really wrong. */
 			}
 			break;
 		default:
@@ -157,7 +192,7 @@ void GamePlay::move_character_action(en_action& direction)
 	is_right_step = !is_right_step;
 
 	m_Character->set_sprite(sprite_position);
-	m_Character->set_action_move_cooldown(ACTION_MOVE_COOLDOWN_CYCLES);
+	m_Character->set_action_move_cooldown(move_cooldown);
 }
 
 /*************************************************************************************************/
@@ -278,6 +313,7 @@ static bool check_touch_points(st_offset touching[], vector<GameObject *> *objec
 		relative_coor.w = relative_coor.pos.x + object->get_CollRect().w;
 		relative_coor.h = relative_coor.pos.y + object->get_CollRect().h;
 
+		debug("Check obj: %s", object->get_Name().c_str());
 		// Check p1 and p2.
 		if ((check_touched_object(touching[0], relative_coor) != true) &&
 				(check_touched_object(touching[1], relative_coor) != true)) {
@@ -285,13 +321,13 @@ static bool check_touch_points(st_offset touching[], vector<GameObject *> *objec
 			continue;
 		}
 
-		//debug("Touched object %s id: %ld!", object->get_Name().c_str(), object->get_Type());
+		debug("Touched object %s id: %ld!", object->get_Name().c_str(), object->get_Type());
 		if (object->get_reaction(ACTION_TOUCH, trigger_data) != true) {
 			// Return if there is no reaction.
 			return false;
 		}
 
-		//debug("Reaction: %d; pt: %p", trigger_data->get_Reaction(), trigger_data);
+		debug("Reaction: %d; pt: %p", trigger_data->get_Reaction(), trigger_data);
 		return true;
 	}
 
@@ -318,9 +354,9 @@ static bool check_touched_object(st_offset touching, st_rect area)
 
 /*************************************************************************************************/
 /* Declare give object action. */
-void GamePlay::give_object_action(const long& object_id)
+void GamePlay::give_object_action(Trigger_give_object *trigger)
 {
-	GameObject *object = m_Scenery->get_Object(object_id);
+	GameObject *object = m_Scenery->get_Object(trigger->get_object_id());
 
 	/* If the object was not found, do nothing. If there is more lists that the object can be in,
 	 * add here and keep searching before returning.
@@ -341,21 +377,28 @@ void GamePlay::give_object_action(const long& object_id)
 	object->set_Visibility(false);
 
 	// Remove duplicated references.
-	m_Scenery->remove_Object(object_id);
+	m_Scenery->remove_Object(trigger->get_object_id());
+
+	Trigger *next = trigger->get_Next_reaction();
+	if (next != NULL) {
+		m_ActionsQueue.push(next);
+	}
 }
 
 /*************************************************************************************************/
 /* Declare check for object action. */
 
-void GamePlay::check_for_object_action(const long& object_id, Trigger *next)
+void GamePlay::check_object_action(Trigger_check_object *trigger)
 {
-	debug("Check of obj: %ld", object_id);
-	if (m_Character->check_object(object_id) != true) {
+	debug("Check of obj: %ld", trigger->get_object_id());
+	if (m_Character->check_object(trigger->get_object_id()) != true) {
 		// The player had not found the object yet.
 		return;
 	}
 
 	// The player found the object. Set the next trigger.
+
+	Trigger *next = trigger->get_Next_reaction();
 	if (next != NULL) {
 		m_ActionsQueue.push(next);
 	}
@@ -365,11 +408,12 @@ void GamePlay::check_for_object_action(const long& object_id, Trigger *next)
 /*************************************************************************************************/
 /* Declare remove object action. */
 
-void GamePlay::remove_object_action(const long& object_id, Trigger *next)
+void GamePlay::remove_object_action(Trigger_remove_object *trigger)
 {
-	debug("Delete obj: %ld", object_id);
-	m_Character->delete_object(object_id);
+	debug("Delete obj: %ld", trigger->get_object_id());
+	m_Character->delete_object(trigger->get_object_id());
 
+	Trigger *next = trigger->get_Next_reaction();
 	if (next != NULL) {
 		m_ActionsQueue.push(next);
 	}
@@ -377,17 +421,60 @@ void GamePlay::remove_object_action(const long& object_id, Trigger *next)
 
 /*************************************************************************************************/
 /* Declare change sprite action. */
-void GamePlay::change_sprite_action(const long& object_id, const int& new_sprite, Trigger *next)
+void GamePlay::change_sprite_action(Trigger_change_sprite *trigger)
 {
-	GameObject *object = m_Scenery->get_Object(object_id);
+	GameObject *object = m_Scenery->get_Object(trigger->get_object_id());
 	if (object == NULL) {
 		return;
 	}
 	/* If the object was not found, do nothing. If there is more lists that the object can be in,
 	 * add here and keep searching before returning.
 	 */
-	object->set_sprite(new_sprite);
+	object->set_sprite(trigger->get_new_sprite());
 
+	Trigger *next = trigger->get_Next_reaction();
+	if (next != NULL) {
+		m_ActionsQueue.push(next);
+	}
+}
+
+/*************************************************************************************************/
+/* Declare change reaction action. */
+void GamePlay::change_reaction_action(Trigger_change_reaction *trigger)
+{
+	GameObject *object = m_Scenery->get_Object(trigger->get_object_id());
+	if (object == NULL) {
+		return;
+	}
+
+	object->disable_All_trigger(trigger->get_reaction());
+
+	Trigger *new_reaction = trigger->get_new_reaction();
+	if (new_reaction != NULL) {
+		new_reaction->enable();
+	}
+
+	Trigger *next = trigger->get_Next_reaction();
+	if (next != NULL) {
+		m_ActionsQueue.push(next);
+	}
+}
+
+/*************************************************************************************************/
+/* Declare delay action. */
+void GamePlay::delay_action(Trigger_delay *trigger)
+{
+	if (trigger->get_RemmaingDelay() > 0) {
+		// Still counting..
+		trigger->dec_RemmainingDelay();
+		m_ActionsQueue.push(trigger);
+		return;
+	}
+
+	// Delay finished.
+	trigger->restart_DelayCounter();
+
+	Trigger *next = trigger->get_Next_reaction();
 	if (next != NULL) {
 		m_ActionsQueue.push(next);
 	}
@@ -395,13 +482,3 @@ void GamePlay::change_sprite_action(const long& object_id, const int& new_sprite
 
 /*************************************************************************************************/
 
-void GamePlay::change_reaction_action(const long& object_id, const en_action& reaction, Trigger *new_trigger)
-{
-	GameObject *object = m_Scenery->get_Object(object_id);
-	if (object == NULL) {
-		return;
-	}
-
-	object->disable_All_trigger(reaction);
-	new_trigger->enable();
-}

@@ -14,7 +14,7 @@
 #include "GameCharacter.h"
 #include "GameController.h"
 #include "GameScenery.h"
-#include "Trigger.h"
+#include "triggers.h"
 #include "scenery.h"
 #include "game_actions.h"
 
@@ -111,8 +111,9 @@ private:
 	/**
 	 * \brief Move the character.
 	 * \parameter direction Which direction to move.
+	 * \parameter move_cooldown Cool down between moving action.
 	 */
-	void move_character_action(en_action& direction);
+	void move_character_action(en_action& direction, const unsigned int& move_cooldown);
 
 	/**
 	 * \brief Character touch action.
@@ -123,87 +124,93 @@ private:
 	 * \brief Give an object to the character. Nothing will happen if there is no room in the
 	 * inventory. The object reference will be removed from the original place (scenery object list,
 	 * for example), and added into the character inventory.
-	 * \parameter object_id What object will be added to the character inventory.
+	 * \parameter trigger Data for execute reaction.
 	 *
 	 * \note: Trigger setup:
 	 *
-	 * new Trigger(ACTION_TOUCH,			//! Triggering action (use ACTION_NONE if is a chain reaction);
-	 *				ACTION_GIVE_OBJECT,		//! Reaction;
-	 *				-1,						//! Repeat flag;
-	 *				next_reaction,			//! Chain reaction (optional);
-	 *				true,					//! Enabled flag (use 'false' if is a chain reaction);
-	 *				get_Id());				//! What object to give from scenery to the character (use the object unique id).
+	 * new Trigger_change_sprite(object_id,					//! Object that will be given.
+	 *							next_reaction,				//! Chain reaction (optional);
+	 *							ACTION_NONE,				//! Triggering action (optional).
+	 *							false,						//! Enabled flag (optional).
+	 *							-1);						//! Repeat flag (optional);
 	 */
-	void give_object_action(const long& object_id);
+	void give_object_action(Trigger_give_object *trigger);
 
 	/**
 	 * \brief Check if the character have the object and, if it has, push the next reaction into the queue.
-	 * \parameter object_id What object will be added to the character inventory.
-	 * \parameter next The next trigger in the chain to be executed.
+	 * \parameter trigger Data for execute reaction.
 	 *
 	 * \note: Trigger setup:
 	 *
-	 * new Trigger(ACTION_TOUCH,				//! Triggering action (use ACTION_NONE if is a chain reaction);
-	 *				ACTION_CHECK_OBJECT,		//! Reaction;
-	 *				-1,							//! Repeat flag;
-	 *				next_reaction,				//! Chain reaction (if NULL, the trigger will have no practical effect);
-	 *				true,						//! Enabled flag (use 'false' if is a chain reaction);
-	 *				object_id);					//!  What object to check in the character inventory (use the object unique id).
+	 * new Trigger_check_object(object_id,					//! Object to verify in character's inventory.
+	 *							next_reaction,				//! Chain reaction (optional);
+	 *							ACTION_NONE,				//! Triggering action (optional).
+	 *							false,						//! Enabled flag (optional).
+	 *							-1);						//! Repeat flag (optional);
+	 *
 	 *
 	 */
-	void check_for_object_action(const long& object_id, Trigger *next=NULL);
+	void check_object_action(Trigger_check_object *trigger);
 
 	/**
 	 * \brief Remove the object from the character inventory.
-	 * \parameter object_id What object will be removed from the character inventory.
-	 * \parameter next The next trigger in the chain to be executed.
+	 * \parameter trigger Data for execute reaction.
 	 *
 	 * \note: Trigger setup:
 	 *
-	 * new Trigger(ACTION_NONE,					//! Triggering action (use ACTION_NONE if is a chain reaction);
-	 *				ACTION_REMOVE_OBJECT,		//! Reaction;
-	 *				-1,							//! Repeat flag;
-	 *				next_reaction,				//! Chain reaction (optional);
-	 *				true,						//! Enabled flag (use 'false' if is a chain reaction);
-	 *				object_id);					//!  What object to remove in the character inventory (use the object unique id).
+	 * new Trigger_remove_object(object_id,					//! Object to remove from character.
+	 *							next_reaction,				//! Chain reaction (optional);
+	 *							ACTION_NONE,				//! Triggering action (optional).
+	 *							false,						//! Enabled flag (optional).
+	 *							-1);						//! Repeat flag (optional);
 	 */
-	void remove_object_action(const long& object_id, Trigger *next=NULL);
+	void remove_object_action(Trigger_remove_object *trigger);
 
 	/**
 	 * \brief Change the object displayed sprite.
-	 * \parameter object_id What object will be removed from the character inventory.
-	 * \parameter new_sprite The sprite position to be displayed of the object char set.
-	 * \parameter next The next trigger in the chain to be executed.
+	 * \parameter trigger Data for execute reaction.
 	 *
 	 * \note: Trigger setup:
 	 *
-	 * new Trigger(ACTION_NONE,					//! Triggering action (use ACTION_NONE if is a chain reaction);
-	 *				ACTION_CHANGE_SPRITE,		//! Reaction;
-	 *				-1,							//! Repeat flag;
-	 *				next_reaction,				//! Chain reaction (optional);
-	 *				true,						//! Enabled flag (use 'false' if is a chain reaction);
-	 *				get_Id(),					//! What object in the scenery to change the sprite (use the object unique id).
-	 *				SPRITE_POSITION_3);			//! The new sprite to be displayed.
+	 * new Trigger_change_sprite(object_id,					//! Object to update.
+	 *							new_sprite,					//! New sprite position.
+	 *							next_reaction,				//! Chain reaction (optional);
+	 *							ACTION_NONE,				//! Triggering action (optional).
+	 *							false,						//! Enabled flag (optional).
+	 *							-1);						//! Repeat flag (optional);
 	 */
-	void change_sprite_action(const long& object_id, const int& new_sprite, Trigger *next=NULL);
+	void change_sprite_action(Trigger_change_sprite *trigger);
 
 	/**
 	 * \brief Change the current trigger from an object to the given one (the current will be deactivate and the new will be activated).
-	 * \parameter object_id What object will be removed from the character inventory.
-	 * \parameter reaction The reaction that will be activated.
-	 * \parameter next The next trigger in the chain to be executed.
+	 * \parameter trigger Data for execute reaction.
 	 *
 	 * \note: Trigger setup:
 	 *
-	 * new Trigger(ACTION_NONE,					//! Triggering action (use ACTION_NONE if is a chain reaction);
-					ACTION_CHANGE_REACTION,		//! Reaction;
-					-1,							//! Repeat flag;
-					next_reaction,				//! Chain reaction (optional);
-					false,						//! Enabled flag (use 'false' if is a chain reaction);
-					this->get_Id(),				//! What object in the scenery to change the trigger (use the object unique id);
-					ACTION_TOUCH);				//! What action will be changed.
+	 * new Trigger_change_reaction(object_id,					//! Object that will have the reaction changed.
+	 *								reaction,					//! Reaction type that will be disabled.
+	 *								new_reaction,				//! Trigger to be enabled.
+	 *								trigger,					//! Trigger that will be enabled.
+	 *								ACTION_NONE,				//! Triggering action (optional).
+	 *								false,						//! Enabled flag (optional).
+	 *								-1);						//! Repeat flag (optional);
 	 */
-	void change_reaction_action(const long& object_id, const en_action& reaction, Trigger *new_trigger);
+	void change_reaction_action(Trigger_change_reaction *trigger);
+
+	/**
+	 * \brief Delay some time.
+	 * \parameter trigger The trigger that will be re-queued until the delay time expires.
+	 * \note Can be used to delay some reactions.
+	 *
+	 * \note Trigger setup:
+	 *
+	 * new Trigger_delay(time_cycles,				//! How much cycles to delay.
+	 *					next_reaction,				//! Chain reaction.
+	 *					ACTION_NONE,				//! Triggering action (optional).
+	 *					false,						//! Enabled flag (optional).
+	 *					-1);						//! Repeat flag (optional);
+	 */
+	void delay_action(Trigger_delay *trigger);
 };
 
 #endif /* GAMEPLAY_H_ */

@@ -27,13 +27,17 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   	- LATER: Do when it's possible.
   
   - PRIO - DESC - STATE-
-  +------+------+-------   
+  +------+------+-------  
+  
+  Added: 02/11/2013
+  - [HIGH] Improve the triggering system. It is kind messy. Maybe implementing specific trigger objects will bring clarity.
+   
   
   Added: 29/10/2013
   - [MEDIUM] Be able to process reactions by multiple interactions [DONE];
   - [HIGH] Add condition infrastructure for the trigger[reactions] executions [DONE - can be made through checking];
-  - [LOW] Add running key (action/button) for the character;
-  - [HIGH] Make walking trigger actions;
+  - [LOW] Add running key (action/button) for the character [DONE - action button while moving makes the char sprint and will have precedence.];
+  - [HIGH] Make walking do trigger actions;
   - [HIGH] Add static collision checking between character and objects [DONE].
   - [HIGH] Add GameObject destructor to delete triggers [DONE].
   - [HIGH] Add deactivate trigger from an object. So we can stop doing some reaction before what has to happen has happend. hehe

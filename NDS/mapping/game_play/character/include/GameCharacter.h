@@ -10,6 +10,7 @@
 
 #include "VisualElement.h"
 #include "CollisionElement.h"
+#include "StatusElement.h"
 #include "GameMapProcessor.h"
 #include "Inventory.h"
 #include "game_actions.h"
@@ -18,7 +19,7 @@
 #include "objects.h"
 #include <iostream>
 
-class GameCharacter: private VisualElement, CollisionElement {
+class GameCharacter: private VisualElement, CollisionElement, StatusElement {
 public:
 	st_offset m_Pos_relative_8px;	//!< Position of the character in the screen (not the scenery. Relative position).
 

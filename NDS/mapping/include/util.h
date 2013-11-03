@@ -14,7 +14,7 @@
 #include "timming.h"
 
 /* Macros */
-#define debug(fmt,args...) (void)(iprintf(fmt"\n",##args))
+#define debug(fmt,args...) (void)(printf(fmt"\n",##args))
 
 #define loop() while(1) GSLEEP(1);
 

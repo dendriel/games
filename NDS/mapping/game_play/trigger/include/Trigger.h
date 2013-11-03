@@ -21,9 +21,11 @@ private:
 	Trigger *m_Next;	//!< Use to make reaction chains.
 	bool m_Enabled;		//!< If this trigger is enabled by default.
 	long m_Id;			//!< Trigger unique identifier. Automatically generated.
-	// Some basic elements that the action may use.
-	long m_Gen_id;	// Generic id for actions use (the id of given object, for example).
-	int m_Gen_pos;	// Generic position for something.
+protected:
+	//! Some basic elements that the action may use.
+	long m_Gen_param_1;		//!< Generic parameter.
+	long m_Gen_param_2;		//!< Generic parameter.
+	void *m_Gen_param_3;	//!< Generic parameter.
 
 	static long s_Trigger_ids;				//!< IDs for distribute to triggers.
 public:
@@ -31,22 +33,24 @@ public:
 	Trigger():
 		m_Action(ACTION_NONE),
 		m_Reaction(ACTION_NONE),
-		m_Charges(0),
+		m_Charges(-1),
 		m_Next(NULL),
 		m_Enabled(false),
 		m_Id(Trigger::generate_Id()),
-		m_Gen_id(0),
-		m_Gen_pos(0){}
+		m_Gen_param_1(0),
+		m_Gen_param_2(0),
+		m_Gen_param_3(NULL){}
 
-	Trigger(en_action action, en_action reaction, int charges, Trigger *next=NULL, bool enabled=true, long id=0, int pos=0):
+	Trigger(en_action action, en_action reaction, int charges, Trigger *next=NULL, bool enabled=false, const long param_1=0, long param_2=0, void *param_3=NULL):
 		m_Action(action),
 		m_Reaction(reaction),
 		m_Charges(charges),
 		m_Next(next),
 		m_Enabled(enabled),
 		m_Id(Trigger::generate_Id()),
-		m_Gen_id(id),
-		m_Gen_pos(pos){}
+		m_Gen_param_1(param_1),
+		m_Gen_param_2(param_2),
+		m_Gen_param_3(param_3){}
 
 	inline en_action get_Action(void)
 	{
@@ -73,16 +77,6 @@ public:
 	inline Trigger *get_Next_reaction(void)
 	{
 		return m_Next;
-	}
-
-	inline long get_Gen_id(void)
-	{
-		return m_Gen_id;
-	}
-
-	inline int get_Gen_pos(void)
-	{
-		return m_Gen_pos;
 	}
 
 	inline long get_Id(void)

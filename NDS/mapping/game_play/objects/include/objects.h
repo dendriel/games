@@ -15,5 +15,6 @@
 #include "Torch.h"
 #include "Lever.h"
 #include "LeverHolder.h"
+#include "Spikes.h"
 
 #endif /* OBJECTS_H_ */

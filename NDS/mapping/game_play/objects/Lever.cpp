@@ -7,6 +7,7 @@
 
 
 #include "Lever.h"
+#include "triggers.h"
 #include "sprites_data.h"
 
 static st_rect Lever_rect_size(1,0,22,23);
@@ -21,11 +22,10 @@ GameObject(Lever_rect_size,
 		LEVER_OBJECT_NAME,
 		display)
 {
-	Trigger *give_item = new Trigger(ACTION_TOUCH,
-						ACTION_GIVE_OBJECT,
-						-1,
-						NULL,
-						true,
-						this->get_Id());
-	set_Trigger(give_item);
+	Trigger_give_object *give_object =
+			new Trigger_give_object(this->get_Id(),
+									NULL,
+									ACTION_TOUCH,
+									true);
+	set_Trigger(give_object);
 }
