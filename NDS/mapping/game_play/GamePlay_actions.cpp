@@ -228,6 +228,7 @@ void GamePlay::move_background_8px(const int& x, const int& y)
 
 bool GamePlay::check_object_collision(st_rect& coll_char_rect)
 {
+	Trigger *trigger_data = NULL;
 	vector<GameObject *> *objects_list = m_Scenery->get_ObjectsList();
 	const unsigned int x  = coll_char_rect.pos.x;
 	const unsigned int y  = coll_char_rect.pos.y;
@@ -237,10 +238,6 @@ bool GamePlay::check_object_collision(st_rect& coll_char_rect)
 	for (vector<GameObject *>::const_iterator curr = objects_list->begin(); curr != objects_list->end(); ++curr) {
 		GameObject *object = *curr;
 
-		//! Kind a broad checking. But so far, we could iterate over all objects.
-		if (object->get_Blockable() != true) {
-			continue;
-		}
 
 		//debug("Testing coll: %s", object->get_Name().c_str());
 
@@ -257,6 +254,16 @@ bool GamePlay::check_object_collision(st_rect& coll_char_rect)
 			check_touched_object(st_offset(x,y1),  obj_relative_coor) ||
 			check_touched_object(st_offset(x1,y1), obj_relative_coor)) {
 
+			//! Check if any action is triggered by collision.		debug("Touched object %s id: %ld!", object->get_Name().c_str(), object->get_Type());
+			if (object->get_reaction(ACTION_COLLISION, trigger_data) == true) {
+				m_ActionsQueue.push(trigger_data);
+				debug("Push %d reaction.", trigger_data->get_Reaction());
+			}
+
+			//! Check if the object is blockable.
+			if (object->get_Blockable() != true) {
+				return false;
+			}
 			// Push here an "on_collide" reaction for the obj.
 			return true;
 		}
@@ -277,7 +284,7 @@ void GamePlay::touch_action(void)
 		return;
 	}
 
-	Trigger *trigger_data;
+	Trigger *trigger_data = NULL;
 	st_offset touching[2];
 
 	memset(touching, 0 , sizeof(touching));

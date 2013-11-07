@@ -34,11 +34,12 @@ typedef enum en_action {
 	ACTION_CHANGE_SPRITE,
 	ACTION_CHANGE_REACTION,
 	ACTION_DELAY,
+	ACTION_COLLISION, // 15
 	ACTION_CONSOLE_CLEAR, //!< Only for develop time.
 	ACTION_NONE			 //!< 11 No action selected.
 } en_action;
 
-//! Post fix to increment the action.
+//! Post fix to increment the action. TODO: use "class enum"
 inline en_action& operator++(en_action& orig, int)
 {
 	orig = static_cast<en_action>(static_cast<int>(orig) + 1);

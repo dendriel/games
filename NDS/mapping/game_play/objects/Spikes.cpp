@@ -28,7 +28,7 @@ GameObject(Spikes_rect_size,
 
 	Trigger_delay *delay = new Trigger_delay(100,
 											change_sprite,
-											ACTION_TOUCH,
+											ACTION_COLLISION,
 											true);
 	set_Trigger(delay);
 }
