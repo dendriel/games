@@ -18,5 +18,6 @@
 #include "Trigger_give_object.h"
 #include "Trigger_check_object.h"
 #include "Trigger_remove_object.h"
+#include "Trigger_give_damage.h"
 
 #endif /* TRIGGERS_H_ */

@@ -162,6 +162,15 @@ public:
 		update_position();
 	}
 
+	/**
+	 * \brief Remove health points.
+	 * \parameter amount How much of health points to be removed.
+	 */
+	inline void remove_hp(const unsigned short& amount)
+	{
+		dec_health_points(amount);
+	}
+
 	// Testing function.
 	void get_Inventory(void)
 	{
@@ -183,6 +192,8 @@ public:
 			}
 			std::cout << std::endl;
 		}
+
+		std::cout << get_health_points() << std::endl;
 
 		cooldown = cooldown_size;
 	}

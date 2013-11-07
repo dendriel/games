@@ -86,6 +86,11 @@ bool GameObject::get_reaction(en_action action, Trigger * &trigger)
 
 void GameObject::disable_All_trigger(const en_action& reaction)
 {
+	// No reactions to disable.
+	if (reaction == ACTION_NONE) {
+		return;
+	}
+
 	for (vector<Trigger *>::iterator iter = m_Triggers_list.begin();
 			iter != m_Triggers_list.end(); ++iter) {
 		Trigger *curr = (*iter);

@@ -35,5 +35,4 @@ public:
 	}
 };
 
-
 #endif /* TRIGGER_GIVE_OBJECT_H_ */

@@ -211,6 +211,20 @@ private:
 	 *					-1);						//! Repeat flag (optional);
 	 */
 	void delay_action(Trigger_delay *trigger);
+
+	/**
+	 * \brief Give damage in the character (remove health points).
+	 * \parameter trigger The trigger with data to be processed.
+	 *
+	 * \note Trigger setup:
+	 *
+	 * new Trigger_delay(damage_points,				//! How much health points to remove from player.
+	 *					next_reaction,				//! Chain reaction (optional).
+	 *					ACTION_NONE,				//! Triggering action (optional).
+	 *					false,						//! Enabled flag (optional).
+	 *					-1);						//! Repeat flag (optional);
+	 */
+	void give_damage_action(Trigger_give_damage *trigger);
 };
 
 #endif /* GAMEPLAY_H_ */

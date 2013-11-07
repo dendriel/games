@@ -23,13 +23,37 @@ GameObject(Spikes_rect_size,
 		LEVER_OBJECT_NAME,
 		display)
 {
-	Trigger_change_sprite *change_sprite = new Trigger_change_sprite(this->get_Id(), SPRITE_POSITION_3);
-	set_Trigger(change_sprite);
+	Trigger_give_damage *give_damage = new Trigger_give_damage(1, NULL, ACTION_COLLISION);
+	set_Trigger(give_damage);
 
-	Trigger_delay *delay = new Trigger_delay(100,
-											change_sprite,
+	// Enable give damage on collision trigger.
+	Trigger_change_reaction *change_reaction =
+			new Trigger_change_reaction(this->get_Id(),
+					ACTION_COLLISION,
+					give_damage);
+
+	set_Trigger(change_reaction);
+
+	Trigger_change_sprite *change_sprite3 = new Trigger_change_sprite(this->get_Id(), SPRITE_POSITION_3, change_reaction);
+	set_Trigger(change_sprite3);
+
+	Trigger_delay *delay2 = new Trigger_delay(3, change_sprite3);
+	set_Trigger(delay2);
+
+	Trigger_change_sprite *change_sprite2 = new Trigger_change_sprite(this->get_Id(), SPRITE_POSITION_2, delay2);
+	set_Trigger(change_sprite2);
+
+	Trigger_delay *delay1 = new Trigger_delay(4, change_sprite2);
+	set_Trigger(delay1);
+
+	Trigger_change_sprite *change_sprite1 = new Trigger_change_sprite(this->get_Id(), SPRITE_POSITION_1, delay1);
+	set_Trigger(change_sprite1);
+
+	Trigger_delay *delay = new Trigger_delay(50,
+											change_sprite1,
 											ACTION_COLLISION,
-											true);
+											true,
+											1);
 	set_Trigger(delay);
 }
 

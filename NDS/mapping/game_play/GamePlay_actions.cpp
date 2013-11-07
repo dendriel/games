@@ -81,6 +81,10 @@ void GamePlay::execute_action(en_action action, Trigger *trigger)
 		this->delay_action(static_cast<Trigger_delay *>(trigger));
 		break;
 
+	case ACTION_GIVE_DAMAGE:
+		assert(trigger != NULL);
+		this->give_damage_action(static_cast<Trigger_give_damage *>(trigger));
+		break;
 
 	/* Walk/run actions (ACTION_NONE == stand the character). */
 	case ACTION_WALK_NORTH:
@@ -105,6 +109,7 @@ void GamePlay::execute_action(en_action action, Trigger *trigger)
 
 /*************************************************************************************************/
 /* Declare moving action. */
+
 void GamePlay::move_character_action(en_action& direction, const unsigned int& move_cooldown)
 {
 
@@ -274,6 +279,7 @@ bool GamePlay::check_object_collision(st_rect& coll_char_rect)
 
 /*************************************************************************************************/
 /* Declare touching action. */
+
 static bool check_touch_points(st_offset touching[], vector<GameObject *> *objects_list, Trigger * &trigger_data);
 
 void GamePlay::touch_action(void)
@@ -361,6 +367,7 @@ static bool check_touched_object(st_offset touching, st_rect area)
 
 /*************************************************************************************************/
 /* Declare give object action. */
+
 void GamePlay::give_object_action(Trigger_give_object *trigger)
 {
 	GameObject *object = m_Scenery->get_Object(trigger->get_object_id());
@@ -428,6 +435,7 @@ void GamePlay::remove_object_action(Trigger_remove_object *trigger)
 
 /*************************************************************************************************/
 /* Declare change sprite action. */
+
 void GamePlay::change_sprite_action(Trigger_change_sprite *trigger)
 {
 	GameObject *object = m_Scenery->get_Object(trigger->get_object_id());
@@ -447,6 +455,7 @@ void GamePlay::change_sprite_action(Trigger_change_sprite *trigger)
 
 /*************************************************************************************************/
 /* Declare change reaction action. */
+
 void GamePlay::change_reaction_action(Trigger_change_reaction *trigger)
 {
 	GameObject *object = m_Scenery->get_Object(trigger->get_object_id());
@@ -469,6 +478,7 @@ void GamePlay::change_reaction_action(Trigger_change_reaction *trigger)
 
 /*************************************************************************************************/
 /* Declare delay action. */
+
 void GamePlay::delay_action(Trigger_delay *trigger)
 {
 	if (trigger->get_RemmaingDelay() > 0) {
@@ -488,4 +498,15 @@ void GamePlay::delay_action(Trigger_delay *trigger)
 }
 
 /*************************************************************************************************/
+/* Declare give damage action. */
 
+void GamePlay::give_damage_action(Trigger_give_damage *trigger)
+{
+	// Remove health points from the player.
+	m_Character->remove_hp(trigger->get_damage());
+
+	Trigger *next = trigger->get_Next_reaction();
+	if (next != NULL) {
+		m_ActionsQueue.push(next);
+	}
+}
