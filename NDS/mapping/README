@@ -29,6 +29,10 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   - PRIO - DESC - STATE-
   +------+------+-------  
   
+  Added: 09/11/2013
+  - [HIGH] Add "take damage" cool down. [DONE]
+  
+  
   Added: 02/11/2013
   - [HIGH] Improve the triggering system. It is kind messy. Maybe implementing specific trigger objects will bring clarity [DONE].
    

@@ -28,8 +28,9 @@ private:
 	en_facing m_Facing;				//!< Facing direction.
 	Inventory m_Inventory;			//!< Character objects inventory.
 	/* Actions cool down. */
-	unsigned short m_ActionMove_cooldown;	//!< Cool down before moving action.
-	unsigned short m_ActionTouch_cooldown;	//!< Cool down before touching action.
+	unsigned short m_ActionMove_cooldown;		//!< Cool down before moving action.
+	unsigned short m_ActionTouch_cooldown;		//!< Cool down before touching action.
+	unsigned short m_ActionTakeDamage_cooldown;	//!< Cool down before taking damage action.
 
 public:
 	/**
@@ -83,6 +84,22 @@ public:
 	inline void set_action_move_cooldown(const unsigned int& cooldown_vsync_cycles)
 	{
 		m_ActionMove_cooldown = cooldown_vsync_cycles;
+	}
+
+	/**
+	 * \brief Return the cool down before taking damage again.
+	 */
+	inline unsigned short get_action_take_damage_cooldown(void)
+	{
+		return m_ActionTakeDamage_cooldown;
+	}
+
+	/**
+	 * \brief Update touch action cool down to full value.
+	 */
+	inline void set_action_take_damage_cooldown(const unsigned int& cooldown_vsync_cycles)
+	{
+		m_ActionTakeDamage_cooldown = cooldown_vsync_cycles;
 	}
 
 	/**

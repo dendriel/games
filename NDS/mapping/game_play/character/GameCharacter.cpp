@@ -19,7 +19,8 @@ m_Pos_relative_8px(PIXEL_TO_TILE_8PX(x_px), PIXEL_TO_TILE_8PX(y_px)),
 m_Pos_absolute_px(x_px, y_px),
 m_Facing(W_DOWN),
 m_ActionMove_cooldown(0),
-m_ActionTouch_cooldown(0)
+m_ActionTouch_cooldown(0),
+m_ActionTakeDamage_cooldown(0)
 {
 	this->set_sprite(SPRITE_FACING_SOUTH_STOPPED);
 	debug("Initial relative pos: %d,%d", TILE_8PX_TO_32PX(m_Pos_relative_8px.x),
@@ -103,5 +104,9 @@ void GameCharacter::update_actions_cooldown(void)
 
 	if (m_ActionTouch_cooldown > 0) {
 		m_ActionTouch_cooldown--;
+	}
+
+	if (m_ActionTakeDamage_cooldown > 0) {
+		m_ActionTakeDamage_cooldown--;
 	}
 }

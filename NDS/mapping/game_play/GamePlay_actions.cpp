@@ -14,6 +14,7 @@ using namespace std;
 #define ACTION_MOVE_COOLDOWN_CYCLES 6 //!< *16ms
 #define ACTION_RUN_COOLDOWN_CYCLES 3 //!< *16ms
 #define ACTION_TOUCH_COOLDOWN_CYCLES 10
+#define ACTION_TAKE_DAMAGE_COOLDOWN_CYCLES 63 //!< 1008ms; 1s 8ms
 
 /**
  * Created this module just to clearly divide some types of functions of the Game Play .
@@ -502,6 +503,11 @@ void GamePlay::delay_action(Trigger_delay *trigger)
 
 void GamePlay::give_damage_action(Trigger_give_damage *trigger)
 {
+	/* Check cool down. */
+	if (m_Character->get_action_take_damage_cooldown() > 0) {
+		return;
+	}
+
 	// Remove health points from the player.
 	m_Character->remove_hp(trigger->get_damage());
 
@@ -509,4 +515,6 @@ void GamePlay::give_damage_action(Trigger_give_damage *trigger)
 	if (next != NULL) {
 		m_ActionsQueue.push(next);
 	}
+
+	m_Character->set_action_take_damage_cooldown(ACTION_TAKE_DAMAGE_COOLDOWN_CYCLES);
 }
