@@ -6,8 +6,8 @@
  */
 
 #include "GameController.h"
+#include <assert.h>
 #include <nds.h>
-#include <stdio.h>
 #include "Gpos.h"
 
 #include "util.h"
@@ -53,9 +53,13 @@ en_action GameController::get_user_action(void)
 
 	//! Check touch pad. If the point is different from the default (0,0), then process.
 	if ((touch.px > 0) && (touch.py > 0)) {
-		const short area = Gpos::get_point_area(
+		const short area = Gpos::point_area_in_rect(
 				static_cast<int>(touch.px), static_cast<int>(touch.py),
 				static_cast<int>(SCREEN_WIDTH), static_cast<int>(SCREEN_HEIGHT));
+
+		// logical error if the point isn't from the screen area.
+		assert(area >= 0);
+
 		return translate_pad_area(area, keys);
 	}
 
@@ -93,6 +97,7 @@ en_action GameController::get_user_action(void)
 	}
 
 	if ((keys & KEY_L) || (keys & KEY_R)) {
+
 		return ACTION_TOUCH;
 	}
 
@@ -105,7 +110,13 @@ static en_action translate_pad_area(const short& area, const unsigned int& keys)
 {
 	switch(area) {
 		case 0:
-		return ACTION_WALK_NORTH;
+			return (keys & KEY_L)? ACTION_RUN_NORTH : ACTION_WALK_NORTH;
+		case 1:
+			return (keys & KEY_L)? ACTION_RUN_EAST : ACTION_WALK_EAST;
+		case 2:
+			return (keys & KEY_L)? ACTION_RUN_SOUTH : ACTION_WALK_SOUTH;
+		case 3:
+			return (keys & KEY_L)? ACTION_RUN_WEST : ACTION_WALK_WEST;
 		default:
 			return ACTION_NONE;
 	}
