@@ -8,7 +8,6 @@
 #ifndef GAMECONTROLLER_H_
 #define GAMECONTROLLER_H_
 
-#include <nds.h>
 #include "game_actions.h"
 
 /**

@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <vector>
 #include <nds.h>
-#include "timming.h"
 
 /* Macros */
 #define debug(fmt,args...) (void)(printf(fmt"\n",##args))

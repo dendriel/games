@@ -31,11 +31,12 @@ SOURCES		:=	game_control misc sprites\
 				game_play/character\
 				game_play/objects\
 				game_play/scenery\
-				game_play/inventory
+				game_play/inventory\
+				misc/gpos
 
 DATA		:= 
 INCLUDES	:=	include sprites\
-				misc/include\
+				misc/gpos/include\
 				game_control/include\
 				game_play/base/include\
 				game_play/include\

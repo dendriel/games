@@ -7,7 +7,6 @@
 
 #include <assert.h>
 #include "GamePlay.h"
-#include "timming.h"
 #include "Jack.h"
 #include "scenery.h"
 #include "objects.h"

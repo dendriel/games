@@ -7,7 +7,6 @@
 
 #include "GameCharacter.h"
 #include <assert.h>
-#include "timming.h"
 
 #include "util.h"
 

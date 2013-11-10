@@ -6,6 +6,17 @@
  */
 
 #include "GameController.h"
+#include <nds.h>
+#include <stdio.h>
+#include "Gpos.h"
+
+#include "util.h"
+
+
+/**
+ * \brief Translate the touched point and pressed keys (if any) into an action.
+ */
+static en_action translate_pad_area(const short& area, const unsigned int& keys);
 
 /*************************************************************************************************/
 
@@ -30,10 +41,23 @@ en_action GameController::get_user_action(void)
 	  KEY_UP    + KEY_L									| Run up.
 	  KEY_DOWN  + KEY_L									| Run down.
 */
+	touchPosition touch;
+	unsigned int keys;
+
 	scanKeys();
-	int keys = keysHeld();
+	keys = keysHeld();
+
+	touchRead(&touch);
 
 	//TODO: Poll touch pad first.
+
+	//! Check touch pad. If the point is different from the default (0,0), then process.
+	if ((touch.px > 0) && (touch.py > 0)) {
+		const short area = Gpos::get_point_area(
+				static_cast<int>(touch.px), static_cast<int>(touch.py),
+				static_cast<int>(SCREEN_WIDTH), static_cast<int>(SCREEN_HEIGHT));
+		return translate_pad_area(area, keys);
+	}
 
 	if (keys & KEY_A) {
 		return ACTION_NONE;
@@ -72,6 +96,19 @@ en_action GameController::get_user_action(void)
 		return ACTION_TOUCH;
 	}
 
+	return ACTION_NONE;
+}
+
+/*************************************************************************************************/
+
+static en_action translate_pad_area(const short& area, const unsigned int& keys)
+{
+	switch(area) {
+		case 0:
+		return ACTION_WALK_NORTH;
+		default:
+			return ACTION_NONE;
+	}
 	return ACTION_NONE;
 }
 
