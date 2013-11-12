@@ -14,6 +14,7 @@
 #include "Maze2.h"
 #include "Sewer_mp.h"
 #include "objects.h"
+#include "triggers.h"
 
 #include "util.h"
 
@@ -29,9 +30,13 @@ public:
 		m_CharStartPoint_32px.x = 62;
 		m_CharStartPoint_32px.y = 62;
 
-		// Testing purpose!!
-		m_CharStartPoint_32px.x = 33;
-		m_CharStartPoint_32px.y = 7;
+		// Testing purpose!! bridge place
+		m_CharStartPoint_32px.x = 19;
+		m_CharStartPoint_32px.y = 19;
+
+		// Testing purpose!! lever holder place
+		m_CharStartPoint_32px.x = 35;
+		m_CharStartPoint_32px.y = 8;
 	}
 
 	/**
@@ -47,23 +52,14 @@ public:
 
 	void fill_objects_list(void)
 	{
-		/* Testing objects. */
-		m_ObjectsList 	<< new Torch(TILE_32PX_TO_8PX(61), TILE_32PX_TO_8PX(60)) << new Torch(TILE_32PX_TO_8PX(61), TILE_32PX_TO_8PX(61))
-						<< new Lever(TILE_32PX_TO_8PX(63), TILE_32PX_TO_8PX(61))
-		<< new Lever(TILE_32PX_TO_8PX(63), TILE_32PX_TO_8PX(62))
-		<< new Torch(TILE_32PX_TO_8PX(59), TILE_32PX_TO_8PX(60))
-		<< new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(59))
-		<< new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(57))
-		<< new Torch(TILE_32PX_TO_8PX(60), TILE_32PX_TO_8PX(56));
-
-		GameObject *lever2 = new Lever(TILE_32PX_TO_8PX(33), TILE_32PX_TO_8PX(11));//new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
-		LeverHolder *lever_holder2 = new LeverHolder(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(5), lever2->get_Id());
-
 		/* Objects from the scenery. */
-		GameObject *lever = new Lever(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(7));//new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
-		LeverHolder *lever_holder = new LeverHolder(TILE_32PX_TO_8PX(33), TILE_32PX_TO_8PX(12), lever->get_Id());
 
-		m_ObjectsList << lever << lever_holder << lever_holder2 << lever2;
+		// Lever and lever holder.
+		Trigger_give_damage *put_bridge = new Trigger_give_damage(2);
+		GameObject *lever = new Lever(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(7));//new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
+		LeverHolder *lever_holder = new LeverHolder(TILE_32PX_TO_8PX(33), TILE_32PX_TO_8PX(12), lever->get_Id(), put_bridge);
+
+		m_ObjectsList << lever << lever_holder;
 
 		m_ObjectsList << new Spikes(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(10))
 						<< new Spikes(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(11))

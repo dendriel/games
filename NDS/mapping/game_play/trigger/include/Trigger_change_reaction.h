@@ -17,7 +17,7 @@ public:
 	/**
 	 * \brief Class constructor.
 	 */
-	Trigger_change_reaction(const long& object_id, const long& reaction, Trigger *new_reaction, Trigger *next=NULL, en_action action=ACTION_NONE, bool enabled=false, int repeat=-1):
+	Trigger_change_reaction(const long& object_id, const long& reaction, Trigger *new_reaction=NULL, Trigger *next=NULL, en_action action=ACTION_NONE, bool enabled=false, int repeat=-1):
 		Trigger(action,
 				ACTION_CHANGE_REACTION,
 				repeat,

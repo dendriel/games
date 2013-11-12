@@ -24,7 +24,7 @@ GameObject(LeverHolder_rect_size,
 		true)	// blockable
 {}
 
-LeverHolder::LeverHolder(const unsigned int x_8px, const unsigned int y_8px, const long object_id, const bool display):
+LeverHolder::LeverHolder(const unsigned int x_8px, const unsigned int y_8px, const long object_id, Trigger *reaction, const bool display):
 GameObject(LeverHolder_rect_size,
 		(u8*)lever_data_256Tiles,
 		x_8px, y_8px,
@@ -35,9 +35,17 @@ GameObject(LeverHolder_rect_size,
 		true)
 {
 	//! SECOND Reaction chain.
-	Trigger_change_sprite *activate_lever = new Trigger_change_sprite(this->get_Id(),
+	Trigger_change_reaction *deactivate_lever_holder =
+			new Trigger_change_reaction(this->get_Id(),
+											ACTION_TOUCH,
+											NULL,
+											reaction);
+
+	//! SECOND Reaction chain.
+	Trigger_change_sprite *activate_lever =
+			new Trigger_change_sprite(this->get_Id(),
 									SPRITE_POSITION_4,
-									NULL,
+									deactivate_lever_holder,
 									ACTION_TOUCH);
 	set_Trigger(activate_lever);
 

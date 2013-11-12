@@ -183,6 +183,7 @@ private:
 
 	/**
 	 * \brief Change the current trigger from an object to the given one (the current will be deactivate and the new will be activated).
+	 * If the new_reaction is not set (or is NULL), the trigger will work as a "disable_reaction" mechanism.
 	 * \parameter trigger Data for execute reaction.
 	 *
 	 * \note: Trigger setup:
@@ -190,7 +191,7 @@ private:
 	 * new Trigger_change_reaction(object_id,					//! Object that will have the reaction changed.
 	 *								reaction,					//! Reaction type that will be disabled.
 	 *								new_reaction,				//! Trigger to be enabled.
-	 *								trigger,					//! Trigger that will be enabled.
+	 *								trigger,					//! Trigger that will be enabled (optional).
 	 *								ACTION_NONE,				//! Triggering action (optional).
 	 *								false,						//! Enabled flag (optional).
 	 *								-1);						//! Repeat flag (optional);
