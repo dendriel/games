@@ -36,6 +36,8 @@ typedef enum en_action {
 	ACTION_DELAY,
 	ACTION_COLLISION, // 15
 	ACTION_GIVE_DAMAGE,
+	ACTION_SET_OBJECT_VISIBILITY,
+	ACTION_SET_OBJECT_BLOCKABLE,
 	ACTION_CONSOLE_CLEAR, //!< Only for develop time.
 	ACTION_NONE			 //!< 11 No action selected.
 } en_action;

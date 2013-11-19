@@ -19,5 +19,7 @@
 #include "Trigger_check_object.h"
 #include "Trigger_remove_object.h"
 #include "Trigger_give_damage.h"
+#include "Trigger_set_object_visibility.h"
+#include "Trigger_set_object_blockable.h"
 
 #endif /* TRIGGERS_H_ */

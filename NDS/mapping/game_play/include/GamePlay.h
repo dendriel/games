@@ -226,6 +226,36 @@ private:
 	 *					-1);						//! Repeat flag (optional);
 	 */
 	void give_damage_action(Trigger_give_damage *trigger);
+
+	/**
+	 * \brief Set the object visibility.
+	 * \parameter trigger The trigger with data to be processed.
+	 *
+	 * \note Trigger setup:
+	 *
+	 * new Trigger_set_object_visibility(object_id		//! The object to be updated identification
+	 *									visibility,		//! true = display object; false = hide object.
+	 *									next_reaction,	//! Chain reaction (optional).
+	 *									ACTION_NONE,	//! Triggering action (optional).
+	 *									false,			//! Enabled flag (optional).
+	 *									-1);			//! Repeat flag (optional);
+	 */
+	void set_object_visibility_action(Trigger_set_object_visibility *trigger);
+
+	/**
+	 * \brief Set the object blockable.
+	 * \parameter trigger The trigger with data to be processed.
+	 *
+	 * \note Trigger setup:
+	 *
+	 * new Trigger_set_object_visibility(object_id		//! The object to be updated identification
+	 *									blockable,		//! true = blockable object; false = free pass object.
+	 *									next_reaction,	//! Chain reaction (optional).
+	 *									ACTION_NONE,	//! Triggering action (optional).
+	 *									false,			//! Enabled flag (optional).
+	 *									-1);			//! Repeat flag (optional);
+	 */
+	void set_object_blockable_action(Trigger_set_object_blockable *trigger);
 };
 
 #endif /* GAMEPLAY_H_ */

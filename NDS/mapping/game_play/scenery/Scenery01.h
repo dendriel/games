@@ -54,12 +54,29 @@ public:
 	{
 		/* Objects from the scenery. */
 
-		// Lever and lever holder.
-		Trigger_give_damage *put_bridge = new Trigger_give_damage(2);
-		GameObject *lever = new Lever(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(7));//new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
-		LeverHolder *lever_holder = new LeverHolder(TILE_32PX_TO_8PX(33), TILE_32PX_TO_8PX(12), lever->get_Id(), put_bridge);
+		// Bridge stuff. //
+		WaterTile *wtile_1 = new WaterTile(TILE_32PX_TO_8PX(22), TILE_32PX_TO_8PX(17));
+		WaterTile *wtile_2 = new WaterTile(TILE_32PX_TO_8PX(22), TILE_32PX_TO_8PX(18));
 
-		m_ObjectsList << lever << lever_holder;
+		Trigger_set_object_blockable *rm_bridge_blockable2 =
+				new Trigger_set_object_blockable(wtile_2->get_Id(), false);
+
+		Trigger_set_object_visibility *rm_bridge2 =
+				new Trigger_set_object_visibility(wtile_2->get_Id(), false, rm_bridge_blockable2);
+
+		Trigger_set_object_blockable *rm_bridge_blockable =
+				new Trigger_set_object_blockable(wtile_1->get_Id(), false, rm_bridge2);
+
+		Trigger_set_object_visibility *rm_bridge =
+				new Trigger_set_object_visibility(wtile_1->get_Id(), false, rm_bridge_blockable);
+		// Bridge stuff END. //
+
+		// Lever and lever holder. //
+		GameObject *lever = new Lever(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(7));//new Lever(TILE_32PX_TO_8PX(16), TILE_32PX_TO_8PX(22));
+		LeverHolder *lever_holder = new LeverHolder(TILE_32PX_TO_8PX(33), TILE_32PX_TO_8PX(12), lever->get_Id(), rm_bridge);
+		// Lever and lever holder END. //
+
+		m_ObjectsList << lever << lever_holder << wtile_1 << wtile_2;
 
 		m_ObjectsList << new Spikes(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(10))
 						<< new Spikes(TILE_32PX_TO_8PX(34), TILE_32PX_TO_8PX(11))

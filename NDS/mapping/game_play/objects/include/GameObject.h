@@ -117,15 +117,22 @@ public:
 	}
 
 	/**
-	 * \brief Return the stack able property.
+	 * \brief Return the stackable property.
 	 */
 	inline bool get_Stackable(void)
 	{
 		return m_Stackable;
 	}
+	/**
+	 * \brief Set object blockable property.
+	 */
+	inline void set_Blockable(const bool blockable)
+	{
+		m_Blockable = blockable;
+	}
 
 	/**
-	 * \brief Return the block able property.
+	 * \brief Return the blockable property.
 	 */
 	inline bool get_Blockable(void)
 	{
@@ -166,6 +173,7 @@ enum {
 	GAMEOBJECT_TYPE_1,		 // Lever
 	GAMEOBJECT_TYPE_2,		 // Lever Holder
 	GAMEOBJECT_TYPE_3,		 // Spikes
+	GAMEOBJECT_TYPE_4,		 // Water Tile
 };
 
 #endif /* GAMEOBJECT_H_ */

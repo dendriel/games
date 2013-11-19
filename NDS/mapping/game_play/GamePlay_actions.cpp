@@ -87,6 +87,16 @@ void GamePlay::execute_action(en_action action, Trigger *trigger)
 		this->give_damage_action(static_cast<Trigger_give_damage *>(trigger));
 		break;
 
+	case ACTION_SET_OBJECT_VISIBILITY:
+		assert(trigger != NULL);
+		this->set_object_visibility_action(static_cast<Trigger_set_object_visibility *>(trigger));
+		break;
+
+	case ACTION_SET_OBJECT_BLOCKABLE:
+		assert(trigger != NULL);
+		this->set_object_blockable_action(static_cast<Trigger_set_object_blockable *>(trigger));
+		break;
+
 	/* Walk/run actions (ACTION_NONE == stand the character). */
 	case ACTION_WALK_NORTH:
 	case ACTION_WALK_SOUTH:
@@ -267,6 +277,7 @@ bool GamePlay::check_object_collision(st_rect& coll_char_rect)
 			}
 
 			//! Check if the object is blockable.
+			debug("obj %s block: %d", object->get_Name().c_str(), object->get_Blockable());
 			if (object->get_Blockable() != true) {
 				return false;
 			}
@@ -517,4 +528,44 @@ void GamePlay::give_damage_action(Trigger_give_damage *trigger)
 	}
 
 	m_Character->set_action_take_damage_cooldown(ACTION_TAKE_DAMAGE_COOLDOWN_CYCLES);
+}
+
+/*************************************************************************************************/
+/* Declare set object visibility action. */
+
+void GamePlay::set_object_visibility_action(Trigger_set_object_visibility *trigger)
+{
+	GameObject *object = m_Scenery->get_Object(trigger->get_object_id());
+	if (object == NULL) {
+		return;
+	}
+	/* If the object was not found, do nothing. If there is more lists that the object can be in,
+	 * add here and keep searching before returning.
+	 */
+	object->set_Visibility(trigger->get_visibility());
+
+	Trigger *next = trigger->get_Next_reaction();
+	if (next != NULL) {
+		m_ActionsQueue.push(next);
+	}
+}
+
+/*************************************************************************************************/
+/* Declare set object blockable action. */
+
+void GamePlay::set_object_blockable_action(Trigger_set_object_blockable *trigger)
+{
+	GameObject *object = m_Scenery->get_Object(trigger->get_object_id());
+	if (object == NULL) {
+		return;
+	}
+	/* If the object was not found, do nothing. If there is more lists that the object can be in,
+	 * add here and keep searching before returning.
+	 */
+	object->set_Blockable(trigger->get_blockable());
+
+	Trigger *next = trigger->get_Next_reaction();
+	if (next != NULL) {
+		m_ActionsQueue.push(next);
+	}
 }

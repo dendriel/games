@@ -16,5 +16,6 @@
 #include "Lever.h"
 #include "LeverHolder.h"
 #include "Spikes.h"
+#include "WaterTile.h"
 
 #endif /* OBJECTS_H_ */
