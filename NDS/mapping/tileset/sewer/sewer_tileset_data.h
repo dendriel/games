@@ -1,55 +1,55 @@
 
-//{{BLOCK(Layer_1)
+//{{BLOCK(sewer_tileset)
 
 //======================================================================
 //
-//	Layer_1, 256x256@8, 
+//	sewer_tileset, 256x320@8, 
 //	Transparent color : FF,00,FF
-//	+ regular map (flat), not compressed, 32x32 
+//	+ regular map (flat), not compressed, 32x40 
 //	External tile file: (null).
-//	Total size: 2048 = 2048
+//	Total size: 2560 = 2560
 //
-//	Time-stamp: 2013-10-19, 14:42:33
+//	Time-stamp: 2013-11-23, 19:19:51
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.10
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
 
-#ifndef SEWER_TILESET_H
-#define SEWER_TILESET_H
+#ifndef GRIT_SEWER_TILESET_H
+#define GRIT_SEWER_TILESET_H
 
-#define sewer_width_tiles 8
-#define sewer_height_tiles 8
+#define sewer_tilesetMapLen 2560
+extern const unsigned short sewer_tilesetMap[1280];
 
-extern const unsigned short sewer_tileset_map[1024];
+#endif // GRIT_SEWER_TILESET_H
 
-extern const unsigned int sewer_tileset_collision_map[64];
+//}}BLOCK(sewer_tileset)
 
-//}}BLOCK(Layer_1)
-
-//{{BLOCK(sewer_tilesetShared)
+//{{BLOCK(sewer_tileset_dataShared)
 
 //======================================================================
 //
-//	sewer_tilesetShared, 8x2832@8, 
+//	sewer_tileset_dataShared, 8x3520@8, 
 //	Transparent color : FF,00,FF
 //	+ palette 256 entries, not compressed
-//	+ 354 tiles not compressed
-//	Total size: 512 + 22656 = 23168
+//	+ 440 tiles not compressed
+//	Total size: 512 + 28160 = 28672
 //
-//	Time-stamp: 2013-10-19, 14:42:33
+//	Time-stamp: 2013-11-23, 19:19:51
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.10
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
 
-#define sewer_tilesetSharedTilesLen_bytes 24448
-extern const unsigned int sewer_tilesetSharedTiles[6112];
+#ifndef GRIT_SEWER_TILESET_DATASHARED_H
+#define GRIT_SEWER_TILESET_DATASHARED_H
 
-#define sewer_tilesetSharedPalLen_bytes 512
-extern const unsigned short sewer_tilesetSharedPal[256];
+#define sewer_tileset_dataSharedTilesLen 28160
+extern const unsigned int sewer_tileset_dataSharedTiles[7040];
 
+#define sewer_tileset_dataSharedPalLen 512
+extern const unsigned short sewer_tileset_dataSharedPal[256];
 
-#endif // SEWER_TILESET_H
+#endif // GRIT_SEWER_TILESET_DATASHARED_H
 
-//}}BLOCK(sewer_tilesetShared)
+//}}BLOCK(sewer_tileset_dataShared)

@@ -32,7 +32,9 @@ SOURCES		:=	game_control misc sprites\
 				game_play/objects\
 				game_play/scenery\
 				game_play/inventory\
-				misc/gpos
+				misc/gpos\
+				tileset/sewer\
+				map/sewer
 
 DATA		:= 
 INCLUDES	:=	include sprites\
