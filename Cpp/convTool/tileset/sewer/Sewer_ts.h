@@ -10,6 +10,10 @@
 
 #include "Tileset.h"
 #include "sewer_tileset_data.h"
+#include "sewer_tileset_collision.h"
+
+#define SEWER_TILESET_WIDTH 8
+#define SEWER_TILESET_HEIGHT 8
 
 class Sewer_ts: public virtual Tileset {
 public:
@@ -18,15 +22,17 @@ public:
 	 */
 	Sewer_ts(void)
 	{
-		map = sewer_tileset_map;
-		map_width_tiles = sewer_width_tiles;
-		map_height_tiles = sewer_height_tiles;
+		map = sewer_tilesetMap;
+		map_width_tiles = SEWER_TILESET_WIDTH;
+		map_height_tiles = SEWER_TILESET_HEIGHT;
 
-		data = sewer_tilesetSharedTiles;
-		data_len_bytes = sewer_tilesetSharedTilesLen_bytes;
+		data = sewer_tileset_dataSharedTiles;
+		data_len_bytes = sewer_tileset_dataSharedTilesLen;
 
-		pallete = sewer_tilesetSharedPal;
-		pallete_len_bytes = sewer_tilesetSharedPalLen_bytes;
+		pallete = sewer_tileset_dataSharedPal;
+		pallete_len_bytes = sewer_tileset_dataSharedPalLen;
+
+		collision_map = sewer_tileset_collision_map;
 	}
 };
 
