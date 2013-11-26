@@ -17,7 +17,8 @@ include $(DEVKITARM)/ds_rules
 # GRAPHICS is a list of directories containing files to be processed by grit
 # AUDIO is a list of directories containing files to be processed by mmutil
 # SOUNDBANK_NAME is the name of the maxmod generated soundbank
-# COMPILED is the data files that has already been made objects (before project compilation).
+# SPRITES Game objects sprites
+# TILESETS Game scenery maps tilesets
 #
 # All directories are specified relative to the project directory where
 # the makefile is found.
@@ -54,7 +55,6 @@ INCLUDES += map\
 
 # Tilesets
 INCLUDES += tileset\
-			tileset/mytiles\
 			tileset/sewer
 
 
@@ -62,8 +62,8 @@ GRAPHICS	:=	gfx
 SPRITES		:=  sprites
 AUDIO		:=	audio
 SOUNDBANK_NAME  :=	soundbank
-COMPILED 	:= compiled
 SPRITES		:= sprites
+TILESETS	:= tileset
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -118,7 +118,6 @@ BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*))) $(SOUNDBANK_NA
 PNGFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.png)))
 BMPFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.bmp)))
 SPRITE_FILES   :=  $(foreach dir, $(SPRITES),$(notdir $(wildcard $(dir)/*.png)))
-COMPOBJS	:= $(foreach dir,$(COMPILED),$(notdir $(wildcard $(dir)/*.o)))
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
@@ -138,8 +137,7 @@ export OFILES		:=	$(addsuffix .o,$(BINFILES)) \
 				$(PNGFILES:.png=.o) \
 				$(BMPFILES:.bmp=.o) \
 				$(CPPFILES:.cpp=.o) \
-				$(SFILES:.s=.o) \
-				$(COMPOBJS)
+				$(SFILES:.s=.o)
 
 export AUDIOFILES	:=	$(foreach dir,$(AUDIO),$(notdir $(wildcard $(dir)/*)))
  
@@ -155,8 +153,8 @@ export LIBPATHS		:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 #---------------------------------------------------------------------------------
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	cd $(COMPILED); make; cd ../
 	make -C $(SPRITES)
+	make -C $(TILESETS)
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
  
 #---------------------------------------------------------------------------------
@@ -164,6 +162,7 @@ clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).arm9
 	@make clean -C $(SPRITES)
+	@make clean -C $(TILESETS)
  
  
 #---------------------------------------------------------------------------------

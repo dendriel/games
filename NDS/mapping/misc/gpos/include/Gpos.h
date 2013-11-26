@@ -97,8 +97,8 @@ public:
 
 private:
 	/**
-	 * \note Find out if a point is inside a rectangle.
-	 * Retrieved from:
+	 * \brief Find out if a point is inside a rectangle.
+	 * \note Retrieved from:
 	 *  http://stackoverflow.com/questions/13300904/determine-whether-point-lies-inside-triangle
 	 */
 	static bool point_in_triangle(

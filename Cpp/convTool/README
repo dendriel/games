@@ -1,16 +1,11 @@
 Notes:
 
-Transmogrifier command for tileset:
-
-grit image.bmp -mR8 -gB8 -gS -pS -fa -o tileset_name -mz! -gz! -pz! -gTFF00FF -ftc
-
-
-
 TODO:
 
+ last update 25/11/2013
  last update 21/10/2013
  
  - Use "getopt()" function to provide a more powerfull command line interface [DONE];
- - Add built-in for the tilesets;
- - Allow to pass the tileset as parameter.
+ - Add built-in for the tilesets [INVALID - made inside the NDS project];
+ - [HIGH] Allow to pass the tileset as parameter.
  

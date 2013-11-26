@@ -10,8 +10,6 @@
 
 #include <vector>
 #include "GameScenery.h"
-#include "Maze3.h"
-#include "Maze2.h"
 #include "Sewer_mp.h"
 #include "objects.h"
 #include "triggers.h"
