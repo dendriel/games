@@ -22,24 +22,34 @@ using namespace std;
 
 /**************************************************************************************************/
 
-void convProcessor::start(const string& file_path, const unsigned int& array_width, const string& file_name)
+void convProcessor::start(
+		const string& file_path,
+		const unsigned int& array_width,
+		const string& tileset_name,
+		const unsigned int& tileset_width,
+		const string& output_file_name)
 {
-	// Load data from files (DONE)
-	// do conversion.
-	// Save data to files.  (TODO: save collision map to file)
-	// end.
+
 	convConversor conversor;
 	Map raw_data;
-	Tileset *tiles_ts = new (Sewer_ts);
 
 	st_map_data dest;
 	memset(&dest, 0, sizeof(dest));
 
-
-	if (this->load_data(file_path) != 0) {
+	/* Load data map array. */
+	if (this->load_data(file_path, OP_LOAD_MAP) != 0) {
 		cout << "Received invalid data file path." << endl;
 		return;
 	}
+
+	/* Load tileset data array. */
+	if (this->load_data(file_path, OP_LOAD_TILESET) != 0) {
+		cout << "Received invalid data file path." << endl;
+		return;
+	}
+
+	m_Tileset.map = &m_TilesetDataMap[0];
+	m_Tileset.map_width_tiles = tileset_width;
 
 	raw_data.tiles_map = &m_DataMap[0];
 	raw_data.len_tiles = m_DataMap.size();
@@ -48,7 +58,7 @@ void convProcessor::start(const string& file_path, const unsigned int& array_wid
 
 	conversor.create_map(raw_data, dest);
 
-	conversor.convert(raw_data, dest, *tiles_ts);
+	conversor.convert(raw_data, dest, m_Tileset);
 /*
 	for (unsigned int pos = 0; pos < raw_data.len_tiles; ++pos) {
 		size_t offset = conversor.find_total_offset(pos, raw_data.width_tiles);
@@ -56,12 +66,11 @@ void convProcessor::start(const string& file_path, const unsigned int& array_wid
 		conversor.print_tile(offset, raw_data.width_tiles, dest.data);
 	}*/
 
-	save_data(dest, file_name);
+	save_data(dest, output_file_name);
 
 	// Also must map collision domain from tile set and map object.
 
 	free(dest.data);
-	delete(tiles_ts);
 }
 
 /**************************************************************************************************/
@@ -162,7 +171,7 @@ void convProcessor::save_data(const st_map_data& map, const string& file_name)
 
 /**************************************************************************************************/
 
-int convProcessor::load_data(const string& file_path)
+int convProcessor::load_data(const string& file_path, en_load_op operation)
 {
 	string line;
 	ifstream input_file;
@@ -174,7 +183,16 @@ int convProcessor::load_data(const string& file_path)
 	}
 
 	while (getline(input_file,line)) {
-		this->parse_line(line);
+		if (operation == OP_LOAD_MAP) {
+			this->parse_line(line);
+		}
+		/* OP_LOAD_TILESET. */
+		else {
+			if(this->parse_line_tileset(line) == 1) {
+				/* Break if found the end of the array. */
+				break;
+			}
+		}
 	}
 
 	input_file.close();
@@ -210,7 +228,7 @@ void convProcessor::parse_line(const string& line)
 			}
 
 			if (save_memb == true) {
-				this->parse_memb(*iter_memb);
+				this->parse_memb(*iter_memb, OP_LOAD_MAP);
 			}
 		}
 	}
@@ -218,10 +236,8 @@ void convProcessor::parse_line(const string& line)
 
 /**************************************************************************************************/
 
-void convProcessor::parse_memb(const string& memb)
+int convProcessor::parse_memb(const string& memb, en_load_op operation)
 {
-	unsigned int value;
-
 	/* Last member. */
 	if ((memb.find("}") != string::npos) || (memb.find(";") != string::npos)) {
 
@@ -234,20 +250,72 @@ void convProcessor::parse_memb(const string& memb)
 				continue;
 			}
 
-			this->parse_memb(*iter);
+			this->parse_memb(*iter, operation);
 		}
-		return;
+		return 1;
 	}
 
 	/* Some of the recursive cases can fall here. */
 	if (memb.size() == 0) {
-		return;
+		return 0;
 	}
 
 	std::stringstream myStream(memb);
-	myStream >> value;
-	/* Remove map editor offset. */
-	m_DataMap.push_back( (value > 0)? (value-1): value);
+
+	if (operation == OP_LOAD_MAP) {
+		unsigned int value;
+		myStream >> value;
+		/* Remove map editor offset. */
+		m_DataMap.push_back( (value > 0)? (value-1): value);
+	}
+	/* OP_LOAD_TILESET. */
+	else {
+		unsigned short value;
+		myStream >> value;
+		/* Remove map editor offset. */
+		m_TilesetDataMap.push_back(value);
+	}
+
+
+	return 0;
+}
+
+/**************************************************************************************************/
+
+int convProcessor::parse_line_tileset(const string& line)
+{
+	/* Set when found the first bracket. */
+	static bool save_memb = false;
+	/* First split. */
+	vector<string> splitted_line = split(line.c_str());
+
+	/* For each token separated by spaces, do: */
+	for (vector<string>::const_iterator iter_word = splitted_line.begin(); iter_word != splitted_line.end(); ++iter_word) {
+		/* Second split, by commas. */
+		vector<string> splitted_line = split((*iter_word).c_str(), ',');
+
+		/* For each token separated by comma, do: */
+		for (vector<string>::const_iterator iter_memb = splitted_line.begin(); iter_memb != splitted_line.end(); ++iter_memb) {
+			/* Last member [?] */
+			if ((*iter_memb).length() == 0) {
+				continue;
+			}
+
+			/* Start copying after this member. */
+			if ( ((*iter_memb).compare("{") == 0) && (splitted_line.size() == 1)) {
+				save_memb = true;
+				continue;
+			}
+
+			if (save_memb == true) {
+				if (this->parse_memb(*iter_memb, OP_LOAD_TILESET) == 1) {
+					return 1;
+				}
+			}
+		}
+	}
+
+	return 0;
 }
 
 /**************************************************************************************************/
