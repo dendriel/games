@@ -7,5 +7,5 @@ TODO:
  
  - Use "getopt()" function to provide a more powerfull command line interface [DONE];
  - Add built-in for the tilesets [INVALID - made inside the NDS project];
- - [HIGH] Allow to pass the tileset as parameter.
+ - [HIGH] Allow to pass the tileset as parameter [DONE].
  

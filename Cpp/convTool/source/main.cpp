@@ -7,10 +7,10 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	// Flags for options. I: input; W: array width; O: output file name [optional]
+	// Flags for options. I: input; W: array width; T: tileset data; S: tileset width; O: output file name [optional]
 	const string flags = ":iwots";
 	const string requiredFlags = "iwts";
-	const string help_str = "\t./convToll -i data_input_file -w data_array_width [-o data_output_file]";
+	const string help_str = "\t./convToll -i data_input_file -w data_array_width -t tileset_file -s tileset_width [-o data_output_file]";
 
 	if (parse_args_counter_is_valid(argc) != true) {
 		cout << "Missing parameters. Usage: " << endl;

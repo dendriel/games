@@ -14,10 +14,8 @@
 #include <algorithm>
 #include <iomanip>
 
+#include "Tileset.h"
 #include "Map.h"
-#include "Mytiles_ts.h"
-#include "Sewer_ts.h"
-
 using namespace std;
 
 /**************************************************************************************************/
@@ -43,7 +41,7 @@ void convProcessor::start(
 	}
 
 	/* Load tileset data array. */
-	if (this->load_data(file_path, OP_LOAD_TILESET) != 0) {
+	if (this->load_data(tileset_name, OP_LOAD_TILESET) != 0) {
 		cout << "Received invalid data file path." << endl;
 		return;
 	}
@@ -67,8 +65,6 @@ void convProcessor::start(
 	}*/
 
 	save_data(dest, output_file_name);
-
-	// Also must map collision domain from tile set and map object.
 
 	free(dest.data);
 }
@@ -260,9 +256,10 @@ int convProcessor::parse_memb(const string& memb, en_load_op operation)
 		return 0;
 	}
 
-	std::stringstream myStream(memb);
+	std::stringstream myStream;
 
 	if (operation == OP_LOAD_MAP) {
+		myStream << memb;
 		unsigned int value;
 		myStream >> value;
 		/* Remove map editor offset. */
@@ -270,9 +267,9 @@ int convProcessor::parse_memb(const string& memb, en_load_op operation)
 	}
 	/* OP_LOAD_TILESET. */
 	else {
+		myStream << hex << memb;
 		unsigned short value;
 		myStream >> value;
-		/* Remove map editor offset. */
 		m_TilesetDataMap.push_back(value);
 	}
 
@@ -308,6 +305,7 @@ int convProcessor::parse_line_tileset(const string& line)
 			}
 
 			if (save_memb == true) {
+				//cout << *iter_memb << ", ";
 				if (this->parse_memb(*iter_memb, OP_LOAD_TILESET) == 1) {
 					return 1;
 				}
