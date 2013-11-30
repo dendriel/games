@@ -1,13 +1,11 @@
 #----------------------------------------------------------------------------------
-# Auto build tileset data frim a .png file. Keep only 1 png file per folder.
+# Auto build tileset data from a .png file. Keep only 1 png file per folder.
 # Collision map must be made by hand.
 # This is a generic Makefile. Put in the tileset folder and add the folder name into
 # the root Makefile.
 # author: vitor.rozsa
 #----------------------------------------------------------------------------------
 
-TOP=../
-CUR=./
 GRIT=C:/devkitPro/devkitARM/bin/grit.exe
 FLAGS=-mR8 -gB8 -gS -pS -fa
 FLAGS2= -mz! -gz! -pz! -gTFF00FF -ftc
@@ -35,5 +33,5 @@ $(TARGET):$(SOURCE)
 
 # Clean data files and create a dummy file.
 clean:
-	rm -f $(TARGET_NAME).cpp $(TARGET_NAME).h
-	touch $(TARGET_NAME).cpp
+	@rm -f $(TARGET_NAME).cpp $(TARGET_NAME).h
+	@touch $(TARGET_NAME).cpp

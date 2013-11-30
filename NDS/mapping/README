@@ -29,9 +29,12 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   - PRIO - DESC - STATE-
   +------+------+-------  
   
+  Added: 29/11/2013
+  - [HIGH] Fix the tileset that ins't showing the up-right corner of the walls;
+  - [LOW] Create a "config.mk" file to add common flags for the project.
   
   Added: 25/11/2013
-  - [HIGH] Use the convTool to generate the map data in compilation time.
+  - [HIGH] Use the convTool to generate the map data in compilation time [DONE!!].
   - [HIGH] Automatic compile the tileset from a png file [DONE].
   - [-] Add bridge to sewer map. [DONE]
   
@@ -53,7 +56,7 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   
   
   Added: 25/10/2013
-  - [LOW] Fix the right side of the sewer map (the walls).
+  - [LOW] Fix the right side of the sewer map (the walls) [DONE].
   - [HIGH] Make the GamePlay process the enqueued actions [DONE].
   
   Added: 24/10/2013

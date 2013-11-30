@@ -19,6 +19,7 @@ include $(DEVKITARM)/ds_rules
 # SOUNDBANK_NAME is the name of the maxmod generated soundbank
 # SPRITES Game objects sprites
 # TILESETS Game scenery maps tilesets
+# MAPS Game maps data
 #
 # All directories are specified relative to the project directory where
 # the makefile is found.
@@ -64,6 +65,7 @@ AUDIO		:=	audio
 SOUNDBANK_NAME  :=	soundbank
 SPRITES		:= sprites
 TILESETS	:= tileset
+MAPS		:= map
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -155,6 +157,7 @@ $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	make -C $(SPRITES)
 	make -C $(TILESETS)
+	make -C $(MAPS)
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
  
 #---------------------------------------------------------------------------------
@@ -163,6 +166,7 @@ clean:
 	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).arm9
 	@make clean -C $(SPRITES)
 	@make clean -C $(TILESETS)
+	@make clean -C $(MAPS)
  
  
 #---------------------------------------------------------------------------------
