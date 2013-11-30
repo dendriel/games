@@ -28,6 +28,7 @@
 #define MAP_H_SIZE 184
 #define VERTICAL_OFFSET 32
 #define NO_VERTICAL_OFFSET 0
+#define ANIMATE_LAYER_COOLDOWN 100	//! How much time between changing the displayed layers.
 
 /*************************************************************************************************/
 /* Public Functions Declaration																	 */
@@ -72,13 +73,15 @@ void GameMapProcessor::load_Map(GameMap *map)
 			map->m_Background[i].tileBase);
 		/* Set layers priority. */
 		bgSetPriority(map->m_Background[i].id, map->m_Background[i].prio);
+
+		debug("Loaded %d - id %d; prio %d", i, map->m_Background[i].id, map->m_Background[i].prio);
 	}
 
 	/* Set map palette. */
 	dmaCopy(map->m_Tiles, bgGetGfxPtr(map->m_Background[0].id), map->m_TilesLen);
 	dmaCopy(map->m_Palette, BG_PALETTE, map->m_PaletteLen);
 
-	/* Draw map. TODO: maybe for smaller maps this will try to copy invalid data. */
+
 	m_LoadedMap = map;
 
 	/* Find map data loading bounds.
@@ -261,12 +264,15 @@ bool GameMapProcessor::check_static_collision(st_rect& rect_elem)
 void GameMapProcessor::draw_LoadedMap(void)
 {
 	unsigned int i;
+	u16* screen_mem = NULL;
 
 	for (i = 0; i < m_LoadedMap->m_LayersCount; ++i) {
 
-		u16* screen_mem = (u16*)bgGetMapPtr(m_LoadedMap->m_Background[i].id);
+		screen_mem = (u16*)bgGetMapPtr(m_LoadedMap->m_Background[i].id);
 
 		draw_LayerQuarter(FIRST_QUARTER, m_LoadedMap->m_Background[i].data, screen_mem);
+
+
 		// TODO: support more sizes.
 		if (m_LoadedMap->m_Background[i].size  != BgSize_T_512x512) {
 			continue;

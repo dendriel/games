@@ -33,8 +33,8 @@ public:
 		m_CharStartPoint_32px.y = 19;
 
 		// Testing purpose!! lever holder place
-		m_CharStartPoint_32px.x = 35;
-		m_CharStartPoint_32px.y = 8;
+		m_CharStartPoint_32px.x = 45;
+		m_CharStartPoint_32px.y = 6;
 	}
 
 	/**

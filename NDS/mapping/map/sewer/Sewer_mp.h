@@ -10,6 +10,7 @@
 
 #include "sewer_map_data.h"
 #include "sewer_map_data2.h"
+#include "sewer_map_data3.h"
 #include "Sewer_ts.h"
 #include "util.h"
 
@@ -21,7 +22,7 @@ public:
 		//! Map tile set.
 		Sewer_ts tileset_data;
 
-		const size_t bg_max = 2;
+		const size_t bg_max = 3;
 		const unsigned int tile_base = 1;
 
 		/* Map size in tiles 8x8 pixels. */
@@ -56,6 +57,7 @@ public:
 
 		m_Background[0].data = sewer_map_data_map;
 		m_Background[1].data = sewer_map_data2_map;
+		m_Background[2].data = sewer_map_data3_map;
 
 		for (size_t base = 4, old = 0, i = 0; i < bg_max; ++i) {
 			/* Which gives 0, 4, 12.
