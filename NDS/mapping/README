@@ -30,7 +30,7 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   +------+------+-------  
   
   Added: 29/11/2013
-  - [HIGH] Fix the tileset that ins't showing the up-right corner of the walls;
+  - [HIGH] Fix the tileset that ins't showing the up-right corner of the walls [DONE];
   - [LOW] Create a "config.mk" file to add common flags for the project.
   
   Added: 25/11/2013
@@ -69,7 +69,7 @@ develop NDS games in order to build my first complete game, aMaze'ing Game. Wait
   Added: 20/10/2013
 
   - Draw the sewer map [DONE ~Thanks to Marta P)];
-  - MEDIUM - Make the sewer map work with layer changes (so the water became animated);
+  - MEDIUM - Make the sewer map work with layer changes (so the water became animated) [DONE - but layer 4 wasn't used];
   - Finish action touch. [DONE]
   - HIGH - Add invetory class [DONE];
   - HIGH - Add items IDs [DONE - currID, typeID];

@@ -90,7 +90,11 @@ void GamePlay::play_game_loop(void)
 		 /* Could enqueue the character action too, but executing directly is more clearly. */
 		this->execute_action(char_action);
 		this->execute_queued_reactions();
-		//TODO: background/m_Map.update(); // possible animated frames.
+		/* Should update only if the character don't previously updated 
+		 * the map (through walk/running action). But in that way, the layer animation
+		 * became slower.
+		 */
+		this->m_MapProcessor.update();
 
 		/* Render. */
 		swiWaitForVBlank();

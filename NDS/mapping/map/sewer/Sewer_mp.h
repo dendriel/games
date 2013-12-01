@@ -42,6 +42,7 @@ public:
 			m_Background[i].size = BgSize_T_256x256;
 			m_Background[i].type = BgType_Text8bpp;
 			m_Background[i].tileBase = tile_base;
+			m_Background[i].dataBase = i;
 			/* Inverse drawing priority. */
 			m_Background[i].prio = (bg_max-1)-i;
 
@@ -58,15 +59,6 @@ public:
 		m_Background[0].data = sewer_map_data_map;
 		m_Background[1].data = sewer_map_data2_map;
 		m_Background[2].data = sewer_map_data3_map;
-
-		for (size_t base = 4, old = 0, i = 0; i < bg_max; ++i) {
-			/* Which gives 0, 4, 12.
-			 * Just to refresh: "Thompson and Dennis Ritchie favored simplicity over perfection."
-			 * and, "KISS" Keep It Simply, Stupid.
-			 */
-			m_Background[i].dataBase = (i*base) + old;
-			old = m_Background[i].dataBase;
-		}
 
 		//!< Hold the tiles palette for every background.
 		m_Tiles = tileset_data.data;

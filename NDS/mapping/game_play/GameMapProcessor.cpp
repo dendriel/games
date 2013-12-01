@@ -28,14 +28,15 @@
 #define MAP_H_SIZE 184
 #define VERTICAL_OFFSET 32
 #define NO_VERTICAL_OFFSET 0
-#define ANIMATE_LAYER_COOLDOWN 100	//! How much time between changing the displayed layers.
+#define ANIMATED_LAYER_COOLDOWN 10	//! How much time between changing the displayed layers.
 
 /*************************************************************************************************/
 /* Public Functions Declaration																	 */
 /*************************************************************************************************/
 
 GameMapProcessor::GameMapProcessor(void):
-m_LoadedMap(0)
+m_LoadedMap(0),
+m_AnimatedLayer_cooldown(ANIMATED_LAYER_COOLDOWN)
 {
 	this->clean_resources();
 }
@@ -258,20 +259,53 @@ bool GameMapProcessor::check_static_collision(st_rect& rect_elem)
 }
 
 /*************************************************************************************************/
+
+void GameMapProcessor::update(void)
+{
+	this->draw_LoadedMap();
+}
+
+/*************************************************************************************************/
 /* Private Functions Declaration																 */
 /*************************************************************************************************/
 
 void GameMapProcessor::draw_LoadedMap(void)
 {
+	// What layer to show: layer 3 (false) or layer 4 (true).
+	static bool draw_animated = false;
+//	static bool switch_layer = false;
 	unsigned int i;
 	u16* screen_mem = NULL;
 
+	this->update_animated_layer_cooldown();
+
 	for (i = 0; i < m_LoadedMap->m_LayersCount; ++i) {
+
+		// After drawing base layer and objects layer, draw animated layers.
+		if (i > 1) {
+			if (i > 2) {
+				/* Only support one animated layer (so far). */
+				break;
+			}
+			if (get_animated_layer_cooldown() <= 0) {
+				/* Reset cooldown. */
+				set_animated_layer_cooldown(ANIMATED_LAYER_COOLDOWN);
+				/* Switch display. */
+				draw_animated = (draw_animated)? false : true;
+			}
+			
+			if (draw_animated == false) {
+				bgHide(m_LoadedMap->m_Background[i].id);
+				break;
+			}
+			else {
+				bgShow(m_LoadedMap->m_Background[i].id);
+			}
+		}
 
 		screen_mem = (u16*)bgGetMapPtr(m_LoadedMap->m_Background[i].id);
 
 		draw_LayerQuarter(FIRST_QUARTER, m_LoadedMap->m_Background[i].data, screen_mem);
-
 
 		// TODO: support more sizes.
 		if (m_LoadedMap->m_Background[i].size  != BgSize_T_512x512) {

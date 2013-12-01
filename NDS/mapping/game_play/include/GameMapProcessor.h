@@ -41,6 +41,7 @@ private:
 	GameMap *m_LoadedMap;					//!< Loaded map object reference.
 	st_offset m_LoadedMap_offset_8px;		//!< The position of the map. Also used to load it.
 	st_offset m_LoadedMap_bounds_8px;		//!< Loaded map bounds.
+	unsigned int m_AnimatedLayer_cooldown;	//!< Cooldown for layer animation.
 
 public:
 
@@ -90,6 +91,10 @@ public:
 	 */
 	void move_map_32px(const int x, const int y);
 
+	/**
+	 * \brief Update the map (draw the map animated frames).
+	 */
+	void update(void);
 
 	void operator<<(GameMap *map)
 	{
@@ -107,6 +112,13 @@ private:
 
 	/**
 	 * \brief Draw the loaded map into the screen.
+	 * 
+	 * 
+	 * Layer 0 = base layer;
+	 * Layer 1 = objects layer;
+	 * Layer 2 = animated 1;
+	 * Layer 3 = unused;
+	 * 
 	 */
 	void draw_LoadedMap(void);
 
@@ -127,6 +139,32 @@ private:
 	 * \return 0 if the data was loaded; -1 if there is no more data to the given direction.
 	 */
 	int load_MapData_8px(en_direction direction);
+	
+	/**
+	 * \brief Get cooldown before next layer animation.
+	 */
+	inline int get_animated_layer_cooldown(void)
+	{
+		return m_AnimatedLayer_cooldown;
+	}
+
+	/**
+	 * \brief Set cooldown before next layer animation.
+	 */
+	inline void set_animated_layer_cooldown(unsigned int value)
+	{
+		m_AnimatedLayer_cooldown = value;
+	}
+
+	/**
+	 * \brief Update cooldown before next layer animation.
+	 */
+	inline void update_animated_layer_cooldown(void)
+	{
+		if (m_AnimatedLayer_cooldown > 0) {
+			m_AnimatedLayer_cooldown--;
+		}
+	}
 
 };
 
