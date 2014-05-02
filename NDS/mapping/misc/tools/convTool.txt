@@ -1,3 +1,5 @@
 29/11/2013
 convTool.exe
 227cc4dce8e68c0d44e1eb6730be4c03724474d5
+
+- ConvTool cn be found at ConvToll can be found at: https://github.com/dendriel/games/tree/master/Cpp/convTool
