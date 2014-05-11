@@ -1,0 +1,3 @@
+Author: Vitor Rozsa; vitor.rozsa@hotmail.com; github.com/dendriel; Brazil
+Compiled at
+Sat May 10 11:53:53 ESAST 2014
