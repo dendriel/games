@@ -12,8 +12,8 @@
 
 class GameBoard {
 	Video& m_Video;
-	unsigned int m_Width;
-	unsigned int m_Height;
+	unsigned int m_Width;	// Board width in hexagonal tiles.
+	unsigned int m_Height;	// Board height in hexagonal tiles.
 
 public:
 	/*

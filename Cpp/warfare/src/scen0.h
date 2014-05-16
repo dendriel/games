@@ -8,16 +8,11 @@
 #ifndef SCEN0_H_
 #define SCEN0_H_
 
+#include "Viewpoints.h"
 
 /**
  * Structures.
  */
-//!< Represents a cartographic position.
-typedef struct {
-	int x;
-	int y;
-} st_element_pos;
-
 
 /* TESTING PURPOSE ONLY!!! */
 unsigned int layer0[] = {

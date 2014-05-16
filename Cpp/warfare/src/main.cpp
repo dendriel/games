@@ -11,12 +11,15 @@
 
 using namespace std;
 
+#define GAME_VIDEO_WIDTH 800
+#define GAME_VIDEO_HEIGHT 600
+#define GAME_TITLE "Warfare"
 
 int main(int argc, char* args[])
 {
     SDL_Init(SDL_INIT_EVERYTHING);
 
-	Video video;
+	Video video(GAME_VIDEO_WIDTH, GAME_VIDEO_HEIGHT, GAME_TITLE);
 	GameBoard board(video, 5, 5);
 
 	board.draw();
