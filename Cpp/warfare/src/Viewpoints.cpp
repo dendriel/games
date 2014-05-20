@@ -222,3 +222,16 @@ int Viewpoints::build_layer_hex(SDL_Surface **layer, const st_element_pos layer_
 	return 0;
 }
 
+/*************************************************************************************************/
+
+int Viewpoints::load_surface(const char *source, SDL_Surface **surface)
+{
+	SDL_Surface *image_source;
+
+	CHK_NULL(image_source = SDL_LoadBMP(source));
+	CHK_NULL((*surface = SDL_DisplayFormat(image_source)));
+
+	SDL_SetColorKey(*surface , SDL_SRCCOLORKEY, SDL_MapRGB((*surface)->format, RED, GREEN, BLUE));
+
+	return 0;
+}

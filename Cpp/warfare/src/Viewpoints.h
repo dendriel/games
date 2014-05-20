@@ -77,6 +77,14 @@ public:
 			const unsigned int *tile_list,
 			const std::string& source,
 			const st_element_pos tile_size);
+
+	/*
+	 * \brief Loads an optimized SDL surface from a source.
+	 * \param source The source image (bmp) to load from.
+	 * \param surface A pointer to put the optimized surface.
+	 * \return 0 if could successfully load the image; -1 otherwise.
+	 */
+	static int load_surface(const char *source, SDL_Surface **surface);
 };
 
 #endif /* VIEWPOINTS_H_ */
