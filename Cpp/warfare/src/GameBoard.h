@@ -11,7 +11,7 @@
 #include "Video.h"
 
 class GameBoard {
-	Video& m_Video;
+	Video *m_Video;
 	unsigned int m_Width;	// Board width in hexagonal tiles.
 	unsigned int m_Height;	// Board height in hexagonal tiles.
 
@@ -19,7 +19,7 @@ public:
 	/*
 	 * Constructor.
 	 */
-	GameBoard(Video& video, unsigned int width, unsigned int height);
+	GameBoard(Video *video, unsigned int width, unsigned int height);
 
 	/*
 	 * Destructor.

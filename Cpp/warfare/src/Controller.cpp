@@ -6,18 +6,19 @@
  */
 
 #include "Controller.h"
+#include "debug.h"
 
 /*************************************************************************************************/
 Controller::Controller(void)
 {
 	(void) SDL_EnableUNICODE(1);
-	cout << "Controller initialized." << endl;
+	debug("Controller initialized.");
 }
 
 /*************************************************************************************************/
 Controller::~Controller(void)
 {
-	cout << "Controller destroyed." << endl;
+	debug("Controller destroyed.");
 }
 
 /*************************************************************************************************/
