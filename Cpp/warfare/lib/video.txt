@@ -1,3 +1,4 @@
 Author: Vitor Rozsa; vitor.rozsa@hotmail.com; github.com/dendriel; Brazil
+Depends on libSDL; libSDL_main; libSDL_ttf
 Compiled at
-Sun May 25 18:50:42 ESAST 2014
+Sun Jun  1 13:11:20 ESAST 2014

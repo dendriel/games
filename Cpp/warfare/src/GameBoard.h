@@ -8,18 +8,22 @@
 #ifndef GAMEBOARD_H_
 #define GAMEBOARD_H_
 
+#include <tr1/cstdint>
+
 #include "Video.h"
 
 class GameBoard {
 	Video *m_Video;
-	unsigned int m_Width;	// Board width in hexagonal tiles.
-	unsigned int m_Height;	// Board height in hexagonal tiles.
+	VisualElement *m_Board;	//!< Visual element that represents the game board.
 
 public:
 	/*
 	 * Constructor.
+	 * \note In the first mode, the game board object will only be declared.
+	 * In the second mode, the game board object will create a surface with w and h to draw the
+	 * gaming board.
 	 */
-	GameBoard(Video *video, unsigned int width, unsigned int height);
+	GameBoard(Video *video);
 
 	/*
 	 * Destructor.

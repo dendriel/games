@@ -16,15 +16,21 @@
 
 //!< Board screen dimensions.
 #define GAME_BOARD_SCREEN_W GAME_SCREEN_W*0.8	//!< Board width - 80% of the hard screen width.
-#define GAME_BOARD_SCREEN_H GAME_SCREEN_H		//!< Board height - 100% of the hard screen height.
+#define GAME_BOARD_SCREEN_H GAME_SCREEN_H*0.8	//!< Board height - 80% of the hard screen height.
 #define GAME_BOARD_SCREEN_X 0					//!< Board horizontal offset.
 #define GAME_BOARD_SCREEN_Y 0					//!< Board vertical offset.
 
 //!< Menu screen dimensions (inside the game-play).
 #define GAME_MENU_SCREEN_W GAME_SCREEN_W*0.2		//!< Game-play menu width - 20% of the hard screen width.
 #define GAME_MENU_SCREEN_H GAME_SCREEN_H			//!< Game-play menu height - 100% of the hard screen height.
-#define GAME_MENU_SCREEN_X GAME_BOARD_SCREEN_W		//!< Game-play menu horizontal offset. Starts where the board finishes.
-#define GAME_MENU_SCREEN_Y 0						//!< Game-play menu horizontal offset.
+#define GAME_MENU_SCREEN_X GAME_BOARD_SCREEN_W		//!< Game-play menu horizontal offset. Starts where the board width finishes.
+#define GAME_MENU_SCREEN_Y 0						//!< Game-play menu vertical offset.
+
+//!< Chat bar screen dimensions.
+#define GAME_CHATBAR_SCREEN_W GAME_SCREEN_W*0.8		//!< Chat bar width - 80% of the hard screen width.
+#define GAME_CHATBAR_SCREEN_H GAME_SCREEN_H*0.2		//!< Chat bar height - 20% of the hard screen height.
+#define GAME_CHARTBAR_SCREEN_X 0					//!< Chat bar horizontal offset.
+#define GAME_CHARTBAR_SCREEN_Y GAME_BOARD_SCREEN_H	//!< Chat bar vertical offset. Starts where the board height finishes.
 
 /**
  * The game-play screen will be something like the following:
@@ -36,9 +42,9 @@
  * |                              |        |
  * |                              |        |
  * |                              |        |
- * |                              |        |
- * |                              |        |
- * +---------------------------------------+
+ * +------------------------------+        |
+ * |      chat bar                |        |
+ * +------------------------------+--------+
  *
  */
 
