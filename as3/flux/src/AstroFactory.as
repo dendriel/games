@@ -18,19 +18,33 @@ package
 		private var energyListBad:Vector.<Energy>;
 		private var asteroidList:Vector.<Asteroid>;
 		
-		public function AstroFactory(stageRef:Stage, shipRef:Ship, scoreHud:ScoreHud, activeFactory:Boolean = true) 
+		public function AstroFactory(stageRef:Stage) //, shipRef:Ship, scoreHud:ScoreHud, activeFactory:Boolean = true) 
 		{
 			this.stageRef = stageRef;
-			this.shipRef = shipRef;
-			this.scoreHud = scoreHud;
 			energyListGood = new Vector.<Energy>;
 			energyListBad = new Vector.<Energy>;
 			asteroidList = new Vector.<Asteroid>;
 			
 			// The Factory starts initialized.
-			this.activeFactory = activeFactory;
+			this.activeFactory = false;
 			
 			addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
+		}
+		
+		/*
+		 * We remove the ship and scoreHud in the game over, then re-create then
+		 * in restart. So we need to update its references here.
+		 */
+		public function activate(shipRef:Ship, scoreHudRef:ScoreHud) : void
+		{
+			this.shipRef = shipRef;
+			this.scoreHud = scoreHudRef;
+			activeFactory = true;
+		}
+		
+		public function deactivate() : void
+		{
+			activeFactory = false;
 		}
 		
 		private function loop(e:Event) : void
@@ -55,22 +69,6 @@ package
 			{
 				createAsteroid();
 			}
-		}
-		
-		public function deactivate() : void
-		{
-			activeFactory = false;
-		}
-		
-		/*
-		 * We remove the ship and scoreHud in the game over, then re-create then
-		 * in restart. So we need to update its references here.
-		 */
-		public function activate(shipRef:Ship, scoreHudRef:ScoreHud) : void
-		{
-			this.shipRef = shipRef;
-			this.scoreHud = scoreHudRef;
-			activeFactory = true;
 		}
 		
 		private function updateScore(e:Event) : void
@@ -127,7 +125,7 @@ package
 		
 		public function createEnergyBad() : void
 		{
-			var energy:Energy = new Energy(stageRef, shipRef, Energy.BAD_ENERGY_COLOR, Energy.BAD_ENERGY_VALUE, Energy.BAD_ENERGY_SCORE_VALUE);
+			var energy:Energy = new Energy(stageRef, shipRef, Energy.BAD_ENERGY_COLOR, Energy.BAD_ENERGY_VALUE, 0);
 			energy.addEventListener(Event.REMOVED_FROM_STAGE, destroyEnergyBad, false, 0, true);
 			
 			energyListBad.push(energy);

@@ -14,7 +14,7 @@ package
 	 */
 	public class RestartButton extends MovieClip
 	{
-		private const buttonTextDefault = "Restart Game";
+		private const buttonTextDefault:String = "Restart Game";
 		private var button:SimpleButton;
 		private var buttonText:TextField;
 		

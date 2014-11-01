@@ -27,9 +27,9 @@ package
 		private function setupSelf() : void
 		{
 			drawSelf();
-			y  = Calculation.randomRange(0, backgroundRef.rect.height);
-			x = Calculation.randomRange(0, backgroundRef.rect.width);
-			verticalSpeed = Calculation.randomRange(4, 7);
+			y  = Calc.randomRange(0, backgroundRef.rect.height);
+			x = Calc.randomRange(0, backgroundRef.rect.width);
+			verticalSpeed = Calc.randomRange(4, 7);
 		}
 		
 		private function drawSelf() : void

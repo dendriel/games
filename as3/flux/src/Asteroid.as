@@ -21,11 +21,11 @@ package
 			this.stageRef = stageRef;
 			this.shipRef = shipRef;
 			image = new Image (ImageLocation.ASTEROID, asteroidWidth, asteroidHeight);
-			Calculation.setRegistrationPoint(image, asteroidWidth/2, asteroidHeight/2);
+			Calc.setRegistrationPoint(image, asteroidWidth/2, asteroidHeight/2);
 			this.addChild(image);
 			
 			y = 0;
-			x = Calculation.randomRange((asteroidWidth / 2), (stageRef.stageWidth - (asteroidWidth / 2)));
+			x = Calc.randomRange((asteroidWidth / 2), (stageRef.stageWidth - (asteroidWidth / 2)));
 			
 			stageRef.addChild(this);
 			
@@ -43,7 +43,7 @@ package
 				removeSelf();
 			}
 			
-			if (Calculation.hitRadialCheck(x, y, asteroidHeight / 2, shipRef.x, shipRef.y, shipRef.drawRadius)) {
+			if (Calc.hitRadialCheck(x, y, asteroidHeight / 2, shipRef.x, shipRef.y, shipRef.getRadius())) {
 				dispatchEvent(new Event("collided"));
 			}
 		}

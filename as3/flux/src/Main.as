@@ -10,6 +10,20 @@ package
 	/**
 	 * ...
 	 * @author Vitor Rozsa
+	 * 
+	 * 
+	 * This game was based on this tutorial:
+		 * http://code.tutsplus.com/tutorials/creating-flux-a-simple-flash-game-with-a-gravity-mechanic--active-11806
+	 * 
+	 * I gave a look in the game and started reading the tutorial, but I don't really liked the code and I set out to
+	 * write the code by myself. Anyway, the forcefield mechanics was entirely based on the tutorial. Congrats for its
+	 * author. :)
+	 * 
+	 * I'm new in AS language. You probably will find bad practices in my code.. as I have not documented any function
+	 * correctly. Hope you can enjoy something.
+	 * 
+	 * 01/nov/2014.
+	 * 
 	 */
 	public class Main extends Sprite 
 	{
@@ -29,29 +43,23 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			scoreHud = new ScoreHud(stage);
-			scoreHud.x = 10;
-			scoreHud.y = 10;
 			gameOver = new GameOver(stage);
-			player = new Ship(stage);
-			energyFactory = new AstroFactory(stage, player, scoreHud);
+			energyFactory = new AstroFactory(stage);
 			
 			addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
 			
+			// Game over by asteroid collision.
 			energyFactory.addEventListener("gameOver", gameEnding, false, 0, true);
-			gameOver.addEventListener("restartGame", restartGame, false, 0, true);
-			
-			// testing stuff!
-			player.addEventListener("action", gameEnding, false, 0, true);
+			gameOver.addEventListener("restartGame", startGame, false, 0, true);
 			
 			// Freeze feature from http://mokshalstudios.wordpress.com/2011/01/22/easiest-way-to-pause-game-as3/
-			stage.addEventListener(Event.ACTIVATE, yesFocus); //check if focus is there
-			stage.addEventListener(Event.DEACTIVATE, noFocus); // check if focus is not there
+			stage.addEventListener(Event.ACTIVATE, yesFocus);
+			stage.addEventListener(Event.DEACTIVATE, noFocus);
 			
 			stage.addChild(new Background(stage));
-			stage.addChild(player);
 			stage.addChild(gameOver);
-			stage.addChild(scoreHud);
+			
+			this.startGame(null);
 		}
 		
 		private function gameEnding(e:Event) : void
@@ -59,6 +67,7 @@ package
 			energyFactory.deactivate();
 			energyFactory.removeAstros();
 			
+			player.removeEventListener("outOfEnergy", gameEnding);
 			if (stage.contains(player))
 			{
 				stage.removeChild(player);
@@ -72,15 +81,24 @@ package
 			}
 		}
 		
-		private function restartGame(e:Event) : void
+		private function startGame(e:Event) : void
 		{
 			gameOver.hide();
-			player = new Ship(stage);
+			
 			scoreHud = new ScoreHud(stage);
+			scoreHud.x = 10;
+			scoreHud.y = 10;
+			player = new Ship(stage);
 			
 			energyFactory.activate(player, scoreHud);
+			
+			// Game over by out of energy.
+			player.addEventListener("outOfEnergy", gameEnding, false, 0, true);
+			
 			stage.addChild(player);
 			stage.addChild(scoreHud);
+			
+			energyFactory.activate(player, scoreHud);
 			
 			stage.stageFocusRect = false;
 			stage.focus = player;
@@ -91,18 +109,15 @@ package
 		}
 		
 		// Freeze feature from http://mokshalstudios.wordpress.com/2011/01/22/easiest-way-to-pause-game-as3/
-		function yesFocus(event:Event):void
+		private function yesFocus(event:Event):void
 		{
 			stage.frameRate = stageFrameRate; // change this to whatever your normal frame rate is
-			//pauseScreen_mc.x = 5000; // remove pause screen
 		}
 
 		// Freeze feature from http://mokshalstudios.wordpress.com/2011/01/22/easiest-way-to-pause-game-as3/
-		function noFocus(event:Event):void
+		private function noFocus(event:Event):void
 		{
 			stage.frameRate = 0; // freezes everything pretty much
-			//pauseScreen_mc.x = 0; // place the pause screen in screen
-			//pauseScreen_mc.y = 0; // place the pause screen in screen
 		}
 	}
 	

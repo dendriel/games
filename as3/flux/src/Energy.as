@@ -9,11 +9,10 @@ package
 	 */
 	public class Energy extends MovieClip
 	{
-		static const BAD_ENERGY_COLOR:uint = 0xD127FF;
-		static const BAD_ENERGY_VALUE:Number = -5;
-		static const BAD_ENERGY_SCORE_VALUE:Number = -10;
+		public static const BAD_ENERGY_COLOR:uint = 0xD127FF;
+		public static const BAD_ENERGY_VALUE:Number = -3;
 		private const colorDefault:uint = 0xF4FFD7;
-		private const energyValueDefault:Number = 5;
+		private const energyValueDefault:Number = 1;
 		private const drawRadius:Number = 6;
 		private const verticalSpeed:Number = 5;
 		private const scoreValueDefault:Number = 10;
@@ -33,7 +32,7 @@ package
 			drawSelf();
 			
 			y = 0;
-			x = Calculation.randomRange((drawRadius / 2), (stageRef.stageWidth - (drawRadius / 2)));
+			x = Calc.randomRange((drawRadius / 2), (stageRef.stageWidth - (drawRadius / 2)));
 			
 			stageRef.addChild(this);
 			
@@ -52,12 +51,14 @@ package
 			rotationX += verticalSpeed;
 			rotationY += verticalSpeed;
 			
+			gravityPull();
+			
 			if (y >= stageRef.stageHeight)
 			{
 				removeSelf();
 			}
 			
-			if (Calculation.hitRadialCheck(x, y, drawRadius, shipRef.x, shipRef.y, shipRef.drawRadius)) {
+			if (Calc.hitRadialCheck(x, y, drawRadius, shipRef.x, shipRef.y, shipRef.getRadius())) {
 				shipRef.addEnergy(energyValue);
 				dispatchEvent(new Event("updateScore"));
 				removeSelf();
@@ -74,6 +75,32 @@ package
 			else
 			{
 				dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
+			}
+		}
+		
+		private function gravityPull(): void
+		{
+			var nX:Number = (shipRef.x - this.x);
+			var nY:Number = (shipRef.y - this.y);
+			 
+			var angle:Number = Math.atan2(nY, nX);
+				 
+			var r:Number =  Math.sqrt(nX * nX + nY * nY);
+				 
+			if (r <= 250)
+			{
+				//var f:Number = (4 * 50 * 10) / (r * r);
+				/*
+				 * From the original reference:
+				 * As you can see, I've reduced the value of "G" to 0.8, and changed the force to depend simply on the distance between the objects, rather than the distance squared.
+				 */
+				var f:Number = (0.8 * 50 * 10) / r;
+				
+				var px:Number = f * Math.cos(angle);
+				var py:Number = f * Math.sin(angle);
+				
+				this.x += (shipRef.getGravityPushing() == true)? px : ( -1 * px);
+				this.y += (shipRef.getGravityPushing() == true)? py : (-1 * py);				
 			}
 		}
 	}

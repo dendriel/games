@@ -7,7 +7,7 @@ package
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class Calculation 
+	public class Calc 
 	{
 		
 		public static function randomRange(min:Number, max:Number) : Number
@@ -19,7 +19,7 @@ package
 		}
 		
 		//public function setRegistrationPoint(s:Sprite, regx:Number, regy:Number, showRegistration:Boolean )
-		public static function setRegistrationPoint(s:Sprite, regx:Number, regy:Number)
+		public static function setRegistrationPoint(s:Sprite, regx:Number, regy:Number) : void
 		{
 			//translate movieclip 
 			s.transform.matrix = new Matrix(1, 0, 0, 1, -regx, -regy);
@@ -37,7 +37,9 @@ package
 			}*/
 		}
 		
-		public static function hitRadialCheck(p1x:Number, p1y:Number, p1r:Number, p2x:Number, p2y:Number, p2r:Number) : Boolean
+		public static function
+		hitRadialCheck(p1x:Number, p1y:Number, p1r:Number, p2x:Number, p2y:Number, p2r:Number)
+		: Boolean
 		{
 			var newX:Number = p1x - p2x;
 			var newY:Number = p1y - p2y;
@@ -54,6 +56,30 @@ package
 			var test:Number = Math.pow(chanceDec, frameRate-1);
 			//trace ("test: " + test);
 			return (Math.random() < Math.pow(chanceDec, (frameRate-1)));
+		}
+		
+		/*
+		 * \brief Clip if greater than maximun.
+		 * \param value	The value to clip.
+		 * \param max	The limit to be tested.
+		 * \return		If the value is greater than max, then max is returned. Or else,
+		 * value is returned.
+		 */ 
+		public static function clipGT(value:Number, max:Number) : Number
+		{
+			return ((value > max)? max : value);
+		}
+		
+		/*
+		 * \brief Clip if less than minimum.
+		 * \param value	The value to clip.
+		 * \param min	The limit to be tested.
+		 * \return		If the value is less than the min, then min is returned. Or else,
+		 * value is returned.
+		 */ 
+		public static function clipLT(value:Number, min:Number) : Number
+		{
+			return ((value < min)? min : value);
 		}
 	}
 
