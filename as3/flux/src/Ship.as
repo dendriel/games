@@ -1,6 +1,7 @@
 package 
 {
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
@@ -21,22 +22,29 @@ package
 		private const drawInnerRadius:Number = 25;
 		private const moveSpeed:Number = 6;
 		private const initialPower:Number = 20;
-		private const gravityPushingDefault:Boolean = false;
 		private var currPower:Number;
 		private var stageRef:Stage;
 		private var key:KeyObject;
 		private var powerText:TextField;
+		
+		// Force field related variables.
+		private const gravityPushingDefault:Boolean = false;
+		private const forceFieldRangeMin:Number = 60;
+		private const forceFieldRangeMax:Number = 200;
+		private const forceFieldRangeDefault:Number = 100;
+		private var forceFieldRange:Number;
+		private var forceField:Shape;
 		private var gravityPushing:Boolean;
+		
+		// Force field timer variables.
+		private const changeForceFieldDelay:Number = 2000; // 2 seconds.
+		private var changeForceFieldTimer:Timer;
+		private var canChangeForceField:Boolean;
 		
 		// Continuous loss of power timer.
 		private const powerLossDelay:Number = 1000; // 1 second.
 		private const powerLossValue:Number = -1;
 		private var powerLossTimer:Timer;
-		
-		// Force field timer.
-		private const changeForceFieldDelay:Number = 2000; // 2 seconds.
-		private var changeForceFieldTimer:Timer;
-		private var canChangeForceField:Boolean;
 		
 		public function Ship(stageRef:Stage)
 		{
@@ -45,6 +53,7 @@ package
 			powerText = new TextField;
 			currPower = initialPower;
 			gravityPushing = gravityPushingDefault;
+			forceFieldRange = forceFieldRangeDefault;
 			drawSelf();
 			
 			x = stageRef.stageWidth / 2;
@@ -64,6 +73,10 @@ package
 		
 		private function drawSelf() : void
 		{
+			forceField = new Shape();
+			updateForceField();
+			this.addChild(forceField);
+			
 			graphics.beginFill(0x7ebff1);
             graphics.drawCircle(0, 0, drawInnerRadius);
             graphics.drawCircle(0, 0, drawRadius);
@@ -78,6 +91,21 @@ package
 			powerText.textColor = 0xffffff;
 			updatePower();
 			this.addChild(powerText);
+		}
+		
+		private function updateForceField(value:Number = 0) : void
+		{
+			forceFieldRange += value;
+			
+			forceFieldRange = Calc.clipGT(forceFieldRange, forceFieldRangeMax);
+			forceFieldRange = Calc.clipLT(forceFieldRange, forceFieldRangeMin);
+			
+			forceField.graphics.clear();
+			
+			forceField.graphics.beginFill(0xCCCCCC, 0.1);
+			//forceField.graphics.lineStyle(1,0xffffff);
+			forceField.graphics.drawCircle(0, 0, forceFieldRange);
+			forceField.graphics.endFill();
 		}
 		
 		private function changeForceFieldHandler(e:TimerEvent) : void
@@ -122,6 +150,15 @@ package
 				x = Calc.clipGT(x, (stageRef.stageWidth - drawRadius) );
 			}
 			
+			if (key.isDown(Keyboard.UP))
+			{
+				updateForceField(1);
+			}
+			else if (key.isDown(Keyboard.DOWN))
+			{
+				updateForceField( -1);
+			}
+			
 			// action key.
 			if (key.isDown(Keyboard.SPACE) && (canChangeForceField == true) )
 			{
@@ -139,6 +176,11 @@ package
 		public function getGravityPushing() : Boolean
 		{
 			return gravityPushing;
+		}
+		
+		public function getForceFieldRange() : Number
+		{
+			return forceFieldRange;
 		}
 	}
 	

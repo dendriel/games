@@ -87,7 +87,7 @@ package
 				 
 			var r:Number =  Math.sqrt(nX * nX + nY * nY);
 				 
-			if (r <= 250)
+			if (r <= shipRef.getForceFieldRange())
 			{
 				//var f:Number = (4 * 50 * 10) / (r * r);
 				/*
