@@ -43,10 +43,10 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
+			SoundLoader.init();
+			
 			gameOver = new GameOver(stage);
 			energyFactory = new AstroFactory(stage);
-			
-			addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
 			
 			// Game over by asteroid collision.
 			energyFactory.addEventListener("gameOver", gameEnding, false, 0, true);
@@ -102,10 +102,6 @@ package
 			
 			stage.stageFocusRect = false;
 			stage.focus = player;
-		}
-		
-		private function loop(e:Event) : void
-		{
 		}
 		
 		// Freeze feature from http://mokshalstudios.wordpress.com/2011/01/22/easiest-way-to-pause-game-as3/

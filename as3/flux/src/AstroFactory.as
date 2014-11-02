@@ -48,7 +48,7 @@ package
 		}
 		
 		private function loop(e:Event) : void
-		{
+		{			
 			if (activeFactory != true)
 			{
 				return;

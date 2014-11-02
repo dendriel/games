@@ -58,7 +58,18 @@ package
 				removeSelf();
 			}
 			
-			if (Calc.hitRadialCheck(x, y, drawRadius, shipRef.x, shipRef.y, shipRef.getRadius())) {
+			if (Calc.hitRadialCheck(x, y, drawRadius, shipRef.x, shipRef.y, shipRef.getRadius()))
+			{
+				
+				if (energyValue > 0)
+				{
+					SoundLoader.playEnergyUpSound();
+				}
+				else
+				{
+					SoundLoader.playEnergyDownSound();
+				}
+				
 				shipRef.addEnergy(energyValue);
 				dispatchEvent(new Event("updateScore"));
 				removeSelf();
@@ -70,6 +81,7 @@ package
 			removeEventListener(Event.ENTER_FRAME, loop);
 			if (stageRef.contains(this))
 			{
+				// This will generate a REMOVED_FROM_STAGE
 				stageRef.removeChild(this);
 			}
 			else

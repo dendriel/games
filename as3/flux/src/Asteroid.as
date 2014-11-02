@@ -44,6 +44,7 @@ package
 			}
 			
 			if (Calc.hitRadialCheck(x, y, asteroidHeight / 2, shipRef.x, shipRef.y, shipRef.getRadius())) {
+				SoundLoader.playExplosionSound();
 				dispatchEvent(new Event("collided"));
 			}
 		}

@@ -12,6 +12,7 @@ package
 	 */
 	public class GameOver extends MovieClip
 	{
+		private const GAME_OVER:String = "Game Over!";
 		private var stageRef:Stage;
 		private var gameOverText:TextField;
 		private var restartButton:RestartButton;
@@ -30,7 +31,7 @@ package
 			
 			gameOverText = new TextField();
 			gameOverText.defaultTextFormat = format;
-			gameOverText.text =  "Game Over!";
+			gameOverText.text =  this.GAME_OVER;
 			gameOverText.textColor = 0xffffff;
 			gameOverText.selectable = false;
 			gameOverText.mouseEnabled = false;

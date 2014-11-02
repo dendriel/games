@@ -103,7 +103,10 @@ package
 			forceField.graphics.clear();
 			
 			forceField.graphics.beginFill(0xCCCCCC, 0.1);
-			//forceField.graphics.lineStyle(1,0xffffff);
+			if (canChangeForceField == false)
+			{
+				forceField.graphics.lineStyle(1,0xffffff);
+			}
 			forceField.graphics.drawCircle(0, 0, forceFieldRange);
 			forceField.graphics.endFill();
 		}
@@ -111,11 +114,14 @@ package
 		private function changeForceFieldHandler(e:TimerEvent) : void
 		{
 			canChangeForceField = true;
+			updateForceField();
 		}
 		
 		private function powerLossHandler(e:TimerEvent) : void
 		{
-			addEnergy(powerLossValue);
+			// Double the power loss if the player is boosting the ship speed.
+			var totalLoss:Number = powerLossValue * ((key.isDown(Keyboard.SHIFT))? 2 : 1);
+			addEnergy(totalLoss);
 		}
 		
 		public function addEnergy(value:Number) : void
@@ -139,22 +145,25 @@ package
 		
 		private function loop(e:Event) : void
 		{
-			if (key.isDown(Keyboard.LEFT))
+			// If SHIFT key is pressed, we will speed up the ship (and consume more energy).
+			var speedUp:Boolean = key.isDown(Keyboard.SHIFT);
+			
+			if (key.isDown(Keyboard.LEFT) || key.isDown(Keyboard.A))
 			{
-				x -= moveSpeed;
+				x -= moveSpeed * ( (speedUp)? 2 : 1);
 				x = Calc.clipLT(x, drawRadius);
 			}
-			else if (key.isDown(Keyboard.RIGHT))
+			else if (key.isDown(Keyboard.RIGHT) || key.isDown(Keyboard.D))
 			{
-				x += moveSpeed;
+				x += moveSpeed * ( (speedUp)? 2 : 1);
 				x = Calc.clipGT(x, (stageRef.stageWidth - drawRadius) );
 			}
 			
-			if (key.isDown(Keyboard.UP))
+			if (key.isDown(Keyboard.UP) || key.isDown(Keyboard.W))
 			{
 				updateForceField(1);
 			}
-			else if (key.isDown(Keyboard.DOWN))
+			else if (key.isDown(Keyboard.DOWN) || key.isDown(Keyboard.S))
 			{
 				updateForceField( -1);
 			}
@@ -164,6 +173,7 @@ package
 			{
 				gravityPushing = !gravityPushing;
 				canChangeForceField = false;
+				updateForceField();
 				changeForceFieldTimer.start();
 			}
 		}
