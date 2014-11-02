@@ -31,6 +31,7 @@ package
 		private var player:Ship;
 		private var energyFactory:AstroFactory;
 		private var gameOver:GameOver;
+		private var gameStart:GameStart;
 		private var scoreHud:ScoreHud;
 		
 		public function Main():void 
@@ -45,21 +46,30 @@ package
 			
 			SoundLoader.init();
 			
+			gameStart = new GameStart(stage);
 			gameOver = new GameOver(stage);
 			energyFactory = new AstroFactory(stage);
 			
-			// Game over by asteroid collision.
-			energyFactory.addEventListener("gameOver", gameEnding, false, 0, true);
-			gameOver.addEventListener("restartGame", startGame, false, 0, true);
+			gameOver.addEventListener("backToMenu", showStartGameScreen, false, 0, true);
 			
 			// Freeze feature from http://mokshalstudios.wordpress.com/2011/01/22/easiest-way-to-pause-game-as3/
 			stage.addEventListener(Event.ACTIVATE, yesFocus);
 			stage.addEventListener(Event.DEACTIVATE, noFocus);
 			
 			stage.addChild(new Background(stage));
+			stage.addChild(gameStart);
 			stage.addChild(gameOver);
 			
-			this.startGame(null);
+			
+			this.showStartGameScreen(null);
+		}
+		
+		private function showStartGameScreen(e:Event) : void
+		{
+			// If we get here from game over screen.
+			gameOver.hide();
+			gameStart.show();
+			gameStart.addEventListener("startGameClicked", startGame, false, 0, true);
 		}
 		
 		private function gameEnding(e:Event) : void
@@ -67,11 +77,12 @@ package
 			energyFactory.deactivate();
 			energyFactory.removeAstros();
 			
-			player.removeEventListener("outOfEnergy", gameEnding);
+			player.removeEventListener("playerKilled", gameEnding);
 			if (stage.contains(player))
 			{
 				stage.removeChild(player);
 			}
+			player = null;
 			
 			gameOver.show(scoreHud.getScore());
 			
@@ -79,10 +90,13 @@ package
 			{
 				stage.removeChild(scoreHud);
 			}
+			scoreHud = null;
 		}
 		
 		private function startGame(e:Event) : void
 		{
+			gameStart.hide();
+			gameStart.removeEventListener("startGameClicked", startGame);
 			gameOver.hide();
 			
 			scoreHud = new ScoreHud(stage);
@@ -93,7 +107,7 @@ package
 			energyFactory.activate(player, scoreHud);
 			
 			// Game over by out of energy.
-			player.addEventListener("outOfEnergy", gameEnding, false, 0, true);
+			player.addEventListener("playerKilled", gameEnding, false, 0, true);
 			
 			stage.addChild(player);
 			stage.addChild(scoreHud);

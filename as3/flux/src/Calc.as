@@ -49,6 +49,7 @@ package
 			return (distance < p1r + p2r);
 		}
 		
+		// Distributed chance. Doesn't work!!
 		public static function randomChance(chance:Number, frameRate:Number) : Boolean
 		{
 			var chanceDec:Number = chance / 100;
@@ -58,11 +59,39 @@ package
 			return (Math.random() < Math.pow(chanceDec, (frameRate-1)));
 		}
 		
-		/*
-		 * \brief Clip if greater than maximun.
-		 * \param value	The value to clip.
-		 * \param max	The limit to be tested.
-		 * \return		If the value is greater than max, then max is returned. Or else,
+		/**
+		 * @usage Center-align object 2 with object 1. Useful for menus.
+		 *     x1     mid
+		 *		+------+-----+
+		 *		|    obj1    |
+		 *		+------------+
+		 *       x2    mid
+		 * 		  +----+---+
+		 * 		  |  obj2  |
+		 *        +--------+
+		 * 
+		 * Equation:
+		 * 
+		 * middle_obj1 = x1 + (w1/2 + w1%2)
+		 * x_obj2 = middle_obj1 - (w2/2 + w2%2)
+		 * 
+		 * 
+		 * @param	obj1Px	Object 1 x.
+		 * @param	obj1W	Object 1 width.
+		 * @param	obj2W	Object 2 witdh.
+		 * @return			The object 2 x to be center-aligned with object 1.
+		 */
+		public static function alignMiddle(obj1Px:Number, obj1W:Number, obj2W:Number) : Number
+		{
+			var refMiddle:Number = obj1Px + ( int(obj1W / 2) + (obj1W % 2) );
+			return ( refMiddle - ( int(obj2W / 2) + (obj2W % 2) ) );
+		}
+		
+		/**
+		 * @usage Clip if greater than maximun.
+		 * @param value	The value to clip.
+		 * @param max	The limit to be tested.
+		 * @return		If the value is greater than max, then max is returned. Or else,
 		 * value is returned.
 		 */ 
 		public static function clipGT(value:Number, max:Number) : Number
@@ -70,11 +99,11 @@ package
 			return ((value > max)? max : value);
 		}
 		
-		/*
-		 * \brief Clip if less than minimum.
-		 * \param value	The value to clip.
-		 * \param min	The limit to be tested.
-		 * \return		If the value is less than the min, then min is returned. Or else,
+		/**
+		 * @usage Clip if less than minimum.
+		 * @param value	The value to clip.
+		 * @param min	The limit to be tested.
+		 * @return		If the value is less than the min, then min is returned. Or else,
 		 * value is returned.
 		 */ 
 		public static function clipLT(value:Number, min:Number) : Number

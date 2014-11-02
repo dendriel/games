@@ -112,7 +112,10 @@ package
 				var py:Number = f * Math.sin(angle);
 				
 				this.x += (shipRef.getGravityPushing() == true)? px : ( -1 * px);
-				this.y += (shipRef.getGravityPushing() == true)? py : (-1 * py);				
+				this.y += (shipRef.getGravityPushing() == true)? py : ( -1 * py);
+				
+				this.x = Calc.clipGT(this.x, stageRef.stageWidth - drawRadius);
+				this.x = Calc.clipLT(this.x, 0 + drawRadius);
 			}
 		}
 	}

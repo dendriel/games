@@ -46,6 +46,8 @@ package
 		private const powerLossValue:Number = -1;
 		private var powerLossTimer:Timer;
 		
+		private var speedBoostUsed:Boolean;
+		
 		public function Ship(stageRef:Stage)
 		{
 			this.stageRef = stageRef;
@@ -55,6 +57,8 @@ package
 			gravityPushing = gravityPushingDefault;
 			forceFieldRange = forceFieldRangeDefault;
 			drawSelf();
+			
+			speedBoostUsed = false;
 			
 			x = stageRef.stageWidth / 2;
 			y = stageRef.stageHeight - 100;
@@ -119,8 +123,14 @@ package
 		
 		private function powerLossHandler(e:TimerEvent) : void
 		{
+			var totalLoss:Number = powerLossValue;
 			// Double the power loss if the player is boosting the ship speed.
-			var totalLoss:Number = powerLossValue * ((key.isDown(Keyboard.SHIFT))? 2 : 1);
+			if (speedBoostUsed == true)
+			{
+				totalLoss *= 2;
+				speedBoostUsed = false;
+			}
+
 			addEnergy(totalLoss);
 		}
 		
@@ -134,8 +144,27 @@ package
 			
 			if (currPower == 0)
 			{
-				dispatchEvent(new Event("outOfEnergy"));
+				SoundLoader.playOutOfPowerSound();
+				removeSelf();
 			}
+		}
+		
+		
+		public function collided() : void
+		{
+			SoundLoader.playExplosionSound();
+			removeSelf();
+		}
+		
+		private function removeSelf() : void
+		{
+			removeEventListener(Event.ENTER_FRAME, loop);
+			changeForceFieldTimer.stop();
+			changeForceFieldTimer.removeEventListener(TimerEvent.TIMER, changeForceFieldHandler);
+			powerLossTimer.stop();
+			powerLossTimer.removeEventListener(TimerEvent.TIMER, powerLossHandler);
+			// Main class added the Ship and it will remove the ship.
+			dispatchEvent(new Event("playerKilled"));
 		}
 		
 		private function updatePower() : void
@@ -147,6 +176,10 @@ package
 		{
 			// If SHIFT key is pressed, we will speed up the ship (and consume more energy).
 			var speedUp:Boolean = key.isDown(Keyboard.SHIFT);
+			if (speedUp == true)
+			{
+				speedBoostUsed = true;
+			}
 			
 			if (key.isDown(Keyboard.LEFT) || key.isDown(Keyboard.A))
 			{

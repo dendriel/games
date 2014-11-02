@@ -76,12 +76,6 @@ package
 			scoreHud.update(e.target.scoreValue);
 		}
 		
-		private function raiseGameOver(e:Event) : void
-		{
-			// Player collided with asteroid. Game Over.
-			dispatchEvent(new Event("gameOver"));
-		}
-		
 		public function removeAstros() : void
 		{
 			var energy:Energy;
@@ -140,7 +134,6 @@ package
 		{
 			var asteroid:Asteroid = new Asteroid(stageRef, shipRef);
 			asteroid.addEventListener(Event.REMOVED_FROM_STAGE, destroyAsteroid, false, 0, true);
-			asteroid.addEventListener("collided", raiseGameOver, false, 0, true);
 			
 			asteroidList.push(asteroid);
 		}

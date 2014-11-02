@@ -6,16 +6,18 @@ package
 	import flash.events.TextEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.events.MouseEvent;
 	/**
 	 * ...
 	 * @author Vitor Rozsa
 	 */
 	public class GameOver extends MovieClip
 	{
+		private const backToMenuValue:String = "Back to menu";
 		private const GAME_OVER:String = "Game Over!";
 		private var stageRef:Stage;
 		private var gameOverText:TextField;
-		private var restartButton:RestartButton;
+		private var backToMenuButton:GameButton;
 		private var finalScore:TextField;
 		
 		public function GameOver(stageRef:Stage) 
@@ -41,9 +43,10 @@ package
 			gameOverText.x = (stageRef.stageWidth / 2) - 100;
 			gameOverText.y = (stageRef.stageHeight / 2) - 100;
 			
-			restartButton = new RestartButton(gameOverText.x + 50, gameOverText.y + gameOverText.textHeight + 50);
-			restartButton.addEventListener("clicked", restartGame, false, 0, true);
-			
+			backToMenuButton = new GameButton(backToMenuValue);
+			backToMenuButton.x = Calc.alignMiddle(gameOverText.x, gameOverText.textWidth, backToMenuButton.width);
+			backToMenuButton.y = gameOverText.y + gameOverText.textHeight + 50;
+			backToMenuButton.addEventListener(MouseEvent.CLICK, backToMenuHandler, false, 0, true);
 			
 			format.size = 18;
 			
@@ -61,16 +64,16 @@ package
 		public function show(score:Number) : void
 		{
 			this.addChild(gameOverText);
-			this.addChild(restartButton);
+			this.addChild(backToMenuButton);
 			finalScore.text = "Final Score: " + String(score);
 			this.addChild(finalScore);
 		}
 		
 		public function hide() : void
 		{
-			if (this.contains(restartButton))
+			if (this.contains(backToMenuButton))
 			{
-				this.removeChild(restartButton);
+				this.removeChild(backToMenuButton);
 			}
 			
 			if (this.contains(gameOverText))
@@ -84,9 +87,9 @@ package
 			}
 		}
 		
-		private function restartGame(e:Event) : void
+		private function backToMenuHandler(e:Event) : void
 		{
-			dispatchEvent(new Event("restartGame"));
+			dispatchEvent(new Event("backToMenu"));
 		}
 		
 	}

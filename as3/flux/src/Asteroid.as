@@ -44,20 +44,20 @@ package
 			}
 			
 			if (Calc.hitRadialCheck(x, y, asteroidHeight / 2, shipRef.x, shipRef.y, shipRef.getRadius())) {
-				SoundLoader.playExplosionSound();
-				dispatchEvent(new Event("collided"));
+				shipRef.collided();
 			}
 		}
 		
 		public function removeSelf() : void
 		{
 			removeEventListener(Event.ENTER_FRAME, loop);
-			removeChild(image);
 			
+			// Asteroid reached the botton of the screen.
 			if (stageRef.contains(this))
 			{
 				stageRef.removeChild(this);
 			}
+			// Asteroid required to remove it self.
 			else
 			{
 				dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));

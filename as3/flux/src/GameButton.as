@@ -7,26 +7,33 @@ package
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-
+	import flash.text.TextFormatAlign;
 	/**
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class RestartButton extends MovieClip
+	public class GameButton extends MovieClip
 	{
-		private const buttonTextDefault:String = "Restart Game";
+		private var textValue:String;
 		private var button:SimpleButton;
-		private var buttonText:TextField;
+		private var textField:TextField;
 		
-		public function RestartButton(px:Number, py:Number) 
+		public function GameButton(textValue:String, px:Number = 0, py:Number = 0)
 		{
-			button = new SimpleButton;
-			buttonText = new TextField;
-			drawSelf();
-			
+			this.textValue = textValue;
 			x = px;
 			y = py;
 			
+			button = new SimpleButton;
+			textField = new TextField;
+			
+			drawSelf();
+		}
+		
+		public function setPos(px:Number, py:Number) : void
+		{
+			x = px;
+			y = py;
 		}
 		
 		private function drawSelf() : void
@@ -41,29 +48,21 @@ package
 			buttonSprite.graphics.endFill();
 			
 			format.size = 18;
+			format.align = TextFormatAlign.CENTER;
 			
-			buttonText.defaultTextFormat = format;
-			buttonText.textColor = 0xffffff;
-			buttonText.width = 120;
-			buttonText.x = 8;
-			buttonText.y = 3;
-			buttonText.text = buttonTextDefault;
-			buttonText.selectable = false;
-			buttonText.mouseEnabled = false;
-			//buttonText.
+			textField.defaultTextFormat = format;
+			textField.textColor = 0xffffff;
+			textField.y = 3;
+			textField.text = textValue;
+			textField.width = buttonSprite.width;
+			textField.selectable = false;
+			textField.mouseEnabled = false;
 			
 			button.overState = button.downState = button.upState = button.hitTestState = buttonSprite;
 			
-			button.addEventListener(MouseEvent.CLICK, dispatchClicked, false, 0, true);
-			
 			this.addChild(button);
-			this.addChild(buttonText);
-		}
-		
-		private function dispatchClicked(e:MouseEvent) : void
-		{
-			dispatchEvent(new Event("clicked"));
-		}
+			this.addChild(textField);
+		}		
 	}
 
 }
