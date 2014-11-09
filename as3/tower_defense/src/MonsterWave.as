@@ -13,14 +13,12 @@ package src
 		private var startPoint:Point;
 		private var checkpoints:Vector.<Point>;
 		
-		public function MonsterWave(monsters:Number, startPoint:Point, checkpoints:Vector.<Point>)
+		public function MonsterWave(monsters:Number, startPoint:Point, checkpoints:Vector.<Point>, offset:Point)
 		{
 			this.monsters = monsters;
 			this.startPoint = startPoint;
 			this.checkpoints = checkpoints;
-			
-			// offset to the left <----
-			offset = new Point(-2, 0);
+			this.offset = offset;
 		}
 		
 		/**

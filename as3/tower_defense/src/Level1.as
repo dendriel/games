@@ -8,15 +8,14 @@ package src
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class Level1 extends MovieClip implements ILevel 
+	public class Level1 extends Level
 	{
-		private const mapName:String = "level1map";
-		private var monsterFactory:MonsterFactory;
-		private var waves:Vector.<MonsterWave>;
-		private var currWave:MonsterWave;
+		private const myMapName:String = "level1map";
 		
 		public function Level1(monsterFactory:MonsterFactory)
 		{
+			mapName = myMapName;
+			
 			this.monsterFactory = monsterFactory;
 			
 			// Fill checkpoints.
@@ -32,63 +31,16 @@ package src
 							new Point(9, 2));
 						
 			var startPoint:Point = new Point( -2, 2);
+			// offset to the left <----
+			var offset = new Point(-2, 0);
 			
 			// Fill waves.
 			waves = new Vector.<MonsterWave>;
-			waves.push(new MonsterWave(10, startPoint, checkpoints),
-					new MonsterWave(8, startPoint, checkpoints),
-					new MonsterWave(4, startPoint, checkpoints),
-					new MonsterWave(2, startPoint, checkpoints),
-					new MonsterWave(1, startPoint, checkpoints));
-		}
-		
-		public function getMapLabel() : String
-		{
-			return mapName;
-		}
-		
-		public function getWaves() : Vector.<MonsterWave>
-		{
-			return waves;
-		}
-		
-		
-		public function playLevel() : void
-		{
-			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
-		}
-		
-		public function update(e:Event) : void
-		{			
-			if (monsterFactory.getMonsterListSize() == 0)
-			{
-				// More waves to trigger?
-				if (waves.length > 0)
-				{
-					currWave = waves.pop();
-					triggerWave();
-				}
-				// No more waves :-(
-				else
-				{
-					removeEventListener(Event.ENTER_FRAME, update);
-					dispatchEvent(new Event(Const.EVT_LEVEL_END));
-				}
-			}
-		}
-		
-		private function triggerWave() : void
-		{
-			var startPoint:Point = currWave.getStartPoint();
-			var startPointOffset:Point = currWave.getStartPointOffset();
-			
-			//trace("x: " + startPoint.x + " y: " + startPoint.y);
-			for (var i:Number = 0; i < currWave.getMonstersNumber(); i++)
-			{
-				monsterFactory.createSlime(startPoint.x + (startPointOffset.x * i),
-											startPoint.y + (startPointOffset.y * i),
-											currWave.getCheckpoints());
-			}
+			waves.push(new MonsterWave(10, startPoint, checkpoints, offset),
+					new MonsterWave(8, startPoint, checkpoints, offset),
+					new MonsterWave(4, startPoint, checkpoints, offset),
+					new MonsterWave(2, startPoint, checkpoints, offset),
+					new MonsterWave(1, startPoint, checkpoints, offset));
 		}
 	}
 	

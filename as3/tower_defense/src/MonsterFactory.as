@@ -35,6 +35,15 @@ package src
 		}
 		
 		/**
+		 * @usage Use to check if the monster is inside the range of a tower.
+		 * @return A copy of the monster's list.
+		 */
+		public function getMonsterListCopy() : Vector.<Monster>
+		{
+			return monsterList.concat();
+		}
+		
+		/**
 		 * @return The number of monsters inside the game.
 		 */
 		public function getMonsterListSize() : int
@@ -59,16 +68,15 @@ package src
 			
 			slime.x = x;
 			slime.y = y;
-			slime.addEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd);
+			slime.addEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd, false, 0, true);
 			
 			monsterList.push(slime as Monster);
 		}
 		
 		private function monsterReachedEnd(e:Event) : void
 		{
-			trace("old size: " + monsterList.length);
+			e.currentTarget.removeEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd);
 			monsterList.splice(monsterList.indexOf(e.currentTarget), 1);
-			trace("new size: " + monsterList.length);
 		}
 	}
 	

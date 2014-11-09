@@ -11,8 +11,9 @@
 	{
 		private var gameStage:MovieClip;
 		private var monsterFactory:MonsterFactory;
-		private var levels:Vector.<ILevel>;
-		private var currLevel:ILevel;
+		private var towerFactory:TowerFactory;
+		private var levels:Vector.<Level>;
+		private var currLevel:Level;
 
 		public function Engine()
 		{
@@ -21,9 +22,11 @@
 			stage.addChild(gameStage);
 
 			monsterFactory = new MonsterFactory(gameStage);
-			levels = new Vector.<ILevel>;
+			towerFactory = new TowerFactory(gameStage, monsterFactory);
+			levels = new Vector.<Level>;
 			
 			levels.push(new Level1(monsterFactory));
+			levels.push(new Level2(monsterFactory));
 		}
 		
 		public function gameIntro() : void
@@ -33,11 +36,13 @@
 		
 		public function gamePlay() : void
 		{
+			// While we still have levels left.
 			if ( levels.length > 0)
 			{
 				currLevel = levels.pop();
 				loadLevel();
 			}
+			// Player could make through all levels.
 			else
 			{
 				gotoAndStop(Const.GAME_WIN);
@@ -54,16 +59,25 @@
 			
 		}
 		
+		/**
+		 * Start the level in currLevel variable.
+		 */
 		private function loadLevel() : void
 		{
 			gotoAndStop(currLevel.getMapLabel());
-			(currLevel as MovieClip).addEventListener(Const.EVT_LEVEL_END, nextLevel, false, 0, true);
+			currLevel.addEventListener(Const.EVT_LEVEL_END, nextLevel, false, 0, true);
 			currLevel.playLevel();
+			
+			towerFactory.createFireTower(8, 6);
 		}
 		
+		/**
+		 * When a level finalize, call gamePlay again.
+		 */
 		private function nextLevel(e:Event) : void
 		{
-			(currLevel as MovieClip).removeEventListener(Const.EVT_LEVEL_END, nextLevel);
+			currLevel.removeEventListener(Const.EVT_LEVEL_END, nextLevel);
+			towerFactory.removeAllTowers();
 			gotoAndStop(Const.GAME_PLAY);
 		}
 

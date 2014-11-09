@@ -1,7 +1,6 @@
 package src
 {
 	import flash.display.MovieClip;
-	import flash.events.Event;
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	
@@ -12,28 +11,20 @@ package src
 	public class Slime extends Monster
 	{
 		private const myGold:Number = 100;
-		private const mySpeed:Number = 12;
-		private var gameStage:MovieClip;
-		private var checkpoints:Vector.<Point>;
-		private var currCheckpoint:Point;
-		private var reachedEnd:Boolean;
+		private const mySpeed:Number = 1;
+		private const myLife:Number = 20;
 		
 		public function Slime (gameStageRef:MovieClip, checkpointsRef:Vector.<Point>)
 		{
 			gameStage = gameStageRef;
+			checkpoints = checkpointsRef.concat();
 			speed = mySpeed;
 			gold = myGold;
-			
-			checkpoints = checkpointsRef.concat();
-			reachedEnd = false;
-			
-			// Set initial checkpoint.
-			currCheckpoint = checkpoints.pop();
+			life = myLife;
 			
 			drawSelf();
-			gameStage.addChild(this);
 			
-			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
+			activate();
 			
 			trace("Green Slime created");
 		}
@@ -48,51 +39,7 @@ package src
 			//colorTrans.alphaMultiplier = 0.5;
 			transform.colorTransform = colorTrans;
 		}
-		
-		private function update(e:Event) : void
-		{
-			moveSelf();
-		}
-		
-		/**
-		 * @usage Moves the monster through checkpoints.
-		 */
-		private function moveSelf() : void
-		{
-			// Does nothing if there is no more moves.
-			if (reachedEnd == true)
-			{
-				dispatchEvent(new Event(Const.EVT_END_REACHED_STR));
-				removeSelf();
-				return;
-			}
-			
-			// Move and get another checkpoint if needed.
-			if (move(currCheckpoint.x, currCheckpoint.y) == true)
-			{
-				// If there is no more checkpoints. stop moving.
-				if (checkpoints.length > 0)
-				{
-					currCheckpoint = checkpoints.pop();
-				}
-				else
-				{
-					reachedEnd = true;
-				}
-			}
-		}
-		
-		/**
-		 * @usage Remove event listeners and the monster from stage.
-		 */
-		private function removeSelf() : void
-		{
-			removeEventListener(Event.ENTER_FRAME, update);
-			if (gameStage.contains(this))
-			{
-				gameStage.removeChild(this);
-			}
-		}
+
 	}
 	
 }
