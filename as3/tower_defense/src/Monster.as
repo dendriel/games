@@ -20,7 +20,7 @@ package src
 		protected var life:Number = defaultLife;
 		protected var radius:Number = 1 * Const.TILE_R;
 		
-		protected var gameStage:MovieClip;
+		protected var gameStage:GameStage;
 		protected var checkpoints:Vector.<Point>;
 		protected var currCheckpoint:Point;
 		

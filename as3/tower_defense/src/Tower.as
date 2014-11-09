@@ -2,7 +2,9 @@ package src
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.utils.Timer;
 	
 	/**
 	 * ...
@@ -12,17 +14,22 @@ package src
 	{
 		private const defaultDamage:Number = 2;
 		private const defaultPrice:Number = 100;
-		private const defaultCoolDownMs:Number = 1000;
+		private const defaultShootCooldownMs:Number = 1000; // 1 sec.
 		private const defaultRange:Number = Const.TILE_R * 4; // more less 2 tiles away from itself.
 		
 		protected var damage:Number = defaultDamage;
 		protected var price:Number = defaultPrice;
-		protected var coolDownMs:Number = defaultCoolDownMs;
 		protected var range:Number = defaultRange;
 		protected var centeredPoint:Point;
 		
-		protected var gameStage:MovieClip;
+		protected var gameStage:GameStage;
 		protected var monsterFactory:MonsterFactory;
+		protected var bulletFactory:BulletFactory;
+		
+		// Shooting cooldown.
+		protected var shootCooldown:Number = defaultShootCooldownMs;
+		private var canShoot:Boolean;
+		private var shootCooldownTimer:Timer;
 		
 		/*******************************************************************************************
 		 * Public functions.
@@ -36,6 +43,12 @@ package src
 			centeredPoint = new Point();
 			centeredPoint.x = int(x + (width / 2) );
 			centeredPoint.y = int(y + (height / 2) );
+			
+			shootCooldownTimer = new Timer(shootCooldown, 1);
+			shootCooldownTimer.addEventListener(TimerEvent.TIMER, shootCooldownTimerHandler, false, 0, true);
+			canShoot = false;
+			// Let the tower wait its cooldown before its first shoot.
+			shootCooldownTimer.start();
 			
 			gameStage.addChild(this);
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
@@ -65,6 +78,11 @@ package src
 			checkRange();
 		}
 		
+		private function shootCooldownTimerHandler(e:TimerEvent) : void
+		{
+			canShoot = true;
+		}
+		
 		/**
 		 * Check if there is a monster in range. If positivo, shoot!
 		 */
@@ -87,7 +105,12 @@ package src
 		
 		private function fire(m:Monster) : void
 		{
-			//gameStage.addChild(new Bullet(gameStage, x, y));
+			if (canShoot == true)
+			{
+				bulletFactory.createFireBulletP(x, y, m);
+				canShoot = false;
+				shootCooldownTimer.start();
+			}
 		}
 	}
 	

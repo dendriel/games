@@ -11,10 +11,10 @@ package src
 	public class Slime extends Monster
 	{
 		private const myGold:Number = 100;
-		private const mySpeed:Number = 1;
+		private const mySpeed:Number = 5;
 		private const myLife:Number = 20;
 		
-		public function Slime (gameStageRef:MovieClip, checkpointsRef:Vector.<Point>)
+		public function Slime (gameStageRef:GameStage, checkpointsRef:Vector.<Point>)
 		{
 			gameStage = gameStageRef;
 			checkpoints = checkpointsRef.concat();
@@ -25,8 +25,6 @@ package src
 			drawSelf();
 			
 			activate();
-			
-			trace("Green Slime created");
 		}
 		
 		/**

@@ -10,10 +10,10 @@ package src
 	 */
 	public class MonsterFactory 
 	{
-		private var gameStage:MovieClip;
+		private var gameStage:GameStage;
 		private var monsterList:Vector.<Monster>;
 		
-		public function MonsterFactory (gameStageRef:MovieClip)
+		public function MonsterFactory (gameStageRef:GameStage)
 		{
 			gameStage = gameStageRef;
 			monsterList = new Vector.<Monster>;

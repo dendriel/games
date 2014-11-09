@@ -11,16 +11,19 @@ package src
 	{
 		private const myDamage:Number = 2;
 		private const myPrice:Number = 100;
-		private const myColddownMs:Number = 500;
-		private const myRange:Number = Const.TILE_R * 3;
+		//private const myColddownMs:Number = 500;
+		private const myColddownMs:Number = 100;
+		//private const myRange:Number = Const.TILE_R * 3;
+		private const myRange:Number = Const.TILE_R * 30;
 		
 		
-		public function FireTower(gameStageRef:MovieClip, monsterFactoryRef:MonsterFactory)
+		public function FireTower(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory, bulletFactoryRef:BulletFactory)
 		{
 			gameStage = gameStageRef;
+			bulletFactory = bulletFactoryRef;
 			damage = myDamage;
 			price = myPrice;
-			coolDownMs = myColddownMs;
+			shootCooldown = myColddownMs;
 			range = myRange;
 			
 			gameStageRef = gameStageRef;

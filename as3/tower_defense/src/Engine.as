@@ -9,7 +9,7 @@
 	
 	public class Engine extends MovieClip
 	{
-		private var gameStage:MovieClip;
+		private var gameStage:GameStage;
 		private var monsterFactory:MonsterFactory;
 		private var towerFactory:TowerFactory;
 		private var levels:Vector.<Level>;
@@ -18,7 +18,15 @@
 		public function Engine()
 		{
 			// Use a movie clip instead of directly accessing the stage.
-			gameStage = new MovieClip;
+			gameStage = new GameStage;
+			
+			// It starts 2 tiles above stage origin.
+			gameStage.origin.y = (Const.TILE_H * 2)
+			gameStage.origin.x = 0;
+			// It ends 2 tiles before stage.
+			gameStage.size.y = stage.stageHeight - (Const.TILE_H * 4);
+			gameStage.size.x = stage.stageWidth;
+			
 			stage.addChild(gameStage);
 
 			monsterFactory = new MonsterFactory(gameStage);

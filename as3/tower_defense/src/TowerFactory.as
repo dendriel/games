@@ -9,14 +9,16 @@ package src
 	 */
 	public class TowerFactory 
 	{
-		private var gameStage:MovieClip;
+		private var gameStage:GameStage;
 		private var monsterFactory:MonsterFactory;
 		private var towerList:Vector.<Tower>;
+		private var bulletFactory:BulletFactory;
 		
-		public function TowerFactory(gameStageRef:MovieClip, monsterFactoryRef:MonsterFactory)
+		public function TowerFactory(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory)
 		{
 			gameStage = gameStageRef;
 			monsterFactory = monsterFactoryRef;
+			bulletFactory = new BulletFactory(gameStage, monsterFactory);
 			towerList = new Vector.<Tower>;
 		}
 		
@@ -60,7 +62,7 @@ package src
 		 */
 		private function createFireTowerP(x:Number = 0, y:Number = 0) : void
 		{
-			var tower:FireTower = new FireTower(gameStage, monsterFactory);
+			var tower:FireTower = new FireTower(gameStage, monsterFactory, bulletFactory);
 			
 			tower.x = x;
 			tower.y = y;

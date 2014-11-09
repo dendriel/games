@@ -110,6 +110,58 @@ package src
 		{
 			return ((value < min)? min : value);
 		}
+		
+				
+		
+		/**
+		 * @usage Checks if px and py are outside the given bounds. x,y = origin; w,h = size.
+		 * @param px	x position of the point to check.
+		 * @param py	y position of the point to check.
+		 * @param ax	x position of the boundary.
+		 * @param ay	y position of the boundary.
+		 * @param aw	width of the boundary.
+		 * @param ah	heigth of the boundary.
+		 * @return		true if the point is outside the bounds; false otherwise.
+		 * 
+		 * For example (put values in x', y', w and h):
+		 * 
+		 * x axis
+		 * ^
+		 * |
+		 * +---------------------> y axis
+		 * |
+		 * |		x',y'
+		 * |		 +--------------+
+		 * |		 |		  o	    |
+		 * |		 |		px,py   |
+		 * |		 |			    |
+		 * |		 |			    |
+		 * |		 +--------------+
+		 * |				 (x'+w),(y'+ph)
+		 */
+		public static function checkOutsideBounds (px:Number, py:Number, ax:Number, ay:Number, aw:Number, ah:Number) : Boolean
+		{
+			/*
+			 * px cant be less than x point.
+			 * px cant be greater than or equal x2 point.
+			 */
+			if ( (px < ax) || (px >= (ax + aw) ) )
+			{
+				trace("out x");
+				return true;
+			}
+			/*
+			 * py cant be less than y point.
+			 * py cant be greater than or equal y2 point.
+			 */
+			else if ( (py < ay) || (py >= (ay + ah) ) )
+			{
+				trace("out y");
+				return true;
+			}
+			
+			return false;
+		}
 	}
 
 }
