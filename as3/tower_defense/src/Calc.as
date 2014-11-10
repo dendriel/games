@@ -37,6 +37,16 @@ package src
 			}*/
 		}
 		
+		/**
+		 * @usage Check if two circles are in a collision.
+		 * @param	p1x Circle 1 horizontal center position.
+		 * @param	p1y Circle 1 vertical center position.
+		 * @param	p1r Circle 1 radius.
+		 * @param	p2x Circle 2 horizontal center position.
+		 * @param	p2y Circle 2 vertical center position.
+		 * @param	p2r Circle 2 radius.
+		 * @return	true if the circles are colliding; false if not.
+		 */
 		public static function
 		hitRadialCheck(p1x:Number, p1y:Number, p1r:Number, p2x:Number, p2y:Number, p2r:Number)
 		: Boolean

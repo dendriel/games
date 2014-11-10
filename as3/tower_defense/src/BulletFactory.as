@@ -31,14 +31,13 @@ package src
 		  */
 		public function createFireBulletP(x:Number, y:Number, monsterRef:Monster) : void
 		{
-			var bullet:FireBullet = new FireBullet(gameStage, monsterRef);
+			var bullet:FireBullet = new FireBullet(gameStage, monsterFactory, monsterRef, x, y);
 			
-			bullet.addEventListener(Const.EVET_BULLET_REMOVED, removeBulletHandler, false, 0, true);
-			
-			bullet.x = x;
-			bullet.y = y;
+			bullet.addEventListener(Const.EVT_BULLET_REMOVED, removeBulletHandler, false, 0, true);
 			
 			bulletList.push(bullet);
+			
+			gameStage.addChild(bullet);
 		}
 		
 		/**
@@ -46,9 +45,13 @@ package src
 		 */
 		public function removeBulletHandler(e:Event) : void
 		{
-			e.currentTarget.removeEventListener(Const.EVET_BULLET_REMOVED, removeBulletHandler);
+			if (gameStage.contains(e.currentTarget as Bullet))
+			{
+				gameStage.removeChild(e.currentTarget as Bullet);
+			}
+			
+			e.currentTarget.removeEventListener(Const.EVT_BULLET_REMOVED, removeBulletHandler);
 			bulletList.splice(bulletList.indexOf(e.currentTarget), 1);
-			trace("Bullet removed! size: " + bulletList.length);
 		}
 		
 	}

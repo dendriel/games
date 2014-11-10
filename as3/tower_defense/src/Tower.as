@@ -96,7 +96,7 @@ package src
 				m = list.pop();
 				
 				if (Calc.hitRadialCheck(centeredPoint.x, centeredPoint.y, range,
-					m.centeredPoint.x, m.centeredPoint.y, m.getRadius()) == true)
+					m.getCenterX(), m.getCenterY(), m.getRadius()) == true)
 				{
 					fire(m);
 				}
@@ -107,7 +107,7 @@ package src
 		{
 			if (canShoot == true)
 			{
-				bulletFactory.createFireBulletP(x, y, m);
+				bulletFactory.createFireBulletP(centeredPoint.x, centeredPoint.y, m);
 				canShoot = false;
 				shootCooldownTimer.start();
 			}

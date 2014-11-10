@@ -69,14 +69,18 @@ package src
 			slime.x = x;
 			slime.y = y;
 			slime.addEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd, false, 0, true);
+			slime.addEventListener(Const.EVT_MONSTER_KILLED, monsterReachedEnd, false, 0, true);
 			
 			monsterList.push(slime as Monster);
 		}
 		
 		private function monsterReachedEnd(e:Event) : void
 		{
+			trace("monsters: " + monsterList.length);
 			e.currentTarget.removeEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd);
+			e.currentTarget.removeEventListener(Const.EVT_MONSTER_KILLED, monsterReachedEnd);
 			monsterList.splice(monsterList.indexOf(e.currentTarget), 1);
+			trace("monsters: " + monsterList.length);
 		}
 	}
 	

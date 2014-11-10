@@ -11,7 +11,7 @@ package src
 	public class Slime extends Monster
 	{
 		private const myGold:Number = 100;
-		private const mySpeed:Number = 5;
+		private const mySpeed:Number = 2;
 		private const myLife:Number = 20;
 		
 		public function Slime (gameStageRef:GameStage, checkpointsRef:Vector.<Point>)

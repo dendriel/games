@@ -24,7 +24,7 @@ package src
 		protected var checkpoints:Vector.<Point>;
 		protected var currCheckpoint:Point;
 		
-		public var centeredPoint:Point;
+		private var centeredPoint:Point;
 		
 		/*******************************************************************************************
 		 * Public functions.
@@ -43,9 +43,44 @@ package src
 			gameStage.addChild(this);
 		}
 		
+		/**
+		 * @return The monster's radius for collision detection.
+		 */
 		public function getRadius() : Number
 		{
 			return radius;
+		}
+		
+		/**
+		 * @return Centered point x.
+		 */
+		public function getCenterX() : Number
+		{
+			return centeredPoint.x;
+		}
+		
+		/**
+		 * @return Centered point y.
+		 */
+		public function getCenterY() : Number
+		{
+			return centeredPoint.y;
+		}
+		
+		/**
+		 * @usage Decrease the monster life by the specified value.
+		 * @param	value The value to be decreased from life (must be positive).
+		 */
+		public function takeHit(value:Number) : void
+		{
+			value = (value < 0)? (value * -1) : value;
+			life -= value;
+			
+			if (life <= 0)
+			{
+				dispatchEvent(new Event(Const.EVT_MONSTER_KILLED));
+				removeSelf();
+			}
 		}
 			
 		/*******************************************************************************************

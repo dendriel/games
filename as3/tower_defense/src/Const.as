@@ -20,9 +20,10 @@ package src
 		
 		// Events.
 		static const EVT_END_REACHED_STR:String = "end_reached";
+		static const EVT_MONSTER_KILLED:String = "monster_killed";
 		static const EVT_LEVEL_END:String = "end_level";
 		static const EVT_TOWER_REMOVED:String = "tower_removed";
-		static const EVET_BULLET_REMOVED:String = "bullet_removed";
+		static const EVT_BULLET_REMOVED:String = "bullet_removed";
 	}
 	
 }
