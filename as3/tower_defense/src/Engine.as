@@ -20,6 +20,9 @@
 			// Use a movie clip instead of directly accessing the stage.
 			gameStage = new GameStage;
 			
+			// Load sounds.
+			SoundHandler.init();
+			
 			// It starts 2 tiles above stage origin.
 			gameStage.origin.y = (Const.TILE_H * 2)
 			gameStage.origin.x = 0;
@@ -33,7 +36,7 @@
 			towerFactory = new TowerFactory(gameStage, monsterFactory);
 			levels = new Vector.<Level>;
 			
-			levels.push(new Level1(monsterFactory));
+			//levels.push(new Level1(monsterFactory));
 			levels.push(new Level2(monsterFactory));
 		}
 		

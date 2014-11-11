@@ -25,6 +25,8 @@ package src
 		protected var gameStage:GameStage;
 		protected var monsterFactory:MonsterFactory;
 		protected var bulletFactory:BulletFactory;
+		// Will acquire a target and shoot at it until it is out of range.
+		protected var target:Monster;
 		
 		// Shooting cooldown.
 		protected var shootCooldown:Number = defaultShootCooldownMs;
@@ -40,6 +42,7 @@ package src
 		 */
 		public function activate() : void
 		{
+			target = null;
 			centeredPoint = new Point();
 			centeredPoint.x = int(x + (width / 2) );
 			centeredPoint.y = int(y + (height / 2) );
@@ -91,6 +94,26 @@ package src
 			var list:Vector.<Monster> = monsterFactory.getMonsterListCopy();
 			var m:Monster;
 			
+			
+			// Check if target already locked in a target.
+			if (target != null)
+			{
+				// Check if target still exist and is inside range.
+				if ( (list.indexOf(target) != -1) &&
+						( Calc.hitRadialCheck(centeredPoint.x, centeredPoint.y, range,
+						  target.getCenterX(), target.getCenterY(), target.getRadius()) == true) )
+					{
+						fire(target);
+					}
+				// If target left the range or doesn't exist anymore.
+				else
+				{
+					target = null;
+				}
+				
+				return;
+			}
+			
 			while (list.length > 0)
 			{
 				m = list.pop();
@@ -98,6 +121,7 @@ package src
 				if (Calc.hitRadialCheck(centeredPoint.x, centeredPoint.y, range,
 					m.getCenterX(), m.getCenterY(), m.getRadius()) == true)
 				{
+					target = m;
 					fire(m);
 				}
 			}
@@ -107,6 +131,7 @@ package src
 		{
 			if (canShoot == true)
 			{
+				SoundHandler.playFire();
 				bulletFactory.createFireBulletP(centeredPoint.x, centeredPoint.y, m);
 				canShoot = false;
 				shootCooldownTimer.start();
