@@ -21,7 +21,7 @@
 			gameStage = new GameStage;
 			
 			// Load sounds.
-			SoundHandler.init();
+			SoundLoader.init();
 			
 			// It starts 2 tiles above stage origin.
 			gameStage.origin.y = (Const.TILE_H * 2)

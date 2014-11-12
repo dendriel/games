@@ -131,7 +131,7 @@ package src
 		{
 			if (canShoot == true)
 			{
-				SoundHandler.playFire();
+				SoundLoader.playFire();
 				bulletFactory.createFireBulletP(centeredPoint.x, centeredPoint.y, m);
 				canShoot = false;
 				shootCooldownTimer.start();
