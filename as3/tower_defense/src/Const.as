@@ -14,9 +14,9 @@ package src
 		static const GAME_WIN:String = "gameWin";
 		
 		// Values.
-		static const TILE_W:Number = 32;	//!< Tile width in pixels.
-		static const TILE_H:Number = 32;	//!< Tile heigth in pixels.
-		static const TILE_R:Number = 16;	//!< Tile radius.
+		static const TILE_W:Number = 64;	//!< Tile width in pixels.
+		static const TILE_H:Number = 64;	//!< Tile heigth in pixels.
+		static const TILE_R:Number = 32;	//!< Tile radius.
 		
 		// Events.
 		static const EVT_END_REACHED_STR:String = "end_reached";

@@ -36,8 +36,9 @@
 			towerFactory = new TowerFactory(gameStage, monsterFactory);
 			levels = new Vector.<Level>;
 			
-			//levels.push(new Level1(monsterFactory));
+			levels.push(new Level1(monsterFactory));
 			levels.push(new Level2(monsterFactory));
+			levels.push(new Level3(monsterFactory));
 		}
 		
 		public function gameIntro() : void
@@ -79,7 +80,8 @@
 			currLevel.addEventListener(Const.EVT_LEVEL_END, nextLevel, false, 0, true);
 			currLevel.playLevel();
 			
-			towerFactory.createFireTower(8, 6);
+			towerFactory.createFireTower(4, 2);
+			towerFactory.createMoonTower(4, 6);
 		}
 		
 		/**

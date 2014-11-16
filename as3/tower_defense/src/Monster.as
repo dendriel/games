@@ -18,7 +18,7 @@ package src
 		protected var gold:Number = defaultGold;
 		protected var speed:Number = defaultSpeed;
 		protected var life:Number = defaultLife;
-		protected var radius:Number = 1 * Const.TILE_R;
+		protected var radius:Number = 1 * (Const.TILE_R / 2); // less radius so the missile enter the monster.
 		
 		protected var gameStage:GameStage;
 		protected var checkpoints:Vector.<Point>;
