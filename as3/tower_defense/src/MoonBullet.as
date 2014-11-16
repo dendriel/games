@@ -6,12 +6,12 @@ package src
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class FireBullet extends Bullet
+	public class MoonBullet extends Bullet 
 	{
-		private const myDamage:Number = Const.FIRE_BULLET_DMG;
-		private const mySpeed:Number = Const.FIRE_BULLET_SPEED;
+		private const myDamage:Number = Const.MOON_BULLET_DMG;
+		private const mySpeed:Number = Const.MOON_BULLET_SPEED;
 		
-		public function FireBullet(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory, targetRef:Monster, px:Number, py:Number)
+		public function MoonBullet(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory, targetRef:Monster, px:Number, py:Number)
 		{
 			targetPos = new Point();
 			
@@ -22,14 +22,14 @@ package src
 			targetPos.x = targetRef.getCenterX();
 			targetPos.y = targetRef.getCenterY();
 			
-			internalName = Const.FIRE_BULLET;
+			internalName = Const.MOON_BULLET;
 			gameStage = gameStageRef;
 			monsterFactory = monsterFactoryRef;
 			damage = myDamage;
 			speed = mySpeed;
 			
 			activate();
-		}
+		}		
 	}
 	
 }

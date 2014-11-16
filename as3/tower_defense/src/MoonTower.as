@@ -7,19 +7,19 @@ package src
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class FireTower extends Tower 
+	public class MoonTower extends Tower 
 	{
-		private const myPrice:Number = Const.FIRE_TOWER_PRICE;
-		private const myCooldownMs:Number = Const.FIRE_TOWER_COOLDOWN_MS;
-		private const myRange:Number = Const.FIRE_TOWER_RANGE;
-		private const myBullet:String = Const.FIRE_BULLET;
+		private const myPrice:Number = Const.MOON_TOWER_PRICE;
+		private const myColddownMs:Number = Const.MOON_TOWER_COOLDOWN_MS;
+		private const myRange:Number = Const.MOON_TOWER_RANGE;
+		private const myBullet:String = Const.MOON_BULLET;
 		
-		public function FireTower(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory, bulletFactoryRef:BulletFactory)
+		public function MoonTower(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory, bulletFactoryRef:BulletFactory)
 		{
 			gameStage = gameStageRef;
 			bulletFactory = bulletFactoryRef;
 			price = myPrice;
-			shootCooldown = myCooldownMs;
+			shootCooldown = myColddownMs;
 			range = myRange;
 			bullet = myBullet;
 			

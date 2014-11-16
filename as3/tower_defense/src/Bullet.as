@@ -10,11 +10,13 @@ package src
 	 */
 	public class Bullet extends MovieClip
 	{
+		private const defaultInternalName:String = "Default Bullet";
 		private const defaultDamage:Number = 2;
 		private const defaultSpeed:Number = 4;
 		
 		private var radius:Number;
 		
+		protected var internalName:String = defaultInternalName;
 		protected var speed:Number = defaultSpeed;
 		protected var damage:Number = defaultDamage;
 		

@@ -12,12 +12,11 @@ package src
 	 */
 	public class Tower extends MovieClip
 	{
-		private const defaultDamage:Number = 2;
 		private const defaultPrice:Number = 100;
 		private const defaultShootCooldownMs:Number = 1000; // 1 sec.
 		private const defaultRange:Number = Const.TILE_R * 4; // more less 2 tiles away from itself.
 		
-		protected var damage:Number = defaultDamage;
+		protected var bullet:String = Const.FIRE_BULLET;
 		protected var price:Number = defaultPrice;
 		protected var range:Number = defaultRange;
 		protected var centeredPoint:Point;
@@ -132,7 +131,15 @@ package src
 			if (canShoot == true)
 			{
 				SoundLoader.playFire();
-				bulletFactory.createFireBulletP(centeredPoint.x, centeredPoint.y, m);
+				if (bullet == Const.FIRE_BULLET)
+				{
+					bulletFactory.createFireBulletP(centeredPoint.x, centeredPoint.y, m);
+				}
+				// moon bullet.
+				else
+				{
+					bulletFactory.createMoonBulletP(centeredPoint.x, centeredPoint.y, m);
+				}
 				canShoot = false;
 				shootCooldownTimer.start();
 			}

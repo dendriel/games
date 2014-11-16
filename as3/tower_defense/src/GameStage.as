@@ -1,6 +1,7 @@
 package src
 {
 	import flash.display.MovieClip;
+	import flash.display.Stage;
 	import flash.geom.Point;
 	
 	/**
@@ -13,11 +14,13 @@ package src
 	{
 		public var origin:Point;
 		public var size:Point;
+		public var stageR:Stage
 		
-		public function GameStage()
+		public function GameStage(stageRef:Stage)
 		{
 			origin = new Point;
 			size = new Point;
+			stageR = stageRef;
 		}
 	}
 	

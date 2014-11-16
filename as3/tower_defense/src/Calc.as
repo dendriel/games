@@ -2,6 +2,7 @@ package src
 {
 	import flash.geom.Matrix;
 	import flash.display.Sprite;
+	import flash.geom.Point;
 	
 	/**
 	 * ...
@@ -67,6 +68,28 @@ package src
 			var test:Number = Math.pow(chanceDec, frameRate-1);
 			//trace ("test: " + test);
 			return (Math.random() < Math.pow(chanceDec, (frameRate-1)));
+		}
+		
+		/**
+		 * @usage Transform a pixel coordinate into its corresponding tile coordinate. For example,
+		 * a map sized 640x640 pixels, with tile size of 32x32, have 20 tiles rows and 20 columns.
+		 * (20x20 tiles of 32x32 pixels each). The point of 630x630 is inside the tile in the
+		 * position 19x19 (starting from 0 to 19 [20 tiles]).
+		 * @param px	Horizontal position of the point.
+		 * @param py	Vertical position of the point.
+		 * @param tw	Tile width.
+		 * @param th	Tile weigth.
+		 * 
+		 * @return The tile position (inside a Point object).
+		 */
+		public static function coorToTile(px:Number, py:Number, tw:Number, th:Number) : Point
+		{
+			var tile_h:int = px / tw;
+			var tile_v:int = py / th;
+			
+			trace(tile_h, tile_v);
+			
+			return ( new Point(tile_h, tile_v) );
 		}
 		
 		/**

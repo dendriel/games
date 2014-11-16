@@ -4,6 +4,7 @@
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import src.com.senocular.utils.KeyObject;
 	
 	[SWF(width="640", height="640", frameRate="30", backgroundColor="#00FFFF")] //set project properties
 	
@@ -12,16 +13,21 @@
 		private var gameStage:GameStage;
 		private var monsterFactory:MonsterFactory;
 		private var towerFactory:TowerFactory;
+		private var menuHandler:MenuUIHandler;
+		private var key:KeyObject;
 		private var levels:Vector.<Level>;
 		private var currLevel:Level;
 
 		public function Engine()
 		{
 			// Use a movie clip instead of directly accessing the stage.
-			gameStage = new GameStage;
+			// As i'm creating objects directly on stage.. we need to take care of it when needed. :/
+			gameStage = new GameStage(stage);
 			
 			// Load sounds.
 			SoundLoader.init();
+			
+			key = new KeyObject(stage);
 			
 			// It starts 2 tiles above stage origin.
 			gameStage.origin.y = (Const.TILE_H * 2)
@@ -71,6 +77,12 @@
 			
 		}
 		
+		public function loadMenu() : void
+		{
+			menuHandler = new MenuUIHandler(gameStage, mcMenuUI, key, towerFactory);
+			menuHandler.loadGameUI();
+		}
+		
 		/**
 		 * Start the level in currLevel variable.
 		 */
@@ -80,8 +92,8 @@
 			currLevel.addEventListener(Const.EVT_LEVEL_END, nextLevel, false, 0, true);
 			currLevel.playLevel();
 			
-			towerFactory.createFireTower(4, 2);
-			towerFactory.createMoonTower(4, 6);
+			towerFactory.createMoonTower(4, 2);
+			towerFactory.createFireTower(4, 6);
 		}
 		
 		/**

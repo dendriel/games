@@ -25,13 +25,29 @@ package src
 		 */
 		 
 		 /**
-		  * @usage Create a bullet at the given position (in pixels).
+		  * @usage Create a fire bullet at the given position (in pixels).
 		  * @param	x Horizontal position (in pixels).
 		  * @param	y Vertical position (in pixels).
 		  */
 		public function createFireBulletP(x:Number, y:Number, monsterRef:Monster) : void
 		{
 			var bullet:FireBullet = new FireBullet(gameStage, monsterFactory, monsterRef, x, y);
+			
+			bullet.addEventListener(Const.EVT_BULLET_REMOVED, removeBulletHandler, false, 0, true);
+			
+			bulletList.push(bullet);
+			
+			gameStage.addChild(bullet);
+		}
+		
+		 /**
+		  * @usage Create a moon bullet at the given position (in pixels).
+		  * @param	x Horizontal position (in pixels).
+		  * @param	y Vertical position (in pixels).
+		  */
+		public function createMoonBulletP(x:Number, y:Number, monsterRef:Monster) : void
+		{
+			var bullet:MoonBullet = new MoonBullet(gameStage, monsterFactory, monsterRef, x, y);
 			
 			bullet.addEventListener(Const.EVT_BULLET_REMOVED, removeBulletHandler, false, 0, true);
 			
