@@ -178,6 +178,11 @@ package src
 			centeredPoint.x = int(x + (width / 2) );
 			centeredPoint.y = int(y + (height / 2) );
 		}
+		
+		public function getGold():Number 
+		{
+			return gold;
+		}
 	}
 	
 }

@@ -12,11 +12,13 @@ package src
 	{
 		private var gameStage:GameStage;
 		private var monsterList:Vector.<Monster>;
+		private var score:ScoreHUD;
 		
-		public function MonsterFactory (gameStageRef:GameStage)
+		public function MonsterFactory (gameStageRef:GameStage, scoreR:ScoreHUD)
 		{
 			gameStage = gameStageRef;
 			monsterList = new Vector.<Monster>;
+			score = scoreR;
 		}
 		
 		/*******************************************************************************************
@@ -69,18 +71,30 @@ package src
 			slime.x = x;
 			slime.y = y;
 			slime.addEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd, false, 0, true);
-			slime.addEventListener(Const.EVT_MONSTER_KILLED, monsterReachedEnd, false, 0, true);
+			slime.addEventListener(Const.EVT_MONSTER_KILLED, monsterKilled, false, 0, true);
 			
 			monsterList.push(slime as Monster);
 		}
 		
+		private function monsterKilled(e:Event) : void
+		{
+			var m:Monster = e.currentTarget as Monster;
+			
+			score.gold = m.getGold();
+			
+			removeMonster(m);
+		}
+		
 		private function monsterReachedEnd(e:Event) : void
 		{
-			trace("monsters: " + monsterList.length);
-			e.currentTarget.removeEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd);
-			e.currentTarget.removeEventListener(Const.EVT_MONSTER_KILLED, monsterReachedEnd);
-			monsterList.splice(monsterList.indexOf(e.currentTarget), 1);
-			trace("monsters: " + monsterList.length);
+			removeMonster(e.currentTarget as Monster);
+		}
+		
+		private function removeMonster(m:Monster) : void
+		{
+			m.removeEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd);
+			m.removeEventListener(Const.EVT_MONSTER_KILLED, monsterReachedEnd);
+			monsterList.splice(monsterList.indexOf(m), 1);
 		}
 	}
 	

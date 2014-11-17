@@ -87,8 +87,6 @@ package src
 			var tile_h:int = px / tw;
 			var tile_v:int = py / th;
 			
-			trace(tile_h, tile_v);
-			
 			return ( new Point(tile_h, tile_v) );
 		}
 		
@@ -180,7 +178,6 @@ package src
 			 */
 			if ( (px < ax) || (px >= (ax + aw) ) )
 			{
-				trace("out x");
 				return true;
 			}
 			/*
@@ -189,7 +186,6 @@ package src
 			 */
 			else if ( (py < ay) || (py >= (ay + ah) ) )
 			{
-				trace("out y");
 				return true;
 			}
 			

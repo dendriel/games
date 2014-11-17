@@ -18,6 +18,7 @@ package src
 		static const TILE_W:Number = 64;	//!< Tile width in pixels.
 		static const TILE_H:Number = 64;	//!< Tile heigth in pixels.
 		static const TILE_R:Number = 32;	//!< Tile radius.
+		static const DEF_GOLD:Number = 100;
 		
 		// Bounds.
 		static const SCREEN_SIZE:Point = new Point(640, 640);
@@ -32,6 +33,7 @@ package src
 		static const EVT_LEVEL_END:String = "end_level";
 		static const EVT_TOWER_REMOVED:String = "tower_removed";
 		static const EVT_BULLET_REMOVED:String = "bullet_removed";
+		static const EVT_NEXT_WAVE:String = "next_wave";
 		
 		// Towers information.
 		static const MAX_COOLDOWN_MS:Number = 5000;

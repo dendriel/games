@@ -17,6 +17,7 @@
 		private var key:KeyObject;
 		private var levels:Vector.<Level>;
 		private var currLevel:Level;
+		private var score:ScoreHUD;
 
 		public function Engine()
 		{
@@ -38,13 +39,16 @@
 			
 			stage.addChild(gameStage);
 
-			monsterFactory = new MonsterFactory(gameStage);
+			score = new ScoreHUD;
+			monsterFactory = new MonsterFactory(gameStage, score);
 			towerFactory = new TowerFactory(gameStage, monsterFactory);
 			levels = new Vector.<Level>;
+			menuHandler = new MenuUIHandler(gameStage, key, towerFactory);
 			
 			levels.push(new Level1(monsterFactory));
 			levels.push(new Level2(monsterFactory));
 			levels.push(new Level3(monsterFactory));
+
 		}
 		
 		public function gameIntro() : void
@@ -57,6 +61,8 @@
 			// While we still have levels left.
 			if ( levels.length > 0)
 			{
+				score.level++;
+				score.resetWave();
 				currLevel = levels.pop();
 				loadLevel();
 			}
@@ -79,8 +85,16 @@
 		
 		public function loadMenu() : void
 		{
-			menuHandler = new MenuUIHandler(gameStage, mcMenuUI, key, towerFactory);
-			menuHandler.loadGameUI();
+			trace("loadMenu");
+			menuHandler.loadGameUI(mcMenuUI);
+			
+			score.load(menuHandler);
+		}
+		
+		private function nextWave(e:Event) : void
+		{
+			trace("increase wave");
+			score.wave = 1;
 		}
 		
 		/**
@@ -90,10 +104,10 @@
 		{
 			gotoAndStop(currLevel.getMapLabel());
 			currLevel.addEventListener(Const.EVT_LEVEL_END, nextLevel, false, 0, true);
+			currLevel.addEventListener(Const.EVT_NEXT_WAVE, nextWave, false, 0, true);
 			currLevel.playLevel();
-			
-			towerFactory.createMoonTower(4, 2);
-			towerFactory.createFireTower(4, 6);
+			gameStage.stageR.stageFocusRect = false;
+			gameStage.stageR.focus = gameStage;
 		}
 		
 		/**
@@ -101,8 +115,10 @@
 		 */
 		private function nextLevel(e:Event) : void
 		{
+			currLevel.removeEventListener(Const.EVT_NEXT_WAVE, nextWave);
 			currLevel.removeEventListener(Const.EVT_LEVEL_END, nextLevel);
 			towerFactory.removeAllTowers();
+			menuHandler.unloadGameUI();
 			gotoAndStop(Const.GAME_PLAY);
 		}
 

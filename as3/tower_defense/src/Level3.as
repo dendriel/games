@@ -34,8 +34,8 @@ package src
 			
 			// Fill waves.
 			waves = new Vector.<MonsterWave>;
-			waves.push(new MonsterWave(8, startPoint, chkp, offset),
-					new MonsterWave(4, startPoint, chkp, offset),
+			waves.push(//new MonsterWave(8, startPoint, chkp, offset),
+					//new MonsterWave(4, startPoint, chkp, offset),
 					new MonsterWave(2, startPoint, chkp, offset),
 					new MonsterWave(1, startPoint, chkp, offset));
 		}

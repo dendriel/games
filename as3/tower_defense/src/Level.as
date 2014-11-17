@@ -42,6 +42,7 @@ package src
 				if (waves.length > 0)
 				{
 					currWave = waves.pop();
+					dispatchEvent(new Event(Const.EVT_NEXT_WAVE));
 					triggerWave();
 				}
 				// No more waves :-(
