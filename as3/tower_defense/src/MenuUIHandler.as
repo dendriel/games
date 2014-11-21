@@ -155,13 +155,15 @@ package src
 		
 		private function handleSelectedTower(tower:MovieClip) : void
 		{
-			if (selectedTower == null)
+			// if there is no selected tower AND the tower parameter is not null.
+			if ( (selectedTower == null) && (tower != null) )
 			{
 				selectedTower = tower;
 				gameStage.addChildAt(selectedTower, gameStage.numChildren);
 				Mouse.hide();
 			}
-			else
+			// if the tower parameter is null means that this is a stage change.
+			else if (selectedTower != null)
 			{
 				if (gameStage.contains(selectedTower))
 				{
