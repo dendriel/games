@@ -15,10 +15,12 @@ package src
 		private const defaultPrice:Number = 100;
 		private const defaultShootCooldownMs:Number = 1000; // 1 sec.
 		private const defaultRange:Number = Const.TILE_R * 4; // more less 2 tiles away from itself.
+		private const defaultSoundType:Number = Const.FIRE_SOUND;
 		
 		protected var bullet:String = Const.FIRE_BULLET;
 		protected var price:Number = defaultPrice;
 		protected var range:Number = defaultRange;
+		protected var soundType:Number = defaultSoundType;
 		protected var centeredPoint:Point;
 		
 		protected var gameStage:GameStage;
@@ -130,7 +132,7 @@ package src
 		{
 			if (canShoot == true)
 			{
-				SoundLoader.playFire();
+				SoundLoader.play(soundType);
 				if (bullet == Const.FIRE_BULLET)
 				{
 					bulletFactory.createFireBulletP(centeredPoint.x, centeredPoint.y, m);

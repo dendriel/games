@@ -13,6 +13,7 @@ package src
 		private const myCooldownMs:Number = Const.FIRE_TOWER_COOLDOWN_MS;
 		private const myRange:Number = Const.FIRE_TOWER_RANGE;
 		private const myBullet:String = Const.FIRE_BULLET;
+		private const mySoundType:Number = Const.FIRE_SOUND;
 		
 		public function FireTower(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory, bulletFactoryRef:BulletFactory)
 		{
@@ -22,6 +23,7 @@ package src
 			shootCooldown = myCooldownMs;
 			range = myRange;
 			bullet = myBullet;
+			soundType = mySoundType;
 			
 			gameStageRef = gameStageRef;
 			monsterFactory = monsterFactoryRef;

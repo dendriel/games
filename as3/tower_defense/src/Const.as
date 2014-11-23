@@ -8,7 +8,7 @@ package src
 	 * @author Vitor Rozsa
 	 */
 	public class Const 
-	{
+	{		
 		// Frame labels.
 		static const GAME_INTRO:String = "gameIntro";
 		static const GAME_PLAY:String = "gamePlay";
@@ -65,6 +65,10 @@ package src
 		static const MOON_BULLET:String = "Moon Bullet";
 		static const MOON_BULLET_DMG:Number = 7;
 		static const MOON_BULLET_SPEED:Number = 10;
+		
+		// Sounds.
+		static const FIRE_SOUND:Number = 0;
+		static const FIRE2_SOUND:Number = 1;
 	}
 	
 }

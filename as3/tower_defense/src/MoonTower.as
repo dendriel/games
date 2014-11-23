@@ -13,6 +13,7 @@ package src
 		private const myColddownMs:Number = Const.MOON_TOWER_COOLDOWN_MS;
 		private const myRange:Number = Const.MOON_TOWER_RANGE;
 		private const myBullet:String = Const.MOON_BULLET;
+		private const mySoundType:Number = Const.FIRE2_SOUND;
 		
 		public function MoonTower(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory, bulletFactoryRef:BulletFactory)
 		{
@@ -22,6 +23,7 @@ package src
 			shootCooldown = myColddownMs;
 			range = myRange;
 			bullet = myBullet;
+			soundType = mySoundType;
 			
 			gameStageRef = gameStageRef;
 			monsterFactory = monsterFactoryRef;

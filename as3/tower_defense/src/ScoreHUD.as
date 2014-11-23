@@ -88,6 +88,11 @@ package src
 		
 		public function set gold(value:Number):void 
 		{
+			if (value > 0)
+			{
+				SoundLoader.playCoin();
+			}
+			
 			_gold += value;
 			if (menuHandler != null)
 			{
