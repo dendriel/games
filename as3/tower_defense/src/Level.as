@@ -16,6 +16,11 @@ package src
 		protected var monsterFactory:MonsterFactory;
 		// Fill with monster waves.
 		protected var waves:Vector.<MonsterWave>;
+		
+		protected var placeArea:MovieClip;
+		
+		private var placeAreaStage:Vector.<Number>;
+		
 		// Internal variable to hold current wave.
 		private var currWave:MonsterWave;
 		
@@ -31,10 +36,82 @@ package src
 		
 		public function playLevel() : void
 		{
+			placeAreaStage = new Vector.<Number>;
+			initPlaceArea();
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
 		}
 		
-		public function update(e:Event) : void
+		public function getPlaceAreaRef() : MovieClip
+		{
+			return placeArea;
+		}
+		
+		public function initPlaceArea() : void
+		{
+			for (var i = 0;  i < placeArea.numChildren; i++)
+			{
+				var p = placeArea.getChildAt(i);
+				p.gotoAndStop(Const.INVISIBLE_AREA_LABEL);
+				placeAreaStage.push(Const.EMPTY_AREA);
+			}
+		}
+		
+		public function displayPlaceArea() : void
+		{
+			for (var i = 0;  i < placeArea.numChildren; i++)
+			{
+				var p = placeArea.getChildAt(i);
+				if (placeAreaStage[i] == Const.EMPTY_AREA)
+				{
+					p.gotoAndStop(Const.EMPTY_AREA_LABEL);
+				}
+				else {
+					p.gotoAndStop(Const.OCCUPY_AREA_LABEL);
+				}
+			}
+		}
+		
+		public function hidePlaceArea() : void
+		{
+			for (var i = 0;  i < placeArea.numChildren; i++)
+			{
+				var p = placeArea.getChildAt(i);
+				p.gotoAndStop(Const.INVISIBLE_AREA_LABEL);
+			}
+		}
+		
+		/**
+		 * @usage Try to occupy the given area.
+		 * @return true if the area cold be occuped; false if the area is already taken or is invalid.
+		 */
+		public function occupyArea(x:Number, y:Number) : Boolean
+		{
+			var areaFound:Boolean = false;
+			
+			for (var i = 0;  i < placeArea.numChildren; i++)
+			{
+				// Find what is the area we are trying to occupy.
+				var p = placeArea.getChildAt(i);
+				
+				if (Calc.checkInsideBounds(x, y, p.x, p.y, p.width, p.height) == true)
+				{
+					if (placeAreaStage[i] == Const.OCCUPY_AREA)
+					{
+						// The area was already occupied.
+						return false;
+					}
+					
+					placeAreaStage[i] = Const.OCCUPY_AREA;
+					areaFound = true;
+				}
+				
+			}
+			
+			
+			return areaFound;
+		}
+		
+		private function update(e:Event) : void
 		{			
 			if (monsterFactory.getMonsterListSize() == 0)
 			{

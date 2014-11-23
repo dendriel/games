@@ -18,7 +18,14 @@ package src
 		static const TILE_W:Number = 64;	//!< Tile width in pixels.
 		static const TILE_H:Number = 64;	//!< Tile heigth in pixels.
 		static const TILE_R:Number = 32;	//!< Tile radius.
-		static const DEF_GOLD:Number = 100;
+		static const DEF_GOLD:Number = 1000;
+		
+		// Placing area.
+		static const EMPTY_AREA:Number = 0;
+		static const OCCUPY_AREA:Number = 1;
+		static const EMPTY_AREA_LABEL:String = "empty";
+		static const OCCUPY_AREA_LABEL:String = "occupy";
+		static const INVISIBLE_AREA_LABEL:String = "invisible";
 		
 		// Bounds.
 		static const SCREEN_SIZE:Point = new Point(640, 640);

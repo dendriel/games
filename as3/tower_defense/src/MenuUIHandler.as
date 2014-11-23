@@ -13,6 +13,8 @@ package src
 	/**
 	 * ...
 	 * @author Vitor Rozsa
+	 * 
+	 * This code ins't very good.. some entities are accessed from here, others are accessed via the Engine..
 	 */
 	public class MenuUIHandler extends MovieClip
 	{
@@ -22,6 +24,7 @@ package src
 		private var key:KeyObject;
 		private var towerFactory:TowerFactory;
 		private var score:ScoreHUD;
+		private var level:Level;
 		
 		public function MenuUIHandler(gameStageRef:GameStage, keyRef:KeyObject, towerFactoryRef:TowerFactory, scoreRef:ScoreHUD)
 		{
@@ -31,10 +34,11 @@ package src
 			score = scoreRef;
 		}
 		
-		public function loadGameUI(menu:MenuUI) : void
+		public function loadGameUI(menu:MenuUI, levelR:Level) : void
 		{
 			selectedTower = null;
 			menuUI = menu;
+			level = levelR;
 			
 			// Towers selection.
 			menu.btnFireTower.addEventListener(MouseEvent.CLICK, fireTowerClickHandler, false, 0, true);
@@ -74,6 +78,9 @@ package src
 			// My engine weakeness. Adding objects into stage directly (through adobe flash cs6).
 			gameStage.stageR.removeEventListener(MouseEvent.CLICK, mouseClickHandler);
 			
+			level.hidePlaceArea();
+			level = null;
+			
 			// Remove selected tower if it exists.
 			handleSelectedTower(null);
 		}
@@ -108,13 +115,21 @@ package src
 				return;
 			}
 			
-			// Check if is a valid point.
-			if ( (mouseY >= Const.MENU_UPPER_BAR_SIZE.y) &&
-				(mouseY < Const.MENU_BOTTOM_BAR_POS.y) )
-				{
-					placeTower();
-					handleSelectedTower(null);
-				}
+			// Check if is an invalid point.
+			if ( (mouseY < Const.MENU_UPPER_BAR_SIZE.y) || (mouseY >= Const.MENU_BOTTOM_BAR_POS.y) )
+			{
+				return;
+			}
+			
+			// Check if the area is free. If true, occupy it.
+			if (level.occupyArea(mouseX, mouseY) == false)
+			{
+				return;
+			}
+			
+			placeTower();
+			handleSelectedTower(null);
+			level.hidePlaceArea();
 		}
 		
 		private function placeTower() : void
@@ -143,6 +158,7 @@ package src
 				if ( (selectedTower != null) && gameStage.contains(selectedTower) )
 				{
 					handleSelectedTower(null);
+					level.hidePlaceArea();
 				}
 			}
 			
@@ -184,6 +200,7 @@ package src
 			}
 			
 			handleSelectedTower(new FireTowerImgUI);
+			level.displayPlaceArea();
 		}
 		
 		private function fireTowerRollOverHandler(e:MouseEvent) : void
@@ -205,6 +222,7 @@ package src
 			}
 			
 			handleSelectedTower(new MoonTowerImgUI);
+			level.displayPlaceArea();
 		}
 		
 		private function moonTowerRollOverHandler(e:MouseEvent) : void

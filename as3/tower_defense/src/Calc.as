@@ -191,6 +191,23 @@ package src
 			
 			return false;
 		}
+		
+		/**
+		 * @usage Check if a point is inside the given "box". (the same as checkOutsideBounds, but inverse its return value).
+		 * Check the function "checkOutsideBounds" for more information.
+		 * @param px	x position of the point to check.
+		 * @param py	y position of the point to check.
+		 * @param ax	x position of the boundary.
+		 * @param ay	y position of the boundary.
+		 * @param aw	width of the boundary.
+		 * @param ah	heigth of the boundary.
+		 * @return		true if the point is inside the bounds; false otherwise.
+		 */
+		public static function checkInsideBounds (px:Number, py:Number, ax:Number, ay:Number, aw:Number, ah:Number) : Boolean
+		{
+			return !(checkOutsideBounds(px, py, ax, ay, aw, ah));
+		}
+		
 	}
 
 }

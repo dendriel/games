@@ -85,15 +85,13 @@
 		
 		public function loadMenu() : void
 		{
-			trace("loadMenu");
-			menuHandler.loadGameUI(mcMenuUI);
+			menuHandler.loadGameUI(mcMenuUI, currLevel);
 			
 			score.load(menuHandler);
 		}
 		
 		private function nextWave(e:Event) : void
 		{
-			trace("increase wave");
 			score.wave = 1;
 		}
 		
@@ -106,6 +104,7 @@
 			currLevel.addEventListener(Const.EVT_LEVEL_END, nextLevel, false, 0, true);
 			currLevel.addEventListener(Const.EVT_NEXT_WAVE, nextWave, false, 0, true);
 			currLevel.playLevel();
+			gameStage.addChild(currLevel.getPlaceAreaRef());
 			gameStage.stageR.stageFocusRect = false;
 			gameStage.stageR.focus = gameStage;
 		}
@@ -118,7 +117,14 @@
 			currLevel.removeEventListener(Const.EVT_NEXT_WAVE, nextWave);
 			currLevel.removeEventListener(Const.EVT_LEVEL_END, nextLevel);
 			towerFactory.removeAllTowers();
+			
+			if (gameStage.contains(currLevel.getPlaceAreaRef()))
+			{
+				gameStage.removeChild(currLevel.getPlaceAreaRef());
+			}
+			
 			menuHandler.unloadGameUI();
+			
 			gotoAndStop(Const.GAME_PLAY);
 		}
 
