@@ -66,7 +66,7 @@ package src
 		 */
 		private function createSlimeP(x:Number = 0, y:Number = 0, checkpoints:Vector.<Point> = null) : void
 		{
-			var slime:Slime = new Slime(gameStage, checkpoints);
+			var slime:Slime = new Slime(checkpoints);
 			
 			slime.x = x;
 			slime.y = y;
@@ -74,6 +74,9 @@ package src
 			slime.addEventListener(Const.EVT_MONSTER_KILLED, monsterKilled, false, 0, true);
 			
 			monsterList.push(slime as Monster);
+			trace("gameStage child: " + gameStage.numChildren);
+			trace("stage child: " + gameStage.stageR.numChildren);
+			gameStage.addChildAt(slime, 1);
 		}
 		
 		private function monsterKilled(e:Event) : void
@@ -82,11 +85,20 @@ package src
 			
 			score.gold = m.getGold();
 			
+			if (gameStage.contains(m))
+			{
+				gameStage.removeChild(m);
+			}
+			
 			removeMonster(m);
 		}
 		
 		private function monsterReachedEnd(e:Event) : void
 		{
+			if (gameStage.contains(e.currentTarget as Monster))
+			{
+				gameStage.removeChild(e.currentTarget as Monster);
+			}
 			removeMonster(e.currentTarget as Monster);
 		}
 		

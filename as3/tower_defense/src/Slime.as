@@ -10,13 +10,12 @@ package src
 	 */
 	public class Slime extends Monster
 	{
-		private const myGold:Number = 100;
-		private const mySpeed:Number = 2;
-		private const myLife:Number = 15;
+		private const myGold:Number = Const.SLIME_GOLD;
+		private const mySpeed:Number = Const.SLIME_SPEED;
+		private const myLife:Number = Const.SLIME_LIFE;
 		
-		public function Slime (gameStageRef:GameStage, checkpointsRef:Vector.<Point>)
+		public function Slime (checkpointsRef:Vector.<Point>)
 		{
-			gameStage = gameStageRef;
 			checkpoints = checkpointsRef.concat();
 			speed = mySpeed;
 			gold = myGold;

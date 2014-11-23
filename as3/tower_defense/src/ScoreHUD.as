@@ -7,7 +7,7 @@ package src
 	 */
 	public class ScoreHUD 
 	{
-		private var _gold:Number = Const.DEF_GOLD;
+		private var _gold:Number = 0;
 		private var _missed:Number = 0;
 		private var _wave:Number = 0;
 		private var _level:Number = 0;
@@ -21,7 +21,6 @@ package src
 		
 		public function load(menuRef:MenuUIHandler) : void
 		{
-			trace("update");
 			menuHandler = menuRef;
 			
 			menuHandler.setLevel(_level);
@@ -84,6 +83,15 @@ package src
 		public function get gold():Number 
 		{
 			return _gold;
+		}
+		
+		public function resetGold() : void
+		{
+			_gold = 0;
+			if (menuHandler != null)
+			{
+				menuHandler.setGold(_wave);
+			}
 		}
 		
 		public function set gold(value:Number):void 

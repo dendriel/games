@@ -10,18 +10,14 @@ package src
 	 */
 	public class Level extends MovieClip
 	{
-		// Initialize this with the frame label from the level map.
-		protected var mapName:String;
-		// Monster factory to create monsters.
+		protected var mapName:String; // Initialize this with the frame label from the level map.
 		protected var monsterFactory:MonsterFactory;
-		// Fill with monster waves.
-		protected var waves:Vector.<MonsterWave>;
+		protected var waves:Vector.<MonsterWave>; // Fill with monster waves.	
+		protected var _startGold:Number;
 		
 		protected var placeArea:MovieClip;
-		
 		private var placeAreaStage:Vector.<Number>;
-		
-		// Internal variable to hold current wave.
+
 		private var currWave:MonsterWave;
 		
 		public function getMapLabel() : String
@@ -143,6 +139,11 @@ package src
 											startPoint.y + (startPointOffset.y * i),
 											currWave.getCheckpoints());
 			}
+		}
+		
+		public function get startGold():Number 
+		{
+			return _startGold;
 		}
 	}
 	

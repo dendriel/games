@@ -18,7 +18,21 @@ package src
 		static const TILE_W:Number = 64;	//!< Tile width in pixels.
 		static const TILE_H:Number = 64;	//!< Tile heigth in pixels.
 		static const TILE_R:Number = 32;	//!< Tile radius.
-		static const DEF_GOLD:Number = 1000;
+		
+		// Levels.
+		static const LEVEL1_MAP_NAME:String = "level1map";
+		static const LEVEL1_START_GOLD:Number = 150;
+		
+		static const LEVEL2_MAP_NAME:String = "level2map";
+		static const LEVEL2_START_GOLD:Number = 200;
+		
+		static const LEVEL3_MAP_NAME:String = "level3map";
+		static const LEVEL3_START_GOLD:Number = 300;
+		
+		// Monsters.
+		static const SLIME_GOLD:Number = 50;
+		static const SLIME_SPEED:Number = 2;
+		static const SLIME_LIFE:Number = 15;
 		
 		// Placing area.
 		static const EMPTY_AREA:Number = 0;

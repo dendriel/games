@@ -20,7 +20,6 @@ package src
 		protected var life:Number = defaultLife;
 		protected var radius:Number = 1 * (Const.TILE_R / 2); // less radius so the missile enter the monster.
 		
-		protected var gameStage:GameStage;
 		protected var checkpoints:Vector.<Point>;
 		protected var currCheckpoint:Point;
 		
@@ -39,8 +38,6 @@ package src
 			currCheckpoint = checkpoints.pop();
 			
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
-			
-			gameStage.addChild(this);
 		}
 		
 		/**
@@ -119,10 +116,6 @@ package src
 		private function removeSelf() : void
 		{
 			removeEventListener(Event.ENTER_FRAME, update);
-			if (gameStage.contains(this))
-			{
-				gameStage.removeChild(this);
-			}
 		}
 		
 		/**

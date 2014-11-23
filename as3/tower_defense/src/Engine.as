@@ -31,23 +31,23 @@
 			key = new KeyObject(stage);
 			
 			// It starts 2 tiles above stage origin.
-			gameStage.origin.y = (Const.TILE_H * 2)
+			gameStage.origin.y = (Const.TILE_H)
 			gameStage.origin.x = 0;
 			// It ends 2 tiles before stage.
-			gameStage.size.y = stage.stageHeight - (Const.TILE_H * 4);
+			gameStage.size.y = stage.stageHeight - (Const.TILE_H * 2);
 			gameStage.size.x = stage.stageWidth;
 			
 			stage.addChild(gameStage);
-
+			
 			score = new ScoreHUD;
 			monsterFactory = new MonsterFactory(gameStage, score);
 			towerFactory = new TowerFactory(gameStage, monsterFactory);
 			levels = new Vector.<Level>;
 			menuHandler = new MenuUIHandler(gameStage, key, towerFactory, score);
 			
-			levels.push(new Level1(monsterFactory));
-			levels.push(new Level2(monsterFactory));
 			levels.push(new Level3(monsterFactory));
+			levels.push(new Level2(monsterFactory));
+			levels.push(new Level1(monsterFactory));
 
 		}
 		
@@ -63,6 +63,7 @@
 			{
 				score.level++;
 				score.resetWave();
+				score.resetGold();
 				currLevel = levels.pop();
 				loadLevel();
 			}
@@ -103,6 +104,7 @@
 			gotoAndStop(currLevel.getMapLabel());
 			currLevel.addEventListener(Const.EVT_LEVEL_END, nextLevel, false, 0, true);
 			currLevel.addEventListener(Const.EVT_NEXT_WAVE, nextWave, false, 0, true);
+			score.gold = currLevel.startGold;
 			currLevel.playLevel();
 			gameStage.addChild(currLevel.getPlaceAreaRef());
 			gameStage.stageR.stageFocusRect = false;

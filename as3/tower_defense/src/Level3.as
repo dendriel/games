@@ -10,11 +10,13 @@ package src
 	 */
 	public class  Level3 extends Level
 	{
-		private const myMapName:String = "level3map";
+		private const myMapName:String = Const.LEVEL3_MAP_NAME;
+		private const myStartGold:Number = Const.LEVEL3_START_GOLD;
 		
 		public function Level3(monsterFactory:MonsterFactory)
 		{
 			mapName = myMapName;
+			_startGold = myStartGold;
 			
 			this.monsterFactory = monsterFactory;
 			
