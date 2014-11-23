@@ -12,7 +12,7 @@ package src
 	{
 		private const myGold:Number = 100;
 		private const mySpeed:Number = 2;
-		private const myLife:Number = 20;
+		private const myLife:Number = 15;
 		
 		public function Slime (gameStageRef:GameStage, checkpointsRef:Vector.<Point>)
 		{

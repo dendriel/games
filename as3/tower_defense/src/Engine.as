@@ -43,7 +43,7 @@
 			monsterFactory = new MonsterFactory(gameStage, score);
 			towerFactory = new TowerFactory(gameStage, monsterFactory);
 			levels = new Vector.<Level>;
-			menuHandler = new MenuUIHandler(gameStage, key, towerFactory);
+			menuHandler = new MenuUIHandler(gameStage, key, towerFactory, score);
 			
 			levels.push(new Level1(monsterFactory));
 			levels.push(new Level2(monsterFactory));

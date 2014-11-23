@@ -21,12 +21,14 @@ package src
 		private var selectedTower:MovieClip;
 		private var key:KeyObject;
 		private var towerFactory:TowerFactory;
+		private var score:ScoreHUD;
 		
-		public function MenuUIHandler(gameStageRef:GameStage, keyRef:KeyObject, towerFactoryRef:TowerFactory)
+		public function MenuUIHandler(gameStageRef:GameStage, keyRef:KeyObject, towerFactoryRef:TowerFactory, scoreRef:ScoreHUD)
 		{
 			gameStage = gameStageRef;
 			key = keyRef;
 			towerFactory = towerFactoryRef;
+			score = scoreRef;
 		}
 		
 		public function loadGameUI(menu:MenuUI) : void
@@ -117,8 +119,6 @@ package src
 		
 		private function placeTower() : void
 		{
-			//x, y, towetype.
-			
 			var pos:Point = Calc.coorToTile(gameStage.mouseX, gameStage.mouseY,
 											Const.TILE_W, Const.TILE_H);
 			
@@ -126,14 +126,14 @@ package src
 
 			if (towerNameUI == "FireTowerImgUI")
 			{
+				score.gold = -Const.FIRE_TOWER_PRICE;
 				towerFactory.createFireTower(pos.x, pos.y);
 			}
 			else if (towerNameUI == "MoonTowerImgUI")
 			{
+				score.gold = -Const.MOON_TOWER_PRICE;
 				towerFactory.createMoonTower(pos.x, pos.y);
 			}
-
-			
 		}
 		
 		private function update(e:Event) : void
@@ -176,6 +176,13 @@ package src
 		
 		private function fireTowerClickHandler(e:MouseEvent) : void
 		{
+			// Put gold verification here so we can easily show an fail message if there is no gold to buy the tower.
+			if (score.gold < Const.FIRE_TOWER_PRICE)
+			{
+				menuUI.txtTowerDesc.text = Const.NO_ENOUGH_MONEY;
+				return;
+			}
+			
 			handleSelectedTower(new FireTowerImgUI);
 		}
 		
@@ -191,6 +198,12 @@ package src
 		
 		private function moonTowerClickHandler(e:MouseEvent) : void
 		{
+			if (score.gold < Const.MOON_TOWER_PRICE)
+			{
+				menuUI.txtTowerDesc.text = Const.NO_ENOUGH_MONEY;
+				return;
+			}
+			
 			handleSelectedTower(new MoonTowerImgUI);
 		}
 		

@@ -36,6 +36,7 @@ package src
 		static const EVT_NEXT_WAVE:String = "next_wave";
 		
 		// Towers information.
+		static const NO_ENOUGH_MONEY:String = "You don't have enough money to buy this tower.";
 		static const MAX_COOLDOWN_MS:Number = 5000;
 		
 		static const FIRE_TOWER_NAME:String = "Fire Tower";
