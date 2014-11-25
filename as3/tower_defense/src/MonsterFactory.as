@@ -74,9 +74,8 @@ package src
 			slime.addEventListener(Const.EVT_MONSTER_KILLED, monsterKilled, false, 0, true);
 			
 			monsterList.push(slime as Monster);
-			trace("gameStage child: " + gameStage.numChildren);
-			trace("stage child: " + gameStage.stageR.numChildren);
-			gameStage.addChildAt(slime, 1);
+			// Add  monster in 0, so it will not pass over the menu.
+			gameStage.addChildBellowMenu(slime);
 		}
 		
 		private function monsterKilled(e:Event) : void

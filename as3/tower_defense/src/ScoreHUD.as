@@ -12,21 +12,14 @@ package src
 		private var _wave:Number = 0;
 		private var _level:Number = 0;
 		
-		private var menuHandler:MenuUIHandler;
+		private var _menuHandler:MenuUIHandler;
 		
-		public function ScoreHUD() : void
-		{
-			menuHandler = null;
-		}
-		
-		public function load(menuRef:MenuUIHandler) : void
-		{
-			menuHandler = menuRef;
-			
-			menuHandler.setLevel(_level);
-			menuHandler.setWave(_wave);
-			menuHandler.setMissed(_missed);
-			menuHandler.setGold(_gold);
+		public function reload() : void
+		{			
+			_menuHandler.setLevel(_level);
+			_menuHandler.setWave(_wave);
+			_menuHandler.setMissed(_missed);
+			_menuHandler.setGold(_gold);
 		}
 		
 		public function get level():Number 
@@ -37,9 +30,9 @@ package src
 		public function set level(value:Number):void 
 		{
 			_level = value;
-			if (menuHandler != null)
+			if (_menuHandler != null)
 			{
-				menuHandler.setLevel(_level);
+				_menuHandler.setLevel(_level);
 			}
 		}
 		
@@ -51,18 +44,18 @@ package src
 		public function resetWave() : void
 		{
 			_wave = 0;
-			if (menuHandler != null)
+			if (_menuHandler != null)
 			{
-				menuHandler.setWave(_wave);
+				_menuHandler.setWave(_wave);
 			}
 		}
 		
 		public function set wave(value:Number):void 
 		{
 			_wave += value;
-			if (menuHandler != null)
+			if (_menuHandler != null)
 			{
-				menuHandler.setWave(_wave);
+				_menuHandler.setWave(_wave);
 			}
 		}
 		
@@ -74,9 +67,9 @@ package src
 		public function set missed(value:Number):void 
 		{
 			_missed = value;
-			if (menuHandler != null)
+			if (_menuHandler != null)
 			{
-				menuHandler.setMissed(_missed);
+				_menuHandler.setMissed(_missed);
 			}
 		}
 		
@@ -88,9 +81,9 @@ package src
 		public function resetGold() : void
 		{
 			_gold = 0;
-			if (menuHandler != null)
+			if (_menuHandler != null)
 			{
-				menuHandler.setGold(_wave);
+				_menuHandler.setGold(_wave);
 			}
 		}
 		
@@ -102,10 +95,15 @@ package src
 			}
 			
 			_gold += value;
-			if (menuHandler != null)
+			if (_menuHandler != null)
 			{
-				menuHandler.setGold(_gold);
+				_menuHandler.setGold(_gold);
 			}
+		}
+		
+		public function set menuHandler(value:MenuUIHandler):void 
+		{
+			_menuHandler = value;
 		}
 		
 		

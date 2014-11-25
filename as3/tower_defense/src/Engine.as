@@ -17,8 +17,8 @@
 		private var key:KeyObject;
 		private var levels:Vector.<Level>;
 		private var currLevel:Level;
-		private var score:ScoreHUD;
-
+		private var score:ScoreHUD;	
+		
 		public function Engine()
 		{
 			// Use a movie clip instead of directly accessing the stage.
@@ -39,16 +39,18 @@
 			
 			stage.addChild(gameStage);
 			
-			score = new ScoreHUD;
+			score = new ScoreHUD();
 			monsterFactory = new MonsterFactory(gameStage, score);
 			towerFactory = new TowerFactory(gameStage, monsterFactory);
 			levels = new Vector.<Level>;
 			menuHandler = new MenuUIHandler(gameStage, key, towerFactory, score);
+			score.menuHandler = menuHandler;
+			
+			gameStage.menu = menuHandler;
 			
 			levels.push(new Level3(monsterFactory));
 			levels.push(new Level2(monsterFactory));
 			levels.push(new Level1(monsterFactory));
-
 		}
 		
 		public function gameIntro() : void
@@ -65,6 +67,8 @@
 				score.resetWave();
 				score.resetGold();
 				currLevel = levels.pop();
+				menuHandler.loadLevel(currLevel);
+				score.reload();
 				loadLevel();
 			}
 			// Player could make through all levels.
@@ -84,13 +88,6 @@
 			
 		}
 		
-		public function loadMenu() : void
-		{
-			menuHandler.loadGameUI(mcMenuUI, currLevel);
-			
-			score.load(menuHandler);
-		}
-		
 		private function nextWave(e:Event) : void
 		{
 			score.wave = 1;
@@ -104,9 +101,12 @@
 			gotoAndStop(currLevel.getMapLabel());
 			currLevel.addEventListener(Const.EVT_LEVEL_END, nextLevel, false, 0, true);
 			currLevel.addEventListener(Const.EVT_NEXT_WAVE, nextWave, false, 0, true);
+			
 			score.gold = currLevel.startGold;
+			
 			currLevel.playLevel();
-			gameStage.addChild(currLevel.getPlaceAreaRef());
+			
+			gameStage.addChildBellowMenu(currLevel.getPlaceAreaRef());
 			gameStage.stageR.stageFocusRect = false;
 			gameStage.stageR.focus = gameStage;
 		}
@@ -124,9 +124,7 @@
 			{
 				gameStage.removeChild(currLevel.getPlaceAreaRef());
 			}
-			
-			menuHandler.unloadGameUI();
-			
+						
 			gotoAndStop(Const.GAME_PLAY);
 		}
 

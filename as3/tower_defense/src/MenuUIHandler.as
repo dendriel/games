@@ -32,26 +32,23 @@ package src
 			key = keyRef;
 			towerFactory = towerFactoryRef;
 			score = scoreRef;
-		}
-		
-		public function loadGameUI(menu:MenuUI, levelR:Level) : void
-		{
+			menuUI = new MenuUI;
+			
+			this.addChild(menuUI);
+			
 			selectedTower = null;
-			menuUI = menu;
-			level = levelR;
 			
 			// Towers selection.
-			menu.btnFireTower.addEventListener(MouseEvent.CLICK, fireTowerClickHandler, false, 0, true);
-			menu.btnFireTower.addEventListener(MouseEvent.ROLL_OVER, fireTowerRollOverHandler, false, 0, true);
-			menu.btnFireTower.addEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler, false, 0, true);
+			menuUI.btnFireTower.addEventListener(MouseEvent.CLICK, fireTowerClickHandler, false, 0, true);
+			menuUI.btnFireTower.addEventListener(MouseEvent.ROLL_OVER, fireTowerRollOverHandler, false, 0, true);
+			menuUI.btnFireTower.addEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler, false, 0, true);
 			
-			menu.btnMoonTower.addEventListener(MouseEvent.CLICK, moonTowerClickHandler, false, 0, true);
-			menu.btnMoonTower.addEventListener(MouseEvent.ROLL_OVER, moonTowerRollOverHandler, false, 0, true);
-			menu.btnMoonTower.addEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler, false, 0, true);
-			
+			menuUI.btnMoonTower.addEventListener(MouseEvent.CLICK, moonTowerClickHandler, false, 0, true);
+			menuUI.btnMoonTower.addEventListener(MouseEvent.ROLL_OVER, moonTowerRollOverHandler, false, 0, true);
+			menuUI.btnMoonTower.addEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler, false, 0, true);
 			
 			// Dynamic texts.
-			menu.txtTowerDesc.text = "";
+			menuUI.txtTowerDesc.text = "";
 			
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
 			gameStage.addEventListener(MouseEvent.CLICK, mouseClickHandler, false, 0, true);
@@ -59,25 +56,40 @@ package src
 			// should be added through GameStage movieclip).
 			gameStage.stageR.addEventListener(MouseEvent.CLICK, mouseClickHandler, false, 0, true);
 			
-			menu.mouseEnabled = false;
+			menuUI.mouseEnabled = false;
+			gameStage.mouseEnabled = false;
+		}
+		
+			
+		/* destructor?
+		menuUI.btnFireTower.removeEventListener(MouseEvent.CLICK, fireTowerClickHandler);
+		menuUI.btnFireTower.removeEventListener(MouseEvent.ROLL_OVER, fireTowerRollOverHandler);
+		menuUI.btnFireTower.removeEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler);
+		
+		menuUI.btnMoonTower.removeEventListener(MouseEvent.CLICK, moonTowerClickHandler);
+		menuUI.btnMoonTower.removeEventListener(MouseEvent.ROLL_OVER, moonTowerRollOverHandler);
+		menuUI.btnMoonTower.removeEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler);
+		
+		removeEventListener(Event.ENTER_FRAME, update);
+		gameStage.removeEventListener(MouseEvent.CLICK, mouseClickHandler);
+		// My engine weakeness. Adding objects into stage directly (through adobe flash cs6).
+		gameStage.stageR.removeEventListener(MouseEvent.CLICK, mouseClickHandler);
+		*/
+		
+		public function loadLevel(levelR:Level) : void
+		{
+			selectedTower = null;
+			level = levelR;
+			
+			// Dynamic texts.
+			menuUI.txtTowerDesc.text = "";
+			
+			menuUI.mouseEnabled = false;
 			gameStage.mouseEnabled = false;
 		}
 		
 		public function unloadGameUI() : void
 		{
-			menuUI.btnFireTower.removeEventListener(MouseEvent.CLICK, fireTowerClickHandler);
-			menuUI.btnFireTower.removeEventListener(MouseEvent.ROLL_OVER, fireTowerRollOverHandler);
-			menuUI.btnFireTower.removeEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler);
-			
-			menuUI.btnMoonTower.removeEventListener(MouseEvent.CLICK, moonTowerClickHandler);
-			menuUI.btnMoonTower.removeEventListener(MouseEvent.ROLL_OVER, moonTowerRollOverHandler);
-			menuUI.btnMoonTower.removeEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler);
-			
-			removeEventListener(Event.ENTER_FRAME, update);
-			gameStage.removeEventListener(MouseEvent.CLICK, mouseClickHandler);
-			// My engine weakeness. Adding objects into stage directly (through adobe flash cs6).
-			gameStage.stageR.removeEventListener(MouseEvent.CLICK, mouseClickHandler);
-			
 			level.hidePlaceArea();
 			level = null;
 			
