@@ -27,6 +27,14 @@ package src
 		private static var isCoinReady:Boolean;
 		private static var coin:Sound;
 		
+		private static const VICTORY_LOC:String = SOUND_LOC + "victory2.mp3";
+		private static var isVictoryReady:Boolean;
+		private static var victory:Sound;
+		
+		private static const NEXT_LEVEL_LOC:String = SOUND_LOC + "203522__jack-master__drum-1_modified.mp3";
+		private static var isNextLevelReady:Boolean;
+		private static var nextLevel:Sound;
+		
 		// Load sounds.
 		public static function init() : void
 		{
@@ -48,7 +56,19 @@ package src
 				isCoinReady = false;
 				coin.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
 				coin.addEventListener(Event.COMPLETE, onCoinLoadCompleted, false, 0, true);
-				coin.load(new URLRequest(COIN_LOC));				
+				coin.load(new URLRequest(COIN_LOC));
+				
+				victory = new Sound();
+				isVictoryReady = false;
+				victory.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
+				victory.addEventListener(Event.COMPLETE, onVictoryLoadCompleted, false, 0, true);
+				victory.load(new URLRequest(VICTORY_LOC));
+				
+				nextLevel = new Sound();
+				isNextLevelReady = false;
+				nextLevel.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
+				nextLevel.addEventListener(Event.COMPLETE, onNextLevelLoadCompleted, false, 0, true);
+				nextLevel.load(new URLRequest(NEXT_LEVEL_LOC));
 				
 			}
 			catch (e:Error)
@@ -97,6 +117,22 @@ package src
 			}
 		}
 		
+		public static function playVictory() : void
+		{
+			if (isCoinReady == true)
+			{
+				victory.play();
+			}
+		}
+		
+		public static function playNextLevel() : void
+		{
+			if (isNextLevelReady == true)
+			{
+				nextLevel.play();
+			}
+		}
+		
 		private static function onFireLoadCompleted(e:Event) : void
 		{
 			isFireReady = true;
@@ -113,6 +149,18 @@ package src
 		{
 			isCoinReady = true;
 			coin.removeEventListener(Event.COMPLETE, onCoinLoadCompleted);
+		}
+		
+		private static function onVictoryLoadCompleted(e:Event) : void
+		{
+			isVictoryReady = true;
+			victory.removeEventListener(Event.COMPLETE, onVictoryLoadCompleted);
+		}
+		
+		private static function onNextLevelLoadCompleted(e:Event) : void
+		{
+			isNextLevelReady = true;
+			nextLevel.removeEventListener(Event.COMPLETE, onNextLevelLoadCompleted);
 		}
 		
 		private static function ioErrorHandler(e:IOErrorEvent) : void

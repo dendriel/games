@@ -82,7 +82,7 @@ package src
 		{
 			var m:Monster = e.currentTarget as Monster;
 			
-			score.gold = m.getGold();
+			score.goldFromMonster = m.getGold();
 			
 			if (gameStage.contains(m))
 			{
@@ -99,6 +99,8 @@ package src
 				gameStage.removeChild(e.currentTarget as Monster);
 			}
 			removeMonster(e.currentTarget as Monster);
+			
+			score.missed += 1;
 		}
 		
 		private function removeMonster(m:Monster) : void

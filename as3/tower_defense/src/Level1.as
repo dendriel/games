@@ -44,7 +44,8 @@ package src
 					
 					
 					
-			placeArea = new PlaceArea1;
+			//placeArea = new PlaceArea1;
+			initPlaceArea(new PlaceArea1);
 		}
 	}
 	

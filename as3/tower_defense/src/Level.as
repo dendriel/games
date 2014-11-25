@@ -15,9 +15,8 @@ package src
 		protected var waves:Vector.<MonsterWave>; // Fill with monster waves.	
 		protected var _startGold:Number;
 		
-		protected var placeArea:MovieClip;
+		private var placeArea:MovieClip;
 		private var placeAreaStage:Vector.<Number>;
-
 		private var currWave:MonsterWave;
 		
 		public function getMapLabel() : String
@@ -32,8 +31,6 @@ package src
 		
 		public function playLevel() : void
 		{
-			placeAreaStage = new Vector.<Number>;
-			initPlaceArea();
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
 		}
 		
@@ -42,8 +39,11 @@ package src
 			return placeArea;
 		}
 		
-		public function initPlaceArea() : void
+		protected function initPlaceArea(placeAreaR:MovieClip) : void
 		{
+			placeArea = placeAreaR;
+			placeAreaStage = new Vector.<Number>;
+			
 			for (var i = 0;  i < placeArea.numChildren; i++)
 			{
 				var p = placeArea.getChildAt(i);

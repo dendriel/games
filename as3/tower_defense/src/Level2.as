@@ -51,7 +51,7 @@ package src
 					new MonsterWave(2, startPoint, checkpoints1, offset));
 					
 					
-			placeArea = new PlaceArea2;
+			initPlaceArea(new PlaceArea2);
 		}
 	}
 	

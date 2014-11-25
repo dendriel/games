@@ -41,7 +41,7 @@ package src
 					new MonsterWave(2, startPoint, chkp, offset),
 					new MonsterWave(1, startPoint, chkp, offset));
 					
-			placeArea = new PlaceArea3;
+			initPlaceArea(new PlaceArea3);
 		}
 	}
 	

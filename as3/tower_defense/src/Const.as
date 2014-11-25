@@ -13,6 +13,12 @@ package src
 		static const GAME_INTRO:String = "gameIntro";
 		static const GAME_PLAY:String = "gamePlay";
 		static const GAME_WIN:String = "gameWin";
+		static const GAME_LEVEL_TRANSITION:String = "gameLevelTransition";
+		
+		// Game Event Texts.
+		static const GAME_EVENT_DELAY:Number = 5000; // 3 seconds.
+		static const LEVEL_START_TEXT:String = "Scan the level!";
+		static const LEVEL_CLEARED_TEXT:String = "Level cleared!";
 		
 		// Values.
 		static const TILE_W:Number = 64;	//!< Tile width in pixels.

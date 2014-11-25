@@ -88,6 +88,15 @@ package src
 		}
 		
 		public function set gold(value:Number):void 
+		{			
+			_gold += value;
+			if (_menuHandler != null)
+			{
+				_menuHandler.setGold(_gold);
+			}
+		}
+		
+		public function set goldFromMonster(value:Number):void 
 		{
 			if (value > 0)
 			{

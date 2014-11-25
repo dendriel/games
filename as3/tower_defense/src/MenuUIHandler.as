@@ -38,17 +38,9 @@ package src
 			
 			selectedTower = null;
 			
-			// Towers selection.
-			menuUI.btnFireTower.addEventListener(MouseEvent.CLICK, fireTowerClickHandler, false, 0, true);
-			menuUI.btnFireTower.addEventListener(MouseEvent.ROLL_OVER, fireTowerRollOverHandler, false, 0, true);
-			menuUI.btnFireTower.addEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler, false, 0, true);
-			
-			menuUI.btnMoonTower.addEventListener(MouseEvent.CLICK, moonTowerClickHandler, false, 0, true);
-			menuUI.btnMoonTower.addEventListener(MouseEvent.ROLL_OVER, moonTowerRollOverHandler, false, 0, true);
-			menuUI.btnMoonTower.addEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler, false, 0, true);
-			
 			// Dynamic texts.
 			menuUI.txtTowerDesc.text = "";
+			menuUI.txtGameEvent.text = "";
 			
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
 			gameStage.addEventListener(MouseEvent.CLICK, mouseClickHandler, false, 0, true);
@@ -60,22 +52,6 @@ package src
 			gameStage.mouseEnabled = false;
 		}
 		
-			
-		/* destructor?
-		menuUI.btnFireTower.removeEventListener(MouseEvent.CLICK, fireTowerClickHandler);
-		menuUI.btnFireTower.removeEventListener(MouseEvent.ROLL_OVER, fireTowerRollOverHandler);
-		menuUI.btnFireTower.removeEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler);
-		
-		menuUI.btnMoonTower.removeEventListener(MouseEvent.CLICK, moonTowerClickHandler);
-		menuUI.btnMoonTower.removeEventListener(MouseEvent.ROLL_OVER, moonTowerRollOverHandler);
-		menuUI.btnMoonTower.removeEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler);
-		
-		removeEventListener(Event.ENTER_FRAME, update);
-		gameStage.removeEventListener(MouseEvent.CLICK, mouseClickHandler);
-		// My engine weakeness. Adding objects into stage directly (through adobe flash cs6).
-		gameStage.stageR.removeEventListener(MouseEvent.CLICK, mouseClickHandler);
-		*/
-		
 		public function loadLevel(levelR:Level) : void
 		{
 			selectedTower = null;
@@ -83,6 +59,15 @@ package src
 			
 			// Dynamic texts.
 			menuUI.txtTowerDesc.text = "";
+			
+			// Towers selection.
+			menuUI.btnFireTower.addEventListener(MouseEvent.CLICK, fireTowerClickHandler, false, 0, true);
+			menuUI.btnFireTower.addEventListener(MouseEvent.ROLL_OVER, fireTowerRollOverHandler, false, 0, true);
+			menuUI.btnFireTower.addEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler, false, 0, true);
+			
+			menuUI.btnMoonTower.addEventListener(MouseEvent.CLICK, moonTowerClickHandler, false, 0, true);
+			menuUI.btnMoonTower.addEventListener(MouseEvent.ROLL_OVER, moonTowerRollOverHandler, false, 0, true);
+			menuUI.btnMoonTower.addEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler, false, 0, true);
 			
 			menuUI.mouseEnabled = false;
 			gameStage.mouseEnabled = false;
@@ -92,6 +77,14 @@ package src
 		{
 			level.hidePlaceArea();
 			level = null;
+				
+			menuUI.btnFireTower.removeEventListener(MouseEvent.CLICK, fireTowerClickHandler);
+			menuUI.btnFireTower.removeEventListener(MouseEvent.ROLL_OVER, fireTowerRollOverHandler);
+			menuUI.btnFireTower.removeEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler);
+			
+			menuUI.btnMoonTower.removeEventListener(MouseEvent.CLICK, moonTowerClickHandler);
+			menuUI.btnMoonTower.removeEventListener(MouseEvent.ROLL_OVER, moonTowerRollOverHandler);
+			menuUI.btnMoonTower.removeEventListener(MouseEvent.ROLL_OUT, towerRollOutHandler);
 			
 			// Remove selected tower if it exists.
 			handleSelectedTower(null);
@@ -115,6 +108,11 @@ package src
 		public function setMissed(value:Number) : void
 		{
 			menuUI.txtMissed.text = String(value);
+		}
+		
+		public function setGameEventText(value:String) : void
+		{
+			menuUI.txtGameEvent.text = String(value);
 		}
 		
 		private function mouseClickHandler(e:MouseEvent) : void
