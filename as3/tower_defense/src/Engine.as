@@ -65,8 +65,8 @@
 			
 			// We can have a "levels holder" / stage.
 			levels.push(new Level3(monsterFactory));
-			levels.push(new Level2(monsterFactory));
-			levels.push(new Level1(monsterFactory));
+			//levels.push(new Level2(monsterFactory));
+			//levels.push(new Level1(monsterFactory));
 		}
 		
 		public function gameIntro(e:TimerEvent) : void

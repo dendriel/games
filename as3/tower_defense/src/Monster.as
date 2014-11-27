@@ -75,6 +75,7 @@ package src
 		{
 			value = (value < 0)? (value * -1) : value;
 			life -= value;
+			lifeBar.decreaseLife(value);
 			
 			if (life <= 0)
 			{

@@ -94,13 +94,19 @@ package src
 		
 		private function monsterReachedEnd(e:Event) : void
 		{
-			if (gameStage.contains(e.currentTarget as Monster))
+			var m:Monster = e.currentTarget as Monster;
+			
+			if (gameStage.contains(m))
 			{
-				gameStage.removeChild(e.currentTarget as Monster);
+				gameStage.removeChild(m);
 			}
-			removeMonster(e.currentTarget as Monster);
+			
+			removeMonster(m);
 			
 			score.missed = 1;
+			
+			// Add only half of the gold, so the game keep balanced.
+			score.goldFromMonster = m.getGold() / 2;
 		}
 		
 		private function removeMonster(m:Monster) : void

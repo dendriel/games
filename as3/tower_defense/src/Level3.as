@@ -35,17 +35,19 @@ package src
 					new Point(5, 5));
 					
 					
-			var startPoint:Point = new Point(5, -3);
+			var startPoint:Point = new Point(4, -3);
 			var startPoint2:Point = new Point(-3, 5);
 			
-			var offset = new Point(-1, 0);
+			var offset = new Point(0, -1);
+			var offset2 = new Point(-1, 0);
 			
 			// Fill waves.
 			waves = new Vector.<MonsterWave>;
-			waves.push(new MonsterWave(8, startPoint, chkp2, offset),
-					new MonsterWave(6, startPoint, chkp2, offset),
+			waves.push(new MonsterWave(8, startPoint, chkp, offset),
+					new MonsterWave(8, startPoint2, chkp2, offset2),
+					new MonsterWave(6, startPoint2, chkp2, offset2),
 					new MonsterWave(4, startPoint, chkp, offset),
-					new MonsterWave(2, startPoint2, chkp2, offset),
+					new MonsterWave(2, startPoint2, chkp2, offset2),
 					new MonsterWave(2, startPoint, chkp, offset));
 					
 			initPlaceArea(new PlaceArea3);
