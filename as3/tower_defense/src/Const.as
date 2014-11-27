@@ -83,7 +83,7 @@ package src
 		static const MOON_TOWER_RANGE:Number =  Const.TILE_R * 2;
 		
 		static const MOON_BULLET:String = "Moon Bullet";
-		static const MOON_BULLET_DMG:Number = 7;
+		static const MOON_BULLET_DMG:Number = 8;
 		static const MOON_BULLET_SPEED:Number = 10;
 		
 		// Sounds.

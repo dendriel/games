@@ -100,7 +100,7 @@ package src
 			}
 			removeMonster(e.currentTarget as Monster);
 			
-			score.missed += 1;
+			score.missed = 1;
 		}
 		
 		private function removeMonster(m:Monster) : void

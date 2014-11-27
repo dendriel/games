@@ -15,11 +15,10 @@ package src
 		private var _menuHandler:MenuUIHandler;
 		
 		public function reload() : void
-		{			
-			_menuHandler.setLevel(_level);
-			_menuHandler.setWave(_wave);
-			_menuHandler.setMissed(_missed);
-			_menuHandler.setGold(_gold);
+		{
+			resetWave();
+			resetGold();
+			resetMissed();
 		}
 		
 		public function get level():Number 
@@ -64,9 +63,18 @@ package src
 			return _missed;
 		}
 		
+		public function resetMissed() : void
+		{
+			_missed = 0;
+			if (_menuHandler != null)
+			{
+				_menuHandler.setMissed(_missed);
+			}
+		}
+		
 		public function set missed(value:Number):void 
 		{
-			_missed = value;
+			_missed += value;
 			if (_menuHandler != null)
 			{
 				_menuHandler.setMissed(_missed);

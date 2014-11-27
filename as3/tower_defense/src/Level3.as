@@ -23,23 +23,30 @@ package src
 			// Fill checkpoints.
 			var chkp:Vector.<Point> = new Vector.<Point>;
 			// Push the last point first, and so on.
-			chkp.push(new Point(10, 4),
-					new Point(6, 4),
-					new Point(6, 7),
-					new Point(3, 7),
-					new Point(3, 2));
+			chkp.push(new Point(5, 10),
+					new Point(5, 5),
+					new Point(4, 5),
+					new Point(4, 2));
+					
+			var chkp2:Vector.<Point> = new Vector.<Point>;
+			// Push the last point first, and so on.
+			chkp2.push(new Point(10, 4),
+					new Point(5, 4),
+					new Point(5, 5));
 					
 					
-			var startPoint:Point = new Point(-3, 3);
+			var startPoint:Point = new Point(5, -3);
+			var startPoint2:Point = new Point(-3, 5);
 			
 			var offset = new Point(-1, 0);
 			
 			// Fill waves.
 			waves = new Vector.<MonsterWave>;
-			waves.push(//new MonsterWave(8, startPoint, chkp, offset),
-					//new MonsterWave(4, startPoint, chkp, offset),
-					new MonsterWave(2, startPoint, chkp, offset),
-					new MonsterWave(1, startPoint, chkp, offset));
+			waves.push(new MonsterWave(8, startPoint, chkp2, offset),
+					new MonsterWave(6, startPoint, chkp2, offset),
+					new MonsterWave(4, startPoint, chkp, offset),
+					new MonsterWave(2, startPoint2, chkp2, offset),
+					new MonsterWave(2, startPoint, chkp, offset));
 					
 			initPlaceArea(new PlaceArea3);
 		}

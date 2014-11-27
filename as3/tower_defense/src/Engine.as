@@ -63,6 +63,7 @@
 			
 			gameStage.menu = menuHandler;
 			
+			// We can have a "levels holder" / stage.
 			levels.push(new Level3(monsterFactory));
 			levels.push(new Level2(monsterFactory));
 			levels.push(new Level1(monsterFactory));
@@ -101,9 +102,7 @@
 			// While we still have levels left.
 			if ( levels.length > 0)
 			{
-				score.level++;
-				score.resetWave();
-				score.resetGold();
+				score.level++;				
 				currLevel = levels.pop();
 				score.reload();
 				loadLevel();

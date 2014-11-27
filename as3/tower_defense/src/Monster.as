@@ -24,6 +24,7 @@ package src
 		protected var currCheckpoint:Point;
 		
 		private var centeredPoint:Point;
+		private var lifeBar:LifeBar;
 		
 		/*******************************************************************************************
 		 * Public functions.
@@ -31,6 +32,8 @@ package src
 		public function activate() : void
 		{
 			centeredPoint = new Point();
+			lifeBar = new LifeBar(life, Calc.alignMiddle(0, this.width, life), -3);
+			this.addChild(lifeBar);
 			
 			updateCenteredPoint();
 			
