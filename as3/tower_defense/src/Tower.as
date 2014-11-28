@@ -23,7 +23,6 @@ package src
 		protected var soundType:Number = defaultSoundType;
 		protected var centeredPoint:Point;
 		
-		protected var gameStage:GameStage;
 		protected var monsterFactory:MonsterFactory;
 		protected var bulletFactory:BulletFactory;
 		// Will acquire a target and shoot at it until it is out of range.
@@ -54,7 +53,6 @@ package src
 			// Let the tower wait its cooldown before its first shoot.
 			shootCooldownTimer.start();
 			
-			gameStage.addChild(this);
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
 		}
 		
@@ -64,12 +62,6 @@ package src
 		public function deactivate() : void
 		{
 			removeEventListener(Event.ENTER_FRAME, update);
-
-			if (gameStage.contains(this))
-			{
-				gameStage.removeChild(this);
-			}
-			
 			dispatchEvent(new Event(Const.EVT_TOWER_REMOVED));
 		}
 		

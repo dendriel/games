@@ -12,13 +12,15 @@ package src
 		private var monsters:Number;
 		private var startPoint:Point;
 		private var checkpoints:Vector.<Point>;
+		private var monsterType:String;
 		
-		public function MonsterWave(monsters:Number, startPoint:Point, checkpoints:Vector.<Point>, offset:Point)
+		public function MonsterWave(monstersR:Number, startPointR:Point, checkpointsR:Vector.<Point>, offsetR:Point, monsterTypeR:String = Const.SLIME_NAME)
 		{
-			this.monsters = monsters;
-			this.startPoint = startPoint;
-			this.checkpoints = checkpoints;
-			this.offset = offset;
+			monsters = monstersR;
+			startPoint = startPointR;
+			checkpoints = checkpointsR;
+			offset = offsetR;
+			monsterType = monsterTypeR;
 		}
 		
 		/**
@@ -51,6 +53,14 @@ package src
 		public function getStartPointOffset() : Point
 		{
 			return offset;
+		}
+		
+		/**
+		 * @return The type of monster to spawn.
+		 */
+		public function getMonsterType() : String
+		{
+			return monsterType;
 		}
 	}
 	

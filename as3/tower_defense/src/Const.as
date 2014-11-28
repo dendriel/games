@@ -36,9 +36,17 @@ package src
 		static const LEVEL3_START_GOLD:Number = 300;
 		
 		// Monsters.
+		static const SLIME_NAME:String = "Slime";
 		static const SLIME_GOLD:Number = 50;
 		static const SLIME_SPEED:Number = 2;
 		static const SLIME_LIFE:Number = 15;
+		static const SLIME_COLOR:Number = 0xffff00; // green.
+		
+		static const WATER_SLIME_NAME:String = "Water Slime";
+		static const WATER_SLIME_GOLD:Number = 25;
+		static const WATER_SLIME_SPEED:Number = 1;
+		static const WATER_SLIME_LIFE:Number = 20;
+		static const WATER_SLIME_COLOR:Number = 0xff0000; // blue.
 		
 		// Placing area.
 		static const EMPTY_AREA:Number = 0;

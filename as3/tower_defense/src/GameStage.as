@@ -35,6 +35,13 @@ package src
 			this.addChildAt(m, idx);
 		}
 		
+		public function addTower(towerR:Tower) : void
+		{
+			// Make the towers be the first movie clip to be drawn, so the monster life bar will not
+			// be overlaped by the towers when the monster is above them.
+			this.addChildAt(towerR, 0);
+		}
+		
 		public function set menu(value:MenuUIHandler):void 
 		{
 			_menu = value;

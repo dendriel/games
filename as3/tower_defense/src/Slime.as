@@ -9,17 +9,13 @@ package src
 	 * @author Vitor Rozsa
 	 */
 	public class Slime extends Monster
-	{
-		private const myGold:Number = Const.SLIME_GOLD;
-		private const mySpeed:Number = Const.SLIME_SPEED;
-		private const myLife:Number = Const.SLIME_LIFE;
-		
-		public function Slime (checkpointsRef:Vector.<Point>)
+	{		
+		public function Slime (checkpointsRef:Vector.<Point>, goldR:Number=Const.SLIME_GOLD, speedR:Number=Const.SLIME_SPEED, lifeR:Number = Const.SLIME_LIFE)
 		{
 			checkpoints = checkpointsRef.concat();
-			speed = mySpeed;
-			gold = myGold;
-			life = myLife;
+			speed = speedR;
+			gold = goldR;
+			life = lifeR;
 			
 			drawSelf();
 			
@@ -29,10 +25,10 @@ package src
 		/**
 		 * @usage Draws a green slime.
 		 */
-		private function drawSelf() : void
+		protected function drawSelf(color:Number=Const.SLIME_COLOR) : void
 		{
 			var colorTrans:ColorTransform = new ColorTransform;
-			colorTrans.blueOffset = 0xffff00;
+			colorTrans.blueOffset = color;
 			//colorTrans.alphaMultiplier = 0.5;
 			transform.colorTransform = colorTrans;
 		}

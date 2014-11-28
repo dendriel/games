@@ -15,9 +15,8 @@ package src
 		private const myBullet:String = Const.FIRE_BULLET;
 		private const mySoundType:Number = Const.FIRE_SOUND;
 		
-		public function FireTower(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory, bulletFactoryRef:BulletFactory)
+		public function FireTower(monsterFactoryRef:MonsterFactory, bulletFactoryRef:BulletFactory)
 		{
-			gameStage = gameStageRef;
 			bulletFactory = bulletFactoryRef;
 			price = myPrice;
 			shootCooldown = myCooldownMs;
@@ -25,7 +24,6 @@ package src
 			bullet = myBullet;
 			soundType = mySoundType;
 			
-			gameStageRef = gameStageRef;
 			monsterFactory = monsterFactoryRef;
 			
 			drawSelf();

@@ -15,9 +15,8 @@ package src
 		private const myBullet:String = Const.MOON_BULLET;
 		private const mySoundType:Number = Const.FIRE2_SOUND;
 		
-		public function MoonTower(gameStageRef:GameStage, monsterFactoryRef:MonsterFactory, bulletFactoryRef:BulletFactory)
+		public function MoonTower(monsterFactoryRef:MonsterFactory, bulletFactoryRef:BulletFactory)
 		{
-			gameStage = gameStageRef;
 			bulletFactory = bulletFactoryRef;
 			price = myPrice;
 			shootCooldown = myColddownMs;
@@ -25,7 +24,6 @@ package src
 			bullet = myBullet;
 			soundType = mySoundType;
 			
-			gameStageRef = gameStageRef;
 			monsterFactory = monsterFactoryRef;
 			
 			drawSelf();

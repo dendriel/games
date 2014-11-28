@@ -115,6 +115,7 @@ package src
 				if (waves.length > 0)
 				{
 					currWave = waves.pop();
+					// Increase wave counter.
 					dispatchEvent(new Event(Const.EVT_NEXT_WAVE));
 					triggerWave();
 				}
@@ -137,7 +138,8 @@ package src
 			{
 				monsterFactory.createSlime(startPoint.x + (startPointOffset.x * i),
 											startPoint.y + (startPointOffset.y * i),
-											currWave.getCheckpoints());
+											currWave.getCheckpoints(),
+											currWave.getMonsterType());
 			}
 		}
 		

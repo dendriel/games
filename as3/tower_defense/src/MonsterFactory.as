@@ -31,9 +31,17 @@ package src
 		 * @param	ph Vertical position (in tiles).
 		 * @param	checkpoints Where the monster needs to go.
 		 */
-		public function createSlime(pw:Number = 0, ph:Number = 0, checkpoints:Vector.<Point> = null) : void
+		public function createSlime(pw:Number = 0, ph:Number = 0, checkpoints:Vector.<Point> = null, type:String = "") : void
 		{
-			createSlimeP(pw * Const.TILE_W, ph * Const.TILE_H, checkpoints);
+			if (type == Const.SLIME_NAME)
+			{
+				createSlimeP(pw * Const.TILE_W, ph * Const.TILE_H, new Slime(checkpoints));
+			}
+			else if (type == Const.WATER_SLIME_NAME)
+			{
+				trace("water slime");
+				createSlimeP(pw * Const.TILE_W, ph * Const.TILE_H, new WaterSlime(checkpoints));
+			}
 		}
 		
 		/**
@@ -64,10 +72,8 @@ package src
 		 * @param	y Vertical position (in pixels).
 		 * @param	checkpoints Where the monster needs to go.
 		 */
-		private function createSlimeP(x:Number = 0, y:Number = 0, checkpoints:Vector.<Point> = null) : void
+		private function createSlimeP(x:Number, y:Number, slime:Slime) : void
 		{
-			var slime:Slime = new Slime(checkpoints);
-			
 			slime.x = x;
 			slime.y = y;
 			slime.addEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd, false, 0, true);

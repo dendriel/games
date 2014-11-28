@@ -72,14 +72,9 @@ package src
 		 */
 		private function createFireTowerP(x:Number = 0, y:Number = 0) : void
 		{
-			var tower:FireTower = new FireTower(gameStage, monsterFactory, bulletFactory);
+			var tower:FireTower = new FireTower(monsterFactory, bulletFactory);
 			
-			tower.x = x;
-			tower.y = y;
-			tower.activate();
-			tower.addEventListener(Const.EVT_TOWER_REMOVED, removeTower, false, 0, true);
-			
-			towerList.push(tower);
+			addTower(tower, x, y);
 		}
 		
 		/**
@@ -89,20 +84,33 @@ package src
 		 */
 		private function createMoonTowerP(x:Number = 0, y:Number = 0) : void
 		{
-			var tower:MoonTower = new MoonTower(gameStage, monsterFactory, bulletFactory);
+			var tower:MoonTower = new MoonTower(monsterFactory, bulletFactory);
 			
+			addTower(tower, x, y);
+		}
+		
+		private function addTower(tower:Tower, x:Number, y:Number) : void
+		{
 			tower.x = x;
 			tower.y = y;
 			tower.activate();
 			tower.addEventListener(Const.EVT_TOWER_REMOVED, removeTower, false, 0, true);
+			
+			gameStage.addTower(tower);
 			
 			towerList.push(tower);
 		}
 		
 		private function removeTower(e:Event) : void
 		{
-			e.currentTarget.removeEventListener(Const.EVT_TOWER_REMOVED, removeTower);
-			towerList.splice(towerList.indexOf(e.currentTarget), 1);
+			var tower:Tower = e.currentTarget as Tower;
+			
+			if (gameStage.contains(tower))
+			{
+				gameStage.removeChild(tower);
+			}
+			tower.removeEventListener(Const.EVT_TOWER_REMOVED, removeTower);
+			towerList.splice(towerList.indexOf(tower), 1);
 		}
 	}
 	

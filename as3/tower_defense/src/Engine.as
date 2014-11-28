@@ -155,7 +155,6 @@
 		{
 			currLevel.removeEventListener(Const.EVT_NEXT_WAVE, nextWave);
 			currLevel.removeEventListener(Const.EVT_LEVEL_END, nextLevel);
-			towerFactory.removeAllTowers();
 			
 			if (gameStage.contains(currLevel.getPlaceAreaRef()))
 			{
@@ -171,6 +170,8 @@
 		}
 		private function nextLevelPlay(e:TimerEvent) : void
 		{
+			// Here the towers will be displayed while the victory message is still showing.
+			towerFactory.removeAllTowers();
 			menuHandler.setGameEventText("");
 			gotoAndStop(Const.GAME_LEVEL_TRANSITION);
 			gameLevelTransition.start();
