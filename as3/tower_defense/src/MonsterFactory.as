@@ -39,7 +39,6 @@ package src
 			}
 			else if (type == Const.WATER_SLIME_NAME)
 			{
-				trace("water slime");
 				createSlimeP(pw * Const.TILE_W, ph * Const.TILE_H, new WaterSlime(checkpoints));
 			}
 		}

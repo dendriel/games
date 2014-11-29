@@ -43,12 +43,14 @@ package src
 			
 			// Fill waves.
 			waves = new Vector.<MonsterWave>;
-			waves.push(new MonsterWave(8, startPoint, chkp, offset, Const.WATER_SLIME_NAME),
-					new MonsterWave(8, startPoint2, chkp2, offset2, Const.WATER_SLIME_NAME),
-					new MonsterWave(6, startPoint2, chkp2, offset2, Const.WATER_SLIME_NAME),
-					new MonsterWave(4, startPoint, chkp, offset, Const.WATER_SLIME_NAME),
-					new MonsterWave(2, startPoint2, chkp2, offset2, Const.WATER_SLIME_NAME),
-					new MonsterWave(2, startPoint, chkp, offset, Const.WATER_SLIME_NAME));
+			waves.push(new MonsterWave(2, startPoint, chkp, offset, Const.WATER_SLIME_NAME),
+					new MonsterWave(8, startPoint, chkp, offset, Const.SLIME_NAME),
+					new MonsterWave(8, startPoint2, chkp2, offset2, Const.SLIME_NAME),
+					new MonsterWave(6, startPoint2, chkp2, offset2, Const.SLIME_NAME),
+					new MonsterWave(1, startPoint, chkp, offset, Const.WATER_SLIME_NAME),
+					new MonsterWave(4, startPoint, chkp, offset, Const.SLIME_NAME),
+					new MonsterWave(2, startPoint2, chkp2, offset2, Const.SLIME_NAME),
+					new MonsterWave(2, startPoint, chkp, offset, Const.SLIME_NAME));
 					
 			initPlaceArea(new PlaceArea3);
 		}

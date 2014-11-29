@@ -37,9 +37,10 @@ package src
 			
 			// Fill waves.
 			waves = new Vector.<MonsterWave>;
-			waves.push(//new MonsterWave(6, startPoint, checkpoints, offset),
-					//new MonsterWave(4, startPoint, checkpoints, offset),
-					//new MonsterWave(2, startPoint, checkpoints, offset),
+			waves.push(new MonsterWave(1, startPoint, checkpoints, offset, Const.WATER_SLIME_NAME),
+					new MonsterWave(6, startPoint, checkpoints, offset),
+					new MonsterWave(4, startPoint, checkpoints, offset),
+					new MonsterWave(2, startPoint, checkpoints, offset),
 					new MonsterWave(1, startPoint, checkpoints, offset));
 					
 					

@@ -49,9 +49,9 @@ package src
 			
 			shootCooldownTimer = new Timer(shootCooldown, 1);
 			shootCooldownTimer.addEventListener(TimerEvent.TIMER, shootCooldownTimerHandler, false, 0, true);
-			canShoot = false;
+			canShoot = true;
 			// Let the tower wait its cooldown before its first shoot.
-			shootCooldownTimer.start();
+			//shootCooldownTimer.start();
 			
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
 		}

@@ -3,6 +3,7 @@
 	import flash.display.MovieClip;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -61,18 +62,20 @@
 			menuHandler = new MenuUIHandler(gameStage, key, towerFactory, score);
 			score.menuHandler = menuHandler;
 			
+			menuHandler.visible = false;
 			gameStage.menu = menuHandler;
 			
 			// We can have a "levels holder" / stage.
 			levels.push(new Level3(monsterFactory));
-			//levels.push(new Level2(monsterFactory));
-			//levels.push(new Level1(monsterFactory));
+			levels.push(new Level2(monsterFactory));
+			levels.push(new Level1(monsterFactory));
 		}
 		
 		public function gameIntro(e:TimerEvent) : void
 		{
+			// Wait until engine is fully loaded.
 			if (levels.length  > 0) {
-				gotoAndStop(Const.GAME_PLAY);
+				mainMenuUI.btnStartGame.addEventListener(MouseEvent.CLICK, gamePlayWrapper, false, 0 , true);
 			}
 			else {
 				// I don't know if leaving the Timer ref will be a problem (leak? garbage collector?)
@@ -80,6 +83,11 @@
 				waitEngineLoad.addEventListener(TimerEvent.TIMER, gameIntro, false, 0, true);
 				waitEngineLoad.start();
 			}
+		}
+		
+		private function showMainMenu() : void
+		{
+			//gotoAndStop(Const.GAME_PLAY);
 		}
 		
 		public function gameWin() : void
@@ -97,11 +105,17 @@
 			score.wave = 1;
 		}
 		
+		private function gamePlayWrapper(e:MouseEvent) : void
+		{
+			gamePlay(null);
+		}
+		
 		public function gamePlay(e:TimerEvent) : void
 		{
 			// While we still have levels left.
 			if ( levels.length > 0)
 			{
+				menuHandler.visible = true;
 				score.level++;				
 				currLevel = levels.pop();
 				score.reload();
