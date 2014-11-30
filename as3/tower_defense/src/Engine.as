@@ -65,16 +65,31 @@
 			menuHandler.visible = false;
 			gameStage.menu = menuHandler;
 			
+			addLevels();
+		}
+		
+		private function addLevels() : void
+		{
 			// We can have a "levels holder" / stage.
-			levels.push(new Level3(monsterFactory));
-			levels.push(new Level2(monsterFactory));
+			//levels.push(new Level3(monsterFactory));
+			//levels.push(new Level2(monsterFactory));
 			levels.push(new Level1(monsterFactory));
+		}
+		
+		public function gameIntroWrapper(e:MouseEvent) : void
+		{
+			btnBackToMainMenu.removeEventListener(MouseEvent.CLICK, gameIntroWrapper);
+			addLevels();
+			gotoAndStop(Const.GAME_INTRO);
 		}
 		
 		public function gameIntro(e:TimerEvent) : void
 		{
 			// Wait until engine is fully loaded.
 			if (levels.length  > 0) {
+				//gameStage.mouseEnabled = false;
+				//gameStage.stageR.stageFocusRect = false;
+				//gameStage.stageR.focus = gameStage;
 				mainMenuUI.btnStartGame.addEventListener(MouseEvent.CLICK, gamePlayWrapper, false, 0 , true);
 			}
 			else {
@@ -85,19 +100,15 @@
 			}
 		}
 		
-		private function showMainMenu() : void
-		{
-			//gotoAndStop(Const.GAME_PLAY);
-		}
-		
 		public function gameWin() : void
 		{
-			
+			menuHandler.visible = false;
+			btnBackToMainMenu.addEventListener(MouseEvent.CLICK, gameIntroWrapper, false, 0, true);
 		}
 		
+		// No game over condition was implemented.
 		public function gameOver() : void
 		{
-			
 		}
 		
 		private function nextWave(e:Event) : void
@@ -107,6 +118,7 @@
 		
 		private function gamePlayWrapper(e:MouseEvent) : void
 		{
+			mainMenuUI.btnStartGame.removeEventListener(MouseEvent.CLICK, gamePlayWrapper);
 			gamePlay(null);
 		}
 		

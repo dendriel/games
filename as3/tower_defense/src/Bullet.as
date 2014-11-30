@@ -49,7 +49,7 @@ package src
 					gameStage.origin.x, gameStage.origin.y,
 					gameStage.size.x, gameStage.size.y) == true)
 			{
-				trace(x + "," + y + " stage: " + gameStage.origin.x + "," + gameStage.origin.y + " size: " + gameStage.size.x + "," + gameStage.size.y);
+				//trace(x + "," + y + " stage: " + gameStage.origin.x + "," + gameStage.origin.y + " size: " + gameStage.size.x + "," + gameStage.size.y);
 				removeSelf();
 			}
 			
@@ -68,7 +68,7 @@ package src
 				
 				if (Calc.hitRadialCheck(x, y, radius, m.getCenterX(), m.getCenterY(), m.getRadius()) == true)
 				{
-					trace(x + ", " + y + "; " + m.getCenterX() + ", " + m.getCenterY());
+					//trace(x + ", " + y + "; " + m.getCenterX() + ", " + m.getCenterY());
 					m.takeHit(damage);
 					removeSelf();
 				}
