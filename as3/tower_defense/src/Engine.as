@@ -9,7 +9,7 @@
 	import flash.utils.Timer;
 	import src.com.senocular.utils.KeyObject;
 	
-	[SWF(width="640", height="640", frameRate="30", backgroundColor="#00FFFF")] //set project properties
+	[SWF(width="640", height="640", frameRate="30", backgroundColor="#ffffff")] //set project properties
 	
 	public class Engine extends MovieClip
 	{
@@ -56,6 +56,8 @@
 			stage.addChild(gameStage);
 			
 			score = new ScoreHUD();
+			score.addEventListener(Const.EVT_GAME_OVER, handleGameOver, false, 0, true);
+			
 			monsterFactory = new MonsterFactory(gameStage, score);
 			towerFactory = new TowerFactory(gameStage, monsterFactory);
 			levels = new Vector.<Level>;
@@ -71,6 +73,8 @@
 		private function addLevels() : void
 		{
 			// We can have a "levels holder" / stage.
+			//levels.push(new Level5(monsterFactory));
+			//levels.push(new Level4(monsterFactory));
 			//levels.push(new Level3(monsterFactory));
 			//levels.push(new Level2(monsterFactory));
 			levels.push(new Level1(monsterFactory));
@@ -87,9 +91,6 @@
 		{
 			// Wait until engine is fully loaded.
 			if (levels.length  > 0) {
-				//gameStage.mouseEnabled = false;
-				//gameStage.stageR.stageFocusRect = false;
-				//gameStage.stageR.focus = gameStage;
 				mainMenuUI.btnStartGame.addEventListener(MouseEvent.CLICK, gamePlayWrapper, false, 0 , true);
 			}
 			else {
@@ -102,13 +103,29 @@
 		
 		public function gameWin() : void
 		{
+			score.level = 0;
 			menuHandler.visible = false;
+			SoundLoader.playVictory1();
 			btnBackToMainMenu.addEventListener(MouseEvent.CLICK, gameIntroWrapper, false, 0, true);
+		}
+		
+		private function handleGameOver(e:Event) : void
+		{
+			gotoAndStop(Const.GAME_OVER);
 		}
 		
 		// No game over condition was implemented.
 		public function gameOver() : void
 		{
+			// STOP THE GAME HERE.
+			currLevel.stopLevel();
+			unloadLevel1();
+			unloadLevel2();
+			score.level = 0;
+			SoundLoader.playGameOver();
+			
+			menuHandler.visible = false;
+			btnBackToMainMenu.addEventListener(MouseEvent.CLICK, gameIntroWrapper, false, 0, true);
 		}
 		
 		private function nextWave(e:Event) : void
@@ -179,6 +196,16 @@
 		 */
 		private function nextLevel(e:Event) : void
 		{
+			unloadLevel1();
+			
+			SoundLoader.playVictory();
+			menuHandler.setGameEventText(Const.LEVEL_CLEARED_TEXT);
+			// Wait some time so the message can be read by the user.
+			gameEndLevelTimer.start();
+		}
+		
+		private function unloadLevel1() : void
+		{
 			currLevel.removeEventListener(Const.EVT_NEXT_WAVE, nextWave);
 			currLevel.removeEventListener(Const.EVT_LEVEL_END, nextLevel);
 			
@@ -188,20 +215,21 @@
 			}
 			
 			menuHandler.unloadGameUI();
-			
-			SoundLoader.playVictory();
-			menuHandler.setGameEventText(Const.LEVEL_CLEARED_TEXT);
-			// Wait some time so the message can be read by the user.
-			gameEndLevelTimer.start();
 		}
+		
 		private function nextLevelPlay(e:TimerEvent) : void
 		{
-			// Here the towers will be displayed while the victory message is still showing.
-			towerFactory.removeAllTowers();
+			unloadLevel2();
+			
 			menuHandler.setGameEventText("");
 			gotoAndStop(Const.GAME_LEVEL_TRANSITION);
 			gameLevelTransition.start();
 			SoundLoader.playNextLevel();
+		}
+		
+		private function unloadLevel2() : void
+		{
+			towerFactory.removeAllTowers();
 		}
 
 	}

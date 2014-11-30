@@ -5,22 +5,18 @@ package src
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
+	import flash.display.Shape;
 	
 	/**
 	 * ...
 	 * @author Vitor Rozsa
 	 */
 	public class Tower extends MovieClip
-	{
-		private const defaultPrice:Number = 100;
-		private const defaultShootCooldownMs:Number = 1000; // 1 sec.
-		private const defaultRange:Number = Const.TILE_R * 4; // more less 2 tiles away from itself.
-		private const defaultSoundType:Number = Const.FIRE_SOUND;
-		
+	{		
 		protected var bullet:String = Const.FIRE_BULLET;
-		protected var price:Number = defaultPrice;
-		protected var range:Number = defaultRange;
-		protected var soundType:Number = defaultSoundType;
+		protected var price:Number = 100;
+		protected var range:Number = Const.TILE_R * 2; // more less 2 tiles away from itself.
+		protected var soundType:Number = Const.FIRE_SOUND;
 		protected var centeredPoint:Point;
 		
 		protected var monsterFactory:MonsterFactory;
@@ -29,7 +25,7 @@ package src
 		protected var target:Monster;
 		
 		// Shooting cooldown.
-		protected var shootCooldown:Number = defaultShootCooldownMs;
+		protected var shootCooldown:Number = 1000; // 1 sec.
 		private var canShoot:Boolean;
 		private var shootCooldownTimer:Timer;
 		
@@ -87,8 +83,7 @@ package src
 			var list:Vector.<Monster> = monsterFactory.getMonsterListCopy();
 			var m:Monster;
 			
-			
-			// Check if target already locked in a target.
+			// Check if tower already locked in a target.
 			if (target != null)
 			{
 				// Check if target still exist and is inside range.

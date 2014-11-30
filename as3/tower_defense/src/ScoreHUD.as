@@ -1,16 +1,19 @@
 package src
 {
+	import flash.display.MovieClip;
+	import flash.events.Event;
 	
 	/**
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class ScoreHUD 
+	public class ScoreHUD extends MovieClip
 	{
 		private var _gold:Number = 0;
 		private var _missed:Number = 0;
 		private var _wave:Number = 0;
 		private var _level:Number = 0;
+		private var _maxMissed = Const.MAX_MISSED_WAVE;
 		
 		private var _menuHandler:MenuUIHandler;
 		
@@ -78,6 +81,12 @@ package src
 			if (_menuHandler != null)
 			{
 				_menuHandler.setMissed(_missed);
+			}
+			
+			// Check for game-over.
+			if (_missed >= Const.MAX_MISSED_WAVE)
+			{
+				dispatchEvent(new Event(Const.EVT_GAME_OVER));
 			}
 		}
 		

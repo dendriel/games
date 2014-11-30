@@ -107,6 +107,14 @@ package src
 			return areaFound;
 		}
 		
+		public function stopLevel() : void
+		{
+			hidePlaceArea();
+			monsterFactory.removeAllMonster();
+			removeEventListener(Event.ENTER_FRAME, update);
+			
+		}
+		
 		private function update(e:Event) : void
 		{			
 			if (monsterFactory.getMonsterListSize() == 0)

@@ -43,6 +43,11 @@ package src
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true);
 		}
 		
+		public function remove() : void
+		{
+			removeSelf();
+		}
+		
 		/**
 		 * @return The monster's radius for collision detection.
 		 */

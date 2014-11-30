@@ -86,13 +86,7 @@ package src
 		private function monsterKilled(e:Event) : void
 		{
 			var m:Monster = e.currentTarget as Monster;
-			
 			score.goldFromMonster = m.getGold();
-			
-			if (gameStage.contains(m))
-			{
-				gameStage.removeChild(m);
-			}
 			
 			removeMonster(m);
 		}
@@ -100,25 +94,35 @@ package src
 		private function monsterReachedEnd(e:Event) : void
 		{
 			var m:Monster = e.currentTarget as Monster;
-			
-			if (gameStage.contains(m))
-			{
-				gameStage.removeChild(m);
-			}
-			
-			removeMonster(m);
-			
-			score.missed = 1;
-			
+						
 			// Add only half of the gold, so the game keep balanced.
 			score.goldFromMonster = m.getGold() / 2;
+			score.missed = 1;			
+			removeMonster(m);
 		}
 		
 		private function removeMonster(m:Monster) : void
 		{
+			if (gameStage.contains(m))
+			{
+				gameStage.removeChild(m);
+			}
 			m.removeEventListener(Const.EVT_END_REACHED_STR, monsterReachedEnd);
 			m.removeEventListener(Const.EVT_MONSTER_KILLED, monsterReachedEnd);
 			monsterList.splice(monsterList.indexOf(m), 1);
+		}
+		
+		public function removeAllMonster() : void
+		{
+			
+			var list:Vector.<Monster> = monsterList.concat();
+			var monster:Monster;
+			
+			while ( list.length > 0) {
+				monster = list.pop();
+				monster.remove();	// Make monster stop itself.
+				removeMonster(monster);
+			}
 		}
 	}
 	

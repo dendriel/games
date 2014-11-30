@@ -40,15 +40,13 @@ package src
 			
 			// offset to the top
 			var offset = new Point(0, -1);
-			var offset2 = new Point(0, -2);
 			
 			// Fill waves.
 			waves = new Vector.<MonsterWave>;
-			waves.push(new MonsterWave(4, startPoint, checkpoints1, offset2, Const.WATER_SLIME_COLOR),
-					new MonsterWave(8, startPoint, checkpoints1, offset2),
-					new MonsterWave(2, startPoint, checkpoints1, offset2, Const.WATER_SLIME_COLOR),
-					new MonsterWave(6, startPoint, checkpoints1, offset2),
-					new MonsterWave(1, startPoint, checkpoints2, offset, Const.WATER_SLIME_COLOR),
+			waves.push(new MonsterWave(2, startPoint, checkpoints1, offset, Const.WATER_SLIME_NAME),
+					new MonsterWave(8, startPoint, checkpoints1, offset),
+					new MonsterWave(1, startPoint, checkpoints1, offset, Const.WATER_SLIME_NAME),
+					new MonsterWave(6, startPoint, checkpoints1, offset),
 					new MonsterWave(4, startPoint, checkpoints2, offset),
 					new MonsterWave(2, startPoint, checkpoints2, offset),
 					new MonsterWave(2, startPoint, checkpoints1, offset));
