@@ -31,9 +31,17 @@ package src
 		private static var isVictoryReady:Boolean;
 		private static var victory:Sound;
 		
+		private static const VICTORY1_LOC:String = SOUND_LOC + "victory1.mp3";
+		private static var isVictory1Ready:Boolean;
+		private static var victory1:Sound;
+		
 		private static const NEXT_LEVEL_LOC:String = SOUND_LOC + "203522__jack-master__drum-1_modified.mp3";
 		private static var isNextLevelReady:Boolean;
 		private static var nextLevel:Sound;
+		
+		private static const GAME_OVER_LOC:String = SOUND_LOC + "178876__rocotilos__game-over-evil.mp3";
+		private static var isGameOverReady:Boolean;
+		private static var gameOver:Sound;
 		
 		// Load sounds.
 		public static function init() : void
@@ -69,6 +77,18 @@ package src
 				nextLevel.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
 				nextLevel.addEventListener(Event.COMPLETE, onNextLevelLoadCompleted, false, 0, true);
 				nextLevel.load(new URLRequest(NEXT_LEVEL_LOC));
+				
+				gameOver = new Sound();
+				isGameOverReady = false;
+				gameOver.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
+				gameOver.addEventListener(Event.COMPLETE, onGameOverLoadCompleted, false, 0, true);
+				gameOver.load(new URLRequest(GAME_OVER_LOC));
+				
+				victory1 = new Sound();
+				isVictory1Ready = false;
+				victory1.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler, false, 0, true);
+				victory1.addEventListener(Event.COMPLETE, onVictory1LoadCompleted, false, 0, true);
+				victory1.load(new URLRequest(VICTORY1_LOC));
 				
 			}
 			catch (e:Error)
@@ -119,7 +139,7 @@ package src
 		
 		public static function playVictory() : void
 		{
-			if (isCoinReady == true)
+			if (isVictoryReady == true)
 			{
 				victory.play();
 			}
@@ -130,6 +150,22 @@ package src
 			if (isNextLevelReady == true)
 			{
 				nextLevel.play();
+			}
+		}
+		
+		public static function playGameOver() : void
+		{
+			if (isGameOverReady == true)
+			{
+				gameOver.play();
+			}
+		}
+		
+		public static function playVictory1() : void
+		{
+			if (isVictory1Ready == true)
+			{
+				victory1.play();
 			}
 		}
 		
@@ -161,6 +197,18 @@ package src
 		{
 			isNextLevelReady = true;
 			nextLevel.removeEventListener(Event.COMPLETE, onNextLevelLoadCompleted);
+		}
+		
+		private static function onGameOverLoadCompleted(e:Event) : void
+		{
+			isGameOverReady = true;
+			gameOver.removeEventListener(Event.COMPLETE, onGameOverLoadCompleted);
+		}
+		
+		private static function onVictory1LoadCompleted(e:Event) : void
+		{
+			isVictory1Ready = true;
+			victory1.removeEventListener(Event.COMPLETE, onVictory1LoadCompleted);
 		}
 		
 		private static function ioErrorHandler(e:IOErrorEvent) : void
