@@ -73,10 +73,10 @@
 		private function addLevels() : void
 		{
 			// We can have a "levels holder" / stage.
-			//levels.push(new Level5(monsterFactory));
-			//levels.push(new Level4(monsterFactory));
-			//levels.push(new Level3(monsterFactory));
-			//levels.push(new Level2(monsterFactory));
+			levels.push(new Level5(monsterFactory));
+			levels.push(new Level4(monsterFactory));
+			levels.push(new Level3(monsterFactory));
+			levels.push(new Level2(monsterFactory));
 			levels.push(new Level1(monsterFactory));
 		}
 		
