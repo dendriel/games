@@ -3,6 +3,8 @@ package src
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import src.ui.StartScreenUI;
+	import src.stage.*;
+	import src.com.senocular.utils.KeyObject;
 	
 	[SWF(width = "480", height = "320", frameRate = "30", backgroundColor = "#ff0000")] //set project properties
 	
@@ -20,6 +22,7 @@ package src
 	public class Engine extends MovieClip
 	{
 		private var gameStageR:GameStage;
+		private var key:KeyObject;
 		
 		// UI.
 		private var startScreenUIR:StartScreenUI;
@@ -31,8 +34,13 @@ package src
 		{
 			// Create stage.
 			gameStageR = new GameStage();
+			gameStageR.w = stage.stageWidth;
+			gameStageR.h = stage.stageHeight;
+			
 			stage.addChild(gameStageR);
 			
+			// Create auxiliary objects.
+			key = new KeyObject(stage);
 			
 			// Create UI.
 			startScreenUIR = new StartScreenUI();
@@ -59,7 +67,15 @@ package src
 		 */
 		private function loadLevelHolder() : void
 		{
-			levelHolderR.add(new Level());
+			// Create Level 1.
+			var level1 = new Level();
+			level1.add(new Stage1(gameStageR.w, gameStageR.h));
+			
+			// Create Level 2.
+			// Create Level 3.
+			// Create Level 4...
+			
+			levelHolderR.add(level1);
 		}
 		
 		/*************************************************/
@@ -99,9 +115,31 @@ package src
 		{
 			hideStartScreen();
 			
+			// Call GameLevelSelectorScreen
+			// then, GameStageSelectorScreen
+			// then, play stage.
+			
 			/* Testing purpose. */
-			var l:Level = levelHolderR.getLevel();
-			gameStageR.addChild(l);
+			var lvl = levelHolderR.getLevel();
+			var stage = lvl.getStage();
+			
+			// Play this stage.
+			loadStage(stage);
+		}
+		
+		/*************************************************/
+		/* GamePlay related methods. */
+		/*************************************************/
+		/**
+		 * @usage Loads and start the given stage.
+		 */
+		private function loadStage(stg:MyStage) : void
+		{
+			stg.load(key);
+			gameStageR.addChild(stg);
+			
+			stage.stageFocusRect = false;
+			stage.focus = gameStageR;
 		}
 		
 		/*************************************************/
@@ -114,6 +152,10 @@ package src
 		
 		/*************************************************/
 		/* Level Screen related methods. */
+		/*************************************************/
+		
+		/*************************************************/
+		/* Stage Screen related methods. */
 		/*************************************************/
 	}
 	

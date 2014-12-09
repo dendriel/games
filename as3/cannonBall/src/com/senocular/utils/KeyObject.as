@@ -1,4 +1,4 @@
-﻿package senocular.utils {
+﻿package src.com.senocular.utils {
 	
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;

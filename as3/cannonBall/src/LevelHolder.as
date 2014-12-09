@@ -2,7 +2,6 @@ package src
 {
 	
 	/**
-	 * ...
 	 * @author Vitor Rozsa
 	 * @usage Hold levels.
 	 */
@@ -36,7 +35,6 @@ package src
 		{
 			return levelList.pop();
 		}
-		
 	}
 	
 }
