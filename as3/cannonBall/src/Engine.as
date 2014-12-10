@@ -46,8 +46,7 @@ package src
 			startScreenUIR = new StartScreenUI();
 			
 			// Create game play objects.
-			levelHolderR = new LevelHolder();
-			
+			levelHolderR = new LevelHolder();			
 			
 			// Load Levels.
 			loadLevelHolder();

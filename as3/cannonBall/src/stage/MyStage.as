@@ -3,9 +3,10 @@ package src.stage
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import src.CannonBallFactory;
 	import src.com.senocular.utils.KeyObject;
-	
 	import src.Cannon;
+	import src.Const;
 	
 	/**
 	 * @usage Contains levels.
@@ -16,21 +17,43 @@ package src.stage
 		protected var bgImage:MovieClip;
 		protected var cann:Cannon;
 		
+		protected var _fieldOriginX:Number;	// movable area origin x.
+		protected var _fieldOriginY:Number;	// movable area origin y.
+		
+		protected var _fieldWidth:Number;	// movable area width;
+		protected var _fieldHeight:Number;	// movable area height;
+		
+		
+		private var cannonBallFactoryR:CannonBallFactory;
+		
 		public function MyStage()
 		{
 			cann = new Cannon();
+			
+			// Fill movable area specifications.
+			_fieldOriginX = Const.STAGE_DEFAULT_ORIGIN_X;
+			_fieldOriginY = Const.STAGE_DEFAULT_ORIGIN_Y;
+			_fieldWidth = Const.STAGE_DEFAULT_WIDTH;
+			_fieldHeight = Const.STAGE_DEFAULT_HEIGHT;
 		}
 
 		/******************************************************************************************/
-		/* Private methods */
+		/* Public methods */
 		/******************************************************************************************/
 		/**
 		 * @usage Load necessary resources.
 		 */
 		public function load(key:KeyObject) : void
 		{
-			// Load key control into cannon.
-			cann.load(key);
+			// Create a cannon ball factory.
+			cannonBallFactoryR = new CannonBallFactory(this);
+			
+			// Load control objects into cannon.
+			cann.load(key, cannonBallFactoryR);
+			
+			// Handle cannon shoot event.
+			cann.addEventListener(Const.EVT_CANNON_SHOOTING, handleCannonShooting, false, 0 , true);
+			
 			// Add cannon into stage.
 			this.addChild(cann);
 			
@@ -45,6 +68,8 @@ package src.stage
 		{
 			// Stop cannon.
 			cann.unload();
+			cann.removeEventListener(Const.EVT_CANNON_SHOOTING, handleCannonShooting);
+			
 			if (this.contains(cann))
 			{
 				this.removeChild(cann);
@@ -52,7 +77,28 @@ package src.stage
 			
 			// Stop running.
 			removeEventListener(Event.ENTER_FRAME, updateSelf);
-		}		
+		}
+		
+				
+		public function get fieldOriginX():Number 
+		{
+			return _fieldOriginX;
+		}
+		
+		public function get fieldOriginY():Number 
+		{
+			return _fieldOriginY;
+		}
+		
+		public function get fieldWidth():Number 
+		{
+			return _fieldWidth;
+		}
+		
+		public function get fieldHeight():Number 
+		{
+			return _fieldHeight;
+		}
 		
 		/******************************************************************************************/
 		/* Protected methods */
@@ -88,6 +134,13 @@ package src.stage
 		private function updateSelf(e:Event) : void
 		{
 		}
+		
+		private function handleCannonShooting(e:Event) : void
+		{
+			// Let cannon shoot again.
+			cann.canShoot = true;
+		}
+
 	}
 	
 }

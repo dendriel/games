@@ -13,6 +13,10 @@ package src
 	public class Cannon extends MovieClip 
 	{
 		private var key:KeyObject;
+		private var angle:Number;
+		private var cannonBallType:Number;
+		private var cannonBallFactoryR:CannonBallFactory;
+		private var _canShoot:Boolean;
 		
 		/******************************************************************************************/
 		/* Public methods */
@@ -20,11 +24,24 @@ package src
 		/**
 		 * @usage Allow player to interact with the cannon.
 		 * @param	keyRef
+		 * @param   cannonBallFactoryRef
 		 */
-		public function load(keyRef:KeyObject)
+		public function load(keyRef:KeyObject, cannonBallFactoryRef:CannonBallFactory)
 		{
-			// out of use, so far.
+			// Store keyobject reference.
 			key = keyRef;
+			
+			// Store cannon ball factory reference.
+			cannonBallFactoryR = cannonBallFactoryRef;
+			
+			// Starter cannon ball.
+			cannonBallType = CannonBallFactory.CANNONBALL_TYPE_DEFAULT;
+			
+			// Cannon starter angle (set by the cannon image).
+			angle = 270;
+			
+			// Stage is clear for firing.
+			_canShoot = true;
 			
 			// Start updateSelf.
 			addEventListener(Event.ENTER_FRAME, updateSelf, false, 0, true);
@@ -35,8 +52,20 @@ package src
 		 */
 		public function unload() : void
 		{
-			removeEventListener(Event.ENTER_FRAME, updateSelf);
 			key = null;
+			cannonBallFactoryR = null;
+			cannonBallType = CannonBallFactory.CANNONBALL_TYPE_NONE;
+			_canShoot = false;
+			
+			removeEventListener(Event.ENTER_FRAME, updateSelf);
+		}
+		
+		/**
+		 * @usage Use to enable/disable cannon shooting.
+		 */
+		public function set canShoot(value:Boolean):void 
+		{
+			_canShoot = value;
 		}
 		
 		/******************************************************************************************/
@@ -47,14 +76,15 @@ package src
 		 * @param	e
 		 */
 		private function updateSelf(e:Event) : void
-		{			
+		{
 			if (key.isDown(Keyboard.LEFT) || key.isDown(Keyboard.A))
 			{
-				trace("left");
+				decrease_angle();
 			}
+			
 			else if (key.isDown(Keyboard.RIGHT) || key.isDown(Keyboard.D))
 			{
-				trace("right");
+				increase_angle();
 			}
 			
 			if (key.isDown(Keyboard.UP) || key.isDown(Keyboard.W))
@@ -66,11 +96,63 @@ package src
 				trace("down");
 			}
 			
-			// action key.
+			// Shoot!
 			if (key.isDown(Keyboard.SPACE))
 			{
-				trace("space");
+				shoot();
 			}
+		}
+		
+		/**
+		 * @usage Decrease the cannon angle.
+		 */
+		private function increase_angle() : void
+		{
+			if (angle >= Const.CANNON_MAX_ANGLE)
+			{
+				// Minimum angle reached.
+				return;
+			}
+			
+			rotation += Const.CANNON_ROTATION_SPEED;
+			angle += Const.CANNON_ROTATION_SPEED;
+			trace("angle: " + angle);
+		}
+		
+		/**
+		 * @usage Increase the cannon angle.
+		 */
+		private function decrease_angle() : void
+		{
+			if (angle <= Const.CANNON_MIN_ANGLE)
+			{
+				// Maximum angle reached.
+				return;
+			}
+			
+			rotation -= Const.CANNON_ROTATION_SPEED;
+			angle -= Const.CANNON_ROTATION_SPEED;
+			trace("angle: " + angle);
+		}
+		
+		/**
+		 * @usage Shoot a cannon ball.
+		 */
+		private function shoot() : void
+		{
+			if (_canShoot == false)
+			{
+				return;
+			}
+			
+			// Disallow shooting. (until Stage enable shooting again).
+			_canShoot = false;
+			
+			// Create a cannon ball on the stage.
+			cannonBallFactoryR.createCannonBall(x, y, cannonBallType, angle);
+			
+			// Tell stage that a cannon ball was created.
+			dispatchEvent(new Event(Const.EVT_CANNON_SHOOTING));
 		}
 	}
 	
