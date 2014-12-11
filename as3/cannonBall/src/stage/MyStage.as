@@ -14,15 +14,16 @@ package src.stage
 	 */
 	public class MyStage extends MovieClip
 	{
+		// Variables that are customized by the subclasses.
 		protected var bgImage:MovieClip;
 		protected var cann:Cannon;
+		protected var wallHolderList:MovieClip;
 		
 		protected var _fieldOriginX:Number;	// movable area origin x.
 		protected var _fieldOriginY:Number;	// movable area origin y.
 		
 		protected var _fieldWidth:Number;	// movable area width;
 		protected var _fieldHeight:Number;	// movable area height;
-		
 		
 		private var cannonBallFactoryR:CannonBallFactory;
 		
@@ -79,6 +80,11 @@ package src.stage
 			removeEventListener(Event.ENTER_FRAME, updateSelf);
 		}
 		
+		
+		public function getWallHolderList() : MovieClip
+		{
+			return wallHolderList;
+		}
 				
 		public function get fieldOriginX():Number 
 		{
@@ -111,6 +117,9 @@ package src.stage
 		{
 			// Draw background.
 			this.addChild(bgImage);
+			
+			// Draw walls.
+			this.addChild(wallHolderList);
 		}
 		
 		/**
@@ -121,6 +130,11 @@ package src.stage
 			if (this.contains(bgImage))
 			{
 				this.removeChild(bgImage);
+			}
+			
+			if (this.contains(wallHolderList))
+			{
+				this.removeChild(wallHolderList);
 			}
 		}
 		
@@ -135,12 +149,15 @@ package src.stage
 		{
 		}
 		
+		/**
+		 * @usage Handle cannon shooting event.
+		 * @param	e
+		 */
 		private function handleCannonShooting(e:Event) : void
 		{
 			// Let cannon shoot again.
 			cann.canShoot = true;
 		}
-
 	}
 	
 }

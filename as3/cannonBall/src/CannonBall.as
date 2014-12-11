@@ -47,15 +47,25 @@ package src
 		 * @usage Update self.
 		 * @param	e
 		 */
-		public function updateSelf(e:Event) : void
+		private function updateSelf(e:Event) : void
 		{
+			moveSelf();
+		}
+		
+		/**
+		 * @usage Recursive function.
+		 * @return true if the collided, false if not.
+		 */
+		private function moveSelf() : void
+		{
+			var wallHolderList = stageR.getWallHolderList();
 			var vx = speed_vx * Math.cos(angle * (Math.PI/180) );
 			var vy = speed_vy * Math.sin(angle * (Math.PI/180) );
 			
 			var temp_x = vx;
 			var temp_y = vy;
 			
-			// Calculate Horizontal movement.
+			// Check collision against stage bounds (horizontal).
 			if ( ( (x + temp_x) < stageR.fieldOriginX) ||
 					( (x + temp_x) > stageR.fieldWidth) )
 			{
@@ -64,13 +74,63 @@ package src
 				temp_x = vx * ( -1);
 			}
 			
-			// Calculate Vertical movement.
+			// Check collision against stage bounds (vertical).
 			if ( ( (y + temp_y) < stageR.fieldOriginY) ||
 					( (y + temp_y) > stageR.fieldHeight) )
 			{
 				// Collided with field origin. Reverse speed.
 				speed_vy = speed_vy * ( -1);
 				temp_y = vy * ( -1);
+			}
+			
+			// Check collision against stage walls.
+			for (var i = 0; i < wallHolderList.numChildren; i++)
+			{
+				var w:MovieClip = wallHolderList.getChildAt(i);
+				
+				// This can be expensive.. making the as3 hit check, then checking it again to see
+				// where is rectangle face in with the collision occurs.
+				if (w.hitTestObject(this) != true)
+				{
+					continue;
+				}
+				
+				// Top or bottom.
+				if ( (x >= w.x) && (x <= (w.x + w.width)) )
+				{					
+					if (y >= (w.y + w.height) )
+					{
+						speed_vy = speed_vy * ( -1);
+						temp_y = vy * ( -1);
+						break;
+					}
+					else if ( y <= w.y)
+					{
+						speed_vy = speed_vy * ( -1);
+						temp_y = vy * ( -1);
+						break;
+					}
+				
+				}
+				
+				// Left or right.
+				if ( (y >= w.y) && (y <= (w.y + w.height)) )
+				{
+					if (x <= w.x )
+					{
+						speed_vx = speed_vx * ( -1);
+						temp_x = vx * ( -1);
+						break;
+					}
+					else// if (x >= (w.x + w.width))
+					{
+						speed_vx = speed_vx * ( -1);
+						temp_x = vx * ( -1);
+						break;
+					}
+					
+				}
+				
 			}
 			
 			// Update position.

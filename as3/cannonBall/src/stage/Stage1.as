@@ -14,8 +14,10 @@ package src.stage
 		 */
 		public function Stage1(w:Number, h:Number)
 		{
-			// Fill parameters.
+			// Fill background.
 			bgImage = new BgLevel1Stage1;
+			// Fill wall holder.
+			wallHolderList = new WallHolderLevel1Stage1;
 			
 			// Center the cannon.
 			cann.x = w/2
