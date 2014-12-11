@@ -12,6 +12,8 @@ package src
 	{
 		private var speed:Number;
 		private var angle:Number; // Angle in degrees.
+		private var speed_vx:Number;
+		private var speed_vy:Number;
 		
 		private var stageR:MyStage;	// Stage reference, so the ball can interact with the stage.
 		
@@ -32,7 +34,8 @@ package src
 			angle = angleV;
 			
 			// Set default speeds.
-			speed = Const.CANNON_BALL_SPEED_DEFAULT;
+			speed_vx = Const.CANNON_BALL_SPEED_DEFAULT;
+			speed_vy = Const.CANNON_BALL_SPEED_DEFAULT;
 			
 			addEventListener(Event.ENTER_FRAME, updateSelf, false, 0, true);
 		}
@@ -46,34 +49,33 @@ package src
 		 */
 		public function updateSelf(e:Event) : void
 		{
-			var vx = speed * Math.cos(angle * (Math.PI/180) );
-			var vy = speed * Math.sin(angle * (Math.PI/180) );
+			var vx = speed_vx * Math.cos(angle * (Math.PI/180) );
+			var vy = speed_vy * Math.sin(angle * (Math.PI/180) );
 			
-			var temp_x = x + vx;
-			var temp_y = y + vy;
-			
+			var temp_x = vx;
+			var temp_y = vy;
 			
 			// Calculate Horizontal movement.
-			if ( (temp_x < stageR.fieldOriginX) || (temp_x > stageR.fieldWidth) )
+			if ( ( (x + temp_x) < stageR.fieldOriginX) ||
+					( (x + temp_x) > stageR.fieldWidth) )
 			{
 				// Collided with field origin. Reverse speed.
-				speed = speed * ( -1);
-				x += vx * (-1);
-			}
-			else {
-				x = temp_x;
+				speed_vx = speed_vx * ( -1);
+				temp_x = vx * ( -1);
 			}
 			
 			// Calculate Vertical movement.
-			if ( (temp_y < stageR.fieldOriginY) || (temp_y > stageR.fieldHeight) )
+			if ( ( (y + temp_y) < stageR.fieldOriginY) ||
+					( (y + temp_y) > stageR.fieldHeight) )
 			{
 				// Collided with field origin. Reverse speed.
-				speed = speed * ( -1);
-				y += vy * (-1);
+				speed_vy = speed_vy * ( -1);
+				temp_y = vy * ( -1);
 			}
-			else {
-				y = temp_y;
-			}
+			
+			// Update position.
+			x += temp_x;
+			y += temp_y;
 		}
 	}
 	
