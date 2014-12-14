@@ -395,6 +395,28 @@ package src
 			
 			return ORI_C;
 		}
+		
+		/**
+		 * @usage Calculate horizontal movement depending on speed and angle.
+		 * @param	s
+		 * @param	a
+		 * @return
+		 */
+		public static function moveSpeedAngleHor(s:Number, a:Number) : Number
+		{
+			return (s * Math.cos(a * (Math.PI/180) ) );
+		}
+		
+		/**
+		 * @usage Calculate vertical movement depending on speed and angle.
+		 * @param	s
+		 * @param	a
+		 * @return
+		 */	
+		public static function moveSpeedAngleVer(s:Number, a:Number) : Number
+		{
+			return (s * Math.sin(a * (Math.PI/180) ) );
+		}
 	}
 
 }

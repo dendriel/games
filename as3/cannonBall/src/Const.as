@@ -14,6 +14,7 @@ package src
 		public static const CANNON_MIN_ANGLE:Number = 180;
 		public static const CANNON_MAX_ANGLE:Number = 360;
 		public static const CANNON_ROTATION_SPEED:Number = 2;	// 2 degrees per iteration.
+		public static const CANNON_BALL_RADIUS_DEFAULT:Number = 8
 		public static const CANNON_BALL_SPEED_DEFAULT:Number = 6;
 		
 		// Game Play Events.

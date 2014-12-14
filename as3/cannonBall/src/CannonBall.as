@@ -18,6 +18,8 @@ package src
 		
 		private var stageR:MyStage;	// Stage reference, so the ball can interact with the stage.
 		
+		protected var radius:Number;
+		
 		/******************************************************************************************/
 		/* Public methods */
 		/******************************************************************************************/
@@ -31,12 +33,14 @@ package src
 			// Store stage reference.
 			stageR = stageRef;
 			
-			//angle = (angleV * 2); // Double angle so conversion to radians and movement is reversed.
 			angle = angleV;
 			
+			// Set radius.
+			radius = Const.CANNON_BALL_RADIUS_DEFAULT;
+			
 			// Set default speeds.
-			speed_vx = 4;
-			speed_vy = 4;
+			speed_vx = Const.CANNON_BALL_SPEED_DEFAULT;
+			speed_vy = Const.CANNON_BALL_SPEED_DEFAULT;
 			
 			drawSelf();
 			
@@ -61,8 +65,27 @@ package src
 		private function drawSelf() : void
 		{
 			graphics.beginFill(0x000000);
-            graphics.drawCircle(0, 0, 8);
+            graphics.drawCircle(0, 0, radius);
 			graphics.endFill();
+		}
+		
+		/**
+		 * @usage Create the object that will be tested for collision instead of the ball raw graphics.
+		 * (this allow a smooth ball collision effect).
+		 * @return a movieClip to be used to check against collision.
+		 */
+		private function getCollisionObject() : MovieClip
+		{
+			var dummy = new MovieClip();
+			
+			dummy.graphics.beginFill(0x000000);
+            dummy.graphics.drawCircle(0, 0, (radius/2) );
+			dummy.graphics.endFill();
+			
+			dummy.x = this.x;
+			dummy.y = this.y;
+			
+			return dummy;
 		}
 		
 		/**
@@ -72,115 +95,81 @@ package src
 		private function moveSelf() : void
 		{
 			var wallHolderList = stageR.getWallHolderList();
-			var vx = speed_vx * Math.cos(angle * (Math.PI/180) );
-			var vy = speed_vy * Math.sin(angle * (Math.PI/180) );
+			var vx = Calc.moveSpeedAngleHor(speed_vx, angle);
+			var vy = Calc.moveSpeedAngleVer(speed_vy, angle);
 			
-			var temp_x = vx;
-			var temp_y = vy;
-			var nextPos = new MovieClip();
-			nextPos.graphics.copyFrom(this.graphics);
-			nextPos.x = this.x + temp_x;
-			nextPos.y = this.y + temp_y;
+			var dummy = getCollisionObject();
 			
-			nextPos.x += temp_x;
-			nextPos.y += temp_y;
+			dummy.x += vx;
+			dummy.y += vy;
 			
 			// Check collision against stage bounds (horizontal).
-			if ( ( (x + temp_x) < stageR.fieldOriginX) ||
-					( (x + temp_x) > stageR.fieldWidth) )
+			if ( ( (x + vx) < stageR.fieldOriginX) ||
+					( (x + vx) > stageR.fieldWidth) )
 			{
 				// Collided with field origin. Reverse speed.
-				speed_vx = speed_vx * ( -1);
-				temp_x = vx * ( -1);
+				speed_vx *= ( -1);
+				vx  *= (-1);
 			}
 			
 			// Check collision against stage bounds (vertical).
-			if ( ( (y + temp_y) < stageR.fieldOriginY) ||
-					( (y + temp_y) > stageR.fieldHeight) )
+			if ( ( (y + vy) < stageR.fieldOriginY) ||
+					( (y + vy) > stageR.fieldHeight) )
 			{
 				// Collided with field origin. Reverse speed.
-				speed_vy = speed_vy * ( -1);
-				temp_y = vy * ( -1);
+				speed_vy *= ( -1);
+				vy = vy * (-1);
 			}
 			
 			// Check collision against stage walls.
 			for (var i = 0; i < wallHolderList.numChildren; i++)
 			{
-				var w:MovieClip = wallHolderList.getChildAt(i);
+				var w = wallHolderList.getChildAt(i);
 				
-				// This can be expensive.. making the as3 hit check, then checking it again to see
-				// where is rectangle face in with the collision occurs.
-				if (w.hitTestObject(nextPos) != true)
+				if (w.hitTestObject(dummy) != true)
 				{
 					continue;
 				}
 				
-				// Find the collision direction.
-				var ori = Calc.pointOrientationRect(new Point(x, y), w);
-				
-				switch(ori)
+				// Find out where the collision object came from.				
+				switch(Calc.pointOrientationRect(new Point(x, y), w))
 				{
 					case Calc.ORI_N:
 					case Calc.ORI_S:
-						speed_vy = speed_vy * ( -1);
-						temp_y = vy * ( -1);
-						trace("N or S");
+						speed_vy *= ( -1);
+						vy = vy * (-1);
 						break;
 						
 					case Calc.ORI_E:
 					case Calc.ORI_W:
-						speed_vx = speed_vx * ( -1);
-						temp_x = vx * ( -1);
-						trace("E or W");
+						speed_vx *= ( -1);
+						vx *=(-1);
 						break;
-						
 						
 					case Calc.ORI_NE:
-						speed_vy = speed_vy * ( -1);
-						temp_y = vy * ( -1);
-						speed_vx = speed_vx * ( -1);
-						temp_x = vx * ( -1);
-						trace("NE");
-						break;
 					case Calc.ORI_SE:
-						speed_vy = speed_vy * ( -1);
-						temp_y = vy * ( -1);
-						speed_vx = speed_vx * ( -1);
-						temp_x = vx * ( -1);
-						trace("SE");
-						break;
 					case Calc.ORI_NO:
-						speed_vy = speed_vy * ( -1);
-						temp_y = vy * ( -1);
-						speed_vx = speed_vx * ( -1);
-						temp_x = vx * ( -1);
-						trace("NO");
-						break;
 					case Calc.ORI_SO:
-						speed_vy = speed_vy * ( -1);
-						temp_y = vy * ( -1);
-						speed_vx = speed_vx * ( -1);
-						temp_x = vx * ( -1);
-						trace("SO");
-						break;
-						
 					case Calc.ORI_C:
-						trace("THE POINT IS INSIDE THE BOX!!");
-						speed_vy = speed_vy * ( -1);
-						temp_y = vy * ( -1);
-						speed_vx = speed_vx * ( -1);
-						temp_x = vx * ( -1);
+						speed_vy *= ( -1);
+						vy = vy * (-1);
+						speed_vx *= ( -1);
+						vx *=(-1);
 						break;
 						
 					default:
 						trace("Detected Invalid collision.");
 						break;
 				}
+				
+				// **Don't stop checking. The ball can collid with more than one wall at the same time.
+				// If we check for more collisions, the ball movement looks better and 'natural'.
+				//break;
 			}
 			
 			// Update position.
-			x += temp_x;
-			y += temp_y;
+			x += vx;
+			y += vy;
 		}
 	}
 	
