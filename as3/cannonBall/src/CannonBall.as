@@ -100,92 +100,50 @@ package src
 			var vx = Calc.moveSpeedAngleHor(speed_vx, angle);
 			var vy = Calc.moveSpeedAngleVer(speed_vy, angle);
 			
-			var dummy = getCollisionObject();
-			
-			dummy.x += vx;
-			dummy.y += vy;
-			
 			// Check collision against stage bounds (horizontal).
-			if ( ( (x + vx) < stageR.fieldOriginX) ||
-					( (x + vx) > stageR.fieldWidth) )
-			{
-				// Collided with field origin. Reverse speed.
+			if ( ( (x + vx) < stageR.fieldOriginX) || ( (x + vx) > stageR.fieldWidth) )	{
 				speed_vx *= ( -1);
 				vx  *= (-1);
 			}
 			
 			// Check collision against stage bounds (vertical).
-			if ( ( (y + vy) < stageR.fieldOriginY) ||
-					( (y + vy) > stageR.fieldHeight) )
-			{
-				// Collided with field origin. Reverse speed.
+			if ( ( (y + vy) < stageR.fieldOriginY) || ( (y + vy) > stageR.fieldHeight) ) {
 				speed_vy *= ( -1);
 				vy = vy * (-1);
 			}
 			
 			// Check collision against stage walls.
-			var w_child:MovieClip = new MovieClip();
 			for (var i = 0; i < wallHolderList.numChildren; i++)
 			{
-				var w = wallHolderList.getChildAt(i) as MovieClip;
-				var hit = false;
-				
-				if (w.hitTestObject(dummy) != true)
-				{
-					continue;
-				}
-				
-				for (var j = 0; j < w.numChildren; j++)
-				{
-					var w_aux = w.getChildAt(j) as MovieClip;
-					
-					// Add child position offset.
-					w_child.graphics.clear();
-					w_child.graphics.beginFill(0x000000);
-					w_child.graphics.drawRect(0, 0, w_aux.width, w_aux.height);
-					w_child.graphics.endFill();
-					w_child.x = w_aux.x + w.x;
-					w_child.y = w_aux.y + w.y;
-					
-					if (w_child.hitTestObject(dummy) != true)
-					{
-						continue;
-					}
-					
-					hit = true;
-					break;
-				}
-				
-				if (hit == false)
-				{
-					// Did not hit any element of this wall.
-					continue;
-				}
-				
+				var coll_ori = checkWallCollision(wallHolderList.getChildAt(i) as MovieClip, vx, vy);
 				// Find out where the collision object came from.				
-				switch(Calc.pointOrientationRect(new Point(x, y), w_child))
+				switch(coll_ori)
 				{
 					case Calc.ORI_N:
 					case Calc.ORI_S:
+					case Calc.ORI_SO:
+					case Calc.ORI_NO:
 						speed_vy *= ( -1);
 						vy = vy * ( -1);
 						break;
 						
 					case Calc.ORI_E:
 					case Calc.ORI_W:
+					case Calc.ORI_SE:
+					case Calc.ORI_NE:
 						speed_vx *= ( -1);
 						vx *=(-1);
 						break;
 						
-					case Calc.ORI_NE:
-					case Calc.ORI_SE:
-					case Calc.ORI_NO:
-					case Calc.ORI_SO:
 					case Calc.ORI_C:
 						speed_vy *= ( -1);
-						vy = vy * (-1);
+						vy = vy * ( -1);
 						speed_vx *= ( -1);
-						vx *=(-1);
+						vx *= ( -1);
+						break;
+						
+					case Calc.ORI_NONE:
+						// Nothing to do.
 						break;
 						
 					default:
@@ -201,6 +159,55 @@ package src
 			// Update position.
 			x += vx;
 			y += vy;
+		}
+		
+		private function checkWallCollision(w:MovieClip, vx:Number, vy:Number) : Number
+		{
+			//var w_child:MovieClip = new MovieClip();
+			//var hit = false;
+			var dummy = getCollisionObject();
+			
+			dummy.x += vx;
+			dummy.y += vy;
+			
+			if (w.hitTestObject(dummy) != true)
+			{
+				// None of the members of this wall is in collision.
+				return Calc.ORI_NONE;
+			}
+			
+				trace("CHILD == " + w.numChildren);
+			if (w.numChildren <= 1)
+			{
+				// In this wall there is only one member to check.
+				return Calc.pointOrientationRect(new Point(x, y), w);
+			}
+			
+			// The wall have more than one member. Check what member of this wall is in collision.
+			for (var j = 0; j < w.numChildren; j++)
+			{
+				var w_aux = w.getChildAt(j) as MovieClip;
+				var w_child = new MovieClip();
+				
+				// Add child position offset.
+				w_child.graphics.clear();
+				w_child.graphics.beginFill(0x000000);
+				w_child.graphics.drawRect(0, 0, w_aux.width, w_aux.height);
+				w_child.graphics.endFill();
+				w_child.x = w_aux.x + w.x;
+				w_child.y = w_aux.y + w.y;
+				
+				trace(w_child.x + "," + w_child.y + "; " + w_child.width + "," + w_child.height);
+				var coll_ori = checkWallCollision(w_child, vx, vy);
+				trace("coll_ori: " + coll_ori);
+				
+				if (coll_ori != Calc.ORI_NONE)
+				{
+					return coll_ori;
+				}
+			}
+			
+			return  Calc.ORI_NONE;
 		}
 		
 		/**

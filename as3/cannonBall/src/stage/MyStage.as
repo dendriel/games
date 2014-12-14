@@ -171,7 +171,8 @@ package src.stage
 		private function handleCannonShooting(e:Event) : void
 		{
 			// Prevent cannon from shooting.
-			cann.canShoot = false;
+			//cann.canShoot = false;
+			cann.canShoot = true;
 		}
 		
 		private function handleHitTarget(e:Event) : void
