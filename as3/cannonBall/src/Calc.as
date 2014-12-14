@@ -4,6 +4,7 @@ package src
 	import flash.geom.Matrix;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	/**
 	 * ...
@@ -416,6 +417,30 @@ package src
 		public static function moveSpeedAngleVer(s:Number, a:Number) : Number
 		{
 			return (s * Math.sin(a * (Math.PI/180) ) );
+		}
+		
+		// http://jadendreamer.wordpress.com/2012/06/28/flash-as3-duplicate-movieclip-objects-function/
+		public static function duplicateObject(source:MovieClip) : MovieClip
+		{
+			// create duplicate
+			var sourceClass:Class = Object(source).constructor;
+			var duplicate:MovieClip = new sourceClass();
+
+			// duplicate properties
+			duplicate.transform = source.transform;
+			duplicate.filters = source.filters;
+			duplicate.cacheAsBitmap = source.cacheAsBitmap;
+			duplicate.opaqueBackground = source.opaqueBackground;
+			
+			duplicate.width = source.width;
+			duplicate.height = source.height;
+
+			if (source.scale9Grid) {
+				var rect:Rectangle = source.scale9Grid;
+				duplicate.scale9Grid = rect;
+			}
+
+			return duplicate;
 		}
 	}
 

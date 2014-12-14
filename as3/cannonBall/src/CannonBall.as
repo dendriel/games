@@ -124,22 +124,51 @@ package src
 			}
 			
 			// Check collision against stage walls.
+			var w_child:MovieClip = new MovieClip();
 			for (var i = 0; i < wallHolderList.numChildren; i++)
 			{
-				var w = wallHolderList.getChildAt(i);
+				var w = wallHolderList.getChildAt(i) as MovieClip;
+				var hit = false;
 				
 				if (w.hitTestObject(dummy) != true)
 				{
 					continue;
 				}
 				
+				for (var j = 0; j < w.numChildren; j++)
+				{
+					var w_aux = w.getChildAt(j) as MovieClip;
+					
+					// Add child position offset.
+					w_child.graphics.clear();
+					w_child.graphics.beginFill(0x000000);
+					w_child.graphics.drawRect(0, 0, w_aux.width, w_aux.height);
+					w_child.graphics.endFill();
+					w_child.x = w_aux.x + w.x;
+					w_child.y = w_aux.y + w.y;
+					
+					if (w_child.hitTestObject(dummy) != true)
+					{
+						continue;
+					}
+					
+					hit = true;
+					break;
+				}
+				
+				if (hit == false)
+				{
+					// Did not hit any element of this wall.
+					continue;
+				}
+				
 				// Find out where the collision object came from.				
-				switch(Calc.pointOrientationRect(new Point(x, y), w))
+				switch(Calc.pointOrientationRect(new Point(x, y), w_child))
 				{
 					case Calc.ORI_N:
 					case Calc.ORI_S:
 						speed_vy *= ( -1);
-						vy = vy * (-1);
+						vy = vy * ( -1);
 						break;
 						
 					case Calc.ORI_E:
