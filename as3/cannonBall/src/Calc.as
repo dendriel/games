@@ -11,7 +11,24 @@ package src
 	 */
 	public class Calc 
 	{
+		// Define possibles collision orientation.
+		static public const ORI_NONE:Number = 0;
+		static public const ORI_N:Number = 1;
+		static public const ORI_W:Number = 2;
+		static public const ORI_S:Number = 3;
+		static public const ORI_E:Number = 4;
+		static public const ORI_NE:Number = 5;
+		static public const ORI_NO:Number = 6;
+		static public const ORI_SE:Number = 7;
+		static public const ORI_SO:Number = 8;
+		static public const ORI_C:Number = 9;
 		
+		/**
+		 * @usage Create a random value between min and max.
+		 * @param	min
+		 * @param	max
+		 * @return  (min >= value <= max)
+		 */
 		public static function randomRange(min:Number, max:Number) : Number
 		{
 			// Value will be something between 0 and max.
@@ -59,16 +76,6 @@ package src
 			var distance:Number = Math.sqrt(newX * newX + newY * newY);
 			
 			return (distance < (p1r + p2r) );
-		}
-		
-		// Distributed chance. Doesn't work!!
-		public static function randomChance(chance:Number, frameRate:Number) : Boolean
-		{
-			var chanceDec:Number = chance / 100;
-			//trace("chanceDec: " + chanceDec);
-			var test:Number = Math.pow(chanceDec, frameRate-1);
-			//trace ("test: " + test);
-			return (Math.random() < Math.pow(chanceDec, (frameRate-1)));
 		}
 		
 		/**
@@ -207,6 +214,186 @@ package src
 		public static function checkInsideBounds (px:Number, py:Number, ax:Number, ay:Number, aw:Number, ah:Number) : Boolean
 		{
 			return !(checkOutsideBounds(px, py, ax, ay, aw, ah));
+		}
+    
+		/**
+		 * @usage  De	termines if the lines AB and CD intersect.
+		 * Adapted from: http://ideone.com/PnPJgb
+		 * another awesome reference: http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+		 * @param	Point A
+		 * @param	Point B
+		 * @param	Point C
+		 * @param	Point D
+		 * @return
+		 */
+		static function checkLinesIntersection(A:Point, B:Point, C:Point, D:Point) : Boolean
+		{
+			var CmP = new Point(C.x - A.x, C.y - A.y);
+			var r   = new Point(B.x - A.x, B.y - A.y);
+			var s   = new Point(D.x - C.x, D.y - C.y);
+
+			var CmPxr = ( (CmP.x * r.y) - (CmP.y * r.x) );
+			var CmPxs = ( (CmP.x * s.y) - (CmP.y * s.x) );
+			var rxs   = ( (r.x * s.y) - (r.y * s.x) );
+
+			if (CmPxr == 0)
+			{
+				// Lines are collinear, and so intersect if they have any overlap
+
+				return ((C.x - A.x < 0) != (C.x - B.x < 0))
+					|| ((C.y - A.y < 0) != (C.y - B.y < 0));
+			}
+
+			if (rxs == 0)
+			{
+				return false; // Lines are parallel.
+			}
+
+			var rxsr = 1 / rxs;
+			var t = CmPxs * rxsr;
+			var u = CmPxr * rxsr;
+
+			return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1);
+		}
+		
+		/**
+		 * @usage Check what face of a movieClip a line is in intersection.
+		 * @param	Point A
+		 * @param	Point B
+		 * @param	MovieClip m
+		 * @return A collision orientation (look for ORI_*).
+		 */
+		public static function checkLineIntersectOrientation(A:Point, B:Point, m:MovieClip) : Number
+		{
+			var mPointA = new Point(m.x, m.y);
+			var mPointB = new Point(m.x + m.width, m.y);
+			var mPointC = new Point(m.x, m.y + m.height);
+			var mPointD = new Point(m.x + m.width, m.y + m.height);
+			
+			// Check Top.
+			if (checkLinesIntersection(A, B, mPointA, mPointB))
+			{
+				return ORI_N;
+			}
+			
+			// Check Right.
+			if (checkLinesIntersection(A, B, mPointB, mPointD))
+			{
+				return ORI_W;
+			}
+			
+			// Check bottom.
+			if (checkLinesIntersection(A, B, mPointC, mPointD))
+			{
+				return ORI_S;
+			}
+			
+			// Check left.
+			if (checkLinesIntersection(A, B, mPointA, mPointC))
+			{
+				return ORI_E;
+			}
+			
+			// No intersection.
+			return ORI_NONE;
+		}
+		
+		/**
+		 * @usage Checks what is the position of the point in relation of a rectangle.
+		 * 
+		 * @param p The point to be checked.
+		 * @param m The movie clip to be checked (its rectangle).
+		 * 
+		 * +--------------+---+----------------+
+		 * |              |   |                |
+		 * |      NO      | N |       NE       |
+		 * |              |   |                |
+		 * +--------------+---+----------------+
+		 * |       O      | C |        E       |
+		 * +--------------+---+----------------+
+		 * |              |   |                |
+		 * |      SO      | S |       SE       |
+		 * |              |   |                |
+		 * +--------------+---+----------------+
+		 * 
+		 * 
+		 * 
+		 *   +--------------+---+----------------+
+		 *   |              |   |                |
+		 *   |      NO      | N |       NE       |
+		 *   |            Pa|   |Pb              |
+		 *   +--------------+---+----------------+
+		 *   |       O      | C |        E       |
+		 *   +--------------+---+----------------+
+		 *   |            Pc|   |Pd              |
+		 *   |      SO      | S |       SE       |
+		 *   |              |   |                |
+		 *   +--------------+---+----------------+
+		 *
+		 * 
+		 * @return The orientation value from point in relation to the movie clip. If the point is
+		 * inside the movie clip, return ORI_C. Warning: if the point is inside of the border of a
+		 * quadrant, it will be considered to be in that quadrant. The checking will be made in the
+		 * order: N -> S -> E -> O; then, NO -> NE -> SE -> SO;
+		 * If the point is not found anywere out of the rectangle, then the point is in the center
+		 * and ORI_C is returned.
+		 * 
+		 */
+		public static function pointOrientationRect(p:Point, m:MovieClip) : Number
+		{
+			var Pa = new Point(m.x, m.y);
+			var Pb = new Point(m.x + m.width, m.y);
+			var Pc = new Point(m.x, m.y + m.height);
+			var Pd = new Point(m.x + m.width, m.y + m.height);
+			
+			// North or South.
+			if ( (p.x >= Pa.x) && (p.x <= Pb.x) ) {
+				// North.
+				if (p.y <= Pa.y) {
+					return ORI_N;
+				}
+				// South.
+				else if (p.y >= Pc.y) {
+					return ORI_S;
+				}
+			}
+			// East and West.
+			if ( (p.y >= Pb.y) && (p.y <= Pd.y) ) {
+				// East.
+				if (p.x >= Pb.x) {
+					return ORI_E;
+				}
+				// West.
+				else if (p.x <= Pc.x) {
+					return ORI_W;
+				}
+			}
+			
+			// Northeast or Southeast.
+			if (p.x >= Pb.x) {
+				// Northeast.
+				if (p.x <= Pb.y) {
+					return ORI_NE;
+				}
+				// Southeast.
+				else if (p.x >= Pd.y) {
+					return ORI_SE;
+				}
+			}
+			
+			// Northwest or Southwest.
+			if (p.x <= Pa.x) {
+				// Northwest.
+				if (p.x <= Pa.y) {
+					return ORI_NO;
+				}
+				// Southwest.
+				else if (p.x >= Pc.y) {
+					return ORI_SO;
+				}
+			}
+			
+			return ORI_C;
 		}
 	}
 

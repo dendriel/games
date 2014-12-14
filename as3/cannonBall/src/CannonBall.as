@@ -2,6 +2,7 @@ package src
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.geom.Point;
 	import src.stage.MyStage;
 	
 	/**
@@ -34,8 +35,10 @@ package src
 			angle = angleV;
 			
 			// Set default speeds.
-			speed_vx = Const.CANNON_BALL_SPEED_DEFAULT;
-			speed_vy = Const.CANNON_BALL_SPEED_DEFAULT;
+			speed_vx = 4;
+			speed_vy = 4;
+			
+			drawSelf();
 			
 			addEventListener(Event.ENTER_FRAME, updateSelf, false, 0, true);
 		}
@@ -53,6 +56,16 @@ package src
 		}
 		
 		/**
+		 * @usage Draw itself.
+		 */
+		private function drawSelf() : void
+		{
+			graphics.beginFill(0x000000);
+            graphics.drawCircle(0, 0, 8);
+			graphics.endFill();
+		}
+		
+		/**
 		 * @usage Recursive function.
 		 * @return true if the collided, false if not.
 		 */
@@ -64,6 +77,13 @@ package src
 			
 			var temp_x = vx;
 			var temp_y = vy;
+			var nextPos = new MovieClip();
+			nextPos.graphics.copyFrom(this.graphics);
+			nextPos.x = this.x + temp_x;
+			nextPos.y = this.y + temp_y;
+			
+			nextPos.x += temp_x;
+			nextPos.y += temp_y;
 			
 			// Check collision against stage bounds (horizontal).
 			if ( ( (x + temp_x) < stageR.fieldOriginX) ||
@@ -90,47 +110,72 @@ package src
 				
 				// This can be expensive.. making the as3 hit check, then checking it again to see
 				// where is rectangle face in with the collision occurs.
-				if (w.hitTestObject(this) != true)
+				if (w.hitTestObject(nextPos) != true)
 				{
 					continue;
 				}
 				
-				// Top or bottom.
-				if ( (x >= w.x) && (x <= (w.x + w.width)) )
-				{					
-					if (y >= (w.y + w.height) )
-					{
-						speed_vy = speed_vy * ( -1);
-						temp_y = vy * ( -1);
-						break;
-					}
-					else if ( y <= w.y)
-					{
-						speed_vy = speed_vy * ( -1);
-						temp_y = vy * ( -1);
-						break;
-					}
+				// Find the collision direction.
+				var ori = Calc.pointOrientationRect(new Point(x, y), w);
 				
-				}
-				
-				// Left or right.
-				if ( (y >= w.y) && (y <= (w.y + w.height)) )
+				switch(ori)
 				{
-					if (x <= w.x )
-					{
+					case Calc.ORI_N:
+					case Calc.ORI_S:
+						speed_vy = speed_vy * ( -1);
+						temp_y = vy * ( -1);
+						trace("N or S");
+						break;
+						
+					case Calc.ORI_E:
+					case Calc.ORI_W:
+						speed_vx = speed_vx * ( -1);
+						temp_x = vx * ( -1);
+						trace("E or W");
+						break;
+						
+						
+					case Calc.ORI_NE:
+						speed_vy = speed_vy * ( -1);
+						temp_y = vy * ( -1);
+						speed_vx = speed_vx * ( -1);
+						temp_x = vx * ( -1);
+						trace("NE");
+						break;
+					case Calc.ORI_SE:
+						speed_vy = speed_vy * ( -1);
+						temp_y = vy * ( -1);
+						speed_vx = speed_vx * ( -1);
+						temp_x = vx * ( -1);
+						trace("SE");
+						break;
+					case Calc.ORI_NO:
+						speed_vy = speed_vy * ( -1);
+						temp_y = vy * ( -1);
+						speed_vx = speed_vx * ( -1);
+						temp_x = vx * ( -1);
+						trace("NO");
+						break;
+					case Calc.ORI_SO:
+						speed_vy = speed_vy * ( -1);
+						temp_y = vy * ( -1);
+						speed_vx = speed_vx * ( -1);
+						temp_x = vx * ( -1);
+						trace("SO");
+						break;
+						
+					case Calc.ORI_C:
+						trace("THE POINT IS INSIDE THE BOX!!");
+						speed_vy = speed_vy * ( -1);
+						temp_y = vy * ( -1);
 						speed_vx = speed_vx * ( -1);
 						temp_x = vx * ( -1);
 						break;
-					}
-					else// if (x >= (w.x + w.width))
-					{
-						speed_vx = speed_vx * ( -1);
-						temp_x = vx * ( -1);
+						
+					default:
+						trace("Detected Invalid collision.");
 						break;
-					}
-					
 				}
-				
 			}
 			
 			// Update position.
