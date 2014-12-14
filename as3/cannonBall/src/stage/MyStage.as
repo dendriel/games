@@ -18,6 +18,7 @@ package src.stage
 		protected var bgImage:MovieClip;
 		protected var cann:Cannon;
 		protected var wallHolderList:MovieClip;
+		protected var targeHoldertList:MovieClip;
 		
 		protected var _fieldOriginX:Number;	// movable area origin x.
 		protected var _fieldOriginY:Number;	// movable area origin y.
@@ -30,6 +31,9 @@ package src.stage
 		public function MyStage()
 		{
 			cann = new Cannon();
+			
+			// Create a cannon ball factory.
+			cannonBallFactoryR = new CannonBallFactory(this);
 			
 			// Fill movable area specifications.
 			_fieldOriginX = Const.STAGE_DEFAULT_ORIGIN_X;
@@ -46,8 +50,8 @@ package src.stage
 		 */
 		public function load(key:KeyObject) : void
 		{
-			// Create a cannon ball factory.
-			cannonBallFactoryR = new CannonBallFactory(this);
+			// Handle ball hit target event.
+			cannonBallFactoryR.addEventListener(Const.EVT_HIT_TARGET, handleHitTarget, false, 0, true);
 			
 			// Load control objects into cannon.
 			cann.load(key, cannonBallFactoryR);
@@ -71,6 +75,9 @@ package src.stage
 			cann.unload();
 			cann.removeEventListener(Const.EVT_CANNON_SHOOTING, handleCannonShooting);
 			
+			// Stop factory.
+			cannonBallFactoryR.removeEventListener(Const.EVT_HIT_TARGET, handleHitTarget);
+			
 			if (this.contains(cann))
 			{
 				this.removeChild(cann);
@@ -84,6 +91,11 @@ package src.stage
 		public function getWallHolderList() : MovieClip
 		{
 			return wallHolderList;
+		}
+		
+		public function getTargetHolderList() : MovieClip
+		{
+			return targeHoldertList;
 		}
 				
 		public function get fieldOriginX():Number 
@@ -120,6 +132,9 @@ package src.stage
 			
 			// Draw walls.
 			this.addChild(wallHolderList);
+			
+			// Draw targets.
+			this.addChild(targeHoldertList);
 		}
 		
 		/**
@@ -155,7 +170,13 @@ package src.stage
 		 */
 		private function handleCannonShooting(e:Event) : void
 		{
-			// Let cannon shoot again.
+			// Prevent cannon from shooting.
+			cann.canShoot = false;
+		}
+		
+		private function handleHitTarget(e:Event) : void
+		{
+			// Let cannon shot again.
 			cann.canShoot = true;
 		}
 	}

@@ -17,7 +17,10 @@ package src.stage
 			// Fill background.
 			bgImage = new BgLevel1Stage1;
 			// Fill wall holder.
-			wallHolderList = new WallHolderLevel1Stage1;
+			//wallHolderList = new WallHolderLevel1Stage1;
+			wallHolderList = new WallHolderTest;
+			// Fill target.
+			targeHoldertList = new TargetHolderLevel1Stage1;
 			
 			// Center the cannon.
 			cann.x = w/2

@@ -57,6 +57,8 @@ package src
 		private function updateSelf(e:Event) : void
 		{
 			moveSelf();
+			
+			checkHitTarget();
 		}
 		
 		/**
@@ -94,7 +96,7 @@ package src
 		 */
 		private function moveSelf() : void
 		{
-			var wallHolderList = stageR.getWallHolderList();
+			var wallHolderList:MovieClip = stageR.getWallHolderList();
 			var vx = Calc.moveSpeedAngleHor(speed_vx, angle);
 			var vy = Calc.moveSpeedAngleVer(speed_vy, angle);
 			
@@ -170,6 +172,25 @@ package src
 			// Update position.
 			x += vx;
 			y += vy;
+		}
+		
+		/**
+		 * @usage Checks if hitted any of the targets.
+		 */
+		private function checkHitTarget() : void
+		{
+			var targetList:MovieClip = stageR.getTargetHolderList();
+			var dummy = getCollisionObject();
+			
+			for (var i = 0; i < targetList.numChildren; i++)
+			{
+				var t = targetList.getChildAt(i);
+				
+				if (t.hitTestObject(dummy))
+				{
+					dispatchEvent(new Event(Const.EVT_HIT_TARGET));
+				}
+			}
 		}
 	}
 	

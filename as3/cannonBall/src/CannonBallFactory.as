@@ -8,7 +8,7 @@ package src
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class CannonBallFactory 
+	public class CannonBallFactory extends MovieClip
 	{
 		// Ball definitions.
 		static const CANNONBALL_TYPE_DEFAULT:Number = 0;
@@ -71,8 +71,27 @@ package src
 			
 			// Configure event listeners.
 			ball.addEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage, false, 0, true);
+			ball.addEventListener(Const.EVT_HIT_TARGET, handleHitTarget, false, 0, true);
 			
 			gameStageR.addChild(ball);
+		}
+		
+		/**
+		 * @usage Remove cannon ball from stage.
+		 * @param	ball
+		 */
+		private function removeCannonBall(ball:CannonBall) : void
+		{			
+			ball.removeEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage);
+			ball.removeEventListener(Const.EVT_HIT_TARGET, handleHitTarget);
+			
+			if (gameStageR.contains(ball))
+			{
+				gameStageR.removeChild(ball);
+			}
+			
+			// Remove ball reference from the ball list.
+			cannonBallList.splice(cannonBallList.indexOf(ball), 1);
 		}
 		
 		/**
@@ -81,17 +100,18 @@ package src
 		 */
 		private function handleRemovedFromStage(e:Event) : void
 		{
-			var ball = e.currentTarget as CannonBall;
-			
-			if (gameStageR.contains(ball))
-			{
-				gameStageR.removeChild(ball);
-			}
-			
-			ball.removeEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage);
-			
-			// Remove ball reference from the ball list.
-			cannonBallList.splice(cannonBallList.indexOf(ball), 1);
+			removeCannonBall(e.currentTarget as CannonBall);
+		}
+		
+		/**
+		 * @usage Handle when the ball hit a target in the stage.
+		 * @param	e
+		 */
+		private function handleHitTarget(e:Event) : void
+		{
+			removeCannonBall(e.currentTarget as CannonBall);
+			// tell stage!
+			dispatchEvent(new Event(Const.EVT_HIT_TARGET));
 		}
 	}
 	

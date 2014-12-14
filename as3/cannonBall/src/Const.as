@@ -19,6 +19,7 @@ package src
 		
 		// Game Play Events.
 		public static const EVT_CANNON_SHOOTING:String = "cannon_shooting";
+		public static const EVT_HIT_TARGET:String = "hit_target";
 		
 		// Stage Defaults.
 		public static const STAGE_DEFAULT_ORIGIN_X = 0;
