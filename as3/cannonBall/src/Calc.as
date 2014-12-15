@@ -18,11 +18,15 @@ package src
 		static public const ORI_W:Number = 2;
 		static public const ORI_S:Number = 3;
 		static public const ORI_E:Number = 4;
-		static public const ORI_NE:Number = 5;
-		static public const ORI_NO:Number = 6;
-		static public const ORI_SE:Number = 7;
-		static public const ORI_SO:Number = 8;
-		static public const ORI_C:Number = 9;
+		static public const ORI_NEA:Number = 5;
+		static public const ORI_NEB:Number = 6;
+		static public const ORI_NOA:Number = 7;
+		static public const ORI_NOB:Number = 8;
+		static public const ORI_SEA:Number = 9;
+		static public const ORI_SEB:Number = 10;
+		static public const ORI_SOA:Number = 11;
+		static public const ORI_SOB:Number = 12;
+		static public const ORI_C:Number = 13;
 		
 		/**
 		 * @usage Create a random value between min and max.
@@ -330,6 +334,21 @@ package src
 		 *   |      SO      | S |       SE       |
 		 *   |              |   |                |
 		 *   +--------------+---+----------------+
+		 * 
+		 * 
+		 *   +--------------+---+----------------+
+		 *   | .            |   |              . |
+		 *   |     .   NOA  | N |     NEA  .     |
+		 *   |         .    |   |     .          |
+		 *   |     NOB     .|   |.      NEB      |
+		 *   +--------------+---+----------------+
+		 *   |       O      | C |        E       |
+		 *   +--------------+---+----------------+
+		 *   |             .|   |.               |
+		 *   |    SOA  .    | S |     .   SEA    |
+		 *   |    .         |   |          .     |
+		 *   |.      SOB    |   |     SEB       .|
+		 *   +--------------+---+----------------+
 		 *
 		 * 
 		 * @return The orientation value from point in relation to the movie clip. If the point is
@@ -374,11 +393,26 @@ package src
 			if (p.x >= Pb.x) {
 				// Northeast.
 				if (p.x <= Pb.y) {
-					return ORI_NE;
+					
+					if (point_in_triangle(p.x, p.y, Pb.x, Pb.y, Pb.x, 0, Const.STAGE_WIDTH, 0))
+					{
+						return ORI_NEA;
+					}
+					else
+					{
+						return ORI_NEB;
+					}
 				}
 				// Southeast.
 				else if (p.x >= Pd.y) {
-					return ORI_SE;
+					if (point_in_triangle(p.x, p.y, Pd.x, Pd.y, Const.STAGE_WIDTH, Pd.y, Const.STAGE_WIDTH, Const.STAGE_HEIGHT))
+					{
+						return ORI_SEA;
+					}
+					else
+					{
+						return ORI_SEB;
+					}
 				}
 			}
 			
@@ -386,11 +420,25 @@ package src
 			if (p.x <= Pa.x) {
 				// Northwest.
 				if (p.x <= Pa.y) {
-					return ORI_NO;
+					if (point_in_triangle(p.x, p.y, Pa.x, Pa.y, Pa.x, 0, 0, 0))
+					{
+						return ORI_NOA;
+					}
+					else
+					{
+						return ORI_NOB;
+					}
 				}
 				// Southwest.
 				else if (p.x >= Pc.y) {
-					return ORI_SO;
+					if (point_in_triangle(p.x, p.y, Pc.x, Pc.y, 0, Pc.y, 0, Const.STAGE_HEIGHT))
+					{
+						return ORI_SOA;
+					}
+					else
+					{
+						return ORI_SOB;
+					}
 				}
 			}
 			
@@ -419,7 +467,13 @@ package src
 			return (s * Math.sin(a * (Math.PI/180) ) );
 		}
 		
-		// http://jadendreamer.wordpress.com/2012/06/28/flash-as3-duplicate-movieclip-objects-function/
+		/**
+		 * @usage Duplicate a movie clip.
+		 * @param	source
+		 * @return
+		 * 
+		 * http://jadendreamer.wordpress.com/2012/06/28/flash-as3-duplicate-movieclip-objects-function/
+		 */
 		public static function duplicateObject(source:MovieClip) : MovieClip
 		{
 			// create duplicate
@@ -441,6 +495,103 @@ package src
 			}
 
 			return duplicate;
+		}
+		
+		/**
+		 * @usage Find out what area of a rectangle a point is in.
+		 * @param x The point horizontal coordinates;
+		 * @param y The point vertical coordinates;
+		 * @param rect_size_w The weight of the rectangle;
+		 * @param rect_size_h The height of the rectangle;
+		 * @param rect_origin_x The x origin of the rectangle (given a cartesian plan);
+		 * @param rect_origin_y The h origin of the rectangle (given a cartesian plan);
+		 * @return 0 = first area; 1 = second area; 2 = third area; 3 = fourth area; -1 if the point
+		 * is inside of any area.
+		 *
+		 * @note *There is no need to be an equilateral rectangle.
+		 *
+		 * Example:
+		 *
+		 *     px1          px2          px3
+		 * 	py1	+-------------------------+
+		 * 		| .       area #0       . |
+		 * 		|    .               .    |
+		 * 		|       .         .       |
+		 *		|          .   .          |
+		 *	py2	+  area #3   +   area #1  +
+		 *		|          .   .          |
+		 *		|       .         .       |
+		 *		|    .               .    |
+		 *		| .       area #2       . |
+		 *	py3	+-------------------------+
+		 *
+		 */
+		public static function point_area_in_rect(
+				x:Number,
+				y:Number,
+				rect_size_w:Number,
+				rect_size_h:Number,
+				rect_origin_x:Number = 0,
+				rect_origin_y:Number = 0) : Number
+		{
+			var px1, px2, px3;
+			var py1, py2, py3;
+
+			px1 = rect_origin_x;
+			px2 = rect_origin_x + (rect_size_w/2);
+			px3 = rect_origin_x + (rect_size_w - 1);
+
+			py1 = rect_origin_y;
+			py2 = rect_origin_y + (rect_size_h/2);
+			py3 = rect_origin_y + (rect_size_h - 1);
+
+			// Area 0
+			if (point_in_triangle(x,y, px1,py1, px2,py2, px3,py1)) {
+				return 0;
+			}
+			// Area 1
+			else if (point_in_triangle(x,y, px3,py1, px2,py2, px3,py3)) {
+				return 1;
+			}
+			// Area 2
+			else if (point_in_triangle(x,y, px1,py3, px2,py2, px3,py3)) {
+				return 2;
+			}
+			// Area 3
+			else if (point_in_triangle(x,y, px1,py1, px2,py2, px1,py3)) {
+				return 3;
+			}
+
+			return -1;
+		}
+
+		/**
+		 * \brief Find out if a point is inside a rectangle.
+		 * \note Retrieved from:
+		 *  http://stackoverflow.com/questions/13300904/determine-whether-point-lies-inside-triangle
+		 */
+		public static function point_in_triangle(
+				x:Number,
+				y:Number,
+				x1:Number,
+				y1:Number,
+				x2:Number,
+				y2:Number,
+				x3:Number,
+				y3:Number) : Boolean
+		{
+			var p = new Point(x, y);
+			var p1 = new Point(x1, y1);
+			var p2 = new Point(x2, y2);
+			var p3 = new Point(x3, y3);
+
+			var alpha = ((p2.y - p3.y)*(p.x - p3.x) + (p3.x - p2.x)*(p.y - p3.y)) /
+							((p2.y - p3.y)*(p1.x - p3.x) + (p3.x - p2.x)*(p1.y - p3.y));
+			var beta = ((p3.y - p1.y)*(p.x - p3.x) + (p1.x - p3.x)*(p.y - p3.y)) /
+							((p2.y - p3.y)*(p1.x - p3.x) + (p3.x - p2.x)*(p1.y - p3.y));
+			var gamma = 1.0 - alpha - beta;
+
+			return ( (alpha > 0) && (beta >0) && (gamma > 0) );
 		}
 	}
 

@@ -121,16 +121,20 @@ package src
 				{
 					case Calc.ORI_N:
 					case Calc.ORI_S:
-					case Calc.ORI_SO:
-					case Calc.ORI_NO:
+					case Calc.ORI_SEB:
+					case Calc.ORI_NOA:
+					case Calc.ORI_SOB:
+					case Calc.ORI_NEB:
 						speed_vy *= ( -1);
 						vy = vy * ( -1);
 						break;
 						
 					case Calc.ORI_E:
 					case Calc.ORI_W:
-					case Calc.ORI_SE:
-					case Calc.ORI_NE:
+					case Calc.ORI_SEA:
+					case Calc.ORI_NEA:
+					case Calc.ORI_NOB:
+					case Calc.ORI_SOA:
 						speed_vx *= ( -1);
 						vx *=(-1);
 						break;
