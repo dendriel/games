@@ -30,6 +30,7 @@ package src
 		public static const STAGE_DEFAULT_ORIGIN_Y = 0;
 		public static const STAGE_DEFAULT_WIDTH = 480;
 		public static const STAGE_DEFAULT_HEIGHT = 320;
+		public static const GRAVITY = -5;
 		
 	}
 	

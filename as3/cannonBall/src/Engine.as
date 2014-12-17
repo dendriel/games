@@ -69,6 +69,7 @@ package src
 			// Create Level 1.
 			var level1 = new Level();
 			level1.add(new Stage1(gameStageR.w, gameStageR.h));
+			level1.add(new Stage2(gameStageR.w, gameStageR.h));
 			
 			// Create Level 2.
 			// Create Level 3.
