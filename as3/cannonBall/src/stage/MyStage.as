@@ -52,6 +52,7 @@ package src.stage
 		{
 			// Handle ball hit target event.
 			cannonBallFactoryR.addEventListener(Const.EVT_HIT_TARGET, handleHitTarget, false, 0, true);
+			cannonBallFactoryR.addEventListener(Const.EVT_BALL_STOPPED, handleBallStopped, false, 0, true);
 			
 			// Load control objects into cannon.
 			cann.load(key, cannonBallFactoryR);
@@ -77,6 +78,7 @@ package src.stage
 			
 			// Stop factory.
 			cannonBallFactoryR.removeEventListener(Const.EVT_HIT_TARGET, handleHitTarget);
+			cannonBallFactoryR.removeEventListener(Const.EVT_BALL_STOPPED, handleBallStopped);
 			
 			if (this.contains(cann))
 			{
@@ -171,11 +173,17 @@ package src.stage
 		private function handleCannonShooting(e:Event) : void
 		{
 			// Prevent cannon from shooting.
-			//cann.canShoot = false;
-			cann.canShoot = true;
+			cann.canShoot = false;
+			//cann.canShoot = true;
 		}
 		
 		private function handleHitTarget(e:Event) : void
+		{
+			// Let cannon shot again.
+			cann.canShoot = true;
+		}
+		
+		private function handleBallStopped(e:Event) : void
 		{
 			// Let cannon shot again.
 			cann.canShoot = true;

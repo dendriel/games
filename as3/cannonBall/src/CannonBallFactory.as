@@ -72,6 +72,7 @@ package src
 			// Configure event listeners.
 			ball.addEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage, false, 0, true);
 			ball.addEventListener(Const.EVT_HIT_TARGET, handleHitTarget, false, 0, true);
+			ball.addEventListener(Const.EVT_BALL_STOPPED, handleBallStopped, false, 0, true);
 			
 			gameStageR.addChild(ball);
 		}
@@ -84,6 +85,7 @@ package src
 		{			
 			ball.removeEventListener(Event.REMOVED_FROM_STAGE, handleRemovedFromStage);
 			ball.removeEventListener(Const.EVT_HIT_TARGET, handleHitTarget);
+			ball.removeEventListener(Const.EVT_BALL_STOPPED, handleBallStopped);
 			
 			if (gameStageR.contains(ball))
 			{
@@ -112,6 +114,12 @@ package src
 			removeCannonBall(e.currentTarget as CannonBall);
 			// tell stage!
 			dispatchEvent(new Event(Const.EVT_HIT_TARGET));
+		}
+		
+		private function handleBallStopped(e:Event) : void
+		{
+			// tell stage!
+			dispatchEvent(new Event(Const.EVT_BALL_STOPPED));
 		}
 	}
 	

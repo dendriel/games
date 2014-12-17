@@ -13,6 +13,7 @@ package src
 	{
 		private var speed:Number;
 		private var angle:Number; // Angle in degrees.
+		private var elasticity:Number;
 		private var speed_vx:Number;
 		private var speed_vy:Number;
 		
@@ -33,10 +34,14 @@ package src
 			// Store stage reference.
 			stageR = stageRef;
 			
+			// Set default angle.
 			angle = angleV;
 			
 			// Set radius.
 			radius = Const.CANNON_BALL_RADIUS_DEFAULT;
+			
+			// Set elasticity.
+			elasticity = Const.CANNON_BALL_ELASTICITY_DEFAULT;
 			
 			// Set default speeds.
 			speed_vx = Const.CANNON_BALL_SPEED_DEFAULT;
@@ -72,6 +77,15 @@ package src
 		}
 		
 		/**
+		 * @usage When lost all its speed, report that it's stopped.
+		 */
+		private function stopSelf() : void
+		{
+			removeEventListener(Event.ENTER_FRAME, updateSelf);
+			dispatchEvent(new Event(Const.EVT_BALL_STOPPED));
+		}
+		
+		/**
 		 * @usage Create the object that will be tested for collision instead of the ball raw graphics.
 		 * (this allow a smooth ball collision effect).
 		 * @return a movieClip to be used to check against collision.
@@ -96,20 +110,70 @@ package src
 		 */
 		private function moveSelf() : void
 		{
+			if (speed_vy != 0) {
+				speed_vy -= Const.GRAVITY;
+			}
+			
 			var wallHolderList:MovieClip = stageR.getWallHolderList();
 			var vx = Calc.moveSpeedAngleHor(speed_vx, angle);
 			var vy = Calc.moveSpeedAngleVer(speed_vy, angle);
 			
+			var wallCollision:Boolean = false;
 			// Check collision against stage bounds (horizontal).
 			if ( ( (x + vx) < stageR.fieldOriginX) || ( (x + vx) > stageR.fieldWidth) )	{
 				speed_vx *= ( -1);
-				vx  *= (-1);
+				wallCollision = true;
 			}
 			
 			// Check collision against stage bounds (vertical).
 			if ( ( (y + vy) < stageR.fieldOriginY) || ( (y + vy) > stageR.fieldHeight) ) {
 				speed_vy *= ( -1);
-				vy = vy * (-1);
+				wallCollision = true;
+			}
+			
+			if (wallCollision == true)
+			{
+				if (speed_vx > 0)
+				{
+					speed_vx -= (1 - elasticity)*speed_vx;
+				}
+				else
+				{
+					speed_vx += -1*(1 - elasticity)*speed_vx;
+				}
+				
+				vx = Calc.moveSpeedAngleHor(speed_vx, angle);
+				// If the speed is to low, stop the ball.
+				if ( (vx > (-0.3) ) && (vx < 0.3) )
+				{
+					speed_vx = 0;
+				}
+				
+				if (speed_vy > 0)
+				{
+					speed_vy -= (1 - elasticity)*speed_vy;
+				}
+				else
+				{
+					speed_vy += (1 - elasticity)*speed_vy;
+				}
+				
+				vy = Calc.moveSpeedAngleVer(speed_vy, angle);
+				
+				if ( (y + vy) >= (stageR.fieldHeight - radius)) 
+				{
+					// If the speed is to low, stop the ball.
+					if ( (vy > (-0.3) ) && (vy < 0.3) )
+					{
+						speed_vy = 0;
+					}
+				}
+				
+				if ( (speed_vy == 0) && (speed_vx == 0))
+				{
+					stopSelf();
+					return;
+				}
 			}
 			
 			// Check collision against stage walls.
@@ -163,6 +227,8 @@ package src
 			// Update position.
 			x += vx;
 			y += vy;
+			
+			trace("speed x: " + speed_vx + "; speed y: " + speed_vy + "; vx: " + vx + "; vy: " + vy);
 		}
 		
 		private function checkWallCollision(w:MovieClip, vx:Number, vy:Number) : Number
@@ -180,7 +246,6 @@ package src
 				return Calc.ORI_NONE;
 			}
 			
-				trace("CHILD == " + w.numChildren);
 			if (w.numChildren <= 1)
 			{
 				// In this wall there is only one member to check.
@@ -228,6 +293,7 @@ package src
 				
 				if (t.hitTestObject(dummy))
 				{
+					removeEventListener(Event.ENTER_FRAME, updateSelf);
 					dispatchEvent(new Event(Const.EVT_HIT_TARGET));
 				}
 			}

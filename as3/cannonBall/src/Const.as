@@ -16,10 +16,12 @@ package src
 		public static const CANNON_ROTATION_SPEED:Number = 1;	// 2 degrees per iteration.
 		public static const CANNON_BALL_RADIUS_DEFAULT:Number = 8
 		public static const CANNON_BALL_SPEED_DEFAULT:Number = 6;
+		public static const CANNON_BALL_ELASTICITY_DEFAULT:Number = 0.5; // 100%
 		
 		// Game Play Events.
 		public static const EVT_CANNON_SHOOTING:String = "cannon_shooting";
 		public static const EVT_HIT_TARGET:String = "hit_target";
+		public static const EVT_BALL_STOPPED:String = "ball_stopped";
 		
 		// Stage Defaults.
 		public static const STAGE_WIDTH_STR = "480";
@@ -30,7 +32,7 @@ package src
 		public static const STAGE_DEFAULT_ORIGIN_Y = 0;
 		public static const STAGE_DEFAULT_WIDTH = 480;
 		public static const STAGE_DEFAULT_HEIGHT = 320;
-		public static const GRAVITY = -5;
+		public static const GRAVITY = 0.1;
 		
 	}
 	
