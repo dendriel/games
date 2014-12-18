@@ -16,6 +16,7 @@ package src
 		private var elasticity:Number;
 		private var speed_vx:Number;
 		private var speed_vy:Number;
+		private var mass:Number;
 		
 		private var stageR:MyStage;	// Stage reference, so the ball can interact with the stage.
 		
@@ -42,6 +43,9 @@ package src
 			
 			// Set elasticity.
 			elasticity = Const.CANNON_BALL_ELASTICITY_DEFAULT;
+			
+			// Set mass.
+			mass = Const.CANNON_BALL_MASS_DEFAULT;
 			
 			// Set default speeds.
 			speed_vx = Const.CANNON_BALL_SPEED_DEFAULT;
@@ -105,6 +109,78 @@ package src
 		}
 		
 		/**
+		 * @usage Reverse horizontal speed.
+		 * Keep intelligence in only one place.
+		 * @return The new horizontal movement value.
+		 */
+		private function reverseSpeedX() : void
+		{
+			speed_vx *= ( -1);
+		}
+		
+		/**
+		 * @usage Reverse vertical speed.
+		 * Keep intelligence in only one place.
+		 * @return The new vertical movement value.
+		 */
+		private function reverseSpeedY() : void
+		{
+			speed_vy *= ( -1);
+		}
+		
+		/**
+		 * @usage Apply elasticity effect if speed is different than 0.
+		 */
+		private function applyElasticity() : void
+		{
+			// Horizontal.
+			if (speed_vx != 0)
+			{
+				speed_vx -= (1 - elasticity)*speed_vx;
+			}
+			
+			// Vertical.
+			if (speed_vy != 0)
+			{
+				speed_vy -= (1 - elasticity)*speed_vy;
+			}
+		}
+		
+		/**
+		 * @usage Calculate the horizontal movement and check if speed if higher than minimum.
+		 * @return a value corresponding to the total horizontal movement.
+		 */
+		private function calcHorMovement() : Number
+		{
+			 var vx = Calc.moveSpeedAngleHor(speed_vx, angle);
+				
+			// If the speed is to low, stop the ball.
+			if ( (vx > (-1*Const.CANNON_BALL_MINIMUM_SPEED) ) && (vx < Const.CANNON_BALL_MINIMUM_SPEED) )
+			{
+				speed_vx = 0;
+			}
+			
+			return vx;
+		}
+		
+		private function calcVerMovement(checkStuck:Boolean = false) : Number
+		{
+			var vy = Calc.moveSpeedAngleVer(speed_vy, angle);
+			
+			// If the ball is close to the ground or flag is set
+			if ( (y + vy) >= (stageR.fieldHeight - radius) || (checkStuck == true) )  
+			{
+				// If the speed is to low, stop the ball.
+				if ( (vy > (-1*Const.CANNON_BALL_MINIMUM_SPEED) ) && (vy < Const.CANNON_BALL_MINIMUM_SPEED) )
+				{
+					speed_vy = 0;
+				}
+			}
+			
+			return vy;
+		}
+		
+		/**
 		 * @usage Recursive function.
 		 * @return true if the collided, false if not.
 		 */
@@ -115,65 +191,16 @@ package src
 			}
 			
 			var wallHolderList:MovieClip = stageR.getWallHolderList();
-			var vx = Calc.moveSpeedAngleHor(speed_vx, angle);
-			var vy = Calc.moveSpeedAngleVer(speed_vy, angle);
 			
-			var wallCollision:Boolean = false;
-			// Check collision against stage bounds (horizontal).
-			if ( ( (x + vx) < stageR.fieldOriginX) || ( (x + vx) > stageR.fieldWidth) )	{
-				speed_vx *= ( -1);
-				wallCollision = true;
-			}
+			var vx = calcHorMovement();
+			var vy = calcVerMovement();
 			
-			// Check collision against stage bounds (vertical).
-			if ( ( (y + vy) < stageR.fieldOriginY) || ( (y + vy) > stageR.fieldHeight) ) {
-				speed_vy *= ( -1);
-				wallCollision = true;
-			}
-			
+			var wallCollision = checkStageBorderCollision((x + vx), (y + vy));			
 			if (wallCollision == true)
 			{
-				if (speed_vx > 0)
-				{
-					speed_vx -= (1 - elasticity)*speed_vx;
-				}
-				else
-				{
-					speed_vx += -1*(1 - elasticity)*speed_vx;
-				}
-				
-				vx = Calc.moveSpeedAngleHor(speed_vx, angle);
-				// If the speed is to low, stop the ball.
-				if ( (vx > (-0.3) ) && (vx < 0.3) )
-				{
-					speed_vx = 0;
-				}
-				
-				if (speed_vy > 0)
-				{
-					speed_vy -= (1 - elasticity)*speed_vy;
-				}
-				else
-				{
-					speed_vy += (1 - elasticity)*speed_vy;
-				}
-				
-				vy = Calc.moveSpeedAngleVer(speed_vy, angle);
-				
-				if ( (y + vy) >= (stageR.fieldHeight - radius)) 
-				{
-					// If the speed is to low, stop the ball.
-					if ( (vy > (-0.3) ) && (vy < 0.3) )
-					{
-						speed_vy = 0;
-					}
-				}
-				
-				if ( (speed_vy == 0) && (speed_vx == 0))
-				{
-					stopSelf();
-					return;
-				}
+				applyElasticity();				
+				vx = calcHorMovement();
+				vy = calcVerMovement();
 			}
 			
 			// Check collision against stage walls.
@@ -183,31 +210,46 @@ package src
 				// Find out where the collision object came from.				
 				switch(coll_ori)
 				{
+					// If collision by top, check if the ball was stuck in the wall.
 					case Calc.ORI_N:
+					case Calc.ORI_NOA:
+					case Calc.ORI_NEB:
+						applyElasticity();
+						reverseSpeedY();
+						vx = calcHorMovement();
+						vy = calcVerMovement(true);
+						break;
 					case Calc.ORI_S:
 					case Calc.ORI_SEB:
-					case Calc.ORI_NOA:
 					case Calc.ORI_SOB:
-					case Calc.ORI_NEB:
-						speed_vy *= ( -1);
-						vy = vy * ( -1);
+						applyElasticity();
+						reverseSpeedY();
+						vx = calcHorMovement();
+						vy = calcVerMovement();
 						break;
 						
+					case Calc.ORI_NEA:
+					case Calc.ORI_NOB:
+						applyElasticity();
+						reverseSpeedX();
+						vx = calcHorMovement();
+						vy = calcVerMovement(true);
+						break;
 					case Calc.ORI_E:
 					case Calc.ORI_W:
 					case Calc.ORI_SEA:
-					case Calc.ORI_NEA:
-					case Calc.ORI_NOB:
 					case Calc.ORI_SOA:
-						speed_vx *= ( -1);
-						vx *=(-1);
+						applyElasticity();
+						reverseSpeedX();
+						vx = calcHorMovement();
+						vy = calcVerMovement();
 						break;
 						
 					case Calc.ORI_C:
-						speed_vy *= ( -1);
-						vy = vy * ( -1);
-						speed_vx *= ( -1);
-						vx *= ( -1);
+						reverseSpeedX();
+						reverseSpeedY();
+						vx = calcHorMovement();
+						vy = calcVerMovement();
 						break;
 						
 					case Calc.ORI_NONE:
@@ -224,11 +266,42 @@ package src
 				//break;
 			}
 			
+			if ( (speed_vy == 0) && (speed_vx == 0) )
+			{
+				stopSelf();
+				return;
+			}
+			
 			// Update position.
 			x += vx;
 			y += vy;
 			
-			trace("speed x: " + speed_vx + "; speed y: " + speed_vy + "; vx: " + vx + "; vy: " + vy);
+			//trace("speed x: " + speed_vx + "; speed y: " + speed_vy + "; vx: " + vx + "; vy: " + vy);
+		}
+		
+		/**
+		 * @usage Check and process stage borders collision.
+		 * @param	new_x Horizontal position plus new horizontal movement (x + vx);
+		 * @param	new_y Vertical position plus new vertical movement (y + vy);
+		 * @return true if collided with a stage wall; false if not collided.
+		 */
+		private function checkStageBorderCollision(new_x:Number, new_y:Number) : Boolean
+		{
+			var collision = false;
+			
+			// Check collision against stage bounds (horizontal).
+			if ( ( new_x < stageR.fieldOriginX) || ( new_x > stageR.fieldWidth) )	{
+				reverseSpeedX();
+				collision = true;
+			}
+			
+			// Check collision against stage bounds (vertical).
+			if ( ( new_y < stageR.fieldOriginY) || ( new_y > (stageR.fieldHeight - radius) ) ) {
+				reverseSpeedY();
+				collision = true;
+			}
+			
+			return collision;
 		}
 		
 		private function checkWallCollision(w:MovieClip, vx:Number, vy:Number) : Number

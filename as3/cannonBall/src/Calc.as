@@ -366,6 +366,8 @@ package src
 			var Pc = new Point(m.x, m.y + m.height);
 			var Pd = new Point(m.x + m.width, m.y + m.height);
 			
+			trace("Pa: " + Pa + "; Pb: " + Pb + "; Pc: " + Pc + "; Pd: " + Pd);
+			
 			// North or South.
 			if ( (p.x >= Pa.x) && (p.x <= Pb.x) ) {
 				// North.
@@ -390,21 +392,23 @@ package src
 			}
 			
 			// Northeast or Southeast.
-			if (p.x >= Pb.x) {
+			if (p.x >= Pb.x)
+			{
 				// Northeast.
-				if (p.x <= Pb.y) {
-					
-					if (point_in_triangle(p.x, p.y, Pb.x, Pb.y, Pb.x, 0, Const.STAGE_WIDTH, 0))
-					{
-						return ORI_NEA;
-					}
-					else
+				if (p.y <= Pb.y)
+				{
+					// Give preference to the bottom part.
+					if (point_in_triangle(p.x, p.y, Pb.x, Pb.y, Pb.x, 0, Const.STAGE_WIDTH, 0) != true)
 					{
 						return ORI_NEB;
 					}
+					else
+					{
+						return ORI_NEA;
+					}
 				}
 				// Southeast.
-				else if (p.x >= Pd.y) {
+				else if (p.y >= Pd.y) {
 					if (point_in_triangle(p.x, p.y, Pd.x, Pd.y, Const.STAGE_WIDTH, Pd.y, Const.STAGE_WIDTH, Const.STAGE_HEIGHT))
 					{
 						return ORI_SEA;
@@ -417,20 +421,24 @@ package src
 			}
 			
 			// Northwest or Southwest.
-			if (p.x <= Pa.x) {
+			if (p.x <= Pa.x)
+			{
 				// Northwest.
-				if (p.x <= Pa.y) {
-					if (point_in_triangle(p.x, p.y, Pa.x, Pa.y, Pa.x, 0, 0, 0))
-					{
-						return ORI_NOA;
-					}
-					else
+				if (p.y <= Pa.y)
+				{
+					// Give preference to the bottom part.
+					if (point_in_triangle(p.x, p.y, Pa.x, Pa.y, Pa.x, 0, 0, 0) != true)
 					{
 						return ORI_NOB;
 					}
+					else
+					{
+						return ORI_NOA;
+					}
 				}
 				// Southwest.
-				else if (p.x >= Pc.y) {
+				else if (p.y >= Pc.y)
+				{
 					if (point_in_triangle(p.x, p.y, Pc.x, Pc.y, 0, Pc.y, 0, Const.STAGE_HEIGHT))
 					{
 						return ORI_SOA;

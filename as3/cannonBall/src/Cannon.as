@@ -77,14 +77,23 @@ package src
 		 */
 		private function updateSelf(e:Event) : void
 		{
-			if (key.isDown(Keyboard.LEFT) || key.isDown(Keyboard.A))
+			var rot = Const.CANNON_ROTATION_SPEED;
+			
+			// If shift is down, rotate cannon faster.
+			if (key.isDown(Keyboard.SHIFT))
 			{
-				decrease_angle();
+				rot *= 3;
 			}
 			
+			// Rotate left.
+			if (key.isDown(Keyboard.LEFT) || key.isDown(Keyboard.A))
+			{
+				decrease_angle(rot);
+			}
+			// Or rotate right.
 			else if (key.isDown(Keyboard.RIGHT) || key.isDown(Keyboard.D))
 			{
-				increase_angle();
+				increase_angle(rot);
 			}
 			
 			if (key.isDown(Keyboard.UP) || key.isDown(Keyboard.W))
@@ -106,7 +115,7 @@ package src
 		/**
 		 * @usage Decrease the cannon angle.
 		 */
-		private function increase_angle() : void
+		private function increase_angle(rot:Number) : void
 		{
 			if (angle >= Const.CANNON_MAX_ANGLE)
 			{
@@ -114,15 +123,15 @@ package src
 				return;
 			}
 			
-			rotation += Const.CANNON_ROTATION_SPEED;
-			angle += Const.CANNON_ROTATION_SPEED;
+			rotation += rot;
+			angle += rot;
 			trace("angle: " + angle);
 		}
 		
 		/**
 		 * @usage Increase the cannon angle.
 		 */
-		private function decrease_angle() : void
+		private function decrease_angle(rot:Number) : void
 		{
 			if (angle <= Const.CANNON_MIN_ANGLE)
 			{
@@ -130,8 +139,8 @@ package src
 				return;
 			}
 			
-			rotation -= Const.CANNON_ROTATION_SPEED;
-			angle -= Const.CANNON_ROTATION_SPEED;
+			rotation -= rot;
+			angle -= rot;
 			trace("angle: " + angle);
 		}
 		
