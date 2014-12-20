@@ -157,30 +157,7 @@ package src
 		 */
 		private function calcHorMovement(checkStuck:Boolean = false) : Number
 		{
-			var vy = Calc.moveSpeedAngleVer(speed_vy, angle);
 			var vx = Calc.moveSpeedAngleHor(speed_vx, angle);
-			
-			if ((vx < 0.2) && (vx > -0.2))
-			{
-					// If the speed is to low, stop the ball.
-					if ( (vx > (-1*Const.CANNON_BALL_MINIMUM_SPEED) ) && (vx < Const.CANNON_BALL_MINIMUM_SPEED) )
-					{
-						speed_vx = 0;
-					}
-				return 0;
-			}
-			trace("vx: " + vx  + "; speed_vx: " + speed_vx);
-			
-			// Ball mass matter.
-			var speed_by_mass = 0.1*Const.CANNON_BALL_MASS_DEFAULT;
-			vx += (vx > 0)? speed_by_mass : -1 * speed_by_mass;
-			
-			// If the ball is close to the ground, add friction effect.
-			if ( (y + vy) >= (stageR.fieldHeight - radius) || (checkStuck == true) )  
-			{
-				var friction = (1 - Const.CANNON_BALL_FRICTION_DEFAULT) * Const.CANNON_BALL_MASS_DEFAULT;
-				vx += (vx > 0)? friction : -1 * friction;
-			}
 			
 			// If the speed is to low, stop the ball.
 			if ( (vx > (-1*Const.CANNON_BALL_MINIMUM_SPEED) ) && (vx < Const.CANNON_BALL_MINIMUM_SPEED) )
@@ -214,9 +191,18 @@ package src
 		 */
 		private function moveSelf() : void
 		{
-			//if (speed_vy != 0) {
 			speed_vy -= (Const.GRAVITY * Const.CANNON_BALL_MASS_DEFAULT);
-			//}
+			
+			// Ball mass matter.
+			var speed_by_mass = 0.01*Const.CANNON_BALL_MASS_DEFAULT;
+			speed_vx += (speed_vx > 0)? speed_by_mass : -1 * speed_by_mass;
+			
+			// If the ball is close to the ground, add friction effect.
+			/*if ( (y + vy) >= (stageR.fieldHeight - radius) || (checkStuck == true) )  
+			{
+				var friction = (1 - Const.CANNON_BALL_FRICTION_DEFAULT) * Const.CANNON_BALL_MASS_DEFAULT;
+				vx += (vx > 0)? friction : -1 * friction;
+			}*/
 			
 			var wallHolderList:MovieClip = stageR.getWallHolderList();
 			
