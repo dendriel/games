@@ -21,6 +21,7 @@ package src
 		private var stageR:MyStage;	// Stage reference, so the ball can interact with the stage.
 		
 		protected var radius:Number;
+		protected var ballSprite:MovieClip;
 		
 		/******************************************************************************************/
 		/* Public methods */
@@ -51,6 +52,9 @@ package src
 			speed_vx = Const.CANNON_BALL_SPEED_DEFAULT;
 			speed_vy = Const.CANNON_BALL_SPEED_DEFAULT;
 			
+			// Set default ball image.
+			ballSprite = new CannonBallDefaultSprite;
+			
 			drawSelf();
 			
 			addEventListener(Event.ENTER_FRAME, updateSelf, false, 0, true);
@@ -75,9 +79,10 @@ package src
 		 */
 		private function drawSelf() : void
 		{
-			graphics.beginFill(0x000000);
-            graphics.drawCircle(0, 0, radius);
-			graphics.endFill();
+			//graphics.beginFill(0x000000);
+            //graphics.drawCircle(0, 0, radius);
+			//graphics.endFill();
+			this.addChild(ballSprite);
 		}
 		
 		/**
