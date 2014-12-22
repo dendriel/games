@@ -472,7 +472,7 @@ package src
 		 */	
 		public static function moveSpeedAngleVer(s:Number, a:Number) : Number
 		{
-			return (s * Math.sin(a * (Math.PI/180) ) );
+			return (s *  Math.sin(a * (Math.PI / 180) ) );
 		}
 		
 		/**

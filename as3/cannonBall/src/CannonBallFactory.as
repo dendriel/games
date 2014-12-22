@@ -11,8 +11,9 @@ package src
 	public class CannonBallFactory extends MovieClip
 	{
 		// Ball definitions.
-		static const CANNONBALL_TYPE_DEFAULT:Number = 0;
-		static const CANNONBALL_TYPE_NONE:Number = 1;
+		static const CANNONBALL_TYPE_NONE:Number = 0;
+		static const CANNONBALL_TYPE_DEFAULT:Number = 1;
+		static const CANNONBALL_TYPE_PATHBALL:Number = 2;
 		
 		// Internal objects.
 		private var gameStageR:MyStage;
@@ -37,18 +38,32 @@ package src
 		 * @param	px Horizontal position of the cannon ball.
 		 * @param	py Vertical position of the cannon ball.
 		 * @param	type Type of the ball.
+		 * @param	angle The angle of the cannon.
 		 */
-		public function createCannonBall(px:Number, py:Number, type:Number, angle:Number)
+		public function createCannonBall(px:Number, py:Number, type:Number, angle:Number) : void
 		{
 			switch(type)
 			{
 				case CANNONBALL_TYPE_DEFAULT:
 					addCannonBallType(px, py, new CannonBall(gameStageR, angle));
 					break;
+					
 				default:
 					trace("Invalid cannon ball type: " + type);
 					break;
 			}
+		}
+		
+		/**
+		 * @usage Show the ball path for the given position, ball type and cannon angle.
+		 * @param	px Horizontal position of the cannon ball.
+		 * @param	py Vertical position of the cannon ball.
+		 * @param	type Type of the ball.
+		 * @param	angle The angle of the cannon.
+		 */
+		public function showPath(px:Number, py:Number, type:Number, angle:Number) : void
+		{
+			addCannonBallType(px, py, new PathBall(gameStageR, angle, type));
 		}
 		
 		/******************************************************************************************/

@@ -78,10 +78,12 @@ package src
 		private function updateSelf(e:Event) : void
 		{
 			var rot = Const.CANNON_ROTATION_SPEED;
+			var shift_pressed:Boolean = false;
 			
 			// If shift is down, rotate cannon faster.
 			if (key.isDown(Keyboard.SHIFT))
 			{
+				shift_pressed = true;
 				rot *= 3;
 			}
 			
@@ -108,7 +110,14 @@ package src
 			// Shoot!
 			if (key.isDown(Keyboard.SPACE))
 			{
-				shoot();
+				if (shift_pressed)
+				{
+					cannonBallFactoryR.showPath(x, y, cannonBallType, angle);
+				}
+				else
+				{
+					shoot();
+				}
 			}
 		}
 		
