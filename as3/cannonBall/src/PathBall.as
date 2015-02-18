@@ -1,38 +1,59 @@
 package src
 {
+	import flash.display.MovieClip;
+	import flash.events.Event;
 	import src.stage.MyStage;
 	
 	/**
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class PathBall extends CannonBall 
+	public class PathBall extends MovieClip 
 	{
-		private var ballType:Number;
+		private var pathFrame:MovieClip;
+		private var stageR:MyStage;
 		
-		public function PathBall(stageRef:MyStage, angleV:Number, type:Number)
-		{
+		private var angle:Number;
+		
+		private var ball:CannonBall;
+		
+		public function PathBall(stageRef:MyStage, angleV:Number, ballTypeR:CannonBall)
+		{						
 			// Store stage reference.
 			stageR = stageRef;
 			
 			// Set default angle.
 			angle = angleV;
 			
-			drawSelf();
+			// Create a ball of the given type.
+			ball = ballTypeR;
+			
+			addEventListener(Event.ENTER_FRAME, updateSelf, false, 0, true);
 		}
 		
-		private function drawSelf() : void
+		private function drawPoint(px:Number, py:Number) : void
 		{
-			clearDrawSelf();
-			ballSprite = null;
-			
 			graphics.beginFill(0x000000);
-			
-            graphics.drawCircle(0, 0, 2);
+            graphics.drawCircle(px, py, 1);
 			graphics.endFill();
-			//this.addChild(ballSprite);
 		}
 		
+		private function updateSelf(e:Event) : void
+		{
+			ball.moveSelf(ball, stageR);
+			
+			drawPoint(ball.x, ball.y);
+			
+			if ( (ball.speed_vx == 0) && (ball.speed_vy == 0) )
+			{
+				stopSelf();
+			}
+		}
+		
+		public function stopSelf() : void
+		{
+			removeEventListener(Event.ENTER_FRAME, updateSelf);
+		}
 	}
 	
 }

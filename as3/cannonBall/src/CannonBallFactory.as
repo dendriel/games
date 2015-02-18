@@ -18,6 +18,7 @@ package src
 		// Internal objects.
 		private var gameStageR:MyStage;
 		private var cannonBallList:Vector.<CannonBall>;
+		private var pathBall:MovieClip;
 		
 
 		/******************************************************************************************/
@@ -29,6 +30,7 @@ package src
 		  */
 		 public function CannonBallFactory(gameStageRef:MyStage)
 		{
+			pathBall = null;
 			gameStageR = gameStageRef;
 			cannonBallList = new Vector.<CannonBall>;
 		}
@@ -42,16 +44,15 @@ package src
 		 */
 		public function createCannonBall(px:Number, py:Number, type:Number, angle:Number) : void
 		{
-			switch(type)
+			var b:CannonBall = newCannonBallType(type, gameStageR, angle);
+			
+			if (b == null)
 			{
-				case CANNONBALL_TYPE_DEFAULT:
-					addCannonBallType(px, py, new CannonBall(gameStageR, angle));
-					break;
-					
-				default:
-					trace("Invalid cannon ball type: " + type);
-					break;
+				trace("Invalid cannon ball type.");
+				return;
 			}
+			
+			addCannonBallType(px, py, b);
 		}
 		
 		/**
@@ -63,12 +64,38 @@ package src
 		 */
 		public function showPath(px:Number, py:Number, type:Number, angle:Number) : void
 		{
-			addCannonBallType(px, py, new PathBall(gameStageR, angle, type));
+			if ( (pathBall != null) && gameStageR.contains(pathBall) )
+			{
+				pathBall.stopSelf();
+				gameStageR.removeChild(pathBall);
+				pathBall = null;
+			}
+			
+			var b:CannonBall = newCannonBallType(type, gameStageR, angle);
+			b.x = px;
+			b.y = py;
+			
+			pathBall = new PathBall(gameStageR, angle, b);
+			
+			gameStageR.addChild(pathBall);
 		}
 		
 		/******************************************************************************************/
 		/* Private functions. */
 		/******************************************************************************************/
+		private function newCannonBallType(type:Number, gameStageR:MyStage, angle:Number) : CannonBall
+		{
+			switch(type)
+			{
+				case CANNONBALL_TYPE_DEFAULT:
+					return (new CannonBall(gameStageR, angle));
+					
+				default:
+					trace("Invalid cannon ball type: " + type);
+					return null;
+			}
+		}
+		
 		/**
 		 * @usage Add a new cannon ball in the stage.
 		 * @param	px

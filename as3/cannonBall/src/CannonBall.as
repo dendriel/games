@@ -15,8 +15,8 @@ package src
 		protected var speed:Number;
 		protected var angle:Number; // Angle in degrees.
 		protected var elasticity:Number;
-		protected var speed_vx:Number;
-		protected var speed_vy:Number;
+		protected var _speed_vx:Number;
+		protected var _speed_vy:Number;
 		protected var mass:Number;
 		
 		protected var stageR:MyStage;	// Stage reference, so the ball can interact with the stage.
@@ -50,8 +50,8 @@ package src
 			mass = Const.CANNON_BALL_MASS_DEFAULT;
 			
 			// Set default speeds.
-			speed_vx = Const.CANNON_BALL_SPEED_DEFAULT;
-			speed_vy = Const.CANNON_BALL_SPEED_DEFAULT;
+			_speed_vx = Const.CANNON_BALL_SPEED_DEFAULT;
+			_speed_vy = Const.CANNON_BALL_SPEED_DEFAULT;
 			
 			// Set default ball image.
 			ballSprite = new CannonBallDefaultSprite;
@@ -60,8 +60,6 @@ package src
 			
 			addEventListener(Event.ENTER_FRAME, updateSelf, false, 0, true);
 		}
-		
-		
 		
 		/**
 		 * @usage Remove ball sprite.
@@ -92,10 +90,7 @@ package src
 		 * @usage Draw itself.
 		 */
 		private function drawSelf() : void
-		{
-			//graphics.beginFill(0x000000);
-            //graphics.drawCircle(0, 0, radius);
-			//graphics.endFill();			
+		{	
 			this.addChild(ballSprite);
 		}
 		
@@ -134,7 +129,7 @@ package src
 		 */
 		public function reverseSpeedX() : void
 		{
-			speed_vx *= ( -1);
+			_speed_vx *= ( -1);
 		}
 		
 		/**
@@ -144,7 +139,7 @@ package src
 		 */
 		public function reverseSpeedY() : void
 		{
-			speed_vy *= ( -1);
+			_speed_vy *= ( -1);
 		}
 		
 		/**
@@ -153,15 +148,15 @@ package src
 		private static function applyElasticity(b:CannonBall) : void
 		{
 			// Horizontal.
-			if (b.speed_vx != 0)
+			if (b._speed_vx != 0)
 			{
-				b.speed_vx -= (1 - b.elasticity) * b.speed_vx;
+				b._speed_vx -= (1 - b.elasticity) * b._speed_vx;
 			}
 			
 			// Vertical.
-			if (b.speed_vy != 0)
+			if (b._speed_vy != 0)
 			{
-				b.speed_vy -= (1 - b.elasticity) * b.speed_vy;
+				b._speed_vy -= (1 - b.elasticity) * b._speed_vy;
 			}
 		}
 		
@@ -171,12 +166,12 @@ package src
 		 */
 		private function calcHorMovement(b:CannonBall, checkStuck:Boolean = false) : Number
 		{
-			var vx = Calc.moveSpeedAngleHor(b.speed_vx, b.angle);
+			var vx = Calc.moveSpeedAngleHor(b._speed_vx, b.angle);
 			
 			// If the speed is to low, stop the ball.
 			if ( (vx > (-1*Const.CANNON_BALL_MINIMUM_SPEED) ) && (vx < Const.CANNON_BALL_MINIMUM_SPEED) )
 			{
-				b.speed_vx = 0;
+				b._speed_vx = 0;
 			}
 			
 			return vx;
@@ -184,18 +179,23 @@ package src
 		
 		private function calcVerMovement(b:CannonBall, stageR:MyStage, checkStuck:Boolean = false) : Number
 		{
-			var vy = Calc.moveSpeedAngleVer(b.speed_vy, b.angle);
+			var vy = Calc.moveSpeedAngleVer(b._speed_vy, b.angle);
 			
+			var temp = (b.y + vy);
+			
+			trace("new ball pos[0]: " + (b.y + vy) + " vy: " + vy + "(stageR.fieldHeight - b.radius): " + (stageR.fieldHeight - b.radius));
 			// If the ball is close to the ground or flag is set
-			if ( (b.y + vy) >= (stageR.fieldHeight - b.radius) || (checkStuck == true) )  
+			if ( temp >= (stageR.fieldHeight - b.radius) || (checkStuck == true) )  
 			{
+				trace("new ball pos[1]: " + (b.y + vy) + " vy: " + vy);
 				// If the speed is to low, stop the ball.
 				if ( (vy > (-1*Const.CANNON_BALL_MINIMUM_SPEED) ) && (vy < Const.CANNON_BALL_MINIMUM_SPEED) )
 				{
-					b.speed_vy = 0;
+					b._speed_vy = 0;
 				}
 			}
 			
+			trace("new ball pos[2]: " + (b.y + vy) + " vy: " + vy);
 			return vy;
 		}
 		
@@ -205,11 +205,11 @@ package src
 		 */
 		public function moveSelf(b:CannonBall, stageR:MyStage) : void
 		{
-			b.speed_vy -= (Const.GRAVITY * Const.CANNON_BALL_MASS_DEFAULT);
+			b._speed_vy -= (Const.GRAVITY * Const.CANNON_BALL_MASS_DEFAULT);
 			
 			// Ball mass matter.
 			var speed_by_mass = 0.01*Const.CANNON_BALL_MASS_DEFAULT;
-			b.speed_vx += (b.speed_vx > 0)? speed_by_mass : -1 * speed_by_mass;
+			b._speed_vx += (b._speed_vx > 0)? speed_by_mass : -1 * speed_by_mass;
 			
 			// If the ball is close to the ground, add friction effect.
 			/*if ( (y + vy) >= (stageR.fieldHeight - radius) || (checkStuck == true) )  
@@ -220,8 +220,35 @@ package src
 			
 			var wallHolderList:MovieClip = stageR.getWallHolderList();
 			
+			// Update angle.
+			var ang_offset = 0;
+			if ( (b.speed_vx > 0) && (b.speed_vy > 0) )
+			{
+				ang_offset = 270;
+				trace("1");
+			}
+			else if ( (b.speed_vx < 0) && (b.speed_vy > 0) )
+			{
+				ang_offset = 180;
+				trace("2");
+			}
+			else if ( (b.speed_vx > 0) && (b.speed_vy < 0) )
+			{
+				ang_offset = 90;
+				trace("3");
+			}
+			else if ( (b.speed_vx < 0) && (b.speed_vy < 0) )
+			{
+				ang_offset = 0;
+				trace("4");
+			}
+			
+			//angle = Math.atan(speed_vy / speed_vx);
+			trace("new angle: " + angle);
+			
 			var vx = calcHorMovement(b);
 			var vy = calcVerMovement(b, stageR);
+			trace("vy out[0]: " + vy);
 			
 			var wallCollision = checkStageBorderCollision(b, vx, vy);			
 			if (wallCollision == true)
@@ -229,6 +256,7 @@ package src
 				applyElasticity(b);				
 				vx = calcHorMovement(b);
 				vy = calcVerMovement(b, stageR);
+				trace("vy out: " + vy);
 			}
 			
 			// Check collision against stage walls.
@@ -294,7 +322,7 @@ package src
 				//break;
 			}
 			
-			if ( (b.speed_vy == 0) && (b.speed_vx == 0) )
+			if ( (b._speed_vy == 0) && (b._speed_vx == 0) )
 			{
 				b.stopSelf();
 				return;
@@ -304,7 +332,7 @@ package src
 			b.x += vx;
 			b.y += vy;
 			
-			trace("speed x: " + b.speed_vx + "; speed y: " + b.speed_vy + "; vx: " + vx + "; vy: " + vy);
+			trace("speed x: " + b._speed_vx + "; speed y: " + b._speed_vy + "; vx: " + vx + "; vy: " + vy);
 		}
 		
 		/**
@@ -397,6 +425,26 @@ package src
 					dispatchEvent(new Event(Const.EVT_HIT_TARGET));
 				}
 			}
+		}
+		
+		public function set speed_vx(value:Number):void 
+		{
+			_speed_vx = value;
+		}
+		
+		public function set speed_vy(value:Number):void 
+		{
+			_speed_vy = value;
+		}
+		
+		public function get speed_vx():Number 
+		{
+			return _speed_vx;
+		}
+		
+		public function get speed_vy():Number 
+		{
+			return _speed_vy;
 		}
 	}
 	

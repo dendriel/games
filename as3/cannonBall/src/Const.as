@@ -18,7 +18,7 @@ package src
 		public static const CANNON_BALL_SPEED_DEFAULT:Number = 8;
 		public static const CANNON_BALL_MASS_DEFAULT:Number = 2;
 		public static const CANNON_BALL_FRICTION_DEFAULT:Number = 0.2; // 100%
-		public static const CANNON_BALL_ELASTICITY_DEFAULT:Number = 0.3; // 100%
+		public static const CANNON_BALL_ELASTICITY_DEFAULT:Number = 0.5; // 100%
 		public static const CANNON_BALL_MINIMUM_SPEED:Number = 0.3; // speed limit before stopping completely.
 		
 		// Game Play Events.
