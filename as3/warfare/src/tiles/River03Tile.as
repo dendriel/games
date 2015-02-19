@@ -6,11 +6,11 @@ package src.tiles
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class Grass01Tile extends MovieClip
+	public class River03Tile extends MovieClip 
 	{
 		private var attr:TileAttr;
 		
-		public function Grass01Tile()
+		public function River03Tile()
 		{
 			drawSelf();
 		}
@@ -19,13 +19,14 @@ package src.tiles
 		{
 			attr = new TileAttr();
 			
-			attr.id = ConstTile.GRASS_01_ID;
-			attr.def = ConstTile.GRASS_01_DEF;
-			attr.moveable = ConstTile.GRASS_01_MOVEABLE;
-			attr.moveEffort = ConstTile.GRASS_01_MOVEEFFORT;
+			attr.id = ConstTile.RIVER_03_ID;
+			attr.def = ConstTile.RIVER_01_DEF;
+			attr.moveable = ConstTile.RIVER_01_MOVEABLE;
+			attr.moveEffort = ConstTile.RIVER_01_MOVEEFFORT;
 			
 			this.addChild(attr.image);
 		}
+		
 	}
 	
 }

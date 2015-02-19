@@ -3,6 +3,7 @@ package src
 	import flash.display.MovieClip;
 	import src.tiles.Grass01Tile;
 	import src.ui.MainMenu;
+	import src.maps.*;
 	
 	[SWF(width = "800", height = "600", frameRate = "30", backgroundColor = "#ff0000")] //set project properties
 	
@@ -50,6 +51,9 @@ package src
 			}
 			
 			gameStageR.addChild(mainMenuR);
+			
+			var map = new TestMap();
+			gameStageR.addChild(map);
 		}
 		
 		private function hideMainMenu() : void
