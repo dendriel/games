@@ -5,7 +5,6 @@ package src
 	
 	[SWF(width = "800", height = "600", frameRate = "30", backgroundColor = "#ff0000")] //set project properties
 	
-	
 	/**
 	 * ...
 	 * @author Vitor Rozsa
@@ -51,7 +50,4 @@ package src
 			gameStageR.addChild(mainMenuR);
 		}
 	}
-	
-	
-	
 }

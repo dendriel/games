@@ -1,0 +1,3 @@
+[submodule "as3/warfare/src/as3"]
+	path = as3/warfare/src/as3
+	url = https://github.com/dendriel/as3.git
