@@ -10,7 +10,6 @@ package src
 	 */
 	public class GameStage extends MovieClip 
 	{
-		
 	}
 	
 }

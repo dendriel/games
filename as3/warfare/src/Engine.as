@@ -1,6 +1,7 @@
 package src
 {
 	import flash.display.MovieClip;
+	import src.tiles.Grass01Tile;
 	import src.ui.MainMenu;
 	
 	[SWF(width = "800", height = "600", frameRate = "30", backgroundColor = "#ff0000")] //set project properties
@@ -27,6 +28,7 @@ package src
 			startGame();
 		}
 		
+		// Main line.
 		private function startGame() : void
 		{
 			// Display presentation.
@@ -46,8 +48,60 @@ package src
 				trace ("Error. Trying to add mainMenu to stage, but it's already in the references.");
 				return;
 			}
-
+			
 			gameStageR.addChild(mainMenuR);
 		}
+		
+		private function hideMainMenu() : void
+		{
+			if ( gameStageR.contains(mainMenuR) )
+			{
+				gameStageR.removeChild(mainMenuR);
+				return;
+			}
+			else
+			{
+				trace ("Error. Trying to hide mainMenu from stage, but it is not in the references.");
+			}
+		}
+		
+		private function displaySinglePlayerSetup() : void
+		{
+			// TODO;
+		}
+		
+		private function hideSinglePlayerSetup() : void
+		{
+			// TODO;
+		}
+
+		
+		private function displayMultiplayerSetup() : void
+		{
+			// TODO;
+		}
+		
+		private function hideMultiplayerSetup() : void
+		{
+			// TODO;
+		}
+		
+		private function displayCredits() : void
+		{
+			// TODO;
+		}
+		
+		private function hideCredits() : void
+		{
+			// TODO;
+		}
+		
+// #################################################################################################
+// In game view.
+// #################################################################################################
+
+
+
+
 	}
 }
