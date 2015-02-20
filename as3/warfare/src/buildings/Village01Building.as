@@ -6,17 +6,12 @@ package src.buildings
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class Village01Building extends MovieClip 
-	{
-		private var attr:BuildingAttr;
-		
+	public class Village01Building extends GameBuilding 
+	{		
 		public function Village01Building() : void
 		{
-			attr = new BuildingAttr();
-			
-			attr.id = ConstBuilding.VILLAGE_01_ID;
+			id = ConstBuilding.VILLAGE_01_ID;
 		}
-		
 	}
 	
 }

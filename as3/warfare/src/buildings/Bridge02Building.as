@@ -6,15 +6,11 @@ package src.buildings
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class Bridge02Building extends MovieClip 
+	public class Bridge02Building extends GameBuilding 
 	{
-		private var attr:BuildingAttr;
-		
 		public function Bridge02Building() : void
 		{
-			attr = new BuildingAttr();
-			
-			attr.id = ConstBuilding.BRIDGE_02_ID;
+			id = ConstBuilding.BRIDGE_02_ID;
 		}
 		
 	}

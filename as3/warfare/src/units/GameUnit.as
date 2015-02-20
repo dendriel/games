@@ -1,11 +1,12 @@
 package 
 {
+	import flash.display.MovieClip;
 	
 	/**
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class GameUnit 
+	public class GameUnit extends MovieClip
 	{
 		
 	}
