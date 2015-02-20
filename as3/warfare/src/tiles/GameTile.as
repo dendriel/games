@@ -1,5 +1,6 @@
 package src.tiles
 {
+	import flash.display.MovieClip;
 	import src.as3.media.Image;
 	
 	/**
@@ -8,9 +9,11 @@ package src.tiles
 	 * 
 	 * Tile attributes
 	 */
-	public class GameTile 
+	public class GameTile extends MovieClip
 	{
-		// Unique ID.
+		// Unique identifier.
+		private var _uid:int;
+		// Type identifier.
 		private var _id:int;
 		// Defense from the land.
 		private var _def:Number;
@@ -18,6 +21,26 @@ package src.tiles
 		private var _moveable:Boolean;
 		// Effort to move through this land.
 		private var _moveEffort:int;
+		
+//##################################################################################################
+		// Unique tile identifier.
+		private static var uid_count:int;
+		
+		/**
+		 * @return An unique identifier for the tile.
+		 */
+		public static function generateUID() : int
+		{
+			var new_uid = uid_count;
+			uid_count++;
+			return new_uid;
+		}
+//##################################################################################################
+
+		public function GameTile()
+		{
+			_uid = GameTile.generateUID();
+		}
 		
 		public function get id():int 
 		{
@@ -57,6 +80,11 @@ package src.tiles
 		public function set moveEffort(value:int):void 
 		{
 			_moveEffort = value;
+		}
+		
+		public function get uid() : int
+		{
+			return _uid;
 		}
 	}
 	

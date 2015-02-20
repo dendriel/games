@@ -8,7 +8,6 @@ package src.tiles
 	{		
 		public function River01Tile()
 		{
-			drawSelf();
 			id = ConstTile.RIVER_01_ID;
 			def = ConstTile.RIVER_01_DEF;
 			moveable = ConstTile.RIVER_01_MOVEABLE;

@@ -36,6 +36,7 @@ package src.maps
 				}
 				
 				var tile = newTileFromId(tile_layer_map[i]);
+				trace("New tile. id: " + tile.id + "; uid: " + tile.uid);
 				tile.x = (int) (i % width_tiles) * ConstTile.TILE_W;
 				tile.y = (int)(i / height_tiles) * ConstTile.TILE_H;
 				tile_layer.addChild(tile);
@@ -50,6 +51,7 @@ package src.maps
 				}
 				
 				var building = newBuildingFromId(building_layer_map[i]);
+				trace("New building. id: " + building.id + "; uid: " + building.uid);
 				building.x = (int) (i % width_tiles) * ConstTile.TILE_W;
 				building.y = (int)(i / height_tiles) * ConstTile.TILE_H;
 				building_layer.addChild(building);
@@ -61,7 +63,7 @@ package src.maps
 			addChild(building_layer);
 		}
 		
-		private function newBuildingFromId(id:int) : MovieClip
+		private function newBuildingFromId(id:int) : GameBuilding
 		{
 			switch (id)
 			{
@@ -81,7 +83,7 @@ package src.maps
 		}
 		
 		// Create tile object from its ID.
-		private function newTileFromId(id:int) : MovieClip
+		private function newTileFromId(id:int) : GameTile
 		{
 			switch (id)
 			{
