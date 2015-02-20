@@ -42,7 +42,7 @@ package src.maps
 			}
 			
 			// Draw buildings.
-			for (var i:int = 0; i < building_layer_map.length; i++)
+			for (i = 0; i < building_layer_map.length; i++)
 			{
 				if (building_layer_map[i] == 0)
 				{

@@ -72,6 +72,7 @@ package src.ui
 				
 			//this.addChild(bg);
 			this.addChild(new MainMenuBg);
+			this.addChild(titleTxt);
 			this.addChild(singlePlayerB);
 			this.addChild(multiPlayerB);
 			this.addChild(creditsB);
