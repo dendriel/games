@@ -1,11 +1,11 @@
-package 
+package src.buildings
 {
 	
 	/**
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class BuildingAttr 
+	public class GameBuilding 
 	{
 		private var _id:int;
 		
