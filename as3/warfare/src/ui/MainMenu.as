@@ -1,14 +1,15 @@
 package src.ui
 {
 	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	
 	import src.as3.media.Image;
 	import src.as3.math.Calc;
 	import src.as3.ui.GameButton;
-	import src.MediaSource;
-	import src.Const;
-	import src.GameStage;
+	import src.*;
 	
 	/**
 	 * ...
@@ -29,9 +30,23 @@ package src.ui
 		
 		public function MainMenu() : void
 		{
-			this.x = px;
-			this.y = py;
-			this.drawSelf();
+			x = px;
+			y = py;
+			drawSelf();
+		}
+		
+		public function enable() : void
+		{
+			singlePlayerB.addEventListener(MouseEvent.CLICK, handleSinglePlayerClick, false, 0, true);
+			multiPlayerB.addEventListener(MouseEvent.CLICK, handleMultiplayerClick, false, 0, true);
+			creditsB.addEventListener(MouseEvent.CLICK, handleCreditsClick, false, 0, true);
+		}
+		
+		public function disable() : void
+		{
+			singlePlayerB.removeEventListener(MouseEvent.CLICK, handleSinglePlayerClick);
+			multiPlayerB.removeEventListener(MouseEvent.CLICK, handleMultiplayerClick);
+			creditsB.removeEventListener(MouseEvent.CLICK, handleCreditsClick);
 		}
 		
 		private function drawSelf() : void
@@ -76,6 +91,21 @@ package src.ui
 			this.addChild(singlePlayerB);
 			this.addChild(multiPlayerB);
 			this.addChild(creditsB);
+		}
+		
+		private function handleSinglePlayerClick(e:MouseEvent) : void
+		{
+			dispatchEvent(new Event(Const.EVT_SINGLE_PLAYER_CLICK));
+		}
+		
+		private function handleMultiplayerClick(e:MouseEvent) : void
+		{
+			dispatchEvent(new Event(Const.EVT_MULTIPLAYER_CLICK));
+		}
+		
+		private function handleCreditsClick(e:MouseEvent) : void
+		{
+			dispatchEvent(new Event(Const.EVT_CREDITS_CLICK));
 		}
 	}
 	

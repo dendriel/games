@@ -1,6 +1,7 @@
 package src
 {
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import src.tiles.Grass01Tile;
 	import src.ui.MainMenu;
 	import src.maps.*;
@@ -13,16 +14,18 @@ package src
 	 */
 	public class Engine extends MovieClip
 	{
-		private var mainMenuR:MainMenu;
 		private var gameStageR:GameStage;
+		private var mainMenuR:MainMenu;
+		private var gamePlayR:GamePlay;
 		
 		public function Engine() : void
-		{
-			mainMenuR = new MainMenu();
-			
+		{			
 			gameStageR = new GameStage();
 			gameStageR.x = 0;
 			gameStageR.y = 0;
+			
+			mainMenuR = new MainMenu();
+			gamePlayR = new GamePlay();
 			
 			this.addChild(gameStageR);
 			
@@ -35,13 +38,14 @@ package src
 			// Display presentation.
 			
 			// Display main menu.
-			
 			displayMainMenu();
 		}
 		
-// #################################################################################################
+//##################################################################################################
 // Display Menus.
-// #################################################################################################
+//##################################################################################################
+
+//################### Main Menu.
 		private function displayMainMenu() : void
 		{
 			if ( gameStageR.contains(mainMenuR) )
@@ -51,24 +55,48 @@ package src
 			}
 			
 			gameStageR.addChild(mainMenuR);
-			
-			var map = new TestMap();
-			gameStageR.addChild(map);
+			gameStageR.mouseEnabled = false;
+			mainMenuR.addEventListener(Const.EVT_SINGLE_PLAYER_CLICK, handleSinglePlayerClick, false, 0, true);
+			mainMenuR.addEventListener(Const.EVT_MULTIPLAYER_CLICK, handleMultiplayerClick, false, 0, true);
+			mainMenuR.addEventListener(Const.EVT_CREDITS_CLICK, handleCreditsClick, false, 0, true);
+			mainMenuR.enable();
 		}
 		
 		private function hideMainMenu() : void
 		{
-			if ( gameStageR.contains(mainMenuR) )
-			{
-				gameStageR.removeChild(mainMenuR);
-				return;
-			}
-			else
+			if ( gameStageR.contains(mainMenuR) != true)
 			{
 				trace ("Error. Trying to hide mainMenu from stage, but it is not in the references.");
+				return;
 			}
+			
+			gameStageR.removeChild(mainMenuR);
+			mainMenuR.removeEventListener(Const.EVT_SINGLE_PLAYER_CLICK, handleSinglePlayerClick);
+			mainMenuR.removeEventListener(Const.EVT_MULTIPLAYER_CLICK, handleMultiplayerClick);
+			mainMenuR.removeEventListener(Const.EVT_CREDITS_CLICK, handleCreditsClick);
 		}
 		
+		private function handleSinglePlayerClick(e:Event) : void
+		{
+			hideMainMenu();
+			
+			gamePlayR.loadMap(new TestMap);
+			
+			addChild(gamePlayR);
+		}
+		
+		private function handleMultiplayerClick(e:Event) : void
+		{
+			trace("handleMultiplayerClick");
+		}
+		
+		private function handleCreditsClick(e:Event) : void
+		{
+			trace("handleCreditsClick");
+		}
+
+//################### Main Menu END.
+
 		private function displaySinglePlayerSetup() : void
 		{
 			// TODO;
