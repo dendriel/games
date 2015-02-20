@@ -8,7 +8,7 @@ package src.tiles
 	 * 
 	 * Tile attributes
 	 */
-	public class GameTile 
+	public class TileAttr 
 	{
 		// Unique ID.
 		private var _id:int;
@@ -18,6 +18,16 @@ package src.tiles
 		private var _moveable:Boolean;
 		// Effort to move through this land.
 		private var _moveEffort:int;
+		
+		public function get image():Image 
+		{
+			return _image;
+		}
+		
+		public function set image(value:Image):void 
+		{
+			_image = value;
+		}
 		
 		public function get id():int 
 		{
