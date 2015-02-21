@@ -6,7 +6,7 @@ package src
 	import src.ui.MainMenu;
 	import src.maps.*;
 	
-	[SWF(width = "800", height = "600", frameRate = "30", backgroundColor = "#ff0000")] //set project properties
+	[SWF(width = "800", height = "600", frameRate = "30", backgroundColor = "#333333")] //set project properties
 	
 	/**
 	 * ...
@@ -80,7 +80,7 @@ package src
 		{
 			hideMainMenu();
 			
-			gamePlayR.loadMap(new TestMap);
+			gamePlayR.loadMap(new TestMap2);
 			
 			addChild(gamePlayR);
 		}
