@@ -4,9 +4,9 @@ package src
 	import flash.display.Shape;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
-	
 	import src.maps.GameMap;
 	import src.as3.math.Calc;
+	import src.tiles.ConstTile;
 	
 	/**
 	 * ...
@@ -32,6 +32,7 @@ package src
 	{
 		// Images.
 		var gamePlayFrameR:GamePlayFrame;
+		var gameTarget:Target01;
 		
 		// Screens.
 		private var gameMapScreen:MovieClip;
@@ -49,6 +50,8 @@ package src
 			// Initialize internal variables.
 			mouseButtonDown = false;
 			mouseButtonPressPoint = new Point();
+			gameTarget = new Target01();
+			gameTarget.visible = false;
 			
 			// Load game frame.
 			gamePlayFrameR = new GamePlayFrame();
@@ -79,10 +82,12 @@ package src
 		public function loadMap(map:GameMap) : void
 		{		
 			gameMapR = map;
+			gameMapR.addChild(gameTarget);
 			gameMapScreen.addChild(gameMapR);
 			gameMapR.addEventListener(MouseEvent.MOUSE_DOWN, handleMouseDownOnMap, false, 0, true);
 			gameMapR.addEventListener(MouseEvent.MOUSE_UP, handleMouseUpOnMap, false, 0, true);
 			gameMapR.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMoveOnMap, false, 0, true);
+			gameMapR.addEventListener(MouseEvent.CLICK, handleMouseClickOnMap, false, 0, true);
 		}
 		
 		public function unloadMap() : void
@@ -93,9 +98,14 @@ package src
 				return;
 			}
 			
+			if (gameMapR.contains(gameTarget))
+			{
+				gameMapR.removeChild(gameTarget);
+			}
 			gameMapR.removeEventListener(MouseEvent.MOUSE_DOWN, handleMouseDownOnMap);
 			gameMapR.removeEventListener(MouseEvent.MOUSE_UP, handleMouseUpOnMap);
 			gameMapR.removeEventListener(MouseEvent.MOUSE_MOVE, handleMouseMoveOnMap);
+			gameMapR.removeEventListener(MouseEvent.CLICK, handleMouseClickOnMap);
 			gameMapScreen.removeChild(gameMapR);
 		}
 
@@ -125,6 +135,7 @@ package src
 			var offsetX = mouseX - mouseButtonPressPoint.x;
 			var offsetY = mouseY - mouseButtonPressPoint.y;
 			
+			// Limit movement speed.
 			offsetX = Calc.clipGT(offsetX, Const.MAX_MAP_MOVE_OFFSET);
 			offsetX = Calc.clipLT(offsetX, (Const.MAX_MAP_MOVE_OFFSET * -1) );
 			
@@ -136,6 +147,26 @@ package src
 			
 			moveMap(offsetX, offsetY);
 		}
+		
+		
+		private function handleMouseClickOnMap(e:MouseEvent) : void
+		{
+			// Calculate click position on game map.
+			//           real pos + relative pos     - offset.
+			var pxOnMap = mouseX + (gameMapR.x * -1) - Const.MAP_AREA_POS_X;
+			var pyOnMap = mouseY + (gameMapR.y * -1) - Const.MAP_AREA_POS_Y;
+			
+			var tilex = Calc.pixel_to_tile(pxOnMap, ConstTile.TILE_W);
+			var tiley = Calc.pixel_to_tile(pyOnMap, ConstTile.TILE_H);
+			var tile_idx = Calc.coor_to_idx(tilex, tiley, gameMapR.width_tiles);
+			
+			gameTarget.x = tilex * ConstTile.TILE_W;
+			gameTarget.y = tiley * ConstTile.TILE_H;
+			gameTarget.visible = true;
+			
+			//trace("clicked on: " + pxOnMap + ", " + pyOnMap + "; tile: " + tilex + "," + tiley + " idx: " + tile_idx);
+		}
+		
 		
 		private function moveMap(px:int, py:int) : void
 		{
@@ -151,8 +182,6 @@ package src
 			
 			gameMapR.x = pxTemp;
 			gameMapR.y = pyTemp;
-			
-			trace("map height: " + (-1 * (gameMapR.height - Const.MAP_AREA_H) ) + "; temp: " + pyTemp);
 		}
 
 	}

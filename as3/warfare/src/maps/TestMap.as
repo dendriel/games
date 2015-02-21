@@ -47,7 +47,7 @@ package src.maps
 			
 		public function TestMap() : void
 		{
-			width_tiles = 15;
+			_width_tiles = 15;
 			height_tiles = 15;
 			
 			tile_layer_map = tile_layer_data;

@@ -11,7 +11,7 @@ package src.maps
 	public class GameMap extends MovieClip 
 	{
 		// Map properties.
-		protected var width_tiles:int;
+		protected var _width_tiles:int;
 		protected var height_tiles:int;
 		
 		// Layer 0.
@@ -22,45 +22,72 @@ package src.maps
 		protected var building_layer_map:Array;
 		private var building_layer:MovieClip;
 		
+		// Layer 2.
+		protected var unit_layer_map:Array;
+		private var unit_layer:MovieClip;
+		
 		protected function drawSelf() : void
 		{
+			var i:int;
 			tile_layer = new MovieClip;
 			building_layer = new MovieClip;
+			unit_layer = new MovieClip;
 			
 			// Draw landscape.
-			for (var i:int = 0; i < tile_layer_map.length; i++)
+			if (tile_layer_map != null)
 			{
-				if (tile_layer_map[i] == 0)
+				for (i = 0; i < tile_layer_map.length; i++)
 				{
-					continue;
+					if (tile_layer_map[i] == 0)
+					{
+						continue;
+					}
+					
+					var tile = newTileFromId(tile_layer_map[i]);
+					tile.x = (int) (i % width_tiles) * ConstTile.TILE_W;
+					tile.y = (int)(i / height_tiles) * ConstTile.TILE_H;
+					tile_layer.addChild(tile);
 				}
-				
-				var tile = newTileFromId(tile_layer_map[i]);
-				trace("New tile. id: " + tile.id + "; uid: " + tile.uid);
-				tile.x = (int) (i % width_tiles) * ConstTile.TILE_W;
-				tile.y = (int)(i / height_tiles) * ConstTile.TILE_H;
-				tile_layer.addChild(tile);
+			
+				// Add layer 0.
+				addChild(tile_layer);
 			}
 			
 			// Draw buildings.
-			for (i = 0; i < building_layer_map.length; i++)
+			if (building_layer_map != null)
 			{
-				if (building_layer_map[i] == 0)
+				for (i = 0; i < building_layer_map.length; i++)
 				{
-					continue;
+					if (building_layer_map[i] == 0)
+					{
+						continue;
+					}
+					
+					var building = newBuildingFromId(building_layer_map[i]);
+					building.x = (int) (i % width_tiles) * ConstTile.TILE_W;
+					building.y = (int)(i / height_tiles) * ConstTile.TILE_H;
+					building_layer.addChild(building);
 				}
 				
-				var building = newBuildingFromId(building_layer_map[i]);
-				trace("New building. id: " + building.id + "; uid: " + building.uid);
-				building.x = (int) (i % width_tiles) * ConstTile.TILE_W;
-				building.y = (int)(i / height_tiles) * ConstTile.TILE_H;
-				building_layer.addChild(building);
+				// Add layer 1.
+				addChild(building_layer);
 			}
 			
-			// Add layer 0.
-			addChild(tile_layer);
-			// Add layer 1.
-			addChild(building_layer);
+			// Draw units.
+			if (unit_layer_map != null)
+			{
+				for ( i = 0; i < unit_layer_map.length; i++)
+				{
+					if (unit_layer_map[i] == 0)
+					{
+						continue;
+					}
+					
+					//TODO.
+				}
+				// Add layer 3.
+				addChild(unit_layer);
+			}
 		}
 		
 		private function newBuildingFromId(id:int) : GameBuilding
@@ -154,6 +181,11 @@ package src.maps
 					trace("Invalid tile id: " + id + " received.");
 					return new Grass01Tile;
 			}
+		}
+		
+		public function get width_tiles():int 
+		{
+			return _width_tiles;
 		}
 	}
 	

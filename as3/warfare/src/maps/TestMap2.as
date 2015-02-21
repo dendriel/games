@@ -1417,7 +1417,7 @@ package src.maps
 			
 		public function TestMap2() : void
 		{
-			width_tiles = 100;
+			_width_tiles = 100;
 			height_tiles = 100;
 			
 			tile_layer_map = tile_layer_data;
