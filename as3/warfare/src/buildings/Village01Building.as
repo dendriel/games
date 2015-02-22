@@ -11,6 +11,7 @@ package src.buildings
 		public function Village01Building() : void
 		{
 			id = ConstBuilding.VILLAGE_01_ID;
+			set_name("teste");
 		}
 	}
 	

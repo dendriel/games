@@ -1,8 +1,11 @@
 package src.maps
 {
 	import flash.display.MovieClip;
+	import src.IElementInfo;
 	import src.tiles.*;
 	import src.buildings.*;
+	import src.units.*;
+	import src.as3.math.Calc;
 	
 	/**
 	 * ...
@@ -17,21 +20,27 @@ package src.maps
 		// Layer 0.
 		protected var tile_layer_map:Array;
 		private var tile_layer:MovieClip;
+		private var tile_layer_element:Vector.<GameTile>;
 		
 		// Layer 1.
-		protected var building_layer_map:Array;
+		protected var building_layer_map:Array;		
 		private var building_layer:MovieClip;
+		private var building_layer_element:Vector.<GameBuilding>;
 		
 		// Layer 2.
 		protected var unit_layer_map:Array;
 		private var unit_layer:MovieClip;
+		private var unit_layer_element:Vector.<GameUnit>;
 		
 		protected function drawSelf() : void
 		{
 			var i:int;
 			tile_layer = new MovieClip;
+			tile_layer_element = new Vector.<GameTile>;
 			building_layer = new MovieClip;
+			building_layer_element = new Vector.<GameBuilding>;
 			unit_layer = new MovieClip;
+			unit_layer_element = new Vector.<GameUnit>;
 			
 			// Draw landscape.
 			if (tile_layer_map != null)
@@ -46,6 +55,7 @@ package src.maps
 					var tile = newTileFromId(tile_layer_map[i]);
 					tile.x = (int) (i % width_tiles) * ConstTile.TILE_W;
 					tile.y = (int)(i / height_tiles) * ConstTile.TILE_H;
+					tile_layer_element.push(tile);
 					tile_layer.addChild(tile);
 				}
 			
@@ -66,6 +76,7 @@ package src.maps
 					var building = newBuildingFromId(building_layer_map[i]);
 					building.x = (int) (i % width_tiles) * ConstTile.TILE_W;
 					building.y = (int)(i / height_tiles) * ConstTile.TILE_H;
+					building_layer_element.push(building);
 					building_layer.addChild(building);
 				}
 				
@@ -84,6 +95,8 @@ package src.maps
 					}
 					
 					//TODO.
+					//unit_layer_element.push(unit);
+					//unit_layer.addChild(unit);
 				}
 				// Add layer 3.
 				addChild(unit_layer);
@@ -186,6 +199,63 @@ package src.maps
 		public function get width_tiles():int 
 		{
 			return _width_tiles;
+		}
+		
+		/**
+		 * @brief Get an element from the map.
+		 * @param	idx Position of the Element.
+		 */
+		public function getElement(idx:int) : void
+		{
+			trace("index: " + idx);
+			
+			// Search inside units layer.
+			/*var unit_layer_temp:Vector.<GameUnit> = unit_layer_element.concat();
+			
+			while (unit_layer_temp.lenght()
+			if (unit_layer_element != null)
+			{
+				for each (var unit in unit_layer)
+				{
+					if (unit.getElementIdx(unit.x, unit.y) == idx)
+					{
+						trace("found unit!");
+						break;
+					}
+				}
+			}*/
+			
+			// Search inside building layer.
+			if (building_layer_element != null)
+			{
+				var building_layer_temp:Vector.<GameBuilding> = building_layer_element.concat();
+				var building:GameBuilding;
+				
+				while (building_layer_temp.length > 0)
+				{
+					building = building_layer_temp.pop();
+					if (getElementIdx(building.x, building.y) == idx)
+					{
+						var info:IElementInfo = IElementInfo(building);
+						trace("found building! Type is: " + info.get_type() + "; Name: " + info.get_name());
+						break;
+					}
+					
+				}
+			}
+		}
+		
+		/**
+		 * @param	px Element horizontal position.
+		 * @param	py Element vertical position.
+		 * @return  The element index in Matrix.
+		 */
+		private function getElementIdx(px:int, py:int) : int
+		{
+			var tilex = Calc.pixel_to_tile(px, ConstTile.TILE_W);
+			var tiley = Calc.pixel_to_tile(py, ConstTile.TILE_H);
+			
+			return Calc.coor_to_idx(tilex, tiley, width_tiles);
 		}
 	}
 	

@@ -164,6 +164,7 @@ package src
 			gameTarget.y = tiley * ConstTile.TILE_H;
 			gameTarget.visible = true;
 			
+			gameMapR.getElement(tile_idx);
 			//trace("clicked on: " + pxOnMap + ", " + pyOnMap + "; tile: " + tilex + "," + tiley + " idx: " + tile_idx);
 		}
 		
