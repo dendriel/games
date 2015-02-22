@@ -9,6 +9,7 @@ package src.ui
 	import src.as3.media.Image;
 	import src.as3.math.Calc;
 	import src.as3.ui.GameButton;
+	import src.language.GameLanguage;
 	import src.*;
 	
 	/**
@@ -21,6 +22,7 @@ package src.ui
 		private const py:Number = 0;
 		
 		// Text.
+		private var format:TextFormat;
 		private var titleTxt:TextField;
 		
 		// Buttons.
@@ -35,8 +37,18 @@ package src.ui
 			drawSelf();
 		}
 		
+		// Enable will refresh the buttons text.
 		public function enable() : void
 		{
+			titleTxt.text = GameLanguage.main_title;
+			singlePlayerB.textValue = GameLanguage.single_player_button;
+			multiPlayerB.textValue = GameLanguage.multiplayer_button;
+			creditsB.textValue = GameLanguage.credits_button;
+			
+			titleTxt.width = titleTxt.textWidth;
+			titleTxt.height = titleTxt.textHeight;
+			titleTxt.x = Calc.alignMiddle(0, Const.SCREEN_SIZE_W, titleTxt.width);
+			
 			singlePlayerB.addEventListener(MouseEvent.CLICK, handleSinglePlayerClick, false, 0, true);
 			multiPlayerB.addEventListener(MouseEvent.CLICK, handleMultiplayerClick, false, 0, true);
 			creditsB.addEventListener(MouseEvent.CLICK, handleCreditsClick, false, 0, true);
@@ -52,23 +64,23 @@ package src.ui
 		private function drawSelf() : void
 		{			
 			// Buttons.
-			singlePlayerB = new GameButton(Const.SINGLE_PLAYER_S);
+			singlePlayerB = new GameButton();
 			singlePlayerB.setPos(
 				Calc.alignMiddle(0, Const.SCREEN_SIZE_W, singlePlayerB.width),
 				Const.SCREEN_SIZE_H/2);
 			
-			multiPlayerB = new GameButton(Const.MULTI_PLAYER_S);
+			multiPlayerB = new GameButton();
 			multiPlayerB.setPos(
 				Calc.alignMiddle(singlePlayerB.x, singlePlayerB.width, multiPlayerB.width),
 				singlePlayerB.y + Const.MAIN_MENU_BUTTON_OFFSET);
 			
-			creditsB = new GameButton(Const.CREDITS_S);
+			creditsB = new GameButton();
 			creditsB.setPos(
 				Calc.alignMiddle(multiPlayerB.x, multiPlayerB.width, creditsB.width),
 				multiPlayerB.y + Const.MAIN_MENU_BUTTON_OFFSET);
 				
 			// Text.
-			var format = new TextFormat;
+			format = new TextFormat;
 			format.size = 52;
 			format.bold = true;
 			
@@ -78,19 +90,13 @@ package src.ui
 			titleTxt.selectable = false;
 			titleTxt.mouseEnabled = false;
 			// Cant believe that the text strig must be the last to be set, otherwise the format won't work. (-_-)'
-			titleTxt.text = Const.MAIN_MENU_TITLE;
-			titleTxt.width = titleTxt.textWidth;
-			titleTxt.height = titleTxt.textHeight;
-			
-			titleTxt.x = Calc.alignMiddle(0, Const.SCREEN_SIZE_W, titleTxt.width);
 			titleTxt.y = Const.TITLE_VERTICAL_OFFSET;
 				
-			//this.addChild(bg);
-			this.addChild(new MainMenuBg);
-			this.addChild(titleTxt);
-			this.addChild(singlePlayerB);
-			this.addChild(multiPlayerB);
-			this.addChild(creditsB);
+			addChild(new MainMenuBg);
+			addChild(titleTxt);
+			addChild(singlePlayerB);
+			addChild(multiPlayerB);
+			addChild(creditsB);
 		}
 		
 		private function handleSinglePlayerClick(e:MouseEvent) : void

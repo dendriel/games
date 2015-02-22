@@ -163,9 +163,18 @@ package src
 			gameTarget.x = tilex * ConstTile.TILE_W;
 			gameTarget.y = tiley * ConstTile.TILE_H;
 			gameTarget.visible = true;
-			
-			gameMapR.getElement(tile_idx);
 			//trace("clicked on: " + pxOnMap + ", " + pyOnMap + "; tile: " + tilex + "," + tiley + " idx: " + tile_idx);
+			
+			// Get information from the element under the cursor.
+			var elem:IElementInfo = gameMapR.getElement(tile_idx);
+			if (elem == null)
+			{
+				trace("Something went wrong. No element reference found for pos " + tilex + "," + tiley);
+				return;
+			}
+			
+			// Display the element in the Menu.
+			trace(elem.elemType + ", " + elem.elemDesc);
 		}
 		
 		

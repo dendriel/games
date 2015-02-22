@@ -1,6 +1,7 @@
 package src.buildings
 {
 	import flash.display.MovieClip;
+	import src.language.GameLanguage;
 	
 	/**
 	 * ...
@@ -11,7 +12,8 @@ package src.buildings
 		public function Village01Building() : void
 		{
 			id = ConstBuilding.VILLAGE_01_ID;
-			set_name("teste");
+			elemName = GameLanguage.village01_name;
+			elemDesc = GameLanguage.village01_desc;
 		}
 	}
 	

@@ -2,9 +2,12 @@ package src
 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import src.language.EnglishLanguage;
+	import src.language.PortugueseLanguage;
 	import src.tiles.Grass01Tile;
 	import src.ui.MainMenu;
 	import src.maps.*;
+	import src.language.GameLanguage;
 	
 	[SWF(width = "800", height = "600", frameRate = "30", backgroundColor = "#333333")] //set project properties
 	
@@ -28,6 +31,9 @@ package src
 			gamePlayR = new GamePlay();
 			
 			this.addChild(gameStageR);
+			
+			// Set default language here. TODO: add change language button.
+			//GameLanguage.load_language(new PortugueseLanguage);
 			
 			startGame();
 		}

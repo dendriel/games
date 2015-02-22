@@ -205,10 +205,8 @@ package src.maps
 		 * @brief Get an element from the map.
 		 * @param	idx Position of the Element.
 		 */
-		public function getElement(idx:int) : void
+		public function getElement(idx:int) : IElementInfo
 		{
-			trace("index: " + idx);
-			
 			// Search inside units layer.
 			/*var unit_layer_temp:Vector.<GameUnit> = unit_layer_element.concat();
 			
@@ -236,13 +234,14 @@ package src.maps
 					building = building_layer_temp.pop();
 					if (getElementIdx(building.x, building.y) == idx)
 					{
-						var info:IElementInfo = IElementInfo(building);
-						trace("found building! Type is: " + info.get_type() + "; Name: " + info.get_name());
-						break;
+						return building;
 					}
 					
 				}
 			}
+			
+			// Should not get here!
+			return null;
 		}
 		
 		/**

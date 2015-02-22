@@ -7,11 +7,9 @@ package src
 	 */
 	public interface IElementInfo 
 	{
-		function get_type() : int;
-		
-		function get_name() : String;
-		
-		function get_description() : String;
+		function get elemType() : int;
+		function get elemName() : String;
+		function get elemDesc() : String;
 	}
 	
 }

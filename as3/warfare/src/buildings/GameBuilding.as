@@ -17,7 +17,7 @@ package src.buildings
 		// Element type identifier;
 		private var _type:int = ElementType.BUILDING;
 		private var _name:String;
-		private var _description:String;
+		private var _desc:String;
 		
 //##################################################################################################
 		// Unique building identifier.
@@ -38,41 +38,18 @@ package src.buildings
 		{
 			_uid = GameBuilding.generateUID();
 		}
+		
+		public function get uid() : int {return _uid;}
+		public function get elemType():int {return _type;}
+		
+		public function set id(value:int):void {_id = value;}
+		public function get id():int {return _id;}
+		
+		public function set elemName(value:String):void {_name = value;}
+		public function get elemName():String { return _name; }
 
-		public function get id():int 
-		{
-			return _id;
-		}
-		
-		public function set id(value:int):void 
-		{
-			_id = value;
-		}
-		
-		public function get uid() : int
-		{
-			return _uid;
-		}
-		
-		public function get_type() : int
-		{
-			return _type;
-		}
-		
-		public function set_name(value:String) : void
-		{
-			_name = value;
-		}
-		
-		public function get_name() : String
-		{
-			return _name;
-		}
-		
-		public function get_description() : String
-		{
-			return _description;
-		}
+		public function set elemDesc(value:String):void {_desc = value;}
+		public function get elemDesc():String {return _desc;}
 	}
 	
 }
