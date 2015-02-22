@@ -7,6 +7,8 @@ package src
 	import src.maps.GameMap;
 	import src.as3.math.Calc;
 	import src.tiles.ConstTile;
+	import src.ui.GameUnitDisplay;
+	import src.units.IElementUnitInfo;
 	
 	/**
 	 * ...
@@ -24,22 +26,26 @@ package src
 	 * |[                                                          ]|
 	 * |[                                                          ]|
 	 * ++__________________________________________________________++  -/
-	 * |                                                            |  -\
-	 * |                                                            |    gameMenuScreen:MovieClip
+	 * |    Status    |         Actions Display        |            |  -\
+	 * |    Display   |                                |            |    gameMenuScreen:MovieClip
 	 * +------------------------------------------------------------+  -/
 	 */
 	public class GamePlay extends MovieClip 
 	{
+		// Constants.
+		private const statusDisplayX:int = 8;
+		private const statusDisplayY:int = 8;
+		
 		// Images.
-		var gamePlayFrameR:GamePlayFrame;
-		var gameTarget:Target01;
+		private var gamePlayFrameR:GamePlayFrame;
+		private var gameTarget:Target01;
 		
 		// Screens.
 		private var gameMapScreen:MovieClip;
 		private var gameMapScreenMask:MovieClip;
 		private var gameMapR:GameMap;
-		
-		//private var gameMenuScreen:MovieClip; // will handle this latter.
+		private var gameMenuScreen:MovieClip;
+		private var gameUnitDisplay:GameUnitDisplay;
 		
 		// Internal state.
 		private var mouseButtonDown:Boolean;
@@ -52,6 +58,9 @@ package src
 			mouseButtonPressPoint = new Point();
 			gameTarget = new Target01();
 			gameTarget.visible = false;
+			
+			// Create displays.
+			gameUnitDisplay = new GameUnitDisplay(statusDisplayX, statusDisplayY);
 			
 			// Load game frame.
 			gamePlayFrameR = new GamePlayFrame();
@@ -72,7 +81,14 @@ package src
 			gameMapScreen.y = Const.MAP_AREA_POS_Y;
 			gameMapScreen.mask = gameMapScreenMask;
 			
+			// Create Game Menu screen.
+			gameMenuScreen = new MovieClip();
+			gameMenuScreen.x = Const.MENU_AREA_POS_X;
+			gameMenuScreen.y = Const.MENU_AREA_POS_Y;
+			gameMenuScreen.addChild(new GameMenuBar);
+			
 			addChild(gameMapScreen);
+			addChild(gameMenuScreen);
 		}
 		
 //##################################################################################################
@@ -148,7 +164,6 @@ package src
 			moveMap(offsetX, offsetY);
 		}
 		
-		
 		private function handleMouseClickOnMap(e:MouseEvent) : void
 		{
 			// Calculate click position on game map.
@@ -174,9 +189,8 @@ package src
 			}
 			
 			// Display the element in the Menu.
-			trace(elem.elemType + ", " + elem.elemDesc);
+			displayElement(elem);
 		}
-		
 		
 		private function moveMap(px:int, py:int) : void
 		{
@@ -193,7 +207,76 @@ package src
 			gameMapR.x = pxTemp;
 			gameMapR.y = pyTemp;
 		}
-
+		
+		private function displayElement(elem:IElementInfo) : void
+		{
+			switch(elem.elemType)
+			{
+				case ElementType.UNIT:
+					displayElementUnit(elem);
+					break;
+				case ElementType.BUILDING:
+					displayElementBuilding(elem);
+					break;
+				case ElementType.TILE:
+					displayElementTile(elem);
+					break;
+				default:
+					trace("Invalid element type received: " + elem.elemType);
+					break;
+			}
+		}
+		
+		/**
+		 * @brief Undisplay all elements from menu screen.
+		 */
+		private function removeElementInformation() : void
+		{
+			if (gameMenuScreen.contains(gameUnitDisplay))
+			{
+				gameMenuScreen.removeChild(gameUnitDisplay);
+			}
+			
+			// TODO: another displays.
+		}
+		
+		private function displayElementUnit(elem:IElementInfo) : void
+		{
+			// Clear menu from previous information.
+			removeElementInformation();
+			
+			var unit:IElementUnitInfo = IElementUnitInfo(elem);
+			
+			trace("Name: " + elem.elemName);
+			trace("Desc: " + elem.elemDesc);
+			
+			gameUnitDisplay.elemName = elem.elemName;
+			gameUnitDisplay.set_soldiers(unit.soldiers, unit.soldiers_injuried);
+			gameUnitDisplay.attack   = unit.attack;
+			gameUnitDisplay.defense  = unit.defense;
+			gameUnitDisplay.distance = unit.distance;
+			gameUnitDisplay.move     = unit.move_time;
+			gameUnitDisplay.cost     = unit.recruit_cost;
+			
+			gameMenuScreen.addChild(gameUnitDisplay);
+		}
+		
+		private function displayElementBuilding(elem:IElementInfo) : void
+		{
+			// Clear menu from previous information.
+			removeElementInformation();
+			
+			trace("Name: " + elem.elemName);
+			trace("Desc: " + elem.elemDesc);
+		}
+		
+		private function displayElementTile(elem:IElementInfo) : void
+		{
+			// Clear menu from previous information.
+			removeElementInformation();
+			
+			trace("Name: " + elem.elemName);
+			trace("Desc: " + elem.elemDesc);
+		}
 	}
-	
 }

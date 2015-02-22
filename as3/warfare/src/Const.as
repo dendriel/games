@@ -23,11 +23,13 @@ package src
 		// GamePlay definitions.
 		public static const MENU_AREA_W = (800 - 32);
 		public static const MENU_AREA_H = (120 - 16);
-		
 		public static const MAP_AREA_W = (SCREEN_SIZE_W - 32);
 		public static const MAP_AREA_H = (SCREEN_SIZE_H - MENU_AREA_H - 16);
+		
 		public static const MAP_AREA_POS_X = 16;
 		public static const MAP_AREA_POS_Y = 16;
+		public static const MENU_AREA_POS_X = 16;
+		public static const MENU_AREA_POS_Y = MAP_AREA_H;
 		
 		// Game Events.
 		public static const EVT_SINGLE_PLAYER_CLICK = "single player click";

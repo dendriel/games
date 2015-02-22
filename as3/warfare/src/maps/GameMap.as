@@ -94,12 +94,27 @@ package src.maps
 						continue;
 					}
 					
-					//TODO.
-					//unit_layer_element.push(unit);
-					//unit_layer.addChild(unit);
+					var unit = newUnitFromId(unit_layer_map[i]);
+					unit.x = (int) (i % width_tiles) * ConstTile.TILE_W;
+					unit.y = (int)(i / height_tiles) * ConstTile.TILE_H;
+					unit_layer_element.push(unit);
+					unit_layer.addChild(unit);
 				}
 				// Add layer 3.
 				addChild(unit_layer);
+			}
+		}
+		
+		private function newUnitFromId(id:int) : GameUnit
+		{
+			switch (id)
+			{
+				case ConstUnit.LEVY_INFANTRY01_ID:
+					return new LevyInfantryUnit;
+					
+				default:
+					trace("Invalid unit id: " + id + " received.");
+					return new LevyInfantryUnit;
 			}
 		}
 		
@@ -207,21 +222,21 @@ package src.maps
 		 */
 		public function getElement(idx:int) : IElementInfo
 		{
-			// Search inside units layer.
-			/*var unit_layer_temp:Vector.<GameUnit> = unit_layer_element.concat();
-			
-			while (unit_layer_temp.lenght()
+			// Search inside units layer.			
 			if (unit_layer_element != null)
 			{
-				for each (var unit in unit_layer)
+				var unit_layer_temp:Vector.<GameUnit> = unit_layer_element.concat();
+				var unit:GameUnit;
+				
+				while (unit_layer_temp.length > 0)
 				{
-					if (unit.getElementIdx(unit.x, unit.y) == idx)
+					unit = unit_layer_temp.pop();
+					if (getElementIdx(unit.x, unit.y) == idx)
 					{
-						trace("found unit!");
-						break;
+						return unit;
 					}
 				}
-			}*/
+			}
 			
 			// Search inside building layer.
 			if (building_layer_element != null)

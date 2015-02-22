@@ -28,6 +28,8 @@ package src.language
 		
 //##################################################################################################
 // Units.
+		public static function get levy_infantry01_name():String { return language.levy_infantry01_name;}
+		public static function get levy_infantry01_desc():String { return language.levy_infantry01_desc;}
 		
 
 //##################################################################################################

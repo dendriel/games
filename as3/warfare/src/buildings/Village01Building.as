@@ -1,6 +1,5 @@
 package src.buildings
 {
-	import flash.display.MovieClip;
 	import src.language.GameLanguage;
 	
 	/**
@@ -9,11 +8,11 @@ package src.buildings
 	 */
 	public class Village01Building extends GameBuilding 
 	{		
-		public function Village01Building() : void
+		public function Village01Building()
 		{
-			id = ConstBuilding.VILLAGE_01_ID;
-			elemName = GameLanguage.village01_name;
-			elemDesc = GameLanguage.village01_desc;
+			_id = ConstBuilding.VILLAGE_01_ID;
+			_name = GameLanguage.village01_name;
+			_desc = GameLanguage.village01_desc;
 		}
 	}
 	

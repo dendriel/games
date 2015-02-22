@@ -13,6 +13,10 @@ package src.language
 		function get multiplayer_button() : String;
 		function get credits_button() : String;
 		
+		// Units.
+		function get levy_infantry01_name() : String;
+		function get levy_infantry01_desc() : String;
+		
 		// Buildings.
 		function get village01_name() : String;
 		function get village01_desc() : String;

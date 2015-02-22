@@ -10,7 +10,7 @@ package src.buildings
 	{
 		public function Bridge02Building() : void
 		{
-			id = ConstBuilding.BRIDGE_02_ID;
+			_id = ConstBuilding.BRIDGE_02_ID;
 		}
 		
 	}

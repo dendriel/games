@@ -16,6 +16,9 @@ package src.language
 			_credits_button       = "Créditos";
 			
 			// Units.
+			_levy_infantry01_name = "Recruta de infantaria";
+			_levy_infantry01_desc = "O recruta de infantaria é um soldado de mílicia. Em geral os \
+recrutas de infantaria são aldeões que são forçados a entrar no exército temporariamente para defender seu país ou atender a uma campanha militar.";
 			
 			// Buildings.
 			_village01_name = "Aldeia";

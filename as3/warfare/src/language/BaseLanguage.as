@@ -13,6 +13,10 @@ package src.language
 		protected var _multiplayer_button:String;
 		protected var _credits_button:String;
 		
+		// Units text.
+		protected var _levy_infantry01_name:String;
+		protected var _levy_infantry01_desc:String;
+		
 		// Buildings Text.
 		protected var _village01_name:String;
 		protected var _village01_desc:String;
@@ -27,6 +31,8 @@ package src.language
 		
 //##################################################################################################
 // Units.
+		public function get levy_infantry01_name():String { return _levy_infantry01_name;}
+		public function get levy_infantry01_desc():String { return _levy_infantry01_desc;}
 		
 
 //##################################################################################################
