@@ -26,7 +26,7 @@ recrutas de infantaria são aldeões que são forçados a entrar no exército te
 			
 			// Buildings.
 			_village01_name = "Aldeia";
-			_village01_desc = "Pequeno povoado rural que vive da subsistência e possui entre centenas ou alguns poucos milhares de pessoas.";
+			_village01_desc = "Pequeno povoado rural que vive da subsistência e possui entre centenas e alguns poucos milhares de pessoas.";
 			
 			// Tiles.
 			_grass01_name = "Campina";

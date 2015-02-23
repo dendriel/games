@@ -19,28 +19,35 @@ package src.maps
 		
 		// Layer 0.
 		protected var tile_layer_map:Array;
+		private var tile_layer_element:Array;
 		private var tile_layer:MovieClip;
-		private var tile_layer_element:Vector.<GameTile>;
 		
 		// Layer 1.
-		protected var building_layer_map:Array;		
+		protected var building_layer_map:Array;
+		private var building_layer_element:Array;
 		private var building_layer:MovieClip;
-		private var building_layer_element:Vector.<GameBuilding>;
 		
 		// Layer 2.
 		protected var unit_layer_map:Array;
+		private var unit_layer_element:Array;
 		private var unit_layer:MovieClip;
-		private var unit_layer_element:Vector.<GameUnit>;
 		
 		protected function drawSelf() : void
 		{
 			var i:int;
 			tile_layer = new MovieClip;
-			tile_layer_element = new Vector.<GameTile>;
 			building_layer = new MovieClip;
-			building_layer_element = new Vector.<GameBuilding>;
 			unit_layer = new MovieClip;
-			unit_layer_element = new Vector.<GameUnit>;
+			
+			tile_layer_element = new Array(_width_tiles * height_tiles);
+			building_layer_element = new Array(_width_tiles * height_tiles);
+			unit_layer_element = new Array(_width_tiles * height_tiles);
+			
+			// Initialize util layer array.
+			for (i = 0; i < unit_layer_element.length; i++)
+			{
+				unit_layer_element[i] = new GameUnitHolder();
+			}
 			
 			// Draw landscape.
 			if (tile_layer_map != null)
@@ -55,7 +62,7 @@ package src.maps
 					var tile = newTileFromId(tile_layer_map[i]);
 					tile.x = (int) (i % width_tiles) * ConstTile.TILE_W;
 					tile.y = (int)(i / height_tiles) * ConstTile.TILE_H;
-					tile_layer_element.push(tile);
+					tile_layer_element[i] = tile;
 					tile_layer.addChild(tile);
 				}
 			
@@ -76,7 +83,8 @@ package src.maps
 					var building = newBuildingFromId(building_layer_map[i]);
 					building.x = (int) (i % width_tiles) * ConstTile.TILE_W;
 					building.y = (int)(i / height_tiles) * ConstTile.TILE_H;
-					building_layer_element.push(building);
+					
+					building_layer_element[i] = building;
 					building_layer.addChild(building);
 				}
 				
@@ -97,7 +105,8 @@ package src.maps
 					var unit = newUnitFromId(unit_layer_map[i]);
 					unit.x = (int) (i % width_tiles) * ConstTile.TILE_W;
 					unit.y = (int)(i / height_tiles) * ConstTile.TILE_H;
-					unit_layer_element.push(unit);
+					
+					unit_layer_element[i].units.push(unit);
 					unit_layer.addChild(unit);
 				}
 				// Add layer 3.
@@ -109,8 +118,7 @@ package src.maps
 		{
 			switch (id)
 			{
-				case ConstUnit.LEVY_INFANTRY01_ID:
-					return new LevyInfantryUnit;
+				case ConstUnit.LEVY_INFANTRY01_ID: return new LevyInfantryUnit;
 					
 				default:
 					trace("Invalid unit id: " + id + " received.");
@@ -122,14 +130,9 @@ package src.maps
 		{
 			switch (id)
 			{
-				case ConstBuilding.BRIDGE_01_ID:
-					return new Bridge01Building;
-					
-				case ConstBuilding.BRIDGE_02_ID:
-					return new Bridge02Building;
-					
-				case ConstBuilding.VILLAGE_01_ID:
-					return new Village01Building;
+				case ConstBuilding.BRIDGE_01_ID: return new Bridge01Building;
+				case ConstBuilding.BRIDGE_02_ID: return new Bridge02Building;
+				case ConstBuilding.VILLAGE_01_ID: return new Village01Building;
 					
 				default:
 					trace("Invalid building id: " + id + " received.");
@@ -142,68 +145,27 @@ package src.maps
 		{
 			switch (id)
 			{
-				case ConstTile.GRASS_01_ID:
-					return new Grass01Tile;
-				
-				case ConstTile.TREE_01_ID:
-					return new Tree01Tile;
-					
-				case ConstTile.TREE_02_ID:
-					return new Tree02Tile;
-					
-				case ConstTile.TREE_03_ID:
-					return new Tree03Tile;
-					
-				case ConstTile.TREE_04_ID:
-					return new Tree04Tile;
-					
-				case ConstTile.TREE_05_ID:
-					return new Tree05Tile;
-					
-				case ConstTile.TREE_06_ID:
-					return new Tree06Tile;
-					
-				case ConstTile.MOUNTAIN_01_ID:
-					return new Mountain01Tile;
-					
-				case ConstTile.MOUNTAIN_02_ID:
-					return new Mountain02Tile;
-					
-				case ConstTile.MOUNTAIN_03_ID:
-					return new Mountain03Tile;
-					
-				case ConstTile.MOUNTAIN_04_ID:
-					return new Mountain04Tile;
-					
-				case ConstTile.MOUNTAIN_05_ID:
-					return new Mountain05Tile;
-					
-				case ConstTile.MOUNTAIN_06_ID:
-					return new Mountain06Tile;
-					
-				case ConstTile.RIVER_01_ID:
-					return new River01Tile;
-					
-				case ConstTile.RIVER_02_ID:
-					return new River02Tile;
-					
-				case ConstTile.RIVER_03_ID:
-					return new River03Tile;
-					
-				case ConstTile.RIVER_04_ID:
-					return new River04Tile;
-					
-				case ConstTile.RIVER_05_ID:
-					return new River05Tile;
-					
-				case ConstTile.RIVER_06_ID:
-					return new River06Tile;
-					
-				case ConstTile.RIVER_07_ID:
-					return new River07Tile;
-					
-				case ConstTile.RIVER_08_ID:
-					return new River08Tile;
+				case ConstTile.GRASS_01_ID:	return new Grass01Tile;
+				case ConstTile.TREE_01_ID: return new Tree01Tile;
+				case ConstTile.TREE_02_ID: return new Tree02Tile;
+				case ConstTile.TREE_03_ID: return new Tree03Tile;
+				case ConstTile.TREE_04_ID: return new Tree04Tile;					
+				case ConstTile.TREE_05_ID: return new Tree05Tile;
+				case ConstTile.TREE_06_ID: return new Tree06Tile;
+				case ConstTile.MOUNTAIN_01_ID: return new Mountain01Tile;
+				case ConstTile.MOUNTAIN_02_ID: return new Mountain02Tile;
+				case ConstTile.MOUNTAIN_03_ID: return new Mountain03Tile;
+				case ConstTile.MOUNTAIN_04_ID: return new Mountain04Tile;
+				case ConstTile.MOUNTAIN_05_ID: return new Mountain05Tile;
+				case ConstTile.MOUNTAIN_06_ID: return new Mountain06Tile;
+				case ConstTile.RIVER_01_ID: return new River01Tile;
+				case ConstTile.RIVER_02_ID: return new River02Tile;
+				case ConstTile.RIVER_03_ID: return new River03Tile;
+				case ConstTile.RIVER_04_ID: return new River04Tile;
+				case ConstTile.RIVER_05_ID: return new River05Tile;
+				case ConstTile.RIVER_06_ID: return new River06Tile;
+				case ConstTile.RIVER_07_ID: return new River07Tile;
+				case ConstTile.RIVER_08_ID: return new River08Tile;
 					
 				default:
 					trace("Invalid tile id: " + id + " received.");
@@ -225,42 +187,30 @@ package src.maps
 			// Search inside units layer.			
 			if (unit_layer_element != null)
 			{
-				var unit_layer_temp:Vector.<GameUnit> = unit_layer_element.concat();
-				while (unit_layer_temp.length > 0)
+				var units_list_temp:Vector.<GameUnit> = unit_layer_element[idx].units.concat();
+				
+				// TODO: return a list of all the units in the stack.
+				if (units_list_temp.length > 0)
 				{
-					var unit = unit_layer_temp.pop();
-					if (getElementIdx(unit.x, unit.y) == idx)
-					{
-						return unit;
-					}
+					return units_list_temp.pop();
 				}
 			}
 			
 			// Search inside buildings layer.
 			if (building_layer_element != null)
 			{
-				var building_layer_temp:Vector.<GameBuilding> = building_layer_element.concat();
-				while (building_layer_temp.length > 0)
+				if (building_layer_element[idx] != null)
 				{
-					var building = building_layer_temp.pop();
-					if (getElementIdx(building.x, building.y) == idx)
-					{
-						return building;
-					}
+					return building_layer_element[idx];
 				}
 			}
 			
 			// Search inside tiles layer.
 			if (tile_layer_element != null)
 			{
-				var tile_layer_temp:Vector.<GameTile> = tile_layer_element.concat();
-				while (tile_layer_temp.length > 0)
+				if (tile_layer_element[idx] != null)
 				{
-					var tile = tile_layer_temp.pop();
-					if (getElementIdx(tile.x, tile.y) == idx)
-					{
-						return tile;
-					}
+					return tile_layer_element[idx];
 				}
 			}
 			
