@@ -226,11 +226,9 @@ package src.maps
 			if (unit_layer_element != null)
 			{
 				var unit_layer_temp:Vector.<GameUnit> = unit_layer_element.concat();
-				var unit:GameUnit;
-				
 				while (unit_layer_temp.length > 0)
 				{
-					unit = unit_layer_temp.pop();
+					var unit = unit_layer_temp.pop();
 					if (getElementIdx(unit.x, unit.y) == idx)
 					{
 						return unit;
@@ -238,20 +236,31 @@ package src.maps
 				}
 			}
 			
-			// Search inside building layer.
+			// Search inside buildings layer.
 			if (building_layer_element != null)
 			{
 				var building_layer_temp:Vector.<GameBuilding> = building_layer_element.concat();
-				var building:GameBuilding;
-				
 				while (building_layer_temp.length > 0)
 				{
-					building = building_layer_temp.pop();
+					var building = building_layer_temp.pop();
 					if (getElementIdx(building.x, building.y) == idx)
 					{
 						return building;
 					}
-					
+				}
+			}
+			
+			// Search inside tiles layer.
+			if (tile_layer_element != null)
+			{
+				var tile_layer_temp:Vector.<GameTile> = tile_layer_element.concat();
+				while (tile_layer_temp.length > 0)
+				{
+					var tile = tile_layer_temp.pop();
+					if (getElementIdx(tile.x, tile.y) == idx)
+					{
+						return tile;
+					}
 				}
 			}
 			

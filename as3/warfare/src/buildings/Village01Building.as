@@ -11,8 +11,8 @@ package src.buildings
 		public function Village01Building()
 		{
 			_id = ConstBuilding.VILLAGE_01_ID;
-			_name = GameLanguage.village01_name;
-			_desc = GameLanguage.village01_desc;
+			_name = GameLanguage.lang.village01_name;
+			_desc = GameLanguage.lang.village01_desc;
 		}
 	}
 	

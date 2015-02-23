@@ -11,8 +11,8 @@ package src.units
 		public function LevyInfantryUnit()
 		{
 			_id = ConstUnit.LEVY_INFANTRY01_ID;
-			_name = GameLanguage.levy_infantry01_name;
-			_desc = GameLanguage.levy_infantry01_desc;
+			_name = GameLanguage.lang.levy_infantry01_name;
+			_desc = GameLanguage.lang.levy_infantry01_desc;
 			
 			_soldiers_max = 20;
 			_soldiers = 20;

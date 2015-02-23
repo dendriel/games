@@ -7,6 +7,8 @@ package src
 	import src.maps.GameMap;
 	import src.as3.math.Calc;
 	import src.tiles.ConstTile;
+	import src.tiles.IElementTileInfo;
+	import src.ui.GameTileDisplay;
 	import src.ui.GameUnitDisplay;
 	import src.units.IElementUnitInfo;
 	
@@ -46,6 +48,7 @@ package src
 		private var gameMapR:GameMap;
 		private var gameMenuScreen:MovieClip;
 		private var gameUnitDisplay:GameUnitDisplay;
+		private var gameTileDisplay:GameTileDisplay;
 		
 		// Internal state.
 		private var mouseButtonDown:Boolean;
@@ -61,6 +64,7 @@ package src
 			
 			// Create displays.
 			gameUnitDisplay = new GameUnitDisplay(statusDisplayX, statusDisplayY);
+			gameTileDisplay = new GameTileDisplay(statusDisplayX, statusDisplayY);
 			
 			// Load game frame.
 			gamePlayFrameR = new GamePlayFrame();
@@ -237,6 +241,11 @@ package src
 				gameMenuScreen.removeChild(gameUnitDisplay);
 			}
 			
+			if (gameMenuScreen.contains(gameTileDisplay))
+			{
+				gameMenuScreen.removeChild(gameTileDisplay);
+			}
+			
 			// TODO: another displays.
 		}
 		
@@ -246,9 +255,6 @@ package src
 			removeElementInformation();
 			
 			var unit:IElementUnitInfo = IElementUnitInfo(elem);
-			
-			trace("Name: " + elem.elemName);
-			trace("Desc: " + elem.elemDesc);
 			
 			gameUnitDisplay.elemName = elem.elemName;
 			gameUnitDisplay.set_soldiers(unit.soldiers, unit.soldiers_injuried);
@@ -275,8 +281,14 @@ package src
 			// Clear menu from previous information.
 			removeElementInformation();
 			
-			trace("Name: " + elem.elemName);
-			trace("Desc: " + elem.elemDesc);
+			var tile:IElementTileInfo = IElementTileInfo(elem);
+			
+			gameTileDisplay.elemName = elem.elemName;
+			gameTileDisplay.fortifyBonus = tile.def;
+			gameTileDisplay.moveBonus = tile.moveEffort;
+			gameTileDisplay.moveable = tile.moveable;
+			
+			gameMenuScreen.addChild(gameTileDisplay);
 		}
 	}
 }

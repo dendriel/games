@@ -1,5 +1,6 @@
 package src.tiles
 {
+	import src.language.GameLanguage;
 	/**
 	 * ...
 	 * @author Vitor Rozsa
@@ -8,10 +9,12 @@ package src.tiles
 	{		
 		public function Tree01Tile()
 		{			
-			id = ConstTile.TREE_01_ID;
-			def = ConstTile.TREE_01_DEF;
-			moveable = ConstTile.TREE_01_MOVEABLE;
-			moveEffort = ConstTile.TREE_01_MOVEEFFORT;
+			_id = ConstTile.TREE_01_ID;
+			_def = ConstTile.GRASS_01_DEF;
+			_moveable = ConstTile.GRASS_01_MOVEABLE;
+			_moveEffort = ConstTile.GRASS_01_MOVEEFFORT;
+			_name = GameLanguage.lang.grass01_name;
+			_desc = GameLanguage.lang.grass01_desc;
 		}
 		
 	}

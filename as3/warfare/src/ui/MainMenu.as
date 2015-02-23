@@ -40,10 +40,10 @@ package src.ui
 		// Enable will refresh the buttons text.
 		public function enable() : void
 		{
-			titleTxt.text = GameLanguage.main_title;
-			singlePlayerB.textValue = GameLanguage.single_player_button;
-			multiPlayerB.textValue = GameLanguage.multiplayer_button;
-			creditsB.textValue = GameLanguage.credits_button;
+			titleTxt.text = GameLanguage.lang.main_title;
+			singlePlayerB.textValue = GameLanguage.lang.single_player_button;
+			multiPlayerB.textValue = GameLanguage.lang.multiplayer_button;
+			creditsB.textValue = GameLanguage.lang.credits_button;
 			
 			titleTxt.width = titleTxt.textWidth;
 			titleTxt.height = titleTxt.textHeight;

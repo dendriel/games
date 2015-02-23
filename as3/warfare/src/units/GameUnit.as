@@ -14,6 +14,7 @@ package src.units
 		private var _uid:int;
 		// Type identifier for map building.
 		protected var _id:int;
+		
 		// Element type identifier;
 		private var _type:int = ElementType.UNIT;
 		protected var _name:String;

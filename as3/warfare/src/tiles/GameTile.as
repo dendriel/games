@@ -1,7 +1,8 @@
 package src.tiles
 {
 	import flash.display.MovieClip;
-	import src.as3.media.Image;
+	import src.IElementInfo;
+	import src.ElementType;
 	
 	/**
 	 * ...
@@ -9,18 +10,24 @@ package src.tiles
 	 * 
 	 * Tile attributes
 	 */
-	public class GameTile extends MovieClip
+	public class GameTile extends MovieClip implements IElementInfo, IElementTileInfo
 	{
 		// Unique identifier.
 		private var _uid:int;
 		// Type identifier.
-		private var _id:int;
+		protected var _id:int;
+		
+		// Element type identifier;
+		private var _type:int = ElementType.TILE;
+		protected var _name:String;
+		protected var _desc:String;
+
 		// Defense from the land.
-		private var _def:Number;
+		protected var _def:Number;
 		// If land is moveable;
-		private var _moveable:Boolean;
+		protected var _moveable:Boolean;
 		// Effort to move through this land.
-		private var _moveEffort:int;
+		protected var _moveEffort:int;
 		
 //##################################################################################################
 		// Unique tile identifier.
@@ -42,50 +49,17 @@ package src.tiles
 			_uid = GameTile.generateUID();
 		}
 		
-		public function get id():int 
-		{
-			return _id;
-		}
+		public function get uid() : int { return _uid; }
+		public function get id():int { return _id; }
 		
-		public function set id(value:int):void 
-		{
-			_id = value;
-		}
+		public function get elemType():int {return _type;}
+		public function get elemName():String { return _name; }
+		public function get elemDesc():String { return _desc; }
 		
-		public function get def():Number 
-		{
-			return _def;
-		}
+		public function get def():Number {return _def;}		
+		public function get moveable():Boolean {return _moveable;}
+		public function get moveEffort():int {return _moveEffort;}
 		
-		public function set def(value:Number):void 
-		{
-			_def = value;
-		}
-		
-		public function get moveable():Boolean 
-		{
-			return _moveable;
-		}
-		
-		public function set moveable(value:Boolean):void 
-		{
-			_moveable = value;
-		}
-		
-		public function get moveEffort():int 
-		{
-			return _moveEffort;
-		}
-		
-		public function set moveEffort(value:int):void 
-		{
-			_moveEffort = value;
-		}
-		
-		public function get uid() : int
-		{
-			return _uid;
-		}
 	}
 	
 }

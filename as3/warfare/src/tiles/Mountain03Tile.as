@@ -1,5 +1,6 @@
 package src.tiles
-{	
+{
+	import src.language.GameLanguage;
 	/**
 	 * ...
 	 * @author Vitor Rozsa
@@ -8,10 +9,12 @@ package src.tiles
 	{
 		public function Mountain03Tile()
 		{
-			id = ConstTile.MOUNTAIN_03_ID;
-			def = ConstTile.MOUNTAIN_01_DEF;
-			moveable = ConstTile.MOUNTAIN_01_MOVEABLE;
-			moveEffort = ConstTile.MOUNTAIN_01_MOVEEFFORT;
+			_id = ConstTile.MOUNTAIN_03_ID;
+			_def = ConstTile.MOUNTAIN_01_DEF;
+			_moveable = ConstTile.MOUNTAIN_01_MOVEABLE;
+			_moveEffort = ConstTile.MOUNTAIN_01_MOVEEFFORT;
+			_name = GameLanguage.lang.mountain01_name;
+			_desc = GameLanguage.lang.mountain01_desc;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package src.tiles
-{	
+{
+	import src.language.GameLanguage;
 	/**
 	 * ...
 	 * @author Vitor Rozsa
@@ -8,10 +9,12 @@ package src.tiles
 	{		
 		public function Tree02Tile()
 		{			
-			id = ConstTile.TREE_02_ID;
-			def = ConstTile.TREE_01_DEF;
-			moveable = ConstTile.TREE_01_MOVEABLE;
-			moveEffort = ConstTile.TREE_01_MOVEEFFORT;
+			_id = ConstTile.TREE_02_ID;
+			_def = ConstTile.TREE_01_DEF;
+			_moveable = ConstTile.TREE_01_MOVEABLE;
+			_moveEffort = ConstTile.TREE_01_MOVEEFFORT;
+			_name = GameLanguage.lang.tree01_name;
+			_desc = GameLanguage.lang.tree01_desc;
 		}
 		
 	}

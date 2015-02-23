@@ -3,15 +3,19 @@ package src.ui
 	import flash.display.MovieClip;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import src.ui.GameTextFormat;
 	
 	/**
-	 * ...
+	 * ...TODO:
+		 * 
+		 * - Display help information when passing mouse over icons or name (show desc for this).
+		 * 
+		 * 
 	 * @author Vitor Rozsa
 	 */
 	public class GameUnitDisplay extends MovieClip 
 	{
 		// Constants.
-		private const nameTxtOffsetX:int = 8;
 		private const nameTxtOffsetY:int = 4;
 		
 		private const firstColumnIconsX:int = 8;
@@ -21,10 +25,7 @@ package src.ui
 		private const iconsOffset:int = 16;
 		
 		// Text.
-		private var nameFormat:TextFormat;
 		private var nameTxt:TextField;
-		
-		private var fieldsFormat:TextFormat;
 		private var soldiersAmountTxt:TextField;
 		private var attackValueTxt:TextField;
 		private var defenseValueTxt:TextField;
@@ -43,90 +44,39 @@ package src.ui
 		private function drawSelf() : void
 		{
 			// Text.
-			nameFormat = new TextFormat;
-			nameFormat.size = 14;
-			nameFormat.bold = true;
-			
-			fieldsFormat = new TextFormat;
-			fieldsFormat.size = 12;
-			
-			nameTxt = new TextField();
-			nameTxt.defaultTextFormat = nameFormat;
-			nameTxt.textColor = 0xffffff;
-			nameTxt.selectable = false;
-			nameTxt.mouseEnabled = false;
-			nameTxt.x = nameTxtOffsetX;
-			nameTxt.y = nameTxtOffsetY;
-			
-			soldiersAmountTxt = new TextField();
-			soldiersAmountTxt.defaultTextFormat = fieldsFormat;
-			soldiersAmountTxt.textColor = 0xffffff;
-			soldiersAmountTxt.selectable = false;
-			soldiersAmountTxt.mouseEnabled = false;
-			attackValueTxt = new TextField();
-			attackValueTxt.defaultTextFormat = fieldsFormat;
-			attackValueTxt.textColor = 0xffffff;
-			attackValueTxt.selectable = false;
-			attackValueTxt.mouseEnabled = false;
-			defenseValueTxt = new TextField();
-			defenseValueTxt.defaultTextFormat = fieldsFormat;
-			defenseValueTxt.textColor = 0xffffff;
-			defenseValueTxt.selectable = false;
-			defenseValueTxt.mouseEnabled = false;
-			distanceValueTxt = new TextField();
-			distanceValueTxt.defaultTextFormat = fieldsFormat;
-			distanceValueTxt.textColor = 0xffffff;
-			distanceValueTxt.selectable = false;
-			distanceValueTxt.mouseEnabled = false;
-			moveValueTxt = new TextField();
-			moveValueTxt.defaultTextFormat = fieldsFormat;
-			moveValueTxt.textColor = 0xffffff;
-			moveValueTxt.selectable = false;
-			moveValueTxt.mouseEnabled = false;
-			costValueTxt = new TextField();
-			costValueTxt.defaultTextFormat = fieldsFormat;
-			costValueTxt.textColor = 0xffffff;
-			costValueTxt.selectable = false;
-			costValueTxt.mouseEnabled = false;
-			
-			addChild(nameTxt);
+			nameTxt = GameTextFormat.newDisplayTextTitle(firstColumnIconsX, nameTxtOffsetY);
 			
 			var soldiers = new SoldiersIcon();
 			soldiers.x = firstColumnIconsX;
 			soldiers.y = firstColumnIconsY;
-			soldiersAmountTxt.x = soldiers.x + iconsOffset;
-			soldiersAmountTxt.y = soldiers.y;
+			soldiersAmountTxt = GameTextFormat.newDisplayTextField( (soldiers.x + iconsOffset), soldiers.y);
 			
 			var attack = new AttackIcon();
 			attack.x = firstColumnIconsX;
 			attack.y = soldiers.y + iconsOffset;
-			attackValueTxt.x = attack.x + iconsOffset;
-			attackValueTxt.y = attack.y;
+			attackValueTxt = GameTextFormat.newDisplayTextField( (attack.x + iconsOffset), attack.y);
 			
 			var defense = new DefenseIcon();
 			defense.x = firstColumnIconsX;
 			defense.y = attack.y + iconsOffset;
-			defenseValueTxt.x = defense.x + iconsOffset;
-			defenseValueTxt.y = defense.y;
+			defenseValueTxt = GameTextFormat.newDisplayTextField( (defense.x + iconsOffset), defense.y);
 			
 			var distance = new DistanceIcon();
 			distance.x = secondColumnIconsX;
 			distance.y = secondColumnIconsY;
-			distanceValueTxt.x = distance.x + iconsOffset;
-			distanceValueTxt.y = distance.y;
+			distanceValueTxt = GameTextFormat.newDisplayTextField( (distance.x + iconsOffset), distance.y);
 			
 			var move = new MoveIcon();
 			move.x = secondColumnIconsX;
 			move.y = distance.y + iconsOffset;
-			moveValueTxt.x = move.x + iconsOffset;
-			moveValueTxt.y = move.y;
+			moveValueTxt = GameTextFormat.newDisplayTextField( (move.x + iconsOffset), move.y);
 			
 			var cost = new CostIcon();
 			cost.x = secondColumnIconsX;
 			cost.y = move.y + iconsOffset;
-			costValueTxt.x = cost.x + iconsOffset;
-			costValueTxt.y = cost.y;
+			costValueTxt = GameTextFormat.newDisplayTextField( (cost.x + iconsOffset), cost.y);
 			
+			addChild(nameTxt);
 			addChild(soldiers);
 			addChild(soldiersAmountTxt);
 			addChild(attack);

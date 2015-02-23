@@ -1,5 +1,6 @@
 package src.tiles
 {
+	import src.language.GameLanguage;
 	/**
 	 * ...
 	 * @author Vitor Rozsa
@@ -8,10 +9,12 @@ package src.tiles
 	{
 		public function Grass01Tile()
 		{
-			id = ConstTile.GRASS_01_ID;
-			def = ConstTile.GRASS_01_DEF;
-			moveable = ConstTile.GRASS_01_MOVEABLE;
-			moveEffort = ConstTile.GRASS_01_MOVEEFFORT;
+			_id = ConstTile.GRASS_01_ID;
+			_def = ConstTile.GRASS_01_DEF;
+			_moveable = ConstTile.GRASS_01_MOVEABLE;
+			_moveEffort = ConstTile.GRASS_01_MOVEEFFORT;
+			_name = GameLanguage.lang.grass01_name;
+			_desc = GameLanguage.lang.grass01_desc;
 		}
 	}
 }
