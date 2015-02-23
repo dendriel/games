@@ -1,6 +1,7 @@
 package src.maps
 {
 	import flash.display.MovieClip;
+	import flash.geom.Point;
 	import src.IElementInfo;
 	import src.tiles.*;
 	import src.buildings.*;
@@ -46,7 +47,8 @@ package src.maps
 			// Initialize util layer array.
 			for (i = 0; i < unit_layer_element.length; i++)
 			{
-				unit_layer_element[i] = new GameUnitHolder();
+				var p:Point = Calc.idx_to_coor(i, _width_tiles);
+				unit_layer_element[i] = new GameUnitHolder( (p.x * ConstTile.TILE_W), (p.y * ConstTile.TILE_H) );
 			}
 			
 			// Draw landscape.
@@ -113,7 +115,10 @@ package src.maps
 				addChild(unit_layer);
 			}
 		}
-		
+
+//##################################################################################################
+// Private functions.
+//##################################################################################################
 		private function newUnitFromId(id:int) : GameUnit
 		{
 			switch (id)
@@ -173,6 +178,22 @@ package src.maps
 			}
 		}
 		
+		/**
+		 * @param	px Element horizontal position.
+		 * @param	py Element vertical position.
+		 * @return  The element index in Matrix.
+		 */
+		private function getElementIdx(px:int, py:int) : int
+		{
+			var tilex = Calc.pixel_to_tile(px, ConstTile.TILE_W);
+			var tiley = Calc.pixel_to_tile(py, ConstTile.TILE_H);
+			
+			return Calc.coor_to_idx(tilex, tiley, width_tiles);
+		}
+
+//##################################################################################################
+// Public functions.
+//##################################################################################################
 		public function get width_tiles():int 
 		{
 			return _width_tiles;
@@ -219,16 +240,34 @@ package src.maps
 		}
 		
 		/**
-		 * @param	px Element horizontal position.
-		 * @param	py Element vertical position.
-		 * @return  The element index in Matrix.
+		 * Find unit by its index.
+		 * @param	idx
+		 * @return
 		 */
-		private function getElementIdx(px:int, py:int) : int
+		public function getUnit(idx:int) : GameUnit
 		{
-			var tilex = Calc.pixel_to_tile(px, ConstTile.TILE_W);
-			var tiley = Calc.pixel_to_tile(py, ConstTile.TILE_H);
+			var holder:Vector.<GameUnit> = unit_layer_element[idx].units;
 			
-			return Calc.coor_to_idx(tilex, tiley, width_tiles);
+			if (holder.length == 0)
+			{
+				return null;
+			}
+			// Return the first unit. TODO: select a specific unit.
+			return holder[0];
+		}
+		
+		public function moveUnit(from:int, to:int) : void
+		{
+			var holderFrom:Vector.<GameUnit> = unit_layer_element[from].units;
+			var holderTo:GameUnitHolder = unit_layer_element[to];
+			
+			if (holderFrom.length == 0)
+			{
+				return;
+			}
+			
+			var unit:GameUnit = holderFrom.pop();
+			holderTo.addUnit(unit);
 		}
 	}
 	

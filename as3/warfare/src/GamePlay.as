@@ -4,6 +4,8 @@ package src
 	import flash.display.Shape;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
+	import src.as3.io.KeyObject;
 	import src.maps.GameMap;
 	import src.as3.math.Calc;
 	import src.tiles.ConstTile;
@@ -11,6 +13,7 @@ package src
 	import src.ui.GameTileDisplay;
 	import src.ui.GameUnitDisplay;
 	import src.units.IElementUnitInfo;
+	import src.units.GameUnit;
 	
 	/**
 	 * ...
@@ -50,6 +53,10 @@ package src
 		private var gameUnitDisplay:GameUnitDisplay;
 		private var gameTileDisplay:GameTileDisplay;
 		
+		// Input/Output.
+		private var key:KeyObject;
+		private var controlPressed:Boolean;
+		
 		// Internal state.
 		private var mouseButtonDown:Boolean;
 		private var mouseButtonPressPoint:Point;
@@ -61,6 +68,10 @@ package src
 			mouseButtonPressPoint = new Point();
 			gameTarget = new Target01();
 			gameTarget.visible = false;
+			
+			// Unitialize Input/Output.
+			key = new KeyObject(GameStage.stageR);
+			controlPressed = false;
 			
 			// Create displays.
 			gameUnitDisplay = new GameUnitDisplay(statusDisplayX, statusDisplayY);
@@ -138,11 +149,27 @@ package src
 			mouseButtonPressPoint.x = mouseX;
 			mouseButtonPressPoint.y = mouseY;
 			mouseButtonDown = true;
+			
+			if (key.isDown(Keyboard.CONTROL))
+			{
+				controlPressed = true;
+			}
 		}
 		
 		private function handleMouseUpOnMap(e:MouseEvent) : void
 		{
 			mouseButtonDown = false;
+			
+			if (controlPressed)
+			{
+				controlPressed = false;
+				var pointOnMapFrom:Point = screenToMapCoor(mouseButtonPressPoint.x, mouseButtonPressPoint.y);
+				var from = Calc.pixel_to_idx(pointOnMapFrom.x, pointOnMapFrom.y, ConstTile.TILE_W, gameMapR.width_tiles);
+				var pointOnMapTo:Point = screenToMapCoor(mouseX, mouseY);
+				var to = Calc.pixel_to_idx(pointOnMapTo.x, pointOnMapTo.y, ConstTile.TILE_W, gameMapR.width_tiles);
+				
+				moveUnit(from, to);
+			}
 		}
 		
 		private function handleMouseMoveOnMap(e:MouseEvent) : void
@@ -150,6 +177,21 @@ package src
 			if (mouseButtonDown != true)
 			{
 				return;
+			}
+			
+			// If control is pressed. (code relative to unit movement).
+			if (controlPressed)
+			{
+				// If control keeps pressed.
+				if (key.isDown(Keyboard.CONTROL) )
+				{
+					return;
+				}
+				// If control was released.
+				else if (key.isDown(Keyboard.CONTROL) == false)
+				{
+					controlPressed = false;
+				}
 			}
 			
 			var offsetX = mouseX - mouseButtonPressPoint.x;
@@ -170,13 +212,10 @@ package src
 		
 		private function handleMouseClickOnMap(e:MouseEvent) : void
 		{
-			// Calculate click position on game map.
-			//           real pos + relative pos     - offset.
-			var pxOnMap = mouseX + (gameMapR.x * -1) - Const.MAP_AREA_POS_X;
-			var pyOnMap = mouseY + (gameMapR.y * -1) - Const.MAP_AREA_POS_Y;
+			var pointOnMap:Point = screenToMapCoor(mouseX, mouseY);
 			
-			var tilex = Calc.pixel_to_tile(pxOnMap, ConstTile.TILE_W);
-			var tiley = Calc.pixel_to_tile(pyOnMap, ConstTile.TILE_H);
+			var tilex = Calc.pixel_to_tile(pointOnMap.x, ConstTile.TILE_W);
+			var tiley = Calc.pixel_to_tile(pointOnMap.y, ConstTile.TILE_H);
 			var tile_idx = Calc.coor_to_idx(tilex, tiley, gameMapR.width_tiles);
 			
 			gameTarget.x = tilex * ConstTile.TILE_W;
@@ -184,16 +223,8 @@ package src
 			gameTarget.visible = true;
 			//trace("clicked on: " + pxOnMap + ", " + pyOnMap + "; tile: " + tilex + "," + tiley + " idx: " + tile_idx);
 			
-			// Get information from the element under the cursor.
-			var elem:IElementInfo = gameMapR.getElement(tile_idx);
-			if (elem == null)
-			{
-				trace("Something went wrong. No element reference found for pos " + tilex + "," + tiley);
-				return;
-			}
-			
 			// Display the element in the Menu.
-			displayElement(elem);
+			displayElementInfo(tile_idx);
 		}
 		
 		private function moveMap(px:int, py:int) : void
@@ -212,8 +243,16 @@ package src
 			gameMapR.y = pyTemp;
 		}
 		
-		private function displayElement(elem:IElementInfo) : void
+		private function displayElementInfo(idx:int) : void
 		{
+			// Get information from the element under the cursor.
+			var elem:IElementInfo = gameMapR.getElement(idx);
+			if (elem == null)
+			{
+				trace("Something went wrong. No element reference found for pos " + idx);
+				return;
+			}
+			
 			switch(elem.elemType)
 			{
 				case ElementType.UNIT:
@@ -289,6 +328,42 @@ package src
 			gameTileDisplay.moveable = tile.moveable;
 			
 			gameMenuScreen.addChild(gameTileDisplay);
+		}
+		
+		private function moveUnit(from:int, to:int) : void
+		{
+			if (from == to)
+			{
+				return;
+			}
+			
+			var unit:GameUnit = gameMapR.getUnit(from);
+			
+			if (unit == null)
+			{
+				// There is no unit to move from this position.
+				return;
+			}
+			
+			displayElementInfo(from);
+			gameMapR.moveUnit(from, to);
+		}
+		
+		/**
+		 * @brief Transform real coordinates to relative (to the map) coordinates.
+		 * @param	px
+		 * @param	py
+		 * @return
+		 */
+		private function screenToMapCoor(px:int, py:int) : Point
+		{
+			var p:Point = new Point;
+			// Calculate click position on game map.
+			//real pos + relative pos    - offset.
+			p.x = px + (gameMapR.x * -1) - Const.MAP_AREA_POS_X;
+			p.y = py + (gameMapR.y * -1) - Const.MAP_AREA_POS_Y;
+			
+			return p;
 		}
 	}
 }

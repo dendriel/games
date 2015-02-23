@@ -22,7 +22,9 @@ package src
 		private var gamePlayR:GamePlay;
 		
 		public function Engine() : void
-		{			
+		{
+			GameStage.stageR = stage;
+			
 			gameStageR = new GameStage();
 			gameStageR.x = 0;
 			gameStageR.y = 0;
