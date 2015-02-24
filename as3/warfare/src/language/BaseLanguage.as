@@ -37,6 +37,8 @@ package src.language
 		protected var _levy_infantry01_desc:String;
 		protected var _knight01_name:String;
 		protected var _knight01_desc:String;
+		protected var _light_infantry01_name:String;
+		protected var _light_infantry01_desc:String;
 		
 		// Buildings text.
 		protected var _village01_name:String;
@@ -86,7 +88,9 @@ package src.language
 		public function get levy_infantry01_name():String { return _levy_infantry01_name;}
 		public function get levy_infantry01_desc():String { return _levy_infantry01_desc; }
 		public function get knight01_name():String { return _knight01_name; }
-		public function get knight01_desc():String { return _knight01_desc;}
+		public function get knight01_desc():String { return _knight01_desc; }
+		public function get light_infantry01_name():String { return _light_infantry01_name; }
+		public function get light_infantry01_desc():String { return _light_infantry01_desc; }
 		
 
 //##################################################################################################

@@ -42,6 +42,9 @@ package src.units
 		private var moveFrom:int;
 		private var moveTo:int;
 		
+		// Images.
+		protected var _topImg:MovieClip;
+		
 		// Unit advantages and disadvantages.
 		
 //##################################################################################################
@@ -84,6 +87,11 @@ package src.units
 		public function get distance() : int { return _distance; }
 		public function get move_time() : int { return _move_time; }
 		public function get recruit_cost() : int { return _recruit_cost; }
+		
+		public function get topImg() : MovieClip
+		{
+			return _topImg;
+		}
 		
 		/**
 		 * Call after processing an unit action.

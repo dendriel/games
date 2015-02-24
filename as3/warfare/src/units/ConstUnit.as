@@ -10,6 +10,7 @@ package src.units
 		// Map unit IDs.
 		public static const LEVY_INFANTRY01_ID:int = 25;
 		public static const KNIGHT01_ID_ID:int = 27;
+		public static const LIGHT_INFANTRY01_ID:int = 28;
 	}
 	
 }

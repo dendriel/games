@@ -14,8 +14,8 @@ package src.units
 			_name = GameLanguage.lang.levy_infantry01_name;
 			_desc = GameLanguage.lang.levy_infantry01_desc;
 			
-			_soldiers_max = 20;
-			_soldiers = 20;
+			_soldiers_max = 40;
+			_soldiers = _soldiers_max;
 			_soldiers_injuried = 0;
 			_health_max = 10;
 			_health = 10;

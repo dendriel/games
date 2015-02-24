@@ -35,6 +35,10 @@ package src.maps
 		private var unit_layer_element:Array;
 		private var unit_layer:MovieClip;
 		
+		// Layer 3.
+		private var unit_top_layer:MovieClip;
+		
+		
 		protected function drawSelf() : void
 		{
 			var i:int;
@@ -45,6 +49,7 @@ package src.maps
 			tile_layer_element = new Array(_width_tiles * height_tiles);
 			building_layer_element = new Array(_width_tiles * height_tiles);
 			unit_layer_element = new Array(_width_tiles * height_tiles);
+			unit_top_layer = new MovieClip();
 			
 			// Initialize util layer array.
 			for (i = 0; i < unit_layer_element.length; i++)
@@ -106,15 +111,24 @@ package src.maps
 						continue;
 					}
 					
-					var unit = createUnit(unit_layer_map[i]);
+					var unit:GameUnit = createUnit(unit_layer_map[i]);
 					unit.x = (int) (i % width_tiles) * ConstTile.TILE_W;
 					unit.y = (int)(i / height_tiles) * ConstTile.TILE_H;
 					
 					unit_layer_element[i].units.push(unit);
 					unit_layer.addChild(unit);
+					
+					if (unit.topImg != null)
+					{
+						unit.topImg.x = unit.x;
+						unit.topImg.y = unit.y - ConstTile.TILE_H;
+						unit_top_layer.addChild(unit.topImg);
+						// add movieclip in layer
+					}
 				}
 				// Add layer 3.
 				addChild(unit_layer);
+				addChild(unit_top_layer);
 			}
 		}
 
@@ -137,6 +151,7 @@ package src.maps
 			{
 				case ConstUnit.LEVY_INFANTRY01_ID: return new LevyInfantryUnit;
 				case ConstUnit.KNIGHT01_ID_ID: return new KnightUnit;
+				case ConstUnit.LIGHT_INFANTRY01_ID: return new LightInfantryUnit;
 					
 				default:
 					trace("Invalid unit id: " + id + " received.");

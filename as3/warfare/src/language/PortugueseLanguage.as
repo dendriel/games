@@ -40,6 +40,8 @@ package src.language
 recrutas de infantaria são aldeões que são forçados a entrar no exército temporariamente para defender seu país ou atender a uma campanha militar.";
 			_knight01_name = "Cavaleiro";
 			_knight01_desc = "O cavaleiro é uma unidade de combate pesado. É utilizado para ataques velozes e destrutivos.";
+			_light_infantry01_name = "Infantaria Leve";
+			_light_infantry01_desc = "A infantaria leve é a unidade que compõe o núcleo de qualquer exército. É flexível, forte e rápida.";
 			
 			// Buildings.
 			_village01_name = "Aldeia";

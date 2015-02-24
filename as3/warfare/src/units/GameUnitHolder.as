@@ -1,6 +1,7 @@
 package src.units
 {
 	import flash.geom.Point;
+	import src.tiles.ConstTile;
 	/**
 	 * ...
 	 * @author Vitor Rozsa
@@ -28,8 +29,17 @@ package src.units
 		
 		public function addUnit(unit:GameUnit) : void
 		{
+			// Move unit.
 			unit.x = pos_pixels.x;
 			unit.y = pos_pixels.y;
+			
+			// Move unit top image.
+			if (unit.topImg != null)
+			{
+				unit.topImg.x = unit.x;
+				unit.topImg.y = unit.y - ConstTile.TILE_H;
+			}
+			
 			_units.push(unit);
 		}
 	}
