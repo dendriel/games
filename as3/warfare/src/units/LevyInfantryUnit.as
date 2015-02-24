@@ -30,8 +30,12 @@ package src.units
 }
 
 /*
+			_id = ConstUnit.
+			_name = GameLanguage.lang.
+			_desc = GameLanguage.lang.
+			
 			_soldiers_max = ;
-			_soldiers_ready = ;
+			_soldiers = ;
 			_soldiers_injuried = ;
 			_health_max = ;
 			_health = ;

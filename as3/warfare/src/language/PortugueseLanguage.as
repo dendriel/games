@@ -19,10 +19,27 @@ package src.language
 			_moveable_str = "Livre";
 			_blocked_str = "Bloqueado";
 			
+			// Timer.
+			_of_the_year_str = "do ano";
+			_january_str = "Janeiro";
+			_february_str = "Fevereiro";
+			_march_str = "Março";
+			_april_str = "Abril";
+			_may_str = "Maio";
+			_jun_str = "Junho";
+			_july_str = "Julho";
+			_august_str = "Agosto";
+			_september_str = "Setembro";
+			_october_str = "Outubro";
+			_november_str = "Novembro";
+			_december_str = "Dezembro";
+			
 			// Units.
 			_levy_infantry01_name = "Recruta de infantaria";
 			_levy_infantry01_desc = "O recruta de infantaria é um soldado de mílicia. Em geral os \
 recrutas de infantaria são aldeões que são forçados a entrar no exército temporariamente para defender seu país ou atender a uma campanha militar.";
+			_knight01_name = "Cavaleiro";
+			_knight01_desc = "O cavaleiro é uma unidade de combate pesado. É utilizado para ataques velozes e destrutivos.";
 			
 			// Buildings.
 			_village01_name = "Aldeia";

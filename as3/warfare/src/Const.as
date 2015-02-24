@@ -10,6 +10,9 @@ package src
 		// Misc.
 		public static const SCREEN_SIZE_W = 800;
 		public static const SCREEN_SIZE_H = 600;
+		public static const TIMER_POS_X = 585;
+		public static const TIMER_POS_Y = 68;
+		public static const DAY_TIME_MS = 2000;
 		public static const MAIN_MENU_BUTTON_OFFSET = 35;
 		public static const MAIN_MENU_TITLE = "WARFARE";
 		public static const TITLE_VERTICAL_OFFSET = 100;

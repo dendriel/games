@@ -17,9 +17,26 @@ package src.language
 		function get moveable_str() : String;
 		function get blocked_str() : String;
 		
+		// Timer.
+		function get of_the_year_str() : String;
+		function get january_str() : String;
+		function get february_str() : String;
+		function get march_str() : String;
+		function get april_str() : String;
+		function get may_str() : String;
+		function get jun_str() : String;
+		function get july_str() : String;
+		function get august_str() : String;
+		function get september_str() : String;
+		function get october_str() : String;
+		function get november_str() : String;
+		function get december_str() : String;
+		
 		// Units.
 		function get levy_infantry01_name() : String;
 		function get levy_infantry01_desc() : String;
+		function get knight01_name() : String;
+		function get knight01_desc() : String;
 		
 		// Buildings.
 		function get village01_name() : String;

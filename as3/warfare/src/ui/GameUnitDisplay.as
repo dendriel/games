@@ -94,7 +94,7 @@ package src.ui
 		public function set elemName(value:String) : void
 		{
 			nameTxt.text = value;
-			nameTxt.width = nameTxt.textWidth + 2;
+			nameTxt.width = nameTxt.textWidth + 4;
 			nameTxt.height = nameTxt.textHeight + 2;
 		}
 		

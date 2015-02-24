@@ -16,11 +16,16 @@ package src.ui
 		_displayTitleFormat.size = 14;
 		_displayTitleFormat.bold = true;
 		
+		private static var _displayTimerFormat:TextFormat = new TextFormat;
+		_displayTimerFormat.size = 16
+		_displayTitleFormat.bold = true;
+		
 		private static const _displayFieldsColor:uint = 0xffffff;
 		
 		// Getters.
 		public static function get displayFieldsFormat() : TextFormat { return _displayFieldsFormat; }
 		public static function get displayTitleFormat() : TextFormat { return _displayTitleFormat; }
+		public static function get displayTimerFormat() : TextFormat { return _displayTimerFormat; }
 		public static function get displayFieldsColor() : uint { return _displayFieldsColor; }
 		
 		/**

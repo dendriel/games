@@ -52,6 +52,7 @@ package src
 		private var gameMenuScreen:MovieClip;
 		private var gameUnitDisplay:GameUnitDisplay;
 		private var gameTileDisplay:GameTileDisplay;
+		private var timer:GameTimer;
 		
 		// Input/Output.
 		private var key:KeyObject;
@@ -102,6 +103,14 @@ package src
 			gameMenuScreen.y = Const.MENU_AREA_POS_Y;
 			gameMenuScreen.addChild(new GameMenuBar);
 			
+			// Create timer.
+			timer = new GameTimer();
+			timer.x = Const.TIMER_POS_X;
+			timer.y = Const.TIMER_POS_Y;
+			gameMenuScreen.addChild(timer);
+			
+			// TODO: make timer appear on the screen!!
+			
 			addChild(gameMapScreen);
 			addChild(gameMenuScreen);
 		}
@@ -119,6 +128,9 @@ package src
 			gameMapR.addEventListener(MouseEvent.MOUSE_UP, handleMouseUpOnMap, false, 0, true);
 			gameMapR.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMoveOnMap, false, 0, true);
 			gameMapR.addEventListener(MouseEvent.CLICK, handleMouseClickOnMap, false, 0, true);
+			
+			// Start timer.
+			timer.start();
 		}
 		
 		public function unloadMap() : void

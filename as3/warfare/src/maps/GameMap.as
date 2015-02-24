@@ -124,6 +124,7 @@ package src.maps
 			switch (id)
 			{
 				case ConstUnit.LEVY_INFANTRY01_ID: return new LevyInfantryUnit;
+				case ConstUnit.KNIGHT01_ID_ID: return new KnightUnit;
 					
 				default:
 					trace("Invalid unit id: " + id + " received.");
