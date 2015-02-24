@@ -34,6 +34,8 @@ package src
 			
 			this.addChild(gameStageR);
 			
+			SoundLoader.init();
+			
 			// Set default language here. TODO: add change language button.
 			//GameLanguage.load_language(new PortugueseLanguage);
 			
@@ -79,6 +81,8 @@ package src
 			}
 			
 			gameStageR.removeChild(mainMenuR);
+			
+			mainMenuR.disable();
 			mainMenuR.removeEventListener(Const.EVT_SINGLE_PLAYER_CLICK, handleSinglePlayerClick);
 			mainMenuR.removeEventListener(Const.EVT_MULTIPLAYER_CLICK, handleMultiplayerClick);
 			mainMenuR.removeEventListener(Const.EVT_CREDITS_CLICK, handleCreditsClick);
