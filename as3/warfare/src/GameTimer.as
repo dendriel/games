@@ -38,7 +38,7 @@ package src
 		public function GameTimer()
 		{
 			timerCounter = new Timer(Const.DAY_TIME_MS, yearInDays);
-			year_counter = 0;
+			year_counter = 1;
 			month_counter = GameTimer.JANUARY;
 			days_counter = 0;
 			
@@ -66,6 +66,9 @@ package src
 		// Handle day/month
         private function handleTimer(e:TimerEvent) : void
 		{
+			days_counter++;
+			trace("days: " + days_counter + "; currentCount: " + timerCounter.currentCount);
+			
 			if (days_counter <= 31)
 			{
 				month_counter = GameTimer.JANUARY;
@@ -115,8 +118,6 @@ package src
 				month_counter = GameTimer.DECEMBER;
 			}
 			
-			days_counter++;
-			trace("days: " + days_counter + "; currentCount: " + timerCounter.currentCount);
 			updateTimerTxt();
         }
 

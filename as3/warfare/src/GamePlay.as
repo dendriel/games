@@ -165,6 +165,7 @@ package src
 			if (key.isDown(Keyboard.CONTROL))
 			{
 				controlPressed = true;
+				gameTarget.visible = false;
 			}
 		}
 		
@@ -250,6 +251,8 @@ package src
 			
 			pyTemp = Calc.clipGT(pyTemp, 0);
 			pyTemp = Calc.clipLT(pyTemp, ( -1 * (gameMapR.height - Const.MAP_AREA_H) ));
+			
+			gameTarget.visible = false;
 			
 			gameMapR.x = pxTemp;
 			gameMapR.y = pyTemp;

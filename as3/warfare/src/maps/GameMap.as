@@ -1,7 +1,9 @@
 package src.maps
 {
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.geom.Point;
+	import src.Const;
 	import src.IElementInfo;
 	import src.tiles.*;
 	import src.buildings.*;
@@ -104,7 +106,7 @@ package src.maps
 						continue;
 					}
 					
-					var unit = newUnitFromId(unit_layer_map[i]);
+					var unit = createUnit(unit_layer_map[i]);
 					unit.x = (int) (i % width_tiles) * ConstTile.TILE_W;
 					unit.y = (int)(i / height_tiles) * ConstTile.TILE_H;
 					
@@ -119,6 +121,16 @@ package src.maps
 //##################################################################################################
 // Private functions.
 //##################################################################################################
+		private function createUnit(id:int) : GameUnit
+		{
+			var unit:GameUnit = newUnitFromId(id);
+			
+			// Configure unit.
+			unit.addEventListener(UnitMoveEvent.EVT_UNIT_MOVE, handleUnitMove, false, 0, true);
+			
+			return unit;
+		}
+
 		private function newUnitFromId(id:int) : GameUnit
 		{
 			switch (id)
@@ -191,6 +203,34 @@ package src.maps
 			
 			return Calc.coor_to_idx(tilex, tiley, width_tiles);
 		}
+		
+		/**
+		 * Check if the given position in the map is moveable.
+		 * @param	idx
+		 * @return true if can move there; false otherwise.
+		 */
+		private function posIsMoveable(idx:int) : Boolean
+		{
+			var moveable = true;
+			
+			var tile:GameTile = tile_layer_element[idx];
+			if (tile.moveable != true)
+			{
+				moveable = false;
+			}
+			
+			return tile.moveable;
+		}
+		
+		private function handleUnitMove(e:UnitMoveEvent) : void
+		{
+			var holderFrom:Vector.<GameUnit> = unit_layer_element[e.fromIdx].units;
+			var holderTo:GameUnitHolder = unit_layer_element[e.toIdx];
+			
+			// TODO: get unit by uid.
+			var unit:GameUnit = holderFrom.pop();
+			holderTo.addUnit(unit);
+		}
 
 //##################################################################################################
 // Public functions.
@@ -260,15 +300,23 @@ package src.maps
 		public function moveUnit(from:int, to:int) : void
 		{
 			var holderFrom:Vector.<GameUnit> = unit_layer_element[from].units;
-			var holderTo:GameUnitHolder = unit_layer_element[to];
 			
+			// Check if there is any unit to move.
 			if (holderFrom.length == 0)
 			{
+				trace("Nothing to move from here!");
 				return;
 			}
 			
-			var unit:GameUnit = holderFrom.pop();
-			holderTo.addUnit(unit);
+			// Check if can move to the given destination.
+			if (posIsMoveable(to) != true)
+			{
+				trace("Can't move there.");
+				return;
+			}
+			
+			var unit:GameUnit = holderFrom.concat().pop();
+			unit.move(from, to);
 		}
 	}
 	

@@ -1,8 +1,12 @@
 package src.units
 {
 	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	import src.IElementInfo;
 	import src.ElementType;
+	import src.Const;
 	
 	/**
 	 * ...
@@ -32,6 +36,12 @@ package src.units
 		protected var _move_time;			//! Time to move a square in days.
 		protected var _recruit_cost;
 		
+		// Action definitions.
+		private var busy:Boolean;
+		private var moveTimer:Timer;
+		private var moveFrom:int;
+		private var moveTo:int;
+		
 		// Unit advantages and disadvantages.
 		
 //##################################################################################################
@@ -52,6 +62,9 @@ package src.units
 		public function GameUnit()
 		{
 			_uid = GameUnit.generateUID();
+			moveTimer = new Timer(0);
+			moveTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move, false, 0, true);
+			busy = false;
 		}
 		
 		public function get uid() : int {return _uid;}
@@ -70,7 +83,46 @@ package src.units
 		public function get defense() : int { return _defense; }
 		public function get distance() : int { return _distance; }
 		public function get move_time() : int { return _move_time; }
-		public function get recruit_cost() : int { return _recruit_cost;}
+		public function get recruit_cost() : int { return _recruit_cost; }
+		
+		/**
+		 * Call after processing an unit action.
+		 */
+		public function unBusy() : void
+		{
+			busy = false;
+		}
+		
+		/**
+		 * @brief Schedule unit movement.
+		 */
+		public function move(from:int, to:int) : void
+		{
+			if (busy == true)
+			{
+				// Unit movement can be canceled.
+				trace("Unit is busy right now. Restarting movement timer.");
+				moveTimer.stop();
+			}
+			
+			busy = true;
+			
+			moveFrom = from;
+			moveTo = to;
+			
+			moveTimer.delay = _move_time * Const.DAY_TIME_MS;
+			moveTimer.repeatCount = 1;
+			
+			moveTimer.reset();
+			moveTimer.start();
+			trace("start!!");
+		}
+		
+		private function handleTimerComplete_move(e:TimerEvent) : void
+		{
+			trace("dispatch!!");
+			dispatchEvent(new UnitMoveEvent(_uid, moveFrom, moveTo));
+		}
 	}
 	
 }
