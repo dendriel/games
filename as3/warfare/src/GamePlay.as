@@ -323,11 +323,7 @@ package src
 		
 		private function displayElementBuilding(elem:IElementInfo) : void
 		{
-			// Clear menu from previous information.
-			removeElementInformation();
-			
-			trace("Name: " + elem.elemName);
-			trace("Desc: " + elem.elemDesc);
+			displayElementTile(elem);
 		}
 		
 		private function displayElementTile(elem:IElementInfo) : void

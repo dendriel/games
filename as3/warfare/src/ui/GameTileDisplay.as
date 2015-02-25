@@ -75,8 +75,55 @@ package src.ui
 			nameTxt.height = nameTxt.textHeight + 2;
 		}
 		
-		public function set fortifyBonus(value:int) : void { fortifyText.text = String(value); }
-		public function set moveBonus(value:int) : void { moveBonusText.text = String(value); }
+		public function set fortifyBonus(value:int) : void
+		{
+			// Add plus sign if is a positive bonus.
+			var positive:Boolean = false;
+			
+			if (value != 0)
+			{
+				if (value > 0)
+				{
+					positive = true;
+					fortifyText.textColor = GameTextFormat.positiveColor;
+				}
+				else
+				{
+					fortifyText.textColor = GameTextFormat.negativeColor;
+				}
+			}
+			else
+			{
+				fortifyText.textColor = GameTextFormat.displayFieldsColor;
+			}
+			
+			fortifyText.text = ( (positive)? "+" : "") + String(value) + "%";
+		}
+		
+		public function set moveBonus(value:int) : void
+		{
+			// Add plus sign if is a positive bonus.
+			var positive:Boolean = false;
+			
+			if (value != 0)
+			{
+				if (value > 0)
+				{
+					positive = true;
+					moveBonusText.textColor = GameTextFormat.positiveColor;
+				}
+				else
+				{
+					moveBonusText.textColor = GameTextFormat.negativeColor;
+				}
+			}
+			else
+			{
+				moveBonusText.textColor = GameTextFormat.displayFieldsColor;
+			}
+			
+			moveBonusText.text = ( (positive)? "+" : "") + String(value) + "%";
+		}
 		
 		public function set moveable(value:Boolean) : void
 		{

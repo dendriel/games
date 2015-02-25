@@ -46,6 +46,8 @@ recrutas de infantaria são aldeões que são forçados a entrar no exército te
 			// Buildings.
 			_village01_name = "Aldeia";
 			_village01_desc = "Pequeno povoado rural que vive da subsistência e possui entre centenas e alguns poucos milhares de pessoas.";
+			_bridge01_name = "Ponte de madeira";
+			_bridge01_desc = "Ponte rústica de madeira.";
 			
 			// Tiles.
 			_grass01_name = "Campina";
@@ -56,6 +58,8 @@ recrutas de infantaria são aldeões que são forçados a entrar no exército te
 			_river01_desc = "Curso natural de água. Permite que civilizações se desenvolvam e fornece proteção natural contra perigos.";
 			_tree01_name = "Floresta";
 			_tree01_desc = "Fonte de recursos para civilizações. Também serve naturalmente como posição estratégica de defesa.";
+			_road01_name = "Estrada";
+			_road01_desc = "Via para rápida movimentação de unidades.";
 		}
 		
 	}

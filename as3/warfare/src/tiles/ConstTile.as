@@ -13,16 +13,18 @@ package src.tiles
 		public static const TILE_H = 32;
 		
 		// Move effort.
-		static const MOVEEFFORT_NONE:int = 0;
-		static const MOVEEFFORT_EASY:int = 1;
-		static const MOVEEFFORT_NORMAL:int = 2;
-		static const MOVEEFFORT_HARD:int = 3;
+		public static const MOVEEFFORT_NONE:int = 0;
+		public static const MOVEEFFORT_EASY:int = 50;
+		public static const MOVEEFFORT_NORMAL:int = 0;
+		public static const MOVEEFFORT_UNFAVORABLE = -25;
+		public static const MOVEEFFORT_HARD:int = -50;
 		
 		// Defense value.
-		static const DEF_VALUE_NONE:int = 0;
-		static const DEF_VALUE_LOW:int = 1;
-		static const DEF_VALUE_MEDIUM:int = 2;
-		static const DEF_VALUE_HIGH:int = 3;
+		public static const DEF_VALUE_UNFAVORABLE = -10;
+		public static const DEF_VALUE_NONE:int = 0;
+		public static const DEF_VALUE_LOW:int = 10;
+		public static const DEF_VALUE_MEDIUM:int = 20;
+		public static const DEF_VALUE_HIGH:int = 30;
 		
 		// Tiles IDs.
 		public static const GRASS_01_ID:int = 1;
@@ -45,7 +47,23 @@ package src.tiles
 		public static const RIVER_05_ID:int = 18;
 		public static const RIVER_06_ID:int = 19;
 		public static const RIVER_07_ID:int = 20;
-		public static const RIVER_08_ID:int = 21;		
+		public static const RIVER_08_ID:int = 21;
+		public static const ROAD_01_ID:int = 29;
+		public static const ROAD_02_ID:int = 30;
+		public static const ROAD_03_ID:int = 31;
+		public static const ROAD_04_ID:int = 32;
+		public static const ROAD_05_ID:int = 33;
+		public static const ROAD_06_ID:int = 34;
+		public static const ROAD_07_ID:int = 35;
+		public static const ROAD_08_ID:int = 36;
+		public static const ROAD_09_ID:int = 37;
+		public static const ROAD_10_ID:int = 38;
+		public static const ROAD_11_ID:int = 39;
+		public static const ROAD_12_ID:int = 40;
+		public static const ROAD_13_ID:int = 41;
+		public static const ROAD_14_ID:int = 42;
+		public static const ROAD_15_ID:int = 43;
+		public static const ROAD_16_ID:int = 44;
 		
 		// Grass 01 tile definitions.
 		static const GRASS_01_DEF = ConstTile.DEF_VALUE_NONE;
@@ -66,6 +84,11 @@ package src.tiles
 		static const RIVER_01_DEF = ConstTile.DEF_VALUE_NONE;
 		static const RIVER_01_MOVEABLE = false;
 		static const RIVER_01_MOVEEFFORT = ConstTile.MOVEEFFORT_NONE;
+		
+		// Road 01-16 definitions.
+		static const ROAD_01_DEF = ConstTile.DEF_VALUE_NONE;
+		static const ROAD_01_MOVEABLE = true;
+		static const ROAD_01_MOVEEFFORT = ConstTile.MOVEEFFORT_EASY;
 	}
 	
 }

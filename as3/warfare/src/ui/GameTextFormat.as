@@ -21,12 +21,16 @@ package src.ui
 		_displayTitleFormat.bold = true;
 		
 		private static const _displayFieldsColor:uint = 0xffffff;
+		private static const _positiveColor:uint = 0x00ff00;
+		private static const _negativeColor:uint = 0xff5050;
 		
 		// Getters.
 		public static function get displayFieldsFormat() : TextFormat { return _displayFieldsFormat; }
 		public static function get displayTitleFormat() : TextFormat { return _displayTitleFormat; }
 		public static function get displayTimerFormat() : TextFormat { return _displayTimerFormat; }
 		public static function get displayFieldsColor() : uint { return _displayFieldsColor; }
+		public static function get positiveColor() : uint { return _positiveColor; }
+		public static function get negativeColor() : uint { return _negativeColor; }
 		
 		/**
 		 * @param	px Text horizontal position.

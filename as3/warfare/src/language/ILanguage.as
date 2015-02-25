@@ -43,6 +43,8 @@ package src.language
 		// Buildings.
 		function get village01_name() : String;
 		function get village01_desc() : String;
+		function get bridge01_name():String;
+		function get bridge01_desc():String;
 		
 		// Tiles.
 		function get grass01_name() : String;
@@ -53,6 +55,8 @@ package src.language
 		function get river01_desc():String;
 		function get tree01_name():String;
 		function get tree01_desc():String;
+		function get road01_name():String;
+		function get road01_desc():String;
 	}
 	
 }

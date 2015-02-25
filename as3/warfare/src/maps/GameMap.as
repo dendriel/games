@@ -199,6 +199,15 @@ package src.maps
 				case ConstTile.RIVER_06_ID: return new River06Tile;
 				case ConstTile.RIVER_07_ID: return new River07Tile;
 				case ConstTile.RIVER_08_ID: return new River08Tile;
+				case ConstTile.ROAD_01_ID: return new Road01Tile;
+				case ConstTile.ROAD_02_ID: return new Road02Tile;
+				case ConstTile.ROAD_03_ID: return new Road03Tile;
+				case ConstTile.ROAD_05_ID: return new Road05Tile;
+				case ConstTile.ROAD_07_ID: return new Road07Tile;
+				case ConstTile.ROAD_10_ID: return new Road10Tile;
+				case ConstTile.ROAD_12_ID: return new Road12Tile;
+				case ConstTile.ROAD_13_ID: return new Road13Tile;
+				case ConstTile.ROAD_16_ID: return new Road16Tile;
 					
 				default:
 					trace("Invalid tile id: " + id + " received.");
@@ -229,12 +238,20 @@ package src.maps
 			var moveable = true;
 			
 			var tile:GameTile = tile_layer_element[idx];
+			var building:GameBuilding = building_layer_element[idx];
+			
+			// If the tile isn't moveable.
 			if (tile.moveable != true)
 			{
 				moveable = false;
 			}
 			
-			return tile.moveable;
+			if ( (building != null) && (building.moveable == true) )
+			{
+				moveable = true;
+			}
+			
+			return moveable;
 		}
 		
 		private function handleUnitMove(e:UnitMoveEvent) : void

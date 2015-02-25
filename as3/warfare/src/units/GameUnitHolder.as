@@ -41,6 +41,7 @@ package src.units
 			}
 			
 			_units.push(unit);
+			unit.unBusy();
 		}
 	}
 }
