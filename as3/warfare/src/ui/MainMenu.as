@@ -53,7 +53,7 @@ package src.ui
 			multiPlayerB.addEventListener(MouseEvent.CLICK, handleMultiplayerClick, false, 0, true);
 			creditsB.addEventListener(MouseEvent.CLICK, handleCreditsClick, false, 0, true);
 			
-			SoundLoader.playIntro();
+			//SoundLoader.playIntro();
 		}
 		
 		public function disable() : void
@@ -62,7 +62,7 @@ package src.ui
 			multiPlayerB.removeEventListener(MouseEvent.CLICK, handleMultiplayerClick);
 			creditsB.removeEventListener(MouseEvent.CLICK, handleCreditsClick);
 			
-			SoundLoader.stopIntro();
+			//SoundLoader.stopIntro();
 		}
 		
 		private function drawSelf() : void

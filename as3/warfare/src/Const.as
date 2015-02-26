@@ -16,7 +16,10 @@ package src
 		public static const MAIN_MENU_BUTTON_OFFSET = 35;
 		public static const MAIN_MENU_TITLE = "WARFARE";
 		public static const TITLE_VERTICAL_OFFSET = 100;
-		public static const MAX_MAP_MOVE_OFFSET = 62;
+		public static const MAX_MAP_MOVE_OFFSET = 64;
+		public static const DEFAULT_WEIGHT = 10;
+		public static const NODE_DISCONNECTED = -1;
+		
 		
 		// Main Menu.
 		public static const SINGLE_PLAYER_S = "Single Player";
@@ -27,12 +30,12 @@ package src
 		public static const MENU_AREA_W = (800 - 32);
 		public static const MENU_AREA_H = (120 - 16);
 		public static const MAP_AREA_W = (SCREEN_SIZE_W - 32);
-		public static const MAP_AREA_H = (SCREEN_SIZE_H - MENU_AREA_H - 16);
+		public static const MAP_AREA_H = (SCREEN_SIZE_H - MENU_AREA_H - 16); // with '-16', the menubar is placed over the big frame.
 		
 		public static const MAP_AREA_POS_X = 16;
 		public static const MAP_AREA_POS_Y = 16;
 		public static const MENU_AREA_POS_X = 16;
-		public static const MENU_AREA_POS_Y = MAP_AREA_H;
+		public static const MENU_AREA_POS_Y = (MAP_AREA_H + MAP_AREA_POS_Y);
 		
 		// Game Events.
 		public static const EVT_SINGLE_PLAYER_CLICK = "single player click";

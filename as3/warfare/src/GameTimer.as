@@ -67,7 +67,7 @@ package src
         private function handleTimer(e:TimerEvent) : void
 		{
 			days_counter++;
-			trace("days: " + days_counter + "; currentCount: " + timerCounter.currentCount);
+			//trace("days: " + days_counter + "; currentCount: " + timerCounter.currentCount);
 			
 			if (days_counter <= 31)
 			{

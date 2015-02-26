@@ -14,10 +14,10 @@ package src.tiles
 		
 		// Move effort.
 		public static const MOVEEFFORT_NONE:int = 0;
-		public static const MOVEEFFORT_EASY:int = 50;
+		public static const MOVEEFFORT_EASY:int = 30;
 		public static const MOVEEFFORT_NORMAL:int = 0;
-		public static const MOVEEFFORT_UNFAVORABLE = -25;
-		public static const MOVEEFFORT_HARD:int = -50;
+		public static const MOVEEFFORT_UNFAVORABLE = -15;
+		public static const MOVEEFFORT_HARD:int = -30;
 		
 		// Defense value.
 		public static const DEF_VALUE_UNFAVORABLE = -10;

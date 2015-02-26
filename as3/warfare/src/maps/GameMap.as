@@ -9,6 +9,7 @@ package src.maps
 	import src.buildings.*;
 	import src.units.*;
 	import src.as3.math.Calc;
+	import src.as3.math.graph.*;
 	
 	/**
 	 * ...
@@ -38,6 +39,11 @@ package src.maps
 		// Layer 3.
 		private var unit_top_layer:MovieClip;
 		
+		// Graph map.
+		private var weightMap:Array;
+		
+		// Calculation.
+		var shortestPath:SPF;
 		
 		protected function drawSelf() : void
 		{
@@ -46,16 +52,21 @@ package src.maps
 			building_layer = new MovieClip;
 			unit_layer = new MovieClip;
 			
+			shortestPath = new SPF();
+			
 			tile_layer_element = new Array(_width_tiles * height_tiles);
 			building_layer_element = new Array(_width_tiles * height_tiles);
 			unit_layer_element = new Array(_width_tiles * height_tiles);
+			weightMap = new Array(_width_tiles * height_tiles);
 			unit_top_layer = new MovieClip();
 			
-			// Initialize util layer array.
+			// Initialize weight map (with default values) and unit layer array.
 			for (i = 0; i < unit_layer_element.length; i++)
 			{
 				var p:Point = Calc.idx_to_coor(i, _width_tiles);
 				unit_layer_element[i] = new GameUnitHolder( (p.x * ConstTile.TILE_W), (p.y * ConstTile.TILE_H) );
+				
+				weightMap[i] = new SPFNode(i);
 			}
 			
 			// Draw landscape.
@@ -130,6 +141,12 @@ package src.maps
 				addChild(unit_layer);
 				addChild(unit_top_layer);
 			}
+			
+			buildWeightMap();
+			linkNeighborsOnMap();
+			
+			shortestPath.loadGraph(weightMap);
+			//shortestPath.dumpGraph();
 		}
 
 //##################################################################################################
@@ -262,6 +279,192 @@ package src.maps
 			// TODO: get unit by uid.
 			var unit:GameUnit = holderFrom.pop();
 			holderTo.addUnit(unit);
+		}
+		
+		/**
+		 * Update weight map nodes according to the tiles and buildings on the layers.
+		 */
+		private function buildWeightMap() : void
+		{			
+			// Update weight.
+			for (var i in weightMap)
+			{
+				var node:SPFNode = weightMap[i];
+				var tile:GameTile = tile_layer_element[i];
+				var building:GameBuilding = building_layer_element[i];
+				
+				// Update weight.
+				// Tile.
+				if (tile.moveable != true)
+				{
+					node.weight = Const.NODE_DISCONNECTED;
+				}
+				else
+				{
+					// Transform move effort in weight. Bonuses will decrese the node weight while
+					// penalties will increase the node it.
+					node.weight = (-1 * (tile.moveEffort / 10) ) + Const.DEFAULT_WEIGHT;
+				}
+				
+				// Building. Replaces the previous tile weight.
+				if (building != null)
+				{
+					if (building.moveable != true)
+					{
+						node.weight = Const.NODE_DISCONNECTED;
+					}
+					else
+					{
+						// Transform move effort in weight. Bonuses will decrese the node weight while
+						// penalties will increase the node it.
+						node.weight = (-1 * (building.moveEffort / 10) ) + Const.DEFAULT_WEIGHT;
+					}
+				}
+			}
+		}
+		
+		/**
+		 * Link the neighbors on the nodes.
+		 */
+		private function linkNeighborsOnMap() : void
+		{
+			var neighbor:SPFNode;
+			
+			// Find neighbors.
+			for (var i in weightMap)
+			{
+				var node:SPFNode = weightMap[i];				
+				var rightNeighbors:Boolean = true;
+				var leftNeighbors:Boolean = true;
+				var bottomNeighbors:Boolean = true;
+				var topNeighbors:Boolean = true;
+				
+				if (node.weight == Const.NODE_DISCONNECTED)
+				{
+					continue;
+				}
+				
+				// Check right neighbors.
+				if ( ( (i + 1) % _width_tiles) == 0)
+				{
+					rightNeighbors = false;
+				}
+				
+				// Check left neighbors.
+				if ( (i % _width_tiles) == 0)
+				{
+					leftNeighbors = false;
+				}
+				
+				// Check top neighbors.
+				if ( i < _width_tiles)
+				{
+					topNeighbors = false;
+				}
+				
+				// Check bottom neighbors.
+				if ( ( i + _width_tiles) >= (_width_tiles * height_tiles) )
+				{
+					bottomNeighbors = false;
+				}
+				
+				/*  X 0 0
+				 *  0 0 0
+				 *  0 0 0 */
+				if (topNeighbors && leftNeighbors)
+				{
+					neighbor = weightMap[i - _width_tiles - 1];
+					if (neighbor.weight != Const.NODE_DISCONNECTED)
+					{
+						node.neighborList.push(neighbor);
+					}
+				}
+				
+				/*  0 X 0
+				 *  0 0 0
+				 *  0 0 0 */
+				if (topNeighbors)
+				{
+					neighbor = weightMap[i - _width_tiles];
+					if (neighbor.weight != Const.NODE_DISCONNECTED)
+					{
+						node.neighborList.push(neighbor);
+					}
+					
+				}
+				
+				/*  0 0 X
+				 *  0 0 0
+				 *  0 0 0 */
+				if (topNeighbors && rightNeighbors)
+				{
+					neighbor = weightMap[i - _width_tiles + 1];
+					if (neighbor.weight != Const.NODE_DISCONNECTED)
+					{
+						node.neighborList.push(neighbor);
+					}
+				}
+				
+				/*  0 0 0
+				 *  X 0 0
+				 *  0 0 0 */
+				if (leftNeighbors)
+				{
+					neighbor = weightMap[i - 1];
+					if (neighbor.weight != Const.NODE_DISCONNECTED)
+					{
+						node.neighborList.push(neighbor);
+					}
+				}
+				
+				/*  0 0 0
+				 *  0 0 X
+				 *  0 0 0 */
+				if (rightNeighbors)
+				{
+					neighbor = weightMap[i + 1];
+					if (neighbor.weight != Const.NODE_DISCONNECTED)
+					{
+						node.neighborList.push(neighbor);
+					}
+				}
+				
+				/*  0 0 0
+				 *  0 0 0
+				 *  X 0 0 */
+				if (bottomNeighbors && leftNeighbors)
+				{
+					neighbor = weightMap[i + _width_tiles - 1];
+					if (neighbor.weight != Const.NODE_DISCONNECTED)
+					{
+						node.neighborList.push(neighbor);
+					}
+				}
+				
+				/*  0 0 0
+				 *  0 0 0
+				 *  0 X 0 */
+				if (bottomNeighbors)
+				{
+					neighbor = weightMap[i + _width_tiles];
+					if (neighbor.weight != Const.NODE_DISCONNECTED)
+					{
+						node.neighborList.push(neighbor);
+					}
+				}
+				
+				/*  0 0 0
+				 *  0 0 0
+				 *  X 0 0 */
+				if (bottomNeighbors && rightNeighbors)
+				{
+					neighbor = weightMap[i + _width_tiles + 1];
+					if (neighbor.weight != Const.NODE_DISCONNECTED)
+					{
+						node.neighborList.push(neighbor);
+					}
+				}
+			}
 		}
 
 //##################################################################################################
