@@ -272,7 +272,7 @@ package src.maps
 		}
 		
 		private function handleUnitMove(e:UnitMoveEvent) : void
-		{
+		{ 
 			var holderFrom:Vector.<GameUnit> = unit_layer_element[e.fromIdx].units;
 			var holderTo:GameUnitHolder = unit_layer_element[e.toIdx];
 			
@@ -550,8 +550,10 @@ package src.maps
 				return;
 			}
 			
+			var path:Vector.<SPFNode> = shortestPath.findSPF(from, to);
+			
 			var unit:GameUnit = holderFrom.concat().pop();
-			unit.move(from, to);
+			unit.move(from, path);
 		}
 	}
 	

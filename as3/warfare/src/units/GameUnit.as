@@ -7,6 +7,8 @@ package src.units
 	import src.IElementInfo;
 	import src.ElementType;
 	import src.Const;
+	import src.as3.math.graph.*;
+	import src.as3.math.Calc;
 	
 	/**
 	 * ...
@@ -39,8 +41,9 @@ package src.units
 		// Action definitions.
 		private var busy:Boolean;
 		private var moveTimer:Timer;
+		private var movePath:Vector.<SPFNode>;
+		private var moveTo:SPFNode;
 		private var moveFrom:int;
-		private var moveTo:int;
 		
 		// Images.
 		protected var _topImg:MovieClip;
@@ -102,9 +105,9 @@ package src.units
 		}
 		
 		/**
-		 * @brief Schedule unit movement.
+		 * Schedule unit movement.
 		 */
-		public function move(from:int, to:int) : void
+		public function move(fromIdx:int, path:Vector.<SPFNode>) : void
 		{
 			if (busy == true)
 			{
@@ -114,22 +117,51 @@ package src.units
 			}
 			
 			busy = true;
+			movePath = path;
+			moveFrom = fromIdx;
 			
-			moveFrom = from;
-			moveTo = to;
+
+			trace("Unit " + _uid + " will be moving through:");
+			var listAux:Vector.<SPFNode> = movePath.concat();
+			listAux.pop();
+			var nodeAux:SPFNode;
+			while ( (nodeAux = listAux.pop()) != null)
+			{
+				trace("Node: " + nodeAux.uid);
+			}
+				
+			// We know that the first node on the list is the own node, so we discard it.
+			moveTo = movePath.pop();
+		
+			scheduleMovement();
+		}
+		
+		private function handleTimerComplete_move(e:TimerEvent) : void
+		{
+			trace("Unit on move!");
+			dispatchEvent(new UnitMoveEvent(_uid, moveFrom, moveTo.uid));
+			
+			if (movePath.length == 0)
+			{
+				// Unit finished moving.
+				return;
+			}
+			
+			moveFrom = moveTo.uid;
+			scheduleMovement()
+		}
+		
+		private function scheduleMovement() : void
+		{
+			trace("Next node is " + moveTo.uid);
+			
+			moveTo = movePath.pop();
 			
 			moveTimer.delay = _move_time * Const.DAY_TIME_MS;
 			moveTimer.repeatCount = 1;
 			
 			moveTimer.reset();
 			moveTimer.start();
-			trace("start!!");
-		}
-		
-		private function handleTimerComplete_move(e:TimerEvent) : void
-		{
-			trace("dispatch!!");
-			dispatchEvent(new UnitMoveEvent(_uid, moveFrom, moveTo));
 		}
 	}
 	

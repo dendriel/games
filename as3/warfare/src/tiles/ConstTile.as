@@ -14,6 +14,7 @@ package src.tiles
 		
 		// Move effort.
 		public static const MOVEEFFORT_NONE:int = 0;
+		public static const MOVEEFFORT_EXCELENT:int = 100;
 		public static const MOVEEFFORT_EASY:int = 30;
 		public static const MOVEEFFORT_NORMAL:int = 0;
 		public static const MOVEEFFORT_UNFAVORABLE = -15;
@@ -88,7 +89,7 @@ package src.tiles
 		// Road 01-16 definitions.
 		static const ROAD_01_DEF = ConstTile.DEF_VALUE_NONE;
 		static const ROAD_01_MOVEABLE = true;
-		static const ROAD_01_MOVEEFFORT = ConstTile.MOVEEFFORT_EASY;
+		static const ROAD_01_MOVEEFFORT = ConstTile.MOVEEFFORT_EXCELENT;
 	}
 	
 }
