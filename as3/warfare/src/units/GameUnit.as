@@ -1,6 +1,7 @@
 package src.units
 {
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -9,6 +10,7 @@ package src.units
 	import src.Const;
 	import src.as3.math.graph.*;
 	import src.as3.math.Calc;
+	import src.tiles.ConstTile;
 	
 	/**
 	 * ...
@@ -16,6 +18,12 @@ package src.units
 	 */
 	public class GameUnit extends MovieClip implements IElementInfo, IElementUnitInfo
 	{
+		// Constants.
+		private const focusSignRadiusW:Number = ConstTile.TILE_W;
+		private const focusSignRadiusH:Number = ConstTile.TILE_H / 2;
+		private const focusSignRadiusPosX:Number = 0;
+		private const focusSignRadiusPosY:Number = ConstTile.TILE_H / 2;
+		
 		// Unique identifier.
 		private var _uid:int;
 		// Type identifier for map building.
@@ -47,6 +55,7 @@ package src.units
 		
 		// Images.
 		protected var _topImg:MovieClip;
+		private var _focusSign:Shape;
 		
 		// Unit advantages and disadvantages.
 		
@@ -71,6 +80,8 @@ package src.units
 			moveTimer = new Timer(0);
 			moveTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move, false, 0, true);
 			busy = false;
+			drawSigns();
+			trace("Number of childs: " + this.numChildren);
 		}
 		
 		public function get uid() : int {return _uid;}
@@ -91,10 +102,9 @@ package src.units
 		public function get move_time() : int { return _move_time; }
 		public function get recruit_cost() : int { return _recruit_cost; }
 		
-		public function get topImg() : MovieClip
-		{
-			return _topImg;
-		}
+		public function get topImg() : MovieClip { return _topImg; }
+		
+		public function set focusSign(value:Boolean) : void { _focusSign.visible = value; }
 		
 		/**
 		 * Call after processing an unit action.
@@ -135,7 +145,22 @@ package src.units
 			
 			scheduleMovement();
 		}
-		
+
+//##################################################################################################
+// Private functions.
+//##################################################################################################
+		private function drawSigns() : void
+		{
+			_focusSign = new Shape();
+			_focusSign.graphics.beginFill(0xffffcc);
+			_focusSign.graphics.drawEllipse(focusSignRadiusPosX, focusSignRadiusPosY, focusSignRadiusW, focusSignRadiusH);
+			_focusSign.graphics.drawEllipse(focusSignRadiusPosX, focusSignRadiusPosY, focusSignRadiusW - 2, focusSignRadiusH - 2);
+			_focusSign.graphics.endFill();
+			addChildAt(_focusSign, 0);
+			
+			_focusSign.visible = false;
+		}
+
 		private function scheduleMovement() : void
 		{
 			trace("Next node is " + moveTo.uid);

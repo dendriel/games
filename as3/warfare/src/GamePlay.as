@@ -230,11 +230,13 @@ package src
 			var tilex = Calc.pixel_to_tile(pointOnMap.x, ConstTile.TILE_W);
 			var tiley = Calc.pixel_to_tile(pointOnMap.y, ConstTile.TILE_H);
 			var tile_idx = Calc.coor_to_idx(tilex, tiley, gameMapR.width_tiles);
+			//trace("clicked on: " + pxOnMap + ", " + pyOnMap + "; tile: " + tilex + "," + tiley + " idx: " + tile_idx);
 			
 			gameTarget.x = tilex * ConstTile.TILE_W;
 			gameTarget.y = tiley * ConstTile.TILE_H;
-			gameTarget.visible = true;
-			//trace("clicked on: " + pxOnMap + ", " + pyOnMap + "; tile: " + tilex + "," + tiley + " idx: " + tile_idx);
+			
+			gameTarget.visible = false;
+			gameMapR.setUnitOnFocus(null);
 			
 			// Display the element in the Menu.
 			displayElementInfo(tile_idx);
@@ -253,6 +255,7 @@ package src
 			pyTemp = Calc.clipLT(pyTemp, ( -1 * (gameMapR.height - Const.MAP_AREA_H) ));
 			
 			gameTarget.visible = false;
+			gameMapR.setUnitOnFocus(null);
 			
 			gameMapR.x = pxTemp;
 			gameMapR.y = pyTemp;
@@ -271,12 +274,17 @@ package src
 			switch(elem.elemType)
 			{
 				case ElementType.UNIT:
+					// Kind a workaround... maybe we need to create a "setFocus" function for every type of element.
+					var unit:GameUnit = gameMapR.getUpperMostUnit(idx);
+					gameMapR.setUnitOnFocus(unit);
 					displayElementUnit(elem);
 					break;
 				case ElementType.BUILDING:
+					gameTarget.visible = true;
 					displayElementBuilding(elem);
 					break;
 				case ElementType.TILE:
+					gameTarget.visible = true;
 					displayElementTile(elem);
 					break;
 				default:

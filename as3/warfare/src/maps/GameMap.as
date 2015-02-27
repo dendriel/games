@@ -46,6 +46,9 @@ package src.maps
 		// Calculation.
 		private var shortestPath:SPF;
 		
+		// Internal map state.
+		private var unitOnFocus:GameUnit;
+		
 		protected function drawSelf() : void
 		{
 			shortestPath = new SPF();
@@ -226,11 +229,18 @@ package src.maps
 		 */
 		public function getUpperMostUnit(idx:int) : GameUnit
 		{
-			var holder:Vector.<GameUnit> = unit_layer_element[idx].units;
-			
-			if (holder.length > 0)
+			// Search inside units layer.			
+			if (unit_layer_element != null)
 			{
-				return holder.concat().pop();
+				var units_list_temp:Vector.<GameUnit> = unit_layer_element[idx].units.concat();
+				
+				trace("units list: " + units_list_temp.length);
+				if (units_list_temp.length > 0)
+				{
+					var unit:GameUnit = units_list_temp.pop();
+					trace("unit uid: " + unit.uid);
+					return unit;
+				}
 			}
 			
 			return null;
@@ -268,6 +278,30 @@ package src.maps
 			
 			var path:Vector.<SPFNode> = shortestPath.findSPF(from, to);
 			unit.move(from, path);
+		}
+		
+		/**
+		 * Define a unit on focus. 
+		 * @param	unit The unit that will be on focus. If null is passed, remove the focus from
+		 * the current unit.
+		 */
+		public function setUnitOnFocus(unit:GameUnit) : void
+		{
+			// Remove focus from previous unit (if exist).
+			if (unitOnFocus != null)
+			{
+				unitOnFocus.focusSign = false;
+			}
+			
+			if (unit != null)
+			{
+				unitOnFocus = unit;
+				unitOnFocus.focusSign = true;
+			}
+			else
+			{
+				unitOnFocus = null;
+			}
 		}
 	}
 	
