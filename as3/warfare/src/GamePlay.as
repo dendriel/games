@@ -343,21 +343,22 @@ package src
 		
 		private function moveUnit(from:int, to:int) : void
 		{
+			var unit:GameUnit;
 			if (from == to)
 			{
 				return;
 			}
 			
-			var unit:GameUnit = gameMapR.getUnit(from);
-			
+			unit = gameMapR.getUpperMostUnit(from);
 			if (unit == null)
 			{
+				trace("Nothing to move from here!");
 				// There is no unit to move from this position.
 				return;
 			}
 			
-			displayElementInfo(from);
-			gameMapR.moveUnit(from, to);
+			displayElementUnit(unit);
+			gameMapR.moveUnit(unit, from, to);
 		}
 		
 		/**

@@ -7,6 +7,7 @@ package src.maps
 	import src.IElementInfo;
 	import src.tiles.*;
 	import src.buildings.*;
+	import src.ui.GameUnitDisplay;
 	import src.units.*;
 	import src.as3.math.Calc;
 	import src.as3.math.graph.*;
@@ -43,49 +44,30 @@ package src.maps
 		private var weightMap:Array;
 		
 		// Calculation.
-		var shortestPath:SPF;
+		private var shortestPath:SPF;
 		
 		protected function drawSelf() : void
 		{
-			var i:int;
-			tile_layer = new MovieClip;
-			building_layer = new MovieClip;
-			unit_layer = new MovieClip;
-			
 			shortestPath = new SPF();
 			
 			tile_layer_element = new Array(_width_tiles * height_tiles);
 			building_layer_element = new Array(_width_tiles * height_tiles);
 			unit_layer_element = new Array(_width_tiles * height_tiles);
+			unit_layer_element = new Array(_width_tiles * height_tiles);
 			weightMap = new Array(_width_tiles * height_tiles);
-			unit_top_layer = new MovieClip();
 			
 			// Initialize weight map (with default values) and unit layer array.
-			for (i = 0; i < unit_layer_element.length; i++)
+			for (var i:int = 0; i < (_width_tiles * height_tiles); i++)
 			{
 				var p:Point = Calc.idx_to_coor(i, _width_tiles);
 				unit_layer_element[i] = new GameUnitHolder( (p.x * ConstTile.TILE_W), (p.y * ConstTile.TILE_H) );
-				
 				weightMap[i] = new SPFNode(i);
 			}
 			
 			// Draw landscape.
 			if (tile_layer_map != null)
 			{
-				for (i = 0; i < tile_layer_map.length; i++)
-				{
-					if (tile_layer_map[i] == 0)
-					{
-						continue;
-					}
-					
-					var tile = newTileFromId(tile_layer_map[i]);
-					tile.x = (int) (i % width_tiles) * ConstTile.TILE_W;
-					tile.y = (int)(i / height_tiles) * ConstTile.TILE_H;
-					tile_layer_element[i] = tile;
-					tile_layer.addChild(tile);
-				}
-			
+				tile_layer = GameMapBuilder.drawLandscape(tile_layer_map, tile_layer_element, _width_tiles, height_tiles);
 				// Add layer 0.
 				addChild(tile_layer);
 			}
@@ -93,21 +75,7 @@ package src.maps
 			// Draw buildings.
 			if (building_layer_map != null)
 			{
-				for (i = 0; i < building_layer_map.length; i++)
-				{
-					if (building_layer_map[i] == 0)
-					{
-						continue;
-					}
-					
-					var building = newBuildingFromId(building_layer_map[i]);
-					building.x = (int) (i % width_tiles) * ConstTile.TILE_W;
-					building.y = (int)(i / height_tiles) * ConstTile.TILE_H;
-					
-					building_layer_element[i] = building;
-					building_layer.addChild(building);
-				}
-				
+				building_layer = GameMapBuilder.drawBuildings(building_layer_map, building_layer_element, _width_tiles, height_tiles);
 				// Add layer 1.
 				addChild(building_layer);
 			}
@@ -115,123 +83,25 @@ package src.maps
 			// Draw units.
 			if (unit_layer_map != null)
 			{
-				for ( i = 0; i < unit_layer_map.length; i++)
-				{
-					if (unit_layer_map[i] == 0)
-					{
-						continue;
-					}
-					
-					var unit:GameUnit = createUnit(unit_layer_map[i]);
-					unit.x = (int) (i % width_tiles) * ConstTile.TILE_W;
-					unit.y = (int)(i / height_tiles) * ConstTile.TILE_H;
-					
-					unit_layer_element[i].units.push(unit);
-					unit_layer.addChild(unit);
-					
-					if (unit.topImg != null)
-					{
-						unit.topImg.x = unit.x;
-						unit.topImg.y = unit.y - ConstTile.TILE_H;
-						unit_top_layer.addChild(unit.topImg);
-						// add movieclip in layer
-					}
-				}
+				var actions:Array = new Array(handleUnitMove);
+				var layers:Array = GameMapBuilder.createUnits(unit_layer_map, unit_layer_element, _width_tiles, height_tiles, actions);
+				unit_layer = layers[0];
+				unit_top_layer = layers[1];
+				
 				// Add layer 3.
 				addChild(unit_layer);
 				addChild(unit_top_layer);
 			}
 			
-			buildWeightMap();
-			linkNeighborsOnMap();
-			
+			// Configure SPF.
+			GameMapBuilder.buildWeightMap(weightMap, tile_layer_element, building_layer_element);
+			GameMapBuilder.linkNeighborsOnMap(weightMap, _width_tiles, height_tiles);
 			shortestPath.loadGraph(weightMap);
-			//shortestPath.dumpGraph();
 		}
 
 //##################################################################################################
 // Private functions.
-//##################################################################################################
-		private function createUnit(id:int) : GameUnit
-		{
-			var unit:GameUnit = newUnitFromId(id);
-			
-			// Configure unit.
-			unit.addEventListener(UnitMoveEvent.EVT_UNIT_MOVE, handleUnitMove, false, 0, true);
-			
-			return unit;
-		}
-
-		private function newUnitFromId(id:int) : GameUnit
-		{
-			switch (id)
-			{
-				case ConstUnit.LEVY_INFANTRY01_ID: return new LevyInfantryUnit;
-				case ConstUnit.KNIGHT01_ID_ID: return new KnightUnit;
-				case ConstUnit.LIGHT_INFANTRY01_ID: return new LightInfantryUnit;
-					
-				default:
-					trace("Invalid unit id: " + id + " received.");
-					return new LevyInfantryUnit;
-			}
-		}
-		
-		private function newBuildingFromId(id:int) : GameBuilding
-		{
-			switch (id)
-			{
-				case ConstBuilding.BRIDGE_01_ID: return new Bridge01Building;
-				case ConstBuilding.BRIDGE_02_ID: return new Bridge02Building;
-				case ConstBuilding.VILLAGE_01_ID: return new Village01Building;
-					
-				default:
-					trace("Invalid building id: " + id + " received.");
-					return new Village01Building;
-			}
-		}
-		
-		// Create tile object from its ID.
-		private function newTileFromId(id:int) : GameTile
-		{
-			switch (id)
-			{
-				case ConstTile.GRASS_01_ID:	return new Grass01Tile;
-				case ConstTile.TREE_01_ID: return new Tree01Tile;
-				case ConstTile.TREE_02_ID: return new Tree02Tile;
-				case ConstTile.TREE_03_ID: return new Tree03Tile;
-				case ConstTile.TREE_04_ID: return new Tree04Tile;					
-				case ConstTile.TREE_05_ID: return new Tree05Tile;
-				case ConstTile.TREE_06_ID: return new Tree06Tile;
-				case ConstTile.MOUNTAIN_01_ID: return new Mountain01Tile;
-				case ConstTile.MOUNTAIN_02_ID: return new Mountain02Tile;
-				case ConstTile.MOUNTAIN_03_ID: return new Mountain03Tile;
-				case ConstTile.MOUNTAIN_04_ID: return new Mountain04Tile;
-				case ConstTile.MOUNTAIN_05_ID: return new Mountain05Tile;
-				case ConstTile.MOUNTAIN_06_ID: return new Mountain06Tile;
-				case ConstTile.RIVER_01_ID: return new River01Tile;
-				case ConstTile.RIVER_02_ID: return new River02Tile;
-				case ConstTile.RIVER_03_ID: return new River03Tile;
-				case ConstTile.RIVER_04_ID: return new River04Tile;
-				case ConstTile.RIVER_05_ID: return new River05Tile;
-				case ConstTile.RIVER_06_ID: return new River06Tile;
-				case ConstTile.RIVER_07_ID: return new River07Tile;
-				case ConstTile.RIVER_08_ID: return new River08Tile;
-				case ConstTile.ROAD_01_ID: return new Road01Tile;
-				case ConstTile.ROAD_02_ID: return new Road02Tile;
-				case ConstTile.ROAD_03_ID: return new Road03Tile;
-				case ConstTile.ROAD_05_ID: return new Road05Tile;
-				case ConstTile.ROAD_07_ID: return new Road07Tile;
-				case ConstTile.ROAD_10_ID: return new Road10Tile;
-				case ConstTile.ROAD_12_ID: return new Road12Tile;
-				case ConstTile.ROAD_13_ID: return new Road13Tile;
-				case ConstTile.ROAD_16_ID: return new Road16Tile;
-					
-				default:
-					trace("Invalid tile id: " + id + " received.");
-					return new Grass01Tile;
-			}
-		}
-		
+//##################################################################################################		
 		/**
 		 * @param	px Element horizontal position.
 		 * @param	py Element vertical position.
@@ -279,192 +149,6 @@ package src.maps
 			// TODO: get unit by uid.
 			var unit:GameUnit = holderFrom.pop();
 			holderTo.addUnit(unit);
-		}
-		
-		/**
-		 * Update weight map nodes according to the tiles and buildings on the layers.
-		 */
-		private function buildWeightMap() : void
-		{			
-			// Update weight.
-			for (var i in weightMap)
-			{
-				var node:SPFNode = weightMap[i];
-				var tile:GameTile = tile_layer_element[i];
-				var building:GameBuilding = building_layer_element[i];
-				
-				// Update weight.
-				// Tile.
-				if (tile.moveable != true)
-				{
-					node.weight = Const.NODE_DISCONNECTED;
-				}
-				else
-				{
-					// Transform move effort in weight. Bonuses will decrese the node weight while
-					// penalties will increase the node it.
-					node.weight = (-1 * (tile.moveEffort / 10) ) + Const.DEFAULT_WEIGHT;
-				}
-				
-				// Building. Replaces the previous tile weight.
-				if (building != null)
-				{
-					if (building.moveable != true)
-					{
-						node.weight = Const.NODE_DISCONNECTED;
-					}
-					else
-					{
-						// Transform move effort in weight. Bonuses will decrese the node weight while
-						// penalties will increase the node it.
-						node.weight = (-1 * (building.moveEffort / 10) ) + Const.DEFAULT_WEIGHT;
-					}
-				}
-			}
-		}
-		
-		/**
-		 * Link the neighbors on the nodes.
-		 */
-		private function linkNeighborsOnMap() : void
-		{
-			var neighbor:SPFNode;
-			
-			// Find neighbors.
-			for (var i in weightMap)
-			{
-				var node:SPFNode = weightMap[i];				
-				var rightNeighbors:Boolean = true;
-				var leftNeighbors:Boolean = true;
-				var bottomNeighbors:Boolean = true;
-				var topNeighbors:Boolean = true;
-				
-				if (node.weight == Const.NODE_DISCONNECTED)
-				{
-					continue;
-				}
-				
-				// Check right neighbors.
-				if ( ( (i + 1) % _width_tiles) == 0)
-				{
-					rightNeighbors = false;
-				}
-				
-				// Check left neighbors.
-				if ( (i % _width_tiles) == 0)
-				{
-					leftNeighbors = false;
-				}
-				
-				// Check top neighbors.
-				if ( i < _width_tiles)
-				{
-					topNeighbors = false;
-				}
-				
-				// Check bottom neighbors.
-				if ( ( i + _width_tiles) >= (_width_tiles * height_tiles) )
-				{
-					bottomNeighbors = false;
-				}
-				
-				/*  X 0 0
-				 *  0 0 0
-				 *  0 0 0 */
-				if (topNeighbors && leftNeighbors)
-				{
-					neighbor = weightMap[i - _width_tiles - 1];
-					if (neighbor.weight != Const.NODE_DISCONNECTED)
-					{
-						node.neighborList.push(neighbor);
-					}
-				}
-				
-				/*  0 X 0
-				 *  0 0 0
-				 *  0 0 0 */
-				if (topNeighbors)
-				{
-					neighbor = weightMap[i - _width_tiles];
-					if (neighbor.weight != Const.NODE_DISCONNECTED)
-					{
-						node.neighborList.push(neighbor);
-					}
-					
-				}
-				
-				/*  0 0 X
-				 *  0 0 0
-				 *  0 0 0 */
-				if (topNeighbors && rightNeighbors)
-				{
-					neighbor = weightMap[i - _width_tiles + 1];
-					if (neighbor.weight != Const.NODE_DISCONNECTED)
-					{
-						node.neighborList.push(neighbor);
-					}
-				}
-				
-				/*  0 0 0
-				 *  X 0 0
-				 *  0 0 0 */
-				if (leftNeighbors)
-				{
-					neighbor = weightMap[i - 1];
-					if (neighbor.weight != Const.NODE_DISCONNECTED)
-					{
-						node.neighborList.push(neighbor);
-					}
-				}
-				
-				/*  0 0 0
-				 *  0 0 X
-				 *  0 0 0 */
-				if (rightNeighbors)
-				{
-					neighbor = weightMap[i + 1];
-					if (neighbor.weight != Const.NODE_DISCONNECTED)
-					{
-						node.neighborList.push(neighbor);
-					}
-				}
-				
-				/*  0 0 0
-				 *  0 0 0
-				 *  X 0 0 */
-				if (bottomNeighbors && leftNeighbors)
-				{
-					neighbor = weightMap[i + _width_tiles - 1];
-					if (neighbor.weight != Const.NODE_DISCONNECTED)
-					{
-						node.neighborList.push(neighbor);
-					}
-				}
-				
-				/*  0 0 0
-				 *  0 0 0
-				 *  0 X 0 */
-				if (bottomNeighbors)
-				{
-					neighbor = weightMap[i + _width_tiles];
-					if (neighbor.weight != Const.NODE_DISCONNECTED)
-					{
-						node.neighborList.push(neighbor);
-					}
-				}
-				
-				/*  0 0 0
-				 *  0 0 0
-				 *  X 0 0 */
-				if (bottomNeighbors && rightNeighbors)
-				{
-					neighbor = weightMap[i + _width_tiles + 1];
-					if (neighbor.weight != Const.NODE_DISCONNECTED)
-					{
-						node.neighborList.push(neighbor);
-					}
-				}
-			}
 		}
 
 //##################################################################################################
@@ -516,33 +200,65 @@ package src.maps
 		}
 		
 		/**
-		 * Find unit by its index.
+		 * Get a holder with all units from the given position.
 		 * @param	idx
-		 * @return
+		 * @return The holder of units, if there is any unit on the position; null if there is no unit
+		 * at the given position.
 		 */
-		public function getUnit(idx:int) : GameUnit
+		public function getAllUnits(idx:int) : Vector.<GameUnit>
 		{
 			var holder:Vector.<GameUnit> = unit_layer_element[idx].units;
 			
-			if (holder.length == 0)
+			if (holder.length > 0)
+			{
+				return holder;
+			}
+			else
 			{
 				return null;
 			}
-			// Return the first unit. TODO: select a specific unit.
-			return holder[0];
 		}
 		
-		public function moveUnit(from:int, to:int) : void
+		/**
+		 * Get the unit at the top of a position (the last to enter in the position).
+		 * @param	idx
+		 * @return
+		 */
+		public function getUpperMostUnit(idx:int) : GameUnit
 		{
-			var holderFrom:Vector.<GameUnit> = unit_layer_element[from].units;
+			var holder:Vector.<GameUnit> = unit_layer_element[idx].units;
 			
-			// Check if there is any unit to move.
-			if (holderFrom.length == 0)
+			if (holder.length > 0)
 			{
-				trace("Nothing to move from here!");
-				return;
+				return holder.concat().pop();
 			}
 			
+			return null;
+		}
+		
+		/**
+		 * Find unit by its index.
+		 * @param	idx
+		 * @return The unit, if found; null otherwise.
+		 */
+		public function getUnit(idx:int, uid:int=0) : GameUnit
+		{
+			var holder:Vector.<GameUnit> = unit_layer_element[idx].units;
+			
+			for each (var unit:GameUnit in holder)
+			{
+				if (unit.uid == uid)
+				{
+					return unit;
+				}
+			}
+			
+			trace("Nothing to move from here!");
+			return null;
+		}
+		
+		public function moveUnit(unit:GameUnit, from:int, to:int) : void
+		{			
 			// Check if can move to the given destination.
 			if (posIsMoveable(to) != true)
 			{
@@ -551,8 +267,6 @@ package src.maps
 			}
 			
 			var path:Vector.<SPFNode> = shortestPath.findSPF(from, to);
-			
-			var unit:GameUnit = holderFrom.concat().pop();
 			unit.move(from, path);
 		}
 	}

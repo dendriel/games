@@ -132,8 +132,21 @@ package src.units
 				
 			// We know that the first node on the list is the own node, so we discard it.
 			moveTo = movePath.pop();
-		
+			
 			scheduleMovement();
+		}
+		
+		private function scheduleMovement() : void
+		{
+			trace("Next node is " + moveTo.uid);
+			
+			moveTo = movePath.pop();
+			
+			moveTimer.delay = _move_time * Const.DAY_TIME_MS;
+			moveTimer.repeatCount = 1;
+			
+			moveTimer.reset();
+			moveTimer.start();
 		}
 		
 		private function handleTimerComplete_move(e:TimerEvent) : void
@@ -149,19 +162,6 @@ package src.units
 			
 			moveFrom = moveTo.uid;
 			scheduleMovement()
-		}
-		
-		private function scheduleMovement() : void
-		{
-			trace("Next node is " + moveTo.uid);
-			
-			moveTo = movePath.pop();
-			
-			moveTimer.delay = _move_time * Const.DAY_TIME_MS;
-			moveTimer.repeatCount = 1;
-			
-			moveTimer.reset();
-			moveTimer.start();
 		}
 	}
 	
