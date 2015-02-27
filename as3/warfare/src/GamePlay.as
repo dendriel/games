@@ -351,13 +351,12 @@ package src
 		
 		private function moveUnit(from:int, to:int) : void
 		{
-			var unit:GameUnit;
 			if (from == to)
 			{
 				return;
 			}
 			
-			unit = gameMapR.getUpperMostUnit(from);
+			var unit:GameUnit = gameMapR.getUpperMostUnit(from);
 			if (unit == null)
 			{
 				trace("Nothing to move from here!");
@@ -365,7 +364,7 @@ package src
 				return;
 			}
 			
-			displayElementUnit(unit);
+			displayElementInfo(from);
 			gameMapR.moveUnit(unit, from, to);
 		}
 		

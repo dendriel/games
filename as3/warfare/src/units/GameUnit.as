@@ -24,6 +24,9 @@ package src.units
 		private const focusSignRadiusPosX:Number = 0;
 		private const focusSignRadiusPosY:Number = ConstTile.TILE_H / 2;
 		
+		private const busySignPosX:Number = ConstTile.TILE_W - 8;
+		private const busySignPosY:Number = -12;
+		
 		// Unique identifier.
 		private var _uid:int;
 		// Type identifier for map building.
@@ -47,7 +50,7 @@ package src.units
 		protected var _recruit_cost;
 		
 		// Action definitions.
-		private var busy:Boolean;
+		private var _busy:Boolean;
 		private var moveTimer:Timer;
 		private var movePath:Vector.<SPFNode>;
 		private var moveTo:SPFNode;
@@ -56,6 +59,7 @@ package src.units
 		// Images.
 		protected var _topImg:MovieClip;
 		private var _focusSign:Shape;
+		private var _busySign:HourglassSign;
 		
 		// Unit advantages and disadvantages.
 		
@@ -79,8 +83,8 @@ package src.units
 			_uid = GameUnit.generateUID();
 			moveTimer = new Timer(0);
 			moveTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move, false, 0, true);
-			busy = false;
 			drawSigns();
+			busy = false;
 			trace("Number of childs: " + this.numChildren);
 		}
 		
@@ -111,7 +115,17 @@ package src.units
 		 */
 		public function unBusy() : void
 		{
-			busy = false;
+			if (movePath == null)
+			{
+				_busy = false;
+				_busySign.visible = false;
+			}
+		}
+		
+		private function set busy(value:Boolean) : void
+		{
+			_busy = value;
+			_busySign.visible = value;
 		}
 		
 		/**
@@ -119,7 +133,7 @@ package src.units
 		 */
 		public function move(fromIdx:int, path:Vector.<SPFNode>) : void
 		{
-			if (busy == true)
+			if (_busy == true)
 			{
 				// Unit movement can be canceled.
 				trace("Unit is busy right now. Restarting movement timer.");
@@ -129,16 +143,6 @@ package src.units
 			busy = true;
 			movePath = path;
 			moveFrom = fromIdx;
-			
-
-			trace("Unit " + _uid + " will be moving through:");
-			var listAux:Vector.<SPFNode> = movePath.concat();
-			listAux.pop();
-			var nodeAux:SPFNode;
-			while ( (nodeAux = listAux.pop()) != null)
-			{
-				trace("Node: " + nodeAux.uid);
-			}
 				
 			// We know that the first node on the list is the own node, so we discard it.
 			moveTo = movePath.pop();
@@ -156,9 +160,14 @@ package src.units
 			_focusSign.graphics.drawEllipse(focusSignRadiusPosX, focusSignRadiusPosY, focusSignRadiusW, focusSignRadiusH);
 			_focusSign.graphics.drawEllipse(focusSignRadiusPosX, focusSignRadiusPosY, focusSignRadiusW - 2, focusSignRadiusH - 2);
 			_focusSign.graphics.endFill();
+			_focusSign.visible = false;
 			addChildAt(_focusSign, 0);
 			
-			_focusSign.visible = false;
+			_busySign = new HourglassSign();
+			_busySign.x = busySignPosX;
+			_busySign.y = busySignPosY;
+			_busySign.visible = false;
+			addChildAt(_busySign, 0);
 		}
 
 		private function scheduleMovement() : void
@@ -170,6 +179,11 @@ package src.units
 			moveTimer.delay = _move_time * Const.DAY_TIME_MS;
 			moveTimer.repeatCount = 1;
 			
+			if (movePath.length == 0)
+			{
+				movePath = null;
+			}
+			
 			moveTimer.reset();
 			moveTimer.start();
 		}
@@ -179,8 +193,10 @@ package src.units
 			trace("Unit on move!");
 			dispatchEvent(new UnitMoveEvent(_uid, moveFrom, moveTo.uid));
 			
-			if (movePath.length == 0)
+			if (movePath == null)
 			{
+				moveFrom = -1;
+				moveTo = null;
 				// Unit finished moving.
 				return;
 			}
