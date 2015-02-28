@@ -11,26 +11,26 @@ package src.units
 		public static const EVT_UNIT_MOVE:String = "unit move";
 		
 		// Event data.
-		private var _unitUID:int;
+		private var _unit:GameUnit;
 		private var _fromIdx:int;
 		private var _toIdx:int;
 
-		public function UnitMoveEvent(unitUID:int, fromIdx:int, toIdx:int, bubbles:Boolean=false, cancelable:Boolean=false)
+		public function UnitMoveEvent(unit:GameUnit, fromIdx:int, toIdx:int, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(UnitMoveEvent.EVT_UNIT_MOVE, bubbles, cancelable);
-			_unitUID = unitUID;
+			_unit = unit;
 			_fromIdx = fromIdx;
 			_toIdx = toIdx;
 		}
 
 		public override function clone() : Event
 		{
-			return new UnitMoveEvent(_unitUID, _fromIdx, _toIdx, bubbles, cancelable);
+			return new UnitMoveEvent(_unit, _fromIdx, _toIdx, bubbles, cancelable);
 		}
 		
-		public function get unitUID():int 
+		public function get unit():GameUnit 
 		{
-			return _unitUID;
+			return _unit;
 		}
 		
 		public function get fromIdx():int 

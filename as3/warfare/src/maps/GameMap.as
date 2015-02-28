@@ -149,9 +149,10 @@ package src.maps
 			var holderFrom:Vector.<GameUnit> = unit_layer_element[e.fromIdx].units;
 			var holderTo:GameUnitHolder = unit_layer_element[e.toIdx];
 			
-			// TODO: get unit by uid.
-			var unit:GameUnit = holderFrom.pop();
-			holderTo.addUnit(unit);
+			// Remove unit from the origin holder.
+			holderFrom.splice(holderFrom.indexOf(e.unit), 1);
+			// Insert unit into the destination holder.
+			holderTo.addUnit(e.unit);
 		}
 
 //##################################################################################################

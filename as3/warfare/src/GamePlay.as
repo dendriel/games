@@ -12,8 +12,12 @@ package src
 	import src.tiles.IElementTileInfo;
 	import src.ui.GameTileDisplay;
 	import src.ui.GameUnitDisplay;
+	import src.ui.GameTextFormat;
+	import src.as3.ui.Chat;
+	import src.as3.ui.ChatInputEvent;
 	import src.units.IElementUnitInfo;
 	import src.units.GameUnit;
+	import flash.text.TextField;
 	
 	/**
 	 * ...
@@ -57,10 +61,14 @@ package src
 		// Input/Output.
 		private var key:KeyObject;
 		private var controlPressed:Boolean;
+		private var gameChat:Chat;
 		
 		// Internal state.
 		private var mouseButtonDown:Boolean;
 		private var mouseButtonPressPoint:Point;
+		
+		// Info text.
+		private var coorTxt:TextField;
 		
 		public function GamePlay()
 		{
@@ -73,6 +81,9 @@ package src
 			// Unitialize Input/Output.
 			key = new KeyObject(GameStage.stageR);
 			controlPressed = false;
+			gameChat = new Chat(Const.CHAT_WIDTH, Const.CHAT_HEIGHT);
+			gameChat.x = Const.CHAT_POX_X;
+			gameChat.y = Const.CHAT_POX_Y;
 			
 			// Create displays.
 			gameUnitDisplay = new GameUnitDisplay(statusDisplayX, statusDisplayY);
@@ -109,10 +120,13 @@ package src
 			timer.y = Const.TIMER_POS_Y;
 			gameMenuScreen.addChild(timer);
 			
-			// TODO: make timer appear on the screen!!
+			// Create coordinates text.
+			coorTxt = GameTextFormat.newDisplayTextTitle(Const.COOR_TXT_POS_X, Const.COOR_TXT_POS_Y);
 			
 			addChild(gameMapScreen);
 			addChild(gameMenuScreen);
+			addChild(gameChat);
+			addChild(coorTxt);
 		}
 		
 //##################################################################################################
@@ -270,6 +284,10 @@ package src
 				trace("Something went wrong. No element reference found for pos " + idx);
 				return;
 			}
+			
+			
+			var pointOnMap:Point = Calc.idx_to_coor(idx, gameMapR.width_tiles);
+			coorTxt.text = pointOnMap.y + "," + pointOnMap.x;
 			
 			switch(elem.elemType)
 			{

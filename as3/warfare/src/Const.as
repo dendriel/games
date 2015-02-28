@@ -19,6 +19,8 @@ package src
 		public static const MAX_MAP_MOVE_OFFSET = 64;
 		public static const DEFAULT_WEIGHT = 10;
 		public static const NODE_DISCONNECTED = -1;
+		public static const COOR_TXT_POS_X = SCREEN_SIZE_W / 2 - 32;
+		public static const COOR_TXT_POS_Y = 20;
 		
 		
 		// Main Menu.
@@ -36,6 +38,11 @@ package src
 		public static const MAP_AREA_POS_Y = 16;
 		public static const MENU_AREA_POS_X = 16;
 		public static const MENU_AREA_POS_Y = (MAP_AREA_H + MAP_AREA_POS_Y);
+		
+		public static const CHAT_WIDTH = 300;
+		public static const CHAT_HEIGHT = 110;	
+		public static const CHAT_POX_X = SCREEN_SIZE_W - CHAT_WIDTH - 16;
+		public static const CHAT_POX_Y = MENU_AREA_POS_Y - CHAT_HEIGHT;
 		
 		// Game Events.
 		public static const EVT_SINGLE_PLAYER_CLICK = "single player click";

@@ -85,7 +85,6 @@ package src.units
 			moveTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move, false, 0, true);
 			drawSigns();
 			busy = false;
-			trace("Number of childs: " + this.numChildren);
 		}
 		
 		public function get uid() : int {return _uid;}
@@ -171,9 +170,7 @@ package src.units
 		}
 
 		private function scheduleMovement() : void
-		{
-			trace("Next node is " + moveTo.uid);
-			
+		{			
 			moveTo = movePath.pop();
 			
 			moveTimer.delay = _move_time * Const.DAY_TIME_MS;
@@ -190,8 +187,7 @@ package src.units
 		
 		private function handleTimerComplete_move(e:TimerEvent) : void
 		{
-			trace("Unit on move!");
-			dispatchEvent(new UnitMoveEvent(_uid, moveFrom, moveTo.uid));
+			dispatchEvent(new UnitMoveEvent(this, moveFrom, moveTo.uid));
 			
 			if (movePath == null)
 			{
