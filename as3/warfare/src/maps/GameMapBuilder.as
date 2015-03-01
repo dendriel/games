@@ -1,11 +1,13 @@
 package src.maps
 {
 	import flash.display.MovieClip;
+	import flash.geom.Point;
 	import src.buildings.*;
 	import src.tiles.*;
 	import src.units.*;
 	import src.Const;
 	import src.as3.math.graph.SPFNode;
+	import src.as3.math.Calc;
 	
 	/**
 	 * ...
@@ -285,6 +287,30 @@ package src.maps
 			}
 		}
 		
+		public static function createUnit(type:int, actions:Array, index:int, map_width:int) : GameUnit
+		{
+			var unit:GameUnit = newUnitFromId(type);
+			var pos:Point = Calc.idx_to_coor(index, map_width);
+			unit.addEventListener(UnitMoveEvent.EVT_UNIT_MOVE, actions[0], false, 0, true);
+			unit.x = pos.x * ConstTile.TILE_W;
+			unit.y = pos.y * ConstTile.TILE_H;
+			
+			return unit;
+		}
+		
+		public static function addUnit(unit:GameUnit, element_layer:Array, image_layer:MovieClip, image_layer_top:MovieClip, index:int) : void
+		{
+			element_layer[index].units.push(unit);
+			image_layer.addChild(unit);
+			
+			if (unit.topImg != null)
+			{
+				unit.topImg.x = unit.x;
+				unit.topImg.y = unit.y - ConstTile.TILE_H;
+				image_layer_top.addChild(unit.topImg);
+			}
+		}
+		
 		// Create tile object from its ID.
 		private static function newTileFromId(id:int) : GameTile
 		{
@@ -348,6 +374,7 @@ package src.maps
 				case ConstUnit.LEVY_INFANTRY01_ID: return new LevyInfantryUnit;
 				case ConstUnit.KNIGHT01_ID_ID: return new KnightUnit;
 				case ConstUnit.LIGHT_INFANTRY01_ID: return new LightInfantryUnit;
+				case ConstUnit.LEVY_ARCHER01_ID: return new LevyArcherUnit;
 					
 				default:
 					trace("Invalid unit id: " + id + " received.");

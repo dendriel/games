@@ -36,6 +36,7 @@ package src.maps
 		protected var unit_layer_map:Array;
 		private var unit_layer_element:Array;
 		private var unit_layer:MovieClip;
+		private var unit_actions:Array;
 		
 		// Layer 3.
 		private var unit_top_layer:MovieClip;
@@ -58,6 +59,7 @@ package src.maps
 			unit_layer_element = new Array(_width_tiles * height_tiles);
 			unit_layer_element = new Array(_width_tiles * height_tiles);
 			weightMap = new Array(_width_tiles * height_tiles);
+			unit_actions = new Array(handleUnitMove);
 			
 			// Initialize weight map (with default values) and unit layer array.
 			for (var i:int = 0; i < (_width_tiles * height_tiles); i++)
@@ -86,8 +88,7 @@ package src.maps
 			// Draw units.
 			if (unit_layer_map != null)
 			{
-				var actions:Array = new Array(handleUnitMove);
-				var layers:Array = GameMapBuilder.createUnits(unit_layer_map, unit_layer_element, _width_tiles, height_tiles, actions);
+				var layers:Array = GameMapBuilder.createUnits(unit_layer_map, unit_layer_element, _width_tiles, height_tiles, unit_actions);
 				unit_layer = layers[0];
 				unit_top_layer = layers[1];
 				
@@ -303,6 +304,15 @@ package src.maps
 			{
 				unitOnFocus = null;
 			}
+		}
+		
+		public function addUnit(type:int, posx:int, posy:int) : Boolean
+		{
+			var index:int = Calc.coor_to_idx(posx, posy, _width_tiles);
+			var unit:GameUnit = GameMapBuilder.createUnit(type, unit_actions, index, _width_tiles);
+			GameMapBuilder.addUnit(unit, unit_layer_element, unit_layer, unit_top_layer, index);
+			
+			return true;
 		}
 	}
 	

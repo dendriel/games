@@ -39,6 +39,8 @@ package src.language
 		function get knight01_desc() : String;
 		function get light_infantry01_name() : String;
 		function get light_infantry01_desc() : String;
+		function get levy_archer01_name() : String;
+		function get levy_archer01_desc() : String;
 		
 		// Buildings.
 		function get village01_name() : String;

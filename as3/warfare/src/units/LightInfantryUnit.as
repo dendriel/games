@@ -1,6 +1,5 @@
 package src.units
 {
-	import flash.display.MovieClip;
 	import src.language.GameLanguage;
 	
 	/**

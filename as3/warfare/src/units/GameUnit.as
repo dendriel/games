@@ -4,6 +4,7 @@ package src.units
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.utils.Timer;
 	import src.IElementInfo;
 	import src.ElementType;
@@ -22,7 +23,7 @@ package src.units
 		private const focusSignRadiusW:Number = ConstTile.TILE_W;
 		private const focusSignRadiusH:Number = ConstTile.TILE_H / 2;
 		private const focusSignRadiusPosX:Number = 0;
-		private const focusSignRadiusPosY:Number = ConstTile.TILE_H / 2;
+		private const focusSignRadiusPosY:Number = (ConstTile.TILE_H / 2) - 3;
 		
 		private const busySignPosX:Number = ConstTile.TILE_W - 8;
 		private const busySignPosY:Number = -12;
@@ -108,6 +109,15 @@ package src.units
 		public function get topImg() : MovieClip { return _topImg; }
 		
 		public function set focusSign(value:Boolean) : void { _focusSign.visible = value; }
+		
+		/**
+		 * Update unit x and y through a Point object.
+		 */
+		public function set position(pos:Point) : void
+		{
+			x = pos.x;
+			y = pos.y;
+		}
 		
 		/**
 		 * Call after processing an unit action.

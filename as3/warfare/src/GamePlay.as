@@ -70,6 +70,9 @@ package src
 		// Info text.
 		private var coorTxt:TextField;
 		
+		// Chat Commands.
+		private const spawnUnitCmd:String = "/spawn";
+		
 		public function GamePlay()
 		{
 			// Initialize internal variables.
@@ -84,6 +87,7 @@ package src
 			gameChat = new Chat(Const.CHAT_WIDTH, Const.CHAT_HEIGHT);
 			gameChat.x = Const.CHAT_POX_X;
 			gameChat.y = Const.CHAT_POX_Y;
+			gameChat.registerCallback(spawnUnitCmd, handleSpawnUnitCmd);
 			
 			// Create displays.
 			gameUnitDisplay = new GameUnitDisplay(statusDisplayX, statusDisplayY);
@@ -401,6 +405,25 @@ package src
 			p.y = py + (gameMapR.y * -1) - Const.MAP_AREA_POS_Y;
 			
 			return p;
+		}
+		
+		private function handleSpawnUnitCmd(cmd:String) : void
+		{
+			var args:Array = cmd.split(/\s/);
+			
+			trace("args len: " + args.length);
+			if (args.length < 4)
+			{
+				gameChat.addText("Usage: /spawn <type> <column> <row>");
+				return;
+			}
+			
+			var type:int = args[1];
+			var posy:int = args[2];
+			var posx:int = args[3];
+			
+			trace(args);
+			gameMapR.addUnit(type, posx, posy);
 		}
 	}
 }
