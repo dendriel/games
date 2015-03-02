@@ -1,6 +1,7 @@
 package src.units
 {
 	import src.language.GameLanguage;
+	import src.Const;
 	
 	/**
 	 * ...
@@ -22,7 +23,7 @@ package src.units
 			_attack = 17;
 			_defense = 15;
 			_distance = 0;
-			_move_time = 1;
+			_move_time = Const.MOVE_TIME_1_DAY;
 			_recruit_cost = 25;
 		}
 	}

@@ -12,16 +12,21 @@ package src
 		public static const SCREEN_SIZE_H = 600;
 		public static const TIMER_POS_X = 585;
 		public static const TIMER_POS_Y = 68;
-		public static const DAY_TIME_MS = 2000;
 		public static const MAIN_MENU_BUTTON_OFFSET = 35;
 		public static const MAIN_MENU_TITLE = "WARFARE";
 		public static const TITLE_VERTICAL_OFFSET = 100;
 		public static const MAX_MAP_MOVE_OFFSET = 64;
-		public static const DEFAULT_WEIGHT = 10;
+		public static const DEFAULT_WEIGHT = 100;
 		public static const NODE_DISCONNECTED = -1;
 		public static const COOR_TXT_POS_X = SCREEN_SIZE_W / 2 - 32;
 		public static const COOR_TXT_POS_Y = 20;
+		public static const UNIT_WEIGHT = 1000000;
 		
+		// Time definitions.
+		public static const DAY_TIME_MS = 2000;
+		public static const MOVE_TIME_1_DAY:Number = 1;
+		public static const MOVE_TIME_2_DAYS:Number = MOVE_TIME_1_DAY / 2;
+		public static const MOVE_TIME_3_DAYS:Number = MOVE_TIME_1_DAY / 3;
 		
 		// Main Menu.
 		public static const SINGLE_PLAYER_S = "Single Player";

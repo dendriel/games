@@ -1,6 +1,5 @@
 package src.units
 {
-	
 	/**
 	 * ...
 	 * @author Vitor Rozsa

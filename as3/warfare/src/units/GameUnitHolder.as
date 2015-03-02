@@ -5,6 +5,9 @@ package src.units
 	/**
 	 * ...
 	 * @author Vitor Rozsa
+	 * 
+	 * 
+	 * Actually, we will hold only one unit at a time.
 	 */
 	public class GameUnitHolder
 	{
@@ -42,6 +45,14 @@ package src.units
 			
 			_units.push(unit);
 			unit.unBusy();
+		}
+		
+		/**
+		 * @return A copy of the unit in the holder; or null if there is no unit
+		 */
+		public function get unit():GameUnit
+		{
+			return _units.concat().pop();
 		}
 	}
 }

@@ -423,7 +423,7 @@ package src
 			var posx:int = args[3];
 			
 			trace(args);
-			gameMapR.addUnit(type, posx, posy);
+			gameMapR.spawnUnit(type, posx, posy);
 		}
 	}
 }

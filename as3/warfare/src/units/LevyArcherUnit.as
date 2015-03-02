@@ -1,6 +1,7 @@
 package src.units
 {
 	import src.language.GameLanguage;
+	import src.Const;
 	
 	/**
 	 * ...
@@ -22,7 +23,7 @@ package src.units
 			_attack = 3;
 			_defense = 0;
 			_distance = 2;
-			_move_time = 2;
+			_move_time = Const.MOVE_TIME_2_DAYS;
 			_recruit_cost = 1;
 			
 			addChild(new LevyArcher01_bottomImg);

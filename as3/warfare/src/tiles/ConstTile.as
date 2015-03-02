@@ -14,7 +14,7 @@ package src.tiles
 		
 		// Move effort.
 		public static const MOVEEFFORT_NONE:int = 0;
-		public static const MOVEEFFORT_EXCELENT:int = 100;
+		public static const MOVEEFFORT_EXCELENT:int = 50; // Maximum value.
 		public static const MOVEEFFORT_EASY:int = 30;
 		public static const MOVEEFFORT_NORMAL:int = 0;
 		public static const MOVEEFFORT_UNFAVORABLE = -15;

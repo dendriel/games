@@ -69,9 +69,8 @@ package src.maps
 		 * [0] - move unit action handler.
 		 * @return An Array with bottom layer (index 0) and upper layer (index 1).
 		 */
-		public static function createUnits(map_layer:Array, element_layer:Array, map_width:int, map_height:int, actions:Array) : Array
+		public static function createUnits(map_layer:Array, element_layer:Array, map_width:int, map_height:int, actions:Array, weightMap:Array) : Array
 		{
-			//	GameMapBuilder.createUnits(unit_layer_map, unit_layer_element, _width_tiles, height_tiles);
 			var image_layer:MovieClip = new MovieClip();
 			var image_layer_top:MovieClip = new MovieClip();
 
@@ -82,20 +81,7 @@ package src.maps
 					continue;
 				}
 				
-				var unit:GameUnit = newUnitFromId(map_layer[i]);
-				unit.addEventListener(UnitMoveEvent.EVT_UNIT_MOVE, actions[0], false, 0, true);
-				unit.x = (int) (i % map_width) * ConstTile.TILE_W;
-				unit.y = (int)(i / map_height) * ConstTile.TILE_H;
-
-				element_layer[i].units.push(unit);
-				image_layer.addChild(unit);
-				
-				if (unit.topImg != null)
-				{
-					unit.topImg.x = unit.x;
-					unit.topImg.y = unit.y - ConstTile.TILE_H;
-					image_layer_top.addChild(unit.topImg);
-				}
+				spawnUnit(map_layer[i], actions, i, map_width, element_layer, image_layer, image_layer_top, weightMap);
 			}
 			
 			return new Array(image_layer, image_layer_top);
@@ -285,6 +271,22 @@ package src.maps
 					}
 				}
 			}
+		}
+		
+		public static function spawnUnit(
+			type:int,
+			actions:Array,
+			index:int,
+			map_width:int,
+			element_layer:Array,
+			image_layer:MovieClip,
+			image_layer_top:MovieClip,
+			weightMap:Array) : void
+		{
+			var unit:GameUnit = GameMapBuilder.createUnit(type, actions, index, map_width);
+			GameMapBuilder.addUnit(unit, element_layer, image_layer, image_layer_top, index);
+			// Update the weight of the node that the unit is in.
+			SPFNode(weightMap[index]).weight += Const.UNIT_WEIGHT;
 		}
 		
 		public static function createUnit(type:int, actions:Array, index:int, map_width:int) : GameUnit

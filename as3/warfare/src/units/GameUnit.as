@@ -158,6 +158,23 @@ package src.units
 			
 			scheduleMovement();
 		}
+		
+		/**
+		 * Stop current unit action.
+		 */
+		public function stopAction() : void
+		{
+			if (_busy != true)
+			{
+				return;
+			}
+			
+			busy = false;
+			moveTimer.stop();
+			moveFrom = -1;
+			moveTo = null;
+			movePath = null;
+		}
 
 //##################################################################################################
 // Private functions.
@@ -183,8 +200,10 @@ package src.units
 		{			
 			moveTo = movePath.pop();
 			
-			moveTimer.delay = _move_time * Const.DAY_TIME_MS;
+			moveTimer.delay = ( (Const.MOVE_TIME_1_DAY / _move_time) * Const.DAY_TIME_MS) +  weightFromNode(moveTo);
 			moveTimer.repeatCount = 1;
+			
+			trace("next mode to weight: " + weightFromNode(moveTo) + "; total delay: " + moveTimer.delay);
 			
 			if (movePath.length == 0)
 			{
@@ -193,6 +212,34 @@ package src.units
 			
 			moveTimer.reset();
 			moveTimer.start();
+		}
+		
+		/**
+		 * What out. If the bonus weight of the node is less than the default weight, the unit verification
+		 * in this function may fail.		 * 
+		 * @param	node
+		 * @return
+		 */
+		private function weightFromNode(node:SPFNode) : Number
+		{
+			var bonus:Number;
+			var weigth:Number = node.weight;
+			
+			// Check if node have a unit inside it.
+			if (weigth >= Const.UNIT_WEIGHT)
+			{
+				weigth -= Const.UNIT_WEIGHT;
+			}
+			
+			// Get bonus percentage.
+			weigth = Const.DEFAULT_WEIGHT - weigth;
+			
+			bonus = (_move_time / 10) * weigth;
+			bonus *= Const.DAY_TIME_MS;
+			// Invert bonus time so we can naturally sum it.
+			bonus *= -1;
+			
+			return bonus;
 		}
 		
 		private function handleTimerComplete_move(e:TimerEvent) : void

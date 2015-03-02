@@ -57,7 +57,6 @@ package src.maps
 			tile_layer_element = new Array(_width_tiles * height_tiles);
 			building_layer_element = new Array(_width_tiles * height_tiles);
 			unit_layer_element = new Array(_width_tiles * height_tiles);
-			unit_layer_element = new Array(_width_tiles * height_tiles);
 			weightMap = new Array(_width_tiles * height_tiles);
 			unit_actions = new Array(handleUnitMove);
 			
@@ -85,10 +84,15 @@ package src.maps
 				addChild(building_layer);
 			}
 			
+			// Configure SPF.
+			GameMapBuilder.buildWeightMap(weightMap, tile_layer_element, building_layer_element);
+			GameMapBuilder.linkNeighborsOnMap(weightMap, _width_tiles, height_tiles);
+			shortestPath.loadGraph(weightMap);
+			
 			// Draw units.
 			if (unit_layer_map != null)
 			{
-				var layers:Array = GameMapBuilder.createUnits(unit_layer_map, unit_layer_element, _width_tiles, height_tiles, unit_actions);
+				var layers:Array = GameMapBuilder.createUnits(unit_layer_map, unit_layer_element, _width_tiles, height_tiles, unit_actions, weightMap);
 				unit_layer = layers[0];
 				unit_top_layer = layers[1];
 				
@@ -96,11 +100,6 @@ package src.maps
 				addChild(unit_layer);
 				addChild(unit_top_layer);
 			}
-			
-			// Configure SPF.
-			GameMapBuilder.buildWeightMap(weightMap, tile_layer_element, building_layer_element);
-			GameMapBuilder.linkNeighborsOnMap(weightMap, _width_tiles, height_tiles);
-			shortestPath.loadGraph(weightMap);
 		}
 
 //##################################################################################################
@@ -130,6 +129,7 @@ package src.maps
 			
 			var tile:GameTile = tile_layer_element[idx];
 			var building:GameBuilding = building_layer_element[idx];
+			var unit:GameUnit = GameUnitHolder(unit_layer_element[idx]).units.concat().pop();
 			
 			// If the tile isn't moveable.
 			if (tile.moveable != true)
@@ -142,6 +142,11 @@ package src.maps
 				moveable = true;
 			}
 			
+			if (unit != null)
+			{
+				moveable = false;
+			}
+			
 			return moveable;
 		}
 		
@@ -150,10 +155,22 @@ package src.maps
 			var holderFrom:Vector.<GameUnit> = unit_layer_element[e.fromIdx].units;
 			var holderTo:GameUnitHolder = unit_layer_element[e.toIdx];
 			
+			// Check if destination still moveable.
+			if (posIsMoveable(e.toIdx) != true)
+			{
+				e.unit.stopAction();
+				return;
+			}
+			
 			// Remove unit from the origin holder.
 			holderFrom.splice(holderFrom.indexOf(e.unit), 1);
+			// Remove weight from the unit.
+			SPFNode(weightMap[e.fromIdx]).weight -= Const.UNIT_WEIGHT;
+			
 			// Insert unit into the destination holder.
 			holderTo.addUnit(e.unit);
+			// Add unit's weight in the layer.
+			SPFNode(weightMap[e.toIdx]).weight += Const.UNIT_WEIGHT;
 		}
 
 //##################################################################################################
@@ -236,11 +253,9 @@ package src.maps
 			{
 				var units_list_temp:Vector.<GameUnit> = unit_layer_element[idx].units.concat();
 				
-				trace("units list: " + units_list_temp.length);
 				if (units_list_temp.length > 0)
 				{
 					var unit:GameUnit = units_list_temp.pop();
-					trace("unit uid: " + unit.uid);
 					return unit;
 				}
 			}
@@ -306,12 +321,18 @@ package src.maps
 			}
 		}
 		
-		public function addUnit(type:int, posx:int, posy:int) : Boolean
+		/**
+		 * Create and add a unit of 'type' on the map with 'posx' and 'posy'.
+		 * @param	type
+		 * @param	posx
+		 * @param	posy
+		 * @return true
+		 */
+		public function spawnUnit(type:int, posx:int, posy:int) : Boolean
 		{
 			var index:int = Calc.coor_to_idx(posx, posy, _width_tiles);
-			var unit:GameUnit = GameMapBuilder.createUnit(type, unit_actions, index, _width_tiles);
-			GameMapBuilder.addUnit(unit, unit_layer_element, unit_layer, unit_top_layer, index);
-			
+			// Create and add unit in the map.
+			GameMapBuilder.spawnUnit(type, unit_actions, index, _width_tiles, unit_layer_element, unit_layer, unit_top_layer, weightMap);
 			return true;
 		}
 	}
