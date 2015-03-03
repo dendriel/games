@@ -1,5 +1,6 @@
 package src.units
 {
+	import flash.display.MovieClip;
 	import src.language.GameLanguage;
 	import src.Const;
 	
@@ -11,6 +12,9 @@ package src.units
 	{
 		public function LevyInfantryUnit()
 		{
+			_topImg = new MovieClip();
+			super();
+			
 			_id = ConstUnit.LEVY_INFANTRY01_ID;
 			_name = GameLanguage.lang.levy_infantry01_name;
 			_desc = GameLanguage.lang.levy_infantry01_desc;

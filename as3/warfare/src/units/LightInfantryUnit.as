@@ -11,6 +11,10 @@ package src.units
 	{
 		public function LightInfantryUnit()
 		{
+			addChild(new LightInfantry01_bottomImg);
+			_topImg = new LightInfantry01_topImg;
+			super();
+			
 			_id = ConstUnit.LIGHT_INFANTRY01_ID;
 			_name = GameLanguage.lang.light_infantry01_name;
 			_desc = GameLanguage.lang.light_infantry01_desc;
@@ -25,9 +29,6 @@ package src.units
 			_distance = 0;
 			_move_time = Const.MOVE_TIME_2_DAYS;
 			_recruit_cost = 7;
-			
-			addChild(new LightInfantry01_bottomImg);
-			_topImg = new LightInfantry01_topImg;
 		}
 	}
 	

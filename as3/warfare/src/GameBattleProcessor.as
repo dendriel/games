@@ -15,7 +15,6 @@ package src
 			
 			trace("Processing battle. " + defender_soldiers + " vs " + attacker_soldiers);
 			
-			SoundLoader.playSwordHit01();
 			for (var i:int = 0; (i < attacker_soldiers) && (defender_soldiers > 0); i++)
 			{				
 				var attacker_power = attacker.attack + Calc.roll_d6();

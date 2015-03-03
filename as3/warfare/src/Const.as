@@ -56,6 +56,12 @@ package src
 		public static const EVT_CREDITS_CLICK = "credits click";
 		public static const EVT_ANIMATION_SWORD_HIT_ENDED = "animation sword hit ended";
 		public static const EVT_ANIMATION_DAMAGE_ENDED = "animation damage ended";
+		public static const EVT_ANIMATION_BLOCK_HIT_ENDED = "animation block hit ended";
+		
+		// Animation states.
+		public static const ANIMATION_IDLE = "idle";
+		public static const ANIMATION_PLAYING = "animating";
+		public static const ANIMATION_ENDED = "ended";
 	}
 	
 }

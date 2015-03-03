@@ -13,6 +13,7 @@ package src.units
 	import src.as3.math.Calc;
 	import src.tiles.ConstTile;
 	import src.SoundLoader;
+	import src.ui.BlockHitSign;
 	import src.ui.DamageSign;
 	import src.ui.SwordHitSign;
 	
@@ -74,6 +75,7 @@ package src.units
 		private var _busySign:HourglassSign;
 		private var _swordHitSign:SwordHitSign;
 		private var _damageSign:DamageSign;
+		private var _blockHitSign:BlockHitSign;
 		
 		// Unit advantages and disadvantages.
 		
@@ -111,7 +113,6 @@ package src.units
 		{
 			moveTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move);
 			attackTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_attack);
-			removeSigns();
 		}
 		
 		public function get uid() : int {return _uid;}
@@ -282,6 +283,11 @@ package src.units
 		
 		public function takeDamage(value:int) : void
 		{
+			if (value < 0)
+			{
+				trace("Internal error. Received a negative value in takeDamage function. " + value);
+				return;
+			}
 			_soldiers -= value;
 			trace("taking damage: " + value + " remaining soldiers: " + _soldiers);
 			if (_soldiers < 0)
@@ -289,9 +295,18 @@ package src.units
 				_soldiers = 0;
 			}
 			
-			_swordHitSign.gotoAndPlay("animating");
-			_damageSign.gotoAndPlay("animating");
-			_damageSign.damage.text = String(value);
+			if (value > 0)
+			{
+				_swordHitSign.gotoAndPlay(Const.ANIMATION_PLAYING);
+				_damageSign.gotoAndPlay(Const.ANIMATION_PLAYING);
+				_damageSign.damage.text = String(value);
+				SoundLoader.playSwordHit01();
+			}
+			else
+			{
+				_blockHitSign.gotoAndPlay(Const.ANIMATION_PLAYING);
+				SoundLoader.playBlockHit01();
+			}
 		}
 
 //##################################################################################################
@@ -314,18 +329,13 @@ package src.units
 			addChildAt(_busySign, 0);
 			
 			_swordHitSign = new SwordHitSign();
-			_swordHitSign.addEventListener(Const.EVT_ANIMATION_SWORD_HIT_ENDED, handleAnimationSwordHitEnded, false, 0, true);
-			addChild(_swordHitSign);
+			_topImg.addChild(_swordHitSign);
 			
 			_damageSign = new DamageSign();
-			_damageSign.addEventListener(Const.EVT_ANIMATION_DAMAGE_ENDED, handleAnimationDamageEnded, false, 0, true);
-			addChild(_damageSign);
-		}
-		
-		private function removeSigns() : void
-		{
-			_swordHitSign.removeEventListener(Const.EVT_ANIMATION_SWORD_HIT_ENDED, handleAnimationSwordHitEnded);
-			_damageSign.removeEventListener(Const.EVT_ANIMATION_DAMAGE_ENDED, handleAnimationDamageEnded);
+			_topImg.addChild(_damageSign);
+			
+			_blockHitSign = new BlockHitSign();
+			_topImg.addChild(_blockHitSign);
 		}
 
 		private function scheduleMovement() : void
@@ -403,24 +413,6 @@ package src.units
 		{
 			trace("Attacking enemy: " + enemy.uid + " soldiers: " + enemy.soldiers);
 			dispatchEvent(new UnitBattleEvent(this, enemy));
-		}
-		
-		private function handleAnimationSwordHitEnded(e:Event) : void
-		{
-			if ( (_swordHitSign != null) && contains(_swordHitSign))
-			{
-				//removeChild(_swordHitSign);
-				trace("sword animation ended!");
-			}
-		}
-		
-		private function handleAnimationDamageEnded(e:Event) : void
-		{
-			if ( (_damageSign != null) && contains(_damageSign))
-			{
-				//removeChild(_damageSign);
-				trace("damage animation ended!");
-			}
 		}
 	}
 	

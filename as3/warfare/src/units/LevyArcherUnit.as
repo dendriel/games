@@ -11,6 +11,10 @@ package src.units
 	{
 		public function LevyArcherUnit()
 		{
+			addChild(new LevyArcher01_bottomImg);
+			_topImg = new LevyArcher01_topImg;
+			super();
+			
 			_id = ConstUnit.LEVY_ARCHER01_ID;
 			_name = GameLanguage.lang.levy_archer01_name;
 			_desc = GameLanguage.lang.levy_archer01_desc;
@@ -25,9 +29,6 @@ package src.units
 			_distance = 2;
 			_move_time = Const.MOVE_TIME_2_DAYS;
 			_recruit_cost = 1;
-			
-			addChild(new LevyArcher01_bottomImg);
-			_topImg = new LevyArcher01_topImg;
 		}
 		
 	}

@@ -14,6 +14,7 @@ package src
 		private static var introChannel:SoundChannel;
 		
 		private static var swordHit01:SwordHit01;
+		private static var blockHit01:BlockHit01;
 		
 		// Load sounds.
 		public static function init(enabled:Boolean=true) : void
@@ -21,6 +22,7 @@ package src
 			intro = new IntroMusic();
 			
 			swordHit01 = new SwordHit01();
+			blockHit01 = new BlockHit01();
 			
 			_enable = enabled;
 		}
@@ -44,6 +46,15 @@ package src
 				return;
 			}
 			swordHit01.play();
+		}
+		
+		public static function playBlockHit01() : void
+		{
+			if (_enable != true)
+			{
+				return;
+			}
+			blockHit01.play();
 		}
 		
 //##################################################################################################
