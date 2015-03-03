@@ -15,7 +15,7 @@ package src.units
 		function get attack() : int;
 		function get defense() : int;
 		function get distance() : int;
-		function get move_time() : int;
+		function get move_time() : Number;
 		function get recruit_cost() : int;
 	}
 	

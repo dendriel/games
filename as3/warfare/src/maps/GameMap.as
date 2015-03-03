@@ -11,6 +11,7 @@ package src.maps
 	import src.units.*;
 	import src.as3.math.Calc;
 	import src.as3.math.graph.*;
+	import src.GameBattleProcessor;
 	
 	/**
 	 * ...
@@ -58,7 +59,7 @@ package src.maps
 			building_layer_element = new Array(_width_tiles * height_tiles);
 			unit_layer_element = new Array(_width_tiles * height_tiles);
 			weightMap = new Array(_width_tiles * height_tiles);
-			unit_actions = new Array(handleUnitMove);
+			unit_actions = new Array(handleUnitMove, handleUnitEngage, handleUnitBattle);
 			
 			// Initialize weight map (with default values) and unit layer array.
 			for (var i:int = 0; i < (_width_tiles * height_tiles); i++)
@@ -123,7 +124,7 @@ package src.maps
 		 * @param	idx
 		 * @return true if can move there; false otherwise.
 		 */
-		private function posIsMoveable(idx:int) : Boolean
+		private function posIsFree(idx:int) : Boolean
 		{
 			var moveable = true;
 			
@@ -156,9 +157,9 @@ package src.maps
 			var holderTo:GameUnitHolder = unit_layer_element[e.toIdx];
 			
 			// Check if destination still moveable.
-			if (posIsMoveable(e.toIdx) != true)
+			if (posIsFree(e.toIdx) != true)
 			{
-				e.unit.stopAction();
+				e.unit.stopMove();
 				return;
 			}
 			
@@ -171,6 +172,54 @@ package src.maps
 			holderTo.addUnit(e.unit);
 			// Add unit's weight in the layer.
 			SPFNode(weightMap[e.toIdx]).weight += Const.UNIT_WEIGHT;
+		}
+		
+		/**
+		 * Handle the start of a battle. Stop defender current actions.
+		 * @param	e
+		 */
+		private function handleUnitEngage(e:UnitEngageEvent) : void
+		{
+			var p:Point = Calc.coorToTile(e.defender.x, e.defender.y, ConstTile.TILE_W, ConstTile.TILE_H);
+			
+			trace("defender pos: " + e.defenderPos + " expected: " + Calc.coor_to_idx(p.x, p.y, _width_tiles) );
+			
+			// Check if defender still in the expected position.
+			if (e.defenderPos != Calc.coor_to_idx(p.x, p.y, _width_tiles) )
+			{
+				e.attacker.stopAttack();
+				return;
+			}
+			e.defender.engage(GameUnit.BATTLE_ROLE_DEFENDER);
+			e.attacker.scheduleAttack();
+		}
+		
+		/**
+		 * Process unit battle.
+		 * @param	e
+		 */
+		private function handleUnitBattle(e:UnitBattleEvent) : void
+		{
+			trace("process battle");
+			GameBattleProcessor.processBattle(e.attacker, e.defender);
+			
+			trace("defender soldiers: " + e.defender.soldiers);
+			if (e.defender.soldiers == 0)
+			{
+				trace("defender is down");
+				removeUnit(e.defender);
+				e.attacker.stopAttack();
+			}
+			else if (e.attacker.soldiers == 0)
+			{
+				trace("attacker is down!");
+				removeUnit(e.attacker);
+				e.defender.stopAttack();
+			}
+			else
+			{
+				e.attacker.scheduleAttack();
+			}
 		}
 
 //##################################################################################################
@@ -242,29 +291,7 @@ package src.maps
 		}
 		
 		/**
-		 * Get the unit at the top of a position (the last to enter in the position).
-		 * @param	idx
-		 * @return
-		 */
-		public function getUpperMostUnit(idx:int) : GameUnit
-		{
-			// Search inside units layer.			
-			if (unit_layer_element != null)
-			{
-				var units_list_temp:Vector.<GameUnit> = unit_layer_element[idx].units.concat();
-				
-				if (units_list_temp.length > 0)
-				{
-					var unit:GameUnit = units_list_temp.pop();
-					return unit;
-				}
-			}
-			
-			return null;
-		}
-		
-		/**
-		 * Find unit by its index.
+		 * Find unit by its uid.
 		 * @param	idx
 		 * @return The unit, if found; null otherwise.
 		 */
@@ -284,17 +311,50 @@ package src.maps
 			return null;
 		}
 		
+		/**
+		 * Find unit by its uid.
+		 * @param	idx
+		 * @return The unit, if found; null otherwise.
+		 */
+		public function getUnitAt(idx:int) : GameUnit
+		{
+			return GameUnitHolder(unit_layer_element[idx]).unit;
+		}
+		
 		public function moveUnit(unit:GameUnit, from:int, to:int) : void
-		{			
+		{
+			// If is going to attack an unit.
+			var moveAttack:Boolean = false;
+			var unit:GameUnit;
+			var enemy:GameUnit;
+			
 			// Check if can move to the given destination.
-			if (posIsMoveable(to) != true)
+			if (posIsFree(to) != true)
 			{
-				trace("Can't move there.");
-				return;
+				enemy = GameUnitHolder(unit_layer_element[to]).unit;
+				if (enemy == null)
+				{
+					trace("Can't move there.");
+					return;
+				}
+				
+				// If there is an unit in the destination, then this is an attack action.
+				moveAttack = true;
 			}
 			
+			unit = GameUnitHolder(unit_layer_element[from]).unit;
+			
 			var path:Vector.<SPFNode> = shortestPath.findSPF(from, to);
-			unit.move(from, path);
+			if (moveAttack)
+			{
+				trace("moveAttack from " + from + " to " + to);
+				unit.moveAttack(from, path, enemy);
+			}
+			else
+			{
+				trace("move unit from " + from + " to " + to);
+				unit.move(from, path);
+			}
 		}
 		
 		/**
@@ -334,6 +394,18 @@ package src.maps
 			// Create and add unit in the map.
 			GameMapBuilder.spawnUnit(type, unit_actions, index, _width_tiles, unit_layer_element, unit_layer, unit_top_layer, weightMap);
 			return true;
+		}
+		
+		/**
+		 * Stops and remove the given unit.
+		 * @param	unit
+		 */
+		public function removeUnit(unit:GameUnit) : void
+		{
+			trace("removing unit");
+			var index:int = Calc.pixel_to_idx(unit.x, unit.y, ConstTile.TILE_W, _width_tiles);
+			unit.removeSelf();
+			GameMapBuilder.removeUnit(unit, unit_layer_element, unit_layer, unit_top_layer, index, weightMap);
 		}
 	}
 	

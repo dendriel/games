@@ -129,6 +129,72 @@ package src.maps
 			}
 		}
 		
+		public static function spawnUnit(
+			type:int,
+			actions:Array,
+			index:int,
+			map_width:int,
+			element_layer:Array,
+			image_layer:MovieClip,
+			image_layer_top:MovieClip,
+			weightMap:Array) : void
+		{
+			var unit:GameUnit = GameMapBuilder.createUnit(type, actions, index, map_width);
+			GameMapBuilder.addUnit(unit, element_layer, image_layer, image_layer_top, index);
+			// Update the weight of the node that the unit is in.
+			SPFNode(weightMap[index]).weight += Const.UNIT_WEIGHT;
+		}
+		
+		public static function createUnit(type:int, actions:Array, index:int, map_width:int) : GameUnit
+		{
+			var unit:GameUnit = newUnitFromId(type);
+			var pos:Point = Calc.idx_to_coor(index, map_width);
+			
+			unit.addEventListener(UnitMoveEvent.EVT_UNIT_MOVE, actions[0], false, 0, true);
+			unit.addEventListener(UnitEngageEvent.EVT_UNIT_ENGAGE, actions[1], false, 0, true);
+			unit.addEventListener(UnitBattleEvent.EVT_UNIT_BATTLE, actions[2], false, 0, true);
+			
+			unit.x = pos.x * ConstTile.TILE_W;
+			unit.y = pos.y * ConstTile.TILE_H;
+			
+			return unit;
+		}
+		
+		public static function addUnit(unit:GameUnit, element_layer:Array, image_layer:MovieClip, image_layer_top:MovieClip, index:int) : void
+		{
+			element_layer[index].units.push(unit);
+			image_layer.addChild(unit);
+			
+			if (unit.topImg != null)
+			{
+				unit.topImg.x = unit.x;
+				unit.topImg.y = unit.y - ConstTile.TILE_H;
+				image_layer_top.addChild(unit.topImg);
+			}
+		}
+		
+		public static function removeUnit(unit:GameUnit, element_layer:Array, image_layer:MovieClip, image_layer_top:MovieClip, index:int, weightMap:Array) : void
+		{
+			unit.removeSelf();
+			
+			// Remove unit from reference array.
+			GameUnitHolder(element_layer[index]).removeUnit(unit);
+			
+			// Remove bottom image of the unit.
+			if (image_layer.contains(unit))
+			{
+				image_layer.removeChild(unit);
+			}
+			
+			if ( (unit.topImg != null) && (image_layer_top.contains(unit.topImg)) )
+			{
+				image_layer_top.removeChild(unit.topImg);
+			}
+			
+			// Update the weight of the node that the unit is in.
+			SPFNode(weightMap[index]).weight -= Const.UNIT_WEIGHT;
+		}
+		
 		/**
 		 * Link the neighbors on the nodes.
 		 */
@@ -270,46 +336,6 @@ package src.maps
 						node.neighborList.push(neighbor);
 					}
 				}
-			}
-		}
-		
-		public static function spawnUnit(
-			type:int,
-			actions:Array,
-			index:int,
-			map_width:int,
-			element_layer:Array,
-			image_layer:MovieClip,
-			image_layer_top:MovieClip,
-			weightMap:Array) : void
-		{
-			var unit:GameUnit = GameMapBuilder.createUnit(type, actions, index, map_width);
-			GameMapBuilder.addUnit(unit, element_layer, image_layer, image_layer_top, index);
-			// Update the weight of the node that the unit is in.
-			SPFNode(weightMap[index]).weight += Const.UNIT_WEIGHT;
-		}
-		
-		public static function createUnit(type:int, actions:Array, index:int, map_width:int) : GameUnit
-		{
-			var unit:GameUnit = newUnitFromId(type);
-			var pos:Point = Calc.idx_to_coor(index, map_width);
-			unit.addEventListener(UnitMoveEvent.EVT_UNIT_MOVE, actions[0], false, 0, true);
-			unit.x = pos.x * ConstTile.TILE_W;
-			unit.y = pos.y * ConstTile.TILE_H;
-			
-			return unit;
-		}
-		
-		public static function addUnit(unit:GameUnit, element_layer:Array, image_layer:MovieClip, image_layer_top:MovieClip, index:int) : void
-		{
-			element_layer[index].units.push(unit);
-			image_layer.addChild(unit);
-			
-			if (unit.topImg != null)
-			{
-				unit.topImg.x = unit.x;
-				unit.topImg.y = unit.y - ConstTile.TILE_H;
-				image_layer_top.addChild(unit.topImg);
 			}
 		}
 		

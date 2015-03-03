@@ -19,9 +19,9 @@ package src.units
 			_soldiers = 50;
 			_soldiers_injuried = 0;
 			_health_max = 15;
-			_health = 15;
+			_health = 20;
 			_attack = 15;
-			_defense = 10;
+			_defense = 14;
 			_distance = 0;
 			_move_time = Const.MOVE_TIME_2_DAYS;
 			_recruit_cost = 7;

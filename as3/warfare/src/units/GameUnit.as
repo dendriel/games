@@ -12,6 +12,9 @@ package src.units
 	import src.as3.math.graph.*;
 	import src.as3.math.Calc;
 	import src.tiles.ConstTile;
+	import src.SoundLoader;
+	import src.ui.DamageSign;
+	import src.ui.SwordHitSign;
 	
 	/**
 	 * ...
@@ -19,6 +22,9 @@ package src.units
 	 */
 	public class GameUnit extends MovieClip implements IElementInfo, IElementUnitInfo
 	{
+		public static const BATTLE_ROLE_ATTACKER:Number = 1;
+		public static const BATTLE_ROLE_DEFENDER:Number = 2;
+		
 		// Constants.
 		private const focusSignRadiusW:Number = ConstTile.TILE_W;
 		private const focusSignRadiusH:Number = ConstTile.TILE_H / 2;
@@ -56,11 +62,18 @@ package src.units
 		private var movePath:Vector.<SPFNode>;
 		private var moveTo:SPFNode;
 		private var moveFrom:int;
+		private var attackInProgress:Boolean;
+		private var enemy:GameUnit;
+		private var attackTimer:Timer;
+		private var _battleRole:Number;
+		private var engaged:Boolean;
 		
 		// Images.
 		protected var _topImg:MovieClip;
 		private var _focusSign:Shape;
 		private var _busySign:HourglassSign;
+		private var _swordHitSign:SwordHitSign;
+		private var _damageSign:DamageSign;
 		
 		// Unit advantages and disadvantages.
 		
@@ -82,10 +95,23 @@ package src.units
 		public function GameUnit()
 		{
 			_uid = GameUnit.generateUID();
+			
 			moveTimer = new Timer(0);
 			moveTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move, false, 0, true);
+			attackTimer = new Timer(0);
+			attackTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_attack, false, 0, true);
+			
 			drawSigns();
 			busy = false;
+			attackInProgress = false;
+			engaged = false;
+		}
+		
+		public function removeSelf() : void
+		{
+			moveTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move);
+			attackTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_attack);
+			removeSigns();
 		}
 		
 		public function get uid() : int {return _uid;}
@@ -103,12 +129,13 @@ package src.units
 		public function get attack() : int { return _attack; }
 		public function get defense() : int { return _defense; }
 		public function get distance() : int { return _distance; }
-		public function get move_time() : int { return _move_time; }
+		public function get move_time() : Number { return _move_time; }
 		public function get recruit_cost() : int { return _recruit_cost; }
 		
 		public function get topImg() : MovieClip { return _topImg; }
 		
 		public function set focusSign(value:Boolean) : void { _focusSign.visible = value; }
+		public function get battleRole():Number { return _battleRole;}
 		
 		/**
 		 * Update unit x and y through a Point object.
@@ -142,11 +169,20 @@ package src.units
 		 */
 		public function move(fromIdx:int, path:Vector.<SPFNode>) : void
 		{
+			if (engaged)
+			{
+				trace("Unit is fighting. Can't move right now.");
+				return;
+			}
+			
 			if (_busy == true)
 			{
 				// Unit movement can be canceled.
 				trace("Unit is busy right now. Restarting movement timer.");
 				moveTimer.stop();
+				attackTimer.stop();
+				attackInProgress = false;
+				enemy = null;
 			}
 			
 			busy = true;
@@ -154,26 +190,108 @@ package src.units
 			moveFrom = fromIdx;
 				
 			// We know that the first node on the list is the own node, so we discard it.
-			moveTo = movePath.pop();
+			moveTo = movePath.pop();	
+			scheduleMovement();
+		}
+		
+		public function moveAttack(fromIdx:int, path:Vector.<SPFNode>, unit:GameUnit) : void
+		{
+			if (engaged)
+			{
+				trace("Unit is fighting. Can't move right now.");
+				return;
+			}
 			
+			if (_busy == true)
+			{
+				// Unit movement can be canceled.
+				trace("Unit is busy right now. Restarting movement timer.");
+				moveTimer.stop();
+				attackTimer.stop();
+			}
+			
+			attackInProgress = true;
+			enemy = unit;
+			
+			busy = true;
+			movePath = path;
+			moveFrom = fromIdx;
+				
+			// We know that the first node on the list is the own node, so we discard it.
+			moveTo = movePath.pop();	
 			scheduleMovement();
 		}
 		
 		/**
 		 * Stop current unit action.
 		 */
-		public function stopAction() : void
+		public function stopMove() : void
 		{
 			if (_busy != true)
 			{
 				return;
 			}
 			
-			busy = false;
 			moveTimer.stop();
 			moveFrom = -1;
 			moveTo = null;
 			movePath = null;
+			busy = false;
+		}
+		
+		public function stopAttack() : void
+		{
+			if (_busy != true)
+			{
+				return;
+			}
+			
+			attackTimer.stop();
+			moveFrom = -1;
+			moveTo = null;
+			movePath = null;
+			attackInProgress = false;
+			busy = false;
+			_battleRole = 0;
+			engaged = false;
+		}
+		
+		public function engage(battleRole:Number) : void
+		{
+			trace("preempted. Batle role is: " + battleRole);
+			engaged = true;
+			_battleRole = battleRole;
+			if (_battleRole == GameUnit.BATTLE_ROLE_DEFENDER)
+			{
+				stopMove();
+				attackInProgress = true;
+				busy = true;
+			}
+		}
+		
+		public function scheduleAttack() : void
+		{
+			attackTimer.delay = Const.HALF_DAY_MS;
+			attackTimer.repeatCount = 1;
+			
+			_battleRole = GameUnit.BATTLE_ROLE_ATTACKER;
+			
+			attackTimer.reset();
+			attackTimer.start();
+		}
+		
+		public function takeDamage(value:int) : void
+		{
+			_soldiers -= value;
+			trace("taking damage: " + value + " remaining soldiers: " + _soldiers);
+			if (_soldiers < 0)
+			{
+				_soldiers = 0;
+			}
+			
+			_swordHitSign.gotoAndPlay("animating");
+			_damageSign.gotoAndPlay("animating");
+			_damageSign.damage.text = String(value);
 		}
 
 //##################################################################################################
@@ -194,11 +312,34 @@ package src.units
 			_busySign.y = busySignPosY;
 			_busySign.visible = false;
 			addChildAt(_busySign, 0);
+			
+			_swordHitSign = new SwordHitSign();
+			_swordHitSign.addEventListener(Const.EVT_ANIMATION_SWORD_HIT_ENDED, handleAnimationSwordHitEnded, false, 0, true);
+			addChild(_swordHitSign);
+			
+			_damageSign = new DamageSign();
+			_damageSign.addEventListener(Const.EVT_ANIMATION_DAMAGE_ENDED, handleAnimationDamageEnded, false, 0, true);
+			addChild(_damageSign);
+		}
+		
+		private function removeSigns() : void
+		{
+			_swordHitSign.removeEventListener(Const.EVT_ANIMATION_SWORD_HIT_ENDED, handleAnimationSwordHitEnded);
+			_damageSign.removeEventListener(Const.EVT_ANIMATION_DAMAGE_ENDED, handleAnimationDamageEnded);
 		}
 
 		private function scheduleMovement() : void
 		{			
 			moveTo = movePath.pop();
+			
+			// If is the last node and we are in a battle.
+			if ( (movePath.length == 0) && (attackInProgress == true) )
+			{
+				trace("attacking");
+				engaged = true;
+				dispatchEvent(new UnitEngageEvent(this, enemy, moveTo.uid));
+				return;
+			}
 			
 			moveTimer.delay = ( (Const.MOVE_TIME_1_DAY / _move_time) * Const.DAY_TIME_MS) +  weightFromNode(moveTo);
 			moveTimer.repeatCount = 1;
@@ -256,6 +397,30 @@ package src.units
 			
 			moveFrom = moveTo.uid;
 			scheduleMovement()
+		}
+		
+		private function handleTimerComplete_attack(e:TimerEvent) : void
+		{
+			trace("Attacking enemy: " + enemy.uid + " soldiers: " + enemy.soldiers);
+			dispatchEvent(new UnitBattleEvent(this, enemy));
+		}
+		
+		private function handleAnimationSwordHitEnded(e:Event) : void
+		{
+			if ( (_swordHitSign != null) && contains(_swordHitSign))
+			{
+				//removeChild(_swordHitSign);
+				trace("sword animation ended!");
+			}
+		}
+		
+		private function handleAnimationDamageEnded(e:Event) : void
+		{
+			if ( (_damageSign != null) && contains(_damageSign))
+			{
+				//removeChild(_damageSign);
+				trace("damage animation ended!");
+			}
 		}
 	}
 	

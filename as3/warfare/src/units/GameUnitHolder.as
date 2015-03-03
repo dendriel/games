@@ -32,7 +32,7 @@ package src.units
 		
 		public function addUnit(unit:GameUnit) : void
 		{
-			// Move unit.
+			// Move unit to the position of this holder.
 			unit.x = pos_pixels.x;
 			unit.y = pos_pixels.y;
 			
@@ -45,6 +45,14 @@ package src.units
 			
 			_units.push(unit);
 			unit.unBusy();
+		}
+		
+		public function removeUnit(unit:GameUnit) : void
+		{
+			if (_units.indexOf(unit) >= 0)
+			{
+				_units.splice(_units.indexOf(unit), 1);
+			}
 		}
 		
 		/**

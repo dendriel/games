@@ -13,10 +13,15 @@ package src
 		private static var intro:Sound;
 		private static var introChannel:SoundChannel;
 		
+		private static var swordHit01:SwordHit01;
+		
 		// Load sounds.
 		public static function init(enabled:Boolean=true) : void
 		{
 			intro = new IntroMusic();
+			
+			swordHit01 = new SwordHit01();
+			
 			_enable = enabled;
 		}
 		
@@ -28,6 +33,17 @@ package src
 		static public function disable() : void 
 		{
 			_enable = false;
+		}
+
+//##################################################################################################
+// Sounds.
+		public static function playSwordHit01() : void
+		{
+			if (_enable != true)
+			{
+				return;
+			}
+			swordHit01.play();
 		}
 		
 //##################################################################################################

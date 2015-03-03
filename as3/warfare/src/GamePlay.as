@@ -297,7 +297,7 @@ package src
 			{
 				case ElementType.UNIT:
 					// Kind a workaround... maybe we need to create a "setFocus" function for every type of element.
-					var unit:GameUnit = gameMapR.getUpperMostUnit(idx);
+					var unit:GameUnit = gameMapR.getUnitAt(idx);
 					gameMapR.setUnitOnFocus(unit);
 					displayElementUnit(elem);
 					break;
@@ -378,7 +378,7 @@ package src
 				return;
 			}
 			
-			var unit:GameUnit = gameMapR.getUpperMostUnit(from);
+			var unit:GameUnit = gameMapR.getUnitAt(from);
 			if (unit == null)
 			{
 				trace("Nothing to move from here!");
@@ -407,6 +407,8 @@ package src
 			return p;
 		}
 		
+//################
+// Chat commands.
 		private function handleSpawnUnitCmd(cmd:String) : void
 		{
 			var args:Array = cmd.split(/\s/);
@@ -422,7 +424,6 @@ package src
 			var posy:int = args[2];
 			var posx:int = args[3];
 			
-			trace(args);
 			gameMapR.spawnUnit(type, posx, posy);
 		}
 	}

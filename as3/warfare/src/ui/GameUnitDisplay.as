@@ -106,7 +106,7 @@ package src.ui
 		public function set attack(value:int) : void { attackValueTxt.text = String(value); }
 		public function set defense(value:int) : void { defenseValueTxt.text = String(value); }
 		public function set distance(value:int) : void { distanceValueTxt.text = String(value); }
-		public function set move(value:int) : void { moveValueTxt.text = String(value); }
+		public function set move(value:Number) : void { moveValueTxt.text = String(value); }
 		public function set cost(value:int) : void { costValueTxt.text = String(value); }
 		
 	}

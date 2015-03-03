@@ -24,6 +24,7 @@ package src
 		
 		// Time definitions.
 		public static const DAY_TIME_MS = 2000;
+		public static const HALF_DAY_MS:Number = DAY_TIME_MS / 2;
 		public static const MOVE_TIME_1_DAY:Number = 1;
 		public static const MOVE_TIME_2_DAYS:Number = MOVE_TIME_1_DAY / 2;
 		public static const MOVE_TIME_3_DAYS:Number = MOVE_TIME_1_DAY / 3;
@@ -53,6 +54,8 @@ package src
 		public static const EVT_SINGLE_PLAYER_CLICK = "single player click";
 		public static const EVT_MULTIPLAYER_CLICK = "multiplayer click";
 		public static const EVT_CREDITS_CLICK = "credits click";
+		public static const EVT_ANIMATION_SWORD_HIT_ENDED = "animation sword hit ended";
+		public static const EVT_ANIMATION_DAMAGE_ENDED = "animation damage ended";
 	}
 	
 }
