@@ -341,7 +341,7 @@ package src
 			var unit:IElementUnitInfo = IElementUnitInfo(elem);
 			
 			gameUnitDisplay.elemName = elem.elemName;
-			gameUnitDisplay.set_soldiers(unit.soldiers, unit.soldiers_injuried);
+			gameUnitDisplay.set_soldiers(unit.soldiers, unit.soldiers_max);
 			gameUnitDisplay.attack   = unit.attack;
 			gameUnitDisplay.defense  = unit.defense;
 			gameUnitDisplay.distance = unit.distance;

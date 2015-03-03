@@ -270,12 +270,12 @@ package src.units
 			}
 		}
 		
-		public function scheduleAttack() : void
+		public function scheduleAttack(role:Number) : void
 		{
 			attackTimer.delay = Const.HALF_DAY_MS;
 			attackTimer.repeatCount = 1;
 			
-			_battleRole = GameUnit.BATTLE_ROLE_ATTACKER;
+			_battleRole = role;
 			
 			attackTimer.reset();
 			attackTimer.start();
@@ -323,10 +323,8 @@ package src.units
 			addChildAt(_focusSign, 0);
 			
 			_busySign = new HourglassSign();
-			_busySign.x = busySignPosX;
-			_busySign.y = busySignPosY;
 			_busySign.visible = false;
-			addChildAt(_busySign, 0);
+			_topImg.addChild(_busySign);
 			
 			_swordHitSign = new SwordHitSign();
 			_topImg.addChild(_swordHitSign);
@@ -411,8 +409,18 @@ package src.units
 		
 		private function handleTimerComplete_attack(e:TimerEvent) : void
 		{
-			trace("Attacking enemy: " + enemy.uid + " soldiers: " + enemy.soldiers);
-			dispatchEvent(new UnitBattleEvent(this, enemy));
+			// Attacker.
+			if (_battleRole == GameUnit.BATTLE_ROLE_ATTACKER)
+			{
+				trace("Attacker.");
+				dispatchEvent(new UnitBattleEvent(this, enemy, GameUnit.BATTLE_ROLE_DEFENDER));
+			}
+			// Defender.
+			else
+			{
+				trace("Defender.");
+				dispatchEvent(new UnitBattleEvent(this, enemy, GameUnit.BATTLE_ROLE_ATTACKER));
+			}
 		}
 	}
 	

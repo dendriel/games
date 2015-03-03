@@ -181,9 +181,7 @@ package src.maps
 		private function handleUnitEngage(e:UnitEngageEvent) : void
 		{
 			var p:Point = Calc.coorToTile(e.defender.x, e.defender.y, ConstTile.TILE_W, ConstTile.TILE_H);
-			
-			trace("defender pos: " + e.defenderPos + " expected: " + Calc.coor_to_idx(p.x, p.y, _width_tiles) );
-			
+				
 			// Check if defender still in the expected position.
 			if (e.defenderPos != Calc.coor_to_idx(p.x, p.y, _width_tiles) )
 			{
@@ -191,7 +189,8 @@ package src.maps
 				return;
 			}
 			e.defender.engage(GameUnit.BATTLE_ROLE_DEFENDER);
-			e.attacker.scheduleAttack();
+			// The unit that took the initiative.
+			e.attacker.scheduleAttack(GameUnit.BATTLE_ROLE_ATTACKER);
 		}
 		
 		/**
@@ -200,25 +199,30 @@ package src.maps
 		 */
 		private function handleUnitBattle(e:UnitBattleEvent) : void
 		{
-			trace("process battle");
-			GameBattleProcessor.processBattle(e.attacker, e.defender);
+			// Initiative unit is the attacker.
+			if (e.nextRole == GameUnit.BATTLE_ROLE_DEFENDER)
+			{
+				GameBattleProcessor.processBattle(e.attacker, e.defender);
+			}
+			// Initiative unit is the defender.
+			else
+			{
+				GameBattleProcessor.processBattle(e.defender, e.attacker );
+			}
 			
-			trace("defender soldiers: " + e.defender.soldiers);
 			if (e.defender.soldiers == 0)
 			{
-				trace("defender is down");
 				removeUnit(e.defender);
 				e.attacker.stopAttack();
 			}
 			else if (e.attacker.soldiers == 0)
 			{
-				trace("attacker is down!");
 				removeUnit(e.attacker);
 				e.defender.stopAttack();
 			}
 			else
 			{
-				e.attacker.scheduleAttack();
+				e.attacker.scheduleAttack(e.nextRole);
 			}
 		}
 
@@ -402,7 +406,6 @@ package src.maps
 		 */
 		public function removeUnit(unit:GameUnit) : void
 		{
-			trace("removing unit");
 			var index:int = Calc.pixel_to_idx(unit.x, unit.y, ConstTile.TILE_W, _width_tiles);
 			unit.removeSelf();
 			GameMapBuilder.removeUnit(unit, unit_layer_element, unit_layer, unit_top_layer, index, weightMap);

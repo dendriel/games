@@ -98,9 +98,9 @@ package src.ui
 			nameTxt.height = nameTxt.textHeight + 2;
 		}
 		
-		public function set_soldiers(soldiers:int, injuried:int) : void
+		public function set_soldiers(soldiers:int, max:int) : void
 		{
-			soldiersAmountTxt.text = ( String(soldiers - injuried) + "/" + String(soldiers) );
+			soldiersAmountTxt.text = ( String(soldiers) + "/" + String(max) );
 		}
 		
 		public function set attack(value:int) : void { attackValueTxt.text = String(value); }
