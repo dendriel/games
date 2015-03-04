@@ -40,38 +40,34 @@ package src
 	 * +------------------------------------------------------------+  -/
 	 */
 	public class GamePlay extends MovieClip 
-	{
-		// Constants.
-		private const statusDisplayX:int = 8;
-		private const statusDisplayY:int = 8;
-		
+	{		
 		// Images.
-		private var gamePlayFrameR:GamePlayFrame;
-		private var gameTarget:Target01;
+		private var gamePlayFrameR:GamePlayFrame; // Border drawing of the map.
+		private var gameTarget:Target01; // Indication of what tile is in focus.
 		
 		// Screens.
-		private var gameMapScreen:MovieClip;
-		private var gameMapScreenMask:MovieClip;
-		private var gameMapR:GameMap;
-		private var gameMenuScreen:MovieClip;
-		private var gameUnitDisplay:GameUnitDisplay;
-		private var gameTileDisplay:GameTileDisplay;
-		private var timer:GameTimer;
+		private var gameMapScreen:MovieClip;			// Contains the game map.
+		private var gameMapScreenMask:MovieClip;		// Limits the game map view.
+		private var gameMapR:GameMap;					// Loaded game map reference.
+		private var gameMenuScreen:MovieClip;			// Contains the menu area.
+		private var gameUnitDisplay:GameUnitDisplay;	// Unit status display.
+		private var gameTileDisplay:GameTileDisplay;	// Tile status display.
+		private var timer:GameTimer;					// Date/time object handler.
 		
 		// Input/Output.
 		private var key:KeyObject;
 		private var controlPressed:Boolean;
 		private var gameChat:Chat;
+		// Chat Commands.
+		private const spawnUnitCmd:String = "/spawn";
 		
 		// Internal state.
 		private var mouseButtonDown:Boolean;
 		private var mouseButtonPressPoint:Point;
 		
 		// Info text.
-		private var coorTxt:TextField;
+		private var coorTxt:TextField;	// Coordinates in focus. Temporary TODO: remove.
 		
-		// Chat Commands.
-		private const spawnUnitCmd:String = "/spawn";
 		
 		public function GamePlay()
 		{
@@ -90,8 +86,8 @@ package src
 			gameChat.registerCallback(spawnUnitCmd, handleSpawnUnitCmd);
 			
 			// Create displays.
-			gameUnitDisplay = new GameUnitDisplay(statusDisplayX, statusDisplayY);
-			gameTileDisplay = new GameTileDisplay(statusDisplayX, statusDisplayY);
+			gameUnitDisplay = new GameUnitDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y);
+			gameTileDisplay = new GameTileDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y);
 			
 			// Load game frame.
 			gamePlayFrameR = new GamePlayFrame();
@@ -260,25 +256,6 @@ package src
 			displayElementInfo(tile_idx);
 		}
 		
-		private function moveMap(px:int, py:int) : void
-		{
-			var pxTemp = gameMapR.x + px;
-			var pyTemp = gameMapR.y + py;
-			
-			// Does not scroll if there is no map to show.
-			pxTemp = Calc.clipGT(pxTemp, 0);
-			pxTemp = Calc.clipLT(pxTemp, ( -1 * (gameMapR.width - Const.MAP_AREA_W) ));
-			
-			pyTemp = Calc.clipGT(pyTemp, 0);
-			pyTemp = Calc.clipLT(pyTemp, ( -1 * (gameMapR.height - Const.MAP_AREA_H) ));
-			
-			gameTarget.visible = false;
-			gameMapR.setUnitOnFocus(null);
-			
-			gameMapR.x = pxTemp;
-			gameMapR.y = pyTemp;
-		}
-		
 		private function displayElementInfo(idx:int) : void
 		{
 			// Get information from the element under the cursor.
@@ -371,6 +348,25 @@ package src
 			gameMenuScreen.addChild(gameTileDisplay);
 		}
 		
+		private function moveMap(px:int, py:int) : void
+		{
+			var pxTemp = gameMapR.x + px;
+			var pyTemp = gameMapR.y + py;
+			
+			// Does not scroll if there is no map to show.
+			pxTemp = Calc.clipGT(pxTemp, 0);
+			pxTemp = Calc.clipLT(pxTemp, ( -1 * (gameMapR.width - Const.MAP_AREA_W) ));
+			
+			pyTemp = Calc.clipGT(pyTemp, 0);
+			pyTemp = Calc.clipLT(pyTemp, ( -1 * (gameMapR.height - Const.MAP_AREA_H) ));
+			
+			gameTarget.visible = false;
+			gameMapR.setUnitOnFocus(null);
+			
+			gameMapR.x = pxTemp;
+			gameMapR.y = pyTemp;
+		}
+		
 		private function moveUnit(from:int, to:int) : void
 		{
 			if (from == to)
@@ -378,16 +374,8 @@ package src
 				return;
 			}
 			
-			var unit:GameUnit = gameMapR.getUnitAt(from);
-			if (unit == null)
-			{
-				trace("Nothing to move from here!");
-				// There is no unit to move from this position.
-				return;
-			}
-			
 			displayElementInfo(from);
-			gameMapR.moveUnit(unit, from, to);
+			gameMapR.moveUnit(from, to);
 		}
 		
 		/**

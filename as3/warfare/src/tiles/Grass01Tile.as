@@ -18,10 +18,7 @@ package src.tiles
 			_moveEffort = ConstTile.GRASS_01_MOVEEFFORT;
 			
 			// Add random grass tile.
-			var number = int(Calc.randomRange(1, 5));
-				trace("random number is: " + number);
-			switch(number)
-			//switch(Calc.randomRange(1, 5))
+			switch(Calc.randomRange(1, 5))
 			{
 				case 1:
 					addChild(new Grass010Tile);

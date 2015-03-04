@@ -39,6 +39,8 @@ package src
 		public static const MENU_AREA_H = (120 - 16);
 		public static const MAP_AREA_W = (SCREEN_SIZE_W - 32);
 		public static const MAP_AREA_H = (SCREEN_SIZE_H - MENU_AREA_H - 16); // with '-16', the menubar is placed over the big frame.
+		public static const STATUS_DISPLAY_POS_X = 8;
+		public static const STATUS_DISPLAY_POS_Y = 8;
 		
 		public static const MAP_AREA_POS_X = 16;
 		public static const MAP_AREA_POS_Y = 16;

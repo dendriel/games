@@ -9,19 +9,15 @@ package src.ui
 	 * @author Vitor Rozsa
 	 */
 	public class BlockHitSign extends MovieClip 
-	{
-		public function BlockHitSign()
+	{		
+		public function get ended() : Boolean
 		{
-			addEventListener(Event.ENTER_FRAME, handleEnterFrame, false, 0, true);
+			return (currentLabel == Const.ANIMATION_ENDED);
 		}
 		
-		private function handleEnterFrame(e:Event) : void
+		public function get playing() : Boolean
 		{
-			if (currentLabel == "ended")
-			{
-				dispatchEvent(new Event(Const.EVT_ANIMATION_BLOCK_HIT_ENDED));
-				removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
-			}
+			return (currentLabel == Const.ANIMATION_PLAYING);
 		}
 	}
 	

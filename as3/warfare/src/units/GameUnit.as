@@ -27,6 +27,8 @@ package src.units
 		public static const BATTLE_ROLE_DEFENDER:Number = 2;
 		
 		// Constants.
+		private const removeSelfTimerDelay:Number = 100;
+		
 		private const focusSignRadiusW:Number = ConstTile.TILE_W;
 		private const focusSignRadiusH:Number = ConstTile.TILE_H / 2;
 		private const focusSignRadiusPosX:Number = 0;
@@ -49,8 +51,6 @@ package src.units
 		protected var _soldiers_max;      //! Maximum number of soldiers that can hold.
 		protected var _soldiers;    //! Number of soldiers that can fight.
 		protected var _soldiers_injuried; //! Number of soldiers that are hurt and can't fight;
-		protected var _health_max;
-		protected var _health;
 		protected var _attack;
 		protected var _defense;
 		protected var _distance;
@@ -58,16 +58,15 @@ package src.units
 		protected var _recruit_cost;
 		
 		// Action definitions.
-		private var _busy:Boolean;
 		private var moveTimer:Timer;
 		private var movePath:Vector.<SPFNode>;
 		private var moveTo:SPFNode;
-		private var moveFrom:int;
 		private var attackInProgress:Boolean;
 		private var enemy:GameUnit;
 		private var attackTimer:Timer;
 		private var _battleRole:Number;
 		private var engaged:Boolean;
+		private var removeSelfTimer:Timer;
 		
 		// Images.
 		protected var _topImg:MovieClip;
@@ -78,6 +77,7 @@ package src.units
 		private var _blockHitSign:BlockHitSign;
 		
 		// Unit advantages and disadvantages.
+		// TODO.
 		
 //##################################################################################################
 		// Unique building identifier.
@@ -102,17 +102,25 @@ package src.units
 			moveTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move, false, 0, true);
 			attackTimer = new Timer(0);
 			attackTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_attack, false, 0, true);
+			removeSelfTimer = new Timer(0);
+			removeSelfTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_ended, false, 0, true);
 			
 			drawSigns();
-			busy = false;
 			attackInProgress = false;
 			engaged = false;
 		}
-		
+
+
+//##################################################################################################
+// Public functions.
+//##################################################################################################
 		public function removeSelf() : void
 		{
 			moveTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move);
 			attackTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_attack);
+			
+			// Wait animations to finish.
+			handleTimerComplete_ended(null);
 		}
 		
 		public function get uid() : int {return _uid;}
@@ -125,8 +133,6 @@ package src.units
 		public function get soldiers_max() : int { return _soldiers_max; }
 		public function get soldiers() : int { return _soldiers; }
 		public function get soldiers_injuried() : int { return _soldiers_injuried; }
-		public function get health_max() : int { return _health_max; }
-		public function get health() : int { return _health; }
 		public function get attack() : int { return _attack; }
 		public function get defense() : int { return _defense; }
 		public function get distance() : int { return _distance; }
@@ -138,147 +144,25 @@ package src.units
 		public function set focusSign(value:Boolean) : void { _focusSign.visible = value; }
 		public function get battleRole():Number { return _battleRole;}
 		
+//#####################
+// Unit actions.
 		/**
-		 * Update unit x and y through a Point object.
+		 * Engage unit in a fight; TODO: keep a list of all units in a battle and process the fight
+		 * over this list. A unit can defend itself from many enemies, but can attack only one.
+		 * @return true if could engage the unit; false if the unit cant fight.
 		 */
-		public function set position(pos:Point) : void
+		public function engage() : Boolean
 		{
-			x = pos.x;
-			y = pos.y;
-		}
-		
-		/**
-		 * Call after processing an unit action.
-		 */
-		public function unBusy() : void
-		{
-			if (movePath == null)
+			if (engaged == true)
 			{
-				_busy = false;
-				_busySign.visible = false;
-			}
-		}
-		
-		private function set busy(value:Boolean) : void
-		{
-			_busy = value;
-			_busySign.visible = value;
-		}
-		
-		/**
-		 * Schedule unit movement.
-		 */
-		public function move(fromIdx:int, path:Vector.<SPFNode>) : void
-		{
-			if (engaged)
-			{
-				trace("Unit is fighting. Can't move right now.");
-				return;
+				return false;
 			}
 			
-			if (_busy == true)
-			{
-				// Unit movement can be canceled.
-				trace("Unit is busy right now. Restarting movement timer.");
-				moveTimer.stop();
-				attackTimer.stop();
-				attackInProgress = false;
-				enemy = null;
-			}
-			
-			busy = true;
-			movePath = path;
-			moveFrom = fromIdx;
-				
-			// We know that the first node on the list is the own node, so we discard it.
-			moveTo = movePath.pop();	
-			scheduleMovement();
-		}
-		
-		public function moveAttack(fromIdx:int, path:Vector.<SPFNode>, unit:GameUnit) : void
-		{
-			if (engaged)
-			{
-				trace("Unit is fighting. Can't move right now.");
-				return;
-			}
-			
-			if (_busy == true)
-			{
-				// Unit movement can be canceled.
-				trace("Unit is busy right now. Restarting movement timer.");
-				moveTimer.stop();
-				attackTimer.stop();
-			}
-			
-			attackInProgress = true;
-			enemy = unit;
-			
-			busy = true;
-			movePath = path;
-			moveFrom = fromIdx;
-				
-			// We know that the first node on the list is the own node, so we discard it.
-			moveTo = movePath.pop();	
-			scheduleMovement();
-		}
-		
-		/**
-		 * Stop current unit action.
-		 */
-		public function stopMove() : void
-		{
-			if (_busy != true)
-			{
-				return;
-			}
-			
-			moveTimer.stop();
-			moveFrom = -1;
-			moveTo = null;
-			movePath = null;
-			busy = false;
-		}
-		
-		public function stopAttack() : void
-		{
-			if (_busy != true)
-			{
-				return;
-			}
-			
-			attackTimer.stop();
-			moveFrom = -1;
-			moveTo = null;
-			movePath = null;
-			attackInProgress = false;
-			busy = false;
-			_battleRole = 0;
-			engaged = false;
-		}
-		
-		public function engage(battleRole:Number) : void
-		{
-			trace("preempted. Batle role is: " + battleRole);
+			stopMove();
 			engaged = true;
-			_battleRole = battleRole;
-			if (_battleRole == GameUnit.BATTLE_ROLE_DEFENDER)
-			{
-				stopMove();
-				attackInProgress = true;
-				busy = true;
-			}
-		}
-		
-		public function scheduleAttack(role:Number) : void
-		{
-			attackTimer.delay = Const.HALF_DAY_MS;
-			attackTimer.repeatCount = 1;
+			busySign = true;
 			
-			_battleRole = role;
-			
-			attackTimer.reset();
-			attackTimer.start();
+			return true;
 		}
 		
 		public function takeDamage(value:int) : void
@@ -308,10 +192,167 @@ package src.units
 				SoundLoader.playBlockHit01();
 			}
 		}
+		
+		/**
+		 * Start unit movement.
+		 */
+		public function startMove(path:Vector.<SPFNode>) : void
+		{
+			if (engaged)
+			{
+				trace("Unit is fighting. Can't move right now.");
+				return;
+			}
+			
+			busySign = true;
+			attackInProgress = false;
+			moveTimer.stop();
+			movePath = path;
+			scheduleMove();
+		}
+		
+		/**
+		 * Start unit attack.
+		 */
+		public function startAttack(path:Vector.<SPFNode>, unit:GameUnit) : void
+		{
+			if (engaged)
+			{
+				trace("Unit is fighting. Can't move right now.");
+				return;
+			}
+			
+			busySign = true;
+			moveTimer.stop();
+			attackInProgress = true;
+			enemy = unit;
+			movePath = path;
+			scheduleMove();
+		}
+
+		/**
+		 * Schedule next unit movement.
+		 */
+		public function scheduleMove() : void
+		{
+			if (movePath == null)
+			{
+				// Movement has ended.
+				busySign = false;
+				return;
+			}
+			
+			moveTo = movePath.pop();
+			
+			if (movePath.length == 0)
+			{
+				movePath = null;
+			}
+			
+			// If is the last node and we are in a battle.
+			if ( (movePath == null) && (attackInProgress == true) )
+			{
+				attackInProgress = false;
+				engaged = true;
+				dispatchEvent(new UnitEngageEvent(this, enemy, moveTo.uid));
+				return;
+			}
+			
+			moveTimer.delay = ( (Const.MOVE_TIME_1_DAY / _move_time) * Const.DAY_TIME_MS) +  weightFromNode(moveTo);
+			moveTimer.repeatCount = 1;
+			
+			moveTimer.reset();
+			moveTimer.start();
+		}
+		
+		/**
+		 * Schedule next unit attack.
+		 * @param	role Unit will be the attacker or defender.
+		 */
+		public function scheduleAttack(role:Number) : void
+		{
+			attackTimer.delay = Const.HALF_DAY_MS;
+			attackTimer.repeatCount = 1;
+			
+			_battleRole = role;
+			
+			attackTimer.reset();
+			attackTimer.start();
+		}
+		
+		public function stopMove() : void
+		{			
+			moveTimer.stop();
+			moveTo = null;
+			movePath = null;
+			attackInProgress = false;
+			busySign = false;
+		}
+		
+		public function stopAttack() : void
+		{			
+			attackTimer.stop();
+			moveTimer.stop();
+			moveTo = null;
+			movePath = null;
+			attackInProgress = false;
+			_battleRole = 0;
+			engaged = false;
+			busySign = false;
+		}
 
 //##################################################################################################
 // Private functions.
 //##################################################################################################
+		
+//#####################
+// Handle Timer Events.
+		private function handleTimerComplete_move(e:TimerEvent) : void
+		{
+			var moveToUID:int = moveTo.uid;
+			
+			if (movePath == null)
+			{
+				// Unit finished moving.
+				moveTo = null;
+				busySign = false;
+			}
+			
+			dispatchEvent(new UnitMoveEvent(this, moveToUID));
+		}
+		
+		private function handleTimerComplete_attack(e:TimerEvent) : void
+		{
+			// Attacker.
+			if (_battleRole == GameUnit.BATTLE_ROLE_ATTACKER)
+			{
+				dispatchEvent(new UnitBattleEvent(this, enemy, GameUnit.BATTLE_ROLE_DEFENDER));
+			}
+			// Defender.
+			else
+			{
+				dispatchEvent(new UnitBattleEvent(this, enemy, GameUnit.BATTLE_ROLE_ATTACKER));
+			}
+		}
+		
+		private function handleTimerComplete_ended(e:TimerEvent) : void
+		{
+			// Check if there is an animation being played.
+			if (_swordHitSign.playing || _blockHitSign.playing || _damageSign.playing)
+			{
+				removeSelfTimer.delay = removeSelfTimerDelay;
+				removeSelfTimer.repeatCount = 1;				
+				removeSelfTimer.reset();
+				removeSelfTimer.start();
+			}
+			else
+			{
+				dispatchEvent(new UnitRemoveEvent(this));
+			}
+		}
+
+//#####################
+// Auxiliary functions.
 		private function drawSigns() : void
 		{
 			_focusSign = new Shape();
@@ -335,37 +376,10 @@ package src.units
 			_blockHitSign = new BlockHitSign();
 			_topImg.addChild(_blockHitSign);
 		}
-
-		private function scheduleMovement() : void
-		{			
-			moveTo = movePath.pop();
-			
-			// If is the last node and we are in a battle.
-			if ( (movePath.length == 0) && (attackInProgress == true) )
-			{
-				trace("attacking");
-				engaged = true;
-				dispatchEvent(new UnitEngageEvent(this, enemy, moveTo.uid));
-				return;
-			}
-			
-			moveTimer.delay = ( (Const.MOVE_TIME_1_DAY / _move_time) * Const.DAY_TIME_MS) +  weightFromNode(moveTo);
-			moveTimer.repeatCount = 1;
-			
-			trace("next mode to weight: " + weightFromNode(moveTo) + "; total delay: " + moveTimer.delay);
-			
-			if (movePath.length == 0)
-			{
-				movePath = null;
-			}
-			
-			moveTimer.reset();
-			moveTimer.start();
-		}
 		
 		/**
 		 * What out. If the bonus weight of the node is less than the default weight, the unit verification
-		 * in this function may fail.		 * 
+		 * in this function may fail.
 		 * @param	node
 		 * @return
 		 */
@@ -391,36 +405,9 @@ package src.units
 			return bonus;
 		}
 		
-		private function handleTimerComplete_move(e:TimerEvent) : void
+		private function set busySign(value:Boolean) : void
 		{
-			dispatchEvent(new UnitMoveEvent(this, moveFrom, moveTo.uid));
-			
-			if (movePath == null)
-			{
-				moveFrom = -1;
-				moveTo = null;
-				// Unit finished moving.
-				return;
-			}
-			
-			moveFrom = moveTo.uid;
-			scheduleMovement()
-		}
-		
-		private function handleTimerComplete_attack(e:TimerEvent) : void
-		{
-			// Attacker.
-			if (_battleRole == GameUnit.BATTLE_ROLE_ATTACKER)
-			{
-				trace("Attacker.");
-				dispatchEvent(new UnitBattleEvent(this, enemy, GameUnit.BATTLE_ROLE_DEFENDER));
-			}
-			// Defender.
-			else
-			{
-				trace("Defender.");
-				dispatchEvent(new UnitBattleEvent(this, enemy, GameUnit.BATTLE_ROLE_ATTACKER));
-			}
+			_busySign.visible = value;
 		}
 	}
 	

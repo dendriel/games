@@ -44,7 +44,6 @@ package src.units
 			}
 			
 			_units.push(unit);
-			unit.unBusy();
 		}
 		
 		public function removeUnit(unit:GameUnit) : void
@@ -53,6 +52,11 @@ package src.units
 			{
 				_units.splice(_units.indexOf(unit), 1);
 			}
+		}
+		
+		public function containsUnit(unit:GameUnit) : Boolean
+		{
+			return (_units.indexOf(unit) >= 0);
 		}
 		
 		/**

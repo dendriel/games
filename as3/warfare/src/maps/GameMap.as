@@ -59,7 +59,8 @@ package src.maps
 			building_layer_element = new Array(_width_tiles * height_tiles);
 			unit_layer_element = new Array(_width_tiles * height_tiles);
 			weightMap = new Array(_width_tiles * height_tiles);
-			unit_actions = new Array(handleUnitMove, handleUnitEngage, handleUnitBattle);
+			// Don't forget to update GameMapBuilder to add event listeners for these functions.
+			unit_actions = new Array(handleUnitMove, handleUnitEngage, handleUnitBattle, handleUnitRemove);
 			
 			// Initialize weight map (with default values) and unit layer array.
 			for (var i:int = 0; i < (_width_tiles * height_tiles); i++)
@@ -151,9 +152,45 @@ package src.maps
 			return moveable;
 		}
 		
+		/**
+		 * Find out the index in the map that the unit is contained.
+		 * @param	unit
+		 * @return The index of the holder.
+		 */
+		private function findUnitMapIndex(unit:GameUnit) : int
+		{
+			return Calc.pixel_to_idx(unit.x, unit.y, ConstTile.TILE_W, _width_tiles);
+		}
+		
+		/**
+		 * Find out the holder of the unit
+		 * @param	unit
+		 * @return The holder itself.
+		 */
+		private function findUnitHolder(unit:GameUnit) : GameUnitHolder
+		{
+			return unit_layer_element[findUnitMapIndex(unit)];
+		}
+		
+		/**
+		 * Find out the SPFNode that the unit registered it weight.
+		 * @param	unit
+		 * @return The SPFNode that have the unit weight.
+		 */
+		private function findUnitWeightNode(unit:GameUnit) : SPFNode
+		{
+			return weightMap[findUnitMapIndex(unit)];
+		}
+		
+		/**
+		 * This callback receives the unit instead of its index so we can handle multiple units in the
+		 * same node.
+		 * @param	e
+		 */
 		private function handleUnitMove(e:UnitMoveEvent) : void
-		{ 
-			var holderFrom:Vector.<GameUnit> = unit_layer_element[e.fromIdx].units;
+		{
+			var holderFrom:GameUnitHolder = findUnitHolder(e.unit);
+			var weightNodeFrom:SPFNode = findUnitWeightNode(e.unit);
 			var holderTo:GameUnitHolder = unit_layer_element[e.toIdx];
 			
 			// Check if destination still moveable.
@@ -164,14 +201,17 @@ package src.maps
 			}
 			
 			// Remove unit from the origin holder.
-			holderFrom.splice(holderFrom.indexOf(e.unit), 1);
+			holderFrom.removeUnit(e.unit);
 			// Remove weight from the unit.
-			SPFNode(weightMap[e.fromIdx]).weight -= Const.UNIT_WEIGHT;
+			weightNodeFrom.weight -= Const.UNIT_WEIGHT;
 			
 			// Insert unit into the destination holder.
 			holderTo.addUnit(e.unit);
 			// Add unit's weight in the layer.
 			SPFNode(weightMap[e.toIdx]).weight += Const.UNIT_WEIGHT;
+			
+			// Schedule next movement.
+			e.unit.scheduleMove();
 		}
 		
 		/**
@@ -180,15 +220,21 @@ package src.maps
 		 */
 		private function handleUnitEngage(e:UnitEngageEvent) : void
 		{
-			var p:Point = Calc.coorToTile(e.defender.x, e.defender.y, ConstTile.TILE_W, ConstTile.TILE_H);
+			var expectedDefenderPosHolder:GameUnitHolder = GameUnitHolder(unit_layer_element[e.defenderExpectedPos]);
 				
 			// Check if defender still in the expected position.
-			if (e.defenderPos != Calc.coor_to_idx(p.x, p.y, _width_tiles) )
+			if (expectedDefenderPosHolder.containsUnit(e.defender) != true)
 			{
+				trace("Defender left the expected position");
 				e.attacker.stopAttack();
 				return;
 			}
-			e.defender.engage(GameUnit.BATTLE_ROLE_DEFENDER);
+			if (e.defender.engage() != true)
+			{
+				trace("Unit is already in a fight.");
+				e.attacker.stopAttack();
+				return;
+			}
 			// The unit that took the initiative.
 			e.attacker.scheduleAttack(GameUnit.BATTLE_ROLE_ATTACKER);
 		}
@@ -210,29 +256,41 @@ package src.maps
 				GameBattleProcessor.processBattle(e.defender, e.attacker );
 			}
 			
+			// Check if defender has fallen.
 			if (e.defender.soldiers == 0)
 			{
 				removeUnit(e.defender);
 				e.attacker.stopAttack();
 			}
+			// Check if attacker has fallen.
 			else if (e.attacker.soldiers == 0)
 			{
 				removeUnit(e.attacker);
 				e.defender.stopAttack();
 			}
+			// If no unit has lost the battle, schedule the next batle. Switch the attacker for the
+			// next battle.
 			else
 			{
 				e.attacker.scheduleAttack(e.nextRole);
 			}
 		}
+		
+		/**
+		 * Remove unit from all references.
+		 * @param	e
+		 */
+		private function handleUnitRemove(e:UnitRemoveEvent) : void
+		{
+			var unit:GameUnit = e.unit;
+			var index:int = Calc.pixel_to_idx(unit.x, unit.y, ConstTile.TILE_W, _width_tiles);
+			GameMapBuilder.removeUnit(unit, unit_layer_element, unit_layer, unit_top_layer, index, weightMap);
+		}
 
 //##################################################################################################
 // Public functions.
 //##################################################################################################
-		public function get width_tiles():int 
-		{
-			return _width_tiles;
-		}
+		public function get width_tiles():int {	return _width_tiles;}
 		
 		/**
 		 * @brief Get an element from the map.
@@ -275,26 +333,6 @@ package src.maps
 		}
 		
 		/**
-		 * Get a holder with all units from the given position.
-		 * @param	idx
-		 * @return The holder of units, if there is any unit on the position; null if there is no unit
-		 * at the given position.
-		 */
-		public function getAllUnits(idx:int) : Vector.<GameUnit>
-		{
-			var holder:Vector.<GameUnit> = unit_layer_element[idx].units;
-			
-			if (holder.length > 0)
-			{
-				return holder;
-			}
-			else
-			{
-				return null;
-			}
-		}
-		
-		/**
 		 * Find unit by its uid.
 		 * @param	idx
 		 * @return The unit, if found; null otherwise.
@@ -316,7 +354,6 @@ package src.maps
 		}
 		
 		/**
-		 * Find unit by its uid.
 		 * @param	idx
 		 * @return The unit, if found; null otherwise.
 		 */
@@ -325,39 +362,43 @@ package src.maps
 			return GameUnitHolder(unit_layer_element[idx]).unit;
 		}
 		
-		public function moveUnit(unit:GameUnit, from:int, to:int) : void
+		public function moveUnit(from:int, to:int) : void
 		{
-			// If is going to attack an unit.
-			var moveAttack:Boolean = false;
 			var unit:GameUnit;
-			var enemy:GameUnit;
+			var enemy:GameUnit = null;
+			
+			unit = GameUnitHolder(unit_layer_element[from]).unit;
+			if (unit == null)
+			{
+				trace("Nothing to move from here!");
+				// There is no unit to move from this position.
+				return;
+			}
 			
 			// Check if can move to the given destination.
 			if (posIsFree(to) != true)
 			{
+				// Destination is an enemy?
 				enemy = GameUnitHolder(unit_layer_element[to]).unit;
 				if (enemy == null)
 				{
 					trace("Can't move there.");
 					return;
 				}
-				
-				// If there is an unit in the destination, then this is an attack action.
-				moveAttack = true;
 			}
 			
-			unit = GameUnitHolder(unit_layer_element[from]).unit;
-			
+			// Find out the shortest path.
 			var path:Vector.<SPFNode> = shortestPath.findSPF(from, to);
-			if (moveAttack)
+			// Remove first node, that is the own unit node.
+			path.pop();
+			
+			if (enemy != null)
 			{
-				trace("moveAttack from " + from + " to " + to);
-				unit.moveAttack(from, path, enemy);
+				unit.startAttack(path, enemy);
 			}
 			else
 			{
-				trace("move unit from " + from + " to " + to);
-				unit.move(from, path);
+				unit.startMove(path);
 			}
 		}
 		
@@ -372,16 +413,13 @@ package src.maps
 			if (unitOnFocus != null)
 			{
 				unitOnFocus.focusSign = false;
+				unitOnFocus = null;
 			}
 			
 			if (unit != null)
 			{
 				unitOnFocus = unit;
 				unitOnFocus.focusSign = true;
-			}
-			else
-			{
-				unitOnFocus = null;
 			}
 		}
 		
@@ -406,9 +444,8 @@ package src.maps
 		 */
 		public function removeUnit(unit:GameUnit) : void
 		{
-			var index:int = Calc.pixel_to_idx(unit.x, unit.y, ConstTile.TILE_W, _width_tiles);
+			trace("removing unit!");
 			unit.removeSelf();
-			GameMapBuilder.removeUnit(unit, unit_layer_element, unit_layer, unit_top_layer, index, weightMap);
 		}
 	}
 	

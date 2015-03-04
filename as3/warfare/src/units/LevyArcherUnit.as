@@ -22,8 +22,6 @@ package src.units
 			_soldiers_max = 40;
 			_soldiers = _soldiers_max;
 			_soldiers_injuried = 0;
-			_health_max = 10;
-			_health = 10;
 			_attack = 3;
 			_defense = 0;
 			_distance = 2;

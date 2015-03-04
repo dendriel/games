@@ -153,6 +153,7 @@ package src.maps
 			unit.addEventListener(UnitMoveEvent.EVT_UNIT_MOVE, actions[0], false, 0, true);
 			unit.addEventListener(UnitEngageEvent.EVT_UNIT_ENGAGE, actions[1], false, 0, true);
 			unit.addEventListener(UnitBattleEvent.EVT_UNIT_BATTLE, actions[2], false, 0, true);
+			unit.addEventListener(UnitRemoveEvent.EVT_UNIT_REMOVE, actions[3], false, 0, true);
 			
 			unit.x = pos.x * ConstTile.TILE_W;
 			unit.y = pos.y * ConstTile.TILE_H;
@@ -174,9 +175,7 @@ package src.maps
 		}
 		
 		public static function removeUnit(unit:GameUnit, element_layer:Array, image_layer:MovieClip, image_layer_top:MovieClip, index:int, weightMap:Array) : void
-		{
-			unit.removeSelf();
-			
+		{			
 			// Remove unit from reference array.
 			GameUnitHolder(element_layer[index]).removeUnit(unit);
 			

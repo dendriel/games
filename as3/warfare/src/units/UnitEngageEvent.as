@@ -13,19 +13,19 @@ package src.units
 		// Event data.
 		private var _attacker:GameUnit;
 		private var _defender:GameUnit;
-		private var _defenderPos:int;
+		private var _defenderExpectedPos:int; // Check if the enemy still in the expected position.
 
 		public function UnitEngageEvent(attacker:GameUnit, defender:GameUnit, defenderPos:int, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(UnitEngageEvent.EVT_UNIT_ENGAGE, bubbles, cancelable);
 			_attacker = attacker;
 			_defender = defender;
-			_defenderPos = defenderPos;
+			_defenderExpectedPos = defenderPos;
 		}
 
 		public override function clone() : Event
 		{
-			return new UnitEngageEvent(_attacker, _defender, _defenderPos, bubbles, cancelable);
+			return new UnitEngageEvent(_attacker, _defender, _defenderExpectedPos, bubbles, cancelable);
 		}
 		
 		public function get attacker():GameUnit 
@@ -38,9 +38,9 @@ package src.units
 			return _defender;
 		}
 		
-		public function get defenderPos():int
+		public function get defenderExpectedPos():int
 		{
-			return _defenderPos;
+			return _defenderExpectedPos;
 		}
 	}
 	
