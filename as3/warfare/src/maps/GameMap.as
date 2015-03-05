@@ -73,6 +73,7 @@ package src.maps
 			// Draw landscape.
 			if (tile_layer_map != null)
 			{
+				trace("Draw landscape.");
 				tile_layer = GameMapBuilder.drawLandscape(tile_layer_map, tile_layer_element, _width_tiles, height_tiles);
 				// Add layer 0.
 				addChild(tile_layer);
@@ -81,6 +82,7 @@ package src.maps
 			// Draw buildings.
 			if (building_layer_map != null)
 			{
+				trace("Draw buildings.");
 				building_layer = GameMapBuilder.drawBuildings(building_layer_map, building_layer_element, _width_tiles, height_tiles);
 				// Add layer 1.
 				addChild(building_layer);
@@ -94,6 +96,7 @@ package src.maps
 			// Draw units.
 			if (unit_layer_map != null)
 			{
+				trace("Draw units.");
 				var layers:Array = GameMapBuilder.createUnits(unit_layer_map, unit_layer_element, _width_tiles, height_tiles, unit_actions, weightMap);
 				unit_layer = layers[0];
 				unit_top_layer = layers[1];

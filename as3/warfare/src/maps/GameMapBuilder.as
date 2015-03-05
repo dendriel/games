@@ -4,6 +4,7 @@ package src.maps
 	import flash.geom.Point;
 	import src.buildings.*;
 	import src.tiles.*;
+	import src.tiles.tileset1000.*;
 	import src.units.*;
 	import src.Const;
 	import src.as3.math.graph.SPFNode;
@@ -25,10 +26,10 @@ package src.maps
 				{
 					continue;
 				}
-				
 				var tile:GameTile = newTileFromId(map_layer[i]);
-				tile.x = (int) (i % map_width) * ConstTile.TILE_W;
-				tile.y = (int)(i / map_height) * ConstTile.TILE_H;
+				var p:Point = Calc.idx_to_pixel(i, map_width, ConstTile.TILE_W);
+				tile.x = p.x;
+				tile.y = p.y;
 				element_layer[i] = tile;
 				
 				image_layer.addChild(tile);
@@ -101,15 +102,18 @@ package src.maps
 				
 				// Update weight.
 				// Tile.
-				if (tile.moveable != true)
+				if (tile != null)
 				{
-					node.weight = Const.NODE_DISCONNECTED;
-				}
-				else
-				{
-					// Transform move effort in weight. Bonuses will decrese the node weight while
-					// penalties will increase the node it.
-					node.weight = (-1 * (tile.moveEffort / 10) ) + Const.DEFAULT_WEIGHT;
+					if (tile.moveable != true)
+					{
+						node.weight = Const.NODE_DISCONNECTED;
+					}
+					else
+					{
+						// Transform move effort in weight. Bonuses will decrese the node weight while
+						// penalties will increase the node it.
+						node.weight = (-1 * (tile.moveEffort / 10) ) + Const.DEFAULT_WEIGHT;
+					}
 				}
 				
 				// Building. Replaces the previous tile weight.
@@ -373,6 +377,11 @@ package src.maps
 				case ConstTile.ROAD_12_ID: return new Road12Tile;
 				case ConstTile.ROAD_13_ID: return new Road13Tile;
 				case ConstTile.ROAD_16_ID: return new Road16Tile;
+				
+				// Tileset1000
+				case ConstTileset1000.TILE1066_ID: return new Tile1066;
+				case ConstTileset1000.TILE1212_ID: return new Tile1212;
+				case ConstTileset1000.TILE1638_ID: return new Tile1638;
 					
 				default:
 					trace("Invalid tile id: " + id + " received.");

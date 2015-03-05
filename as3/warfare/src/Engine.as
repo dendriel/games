@@ -92,7 +92,7 @@ package src
 		{
 			hideMainMenu();
 			
-			gamePlayR.loadMap(new TestMap2);
+			gamePlayR.loadMap(new TestMap3);
 			
 			addChild(gamePlayR);
 		}

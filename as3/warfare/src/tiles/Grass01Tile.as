@@ -11,11 +11,11 @@ package src.tiles
 		public function Grass01Tile()
 		{
 			_id = ConstTile.GRASS_01_ID;
-			_name = GameLanguage.lang.grass01_name;
-			_desc = GameLanguage.lang.grass01_desc;
-			_def = ConstTile.GRASS_01_DEF;
-			_moveable = ConstTile.GRASS_01_MOVEABLE;
-			_moveEffort = ConstTile.GRASS_01_MOVEEFFORT;
+			_name = GameLanguage.lang.grass_name;
+			_desc = GameLanguage.lang.grass_desc;
+			_def = ConstTile.GRASS_DEF;
+			_moveable = ConstTile.GRASS_MOVEABLE;
+			_moveEffort = ConstTile.GRASS_MOVEEFFORT;
 			
 			// Add random grass tile.
 			switch(Calc.randomRange(1, 5))

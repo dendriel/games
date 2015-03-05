@@ -49,8 +49,8 @@ package src.language
 		function get bridge01_desc():String;
 		
 		// Tiles.
-		function get grass01_name() : String;
-		function get grass01_desc() : String;
+		function get grass_name() : String;
+		function get grass_desc() : String;
 		function get mountain01_name() : String;
 		function get mountain01_desc() : String;
 		function get river01_name():String;
@@ -59,6 +59,10 @@ package src.language
 		function get tree01_desc():String;
 		function get road01_name():String;
 		function get road01_desc():String;
+		function get lake_name():String;
+		function get lake_desc():String;
+		function get sea_name():String;
+		function get sea_desc():String;
 	}
 	
 }

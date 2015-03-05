@@ -49,8 +49,8 @@ package src.language
 		protected var _bridge01_desc:String;
 		
 		// Tiles text.
-		protected var _grass01_name:String;
-		protected var _grass01_desc:String;
+		protected var _grass_name:String;
+		protected var _grass_desc:String;
 		protected var _mountain01_name:String;
 		protected var _mountain01_desc:String;
 		protected var _river01_name:String;
@@ -59,6 +59,10 @@ package src.language
 		protected var _tree01_desc:String;
 		protected var _road01_name:String;
 		protected var _road01_desc:String;
+		protected var _lake_name:String;
+		protected var _lake_desc:String;
+		protected var _sea_name:String;
+		protected var _sea_desc:String;
 		
 		
 //##################################################################################################
@@ -111,8 +115,8 @@ package src.language
 
 //##################################################################################################
 // Tiles.
-		public function get grass01_name():String { return _grass01_name; }
-		public function get grass01_desc():String { return _grass01_desc; }
+		public function get grass_name():String { return _grass_name; }
+		public function get grass_desc():String { return _grass_desc; }
 		public function get mountain01_name():String { return _mountain01_name; }
 		public function get mountain01_desc():String { return _mountain01_desc; }
 		public function get river01_name():String { return _river01_name; }
@@ -121,6 +125,10 @@ package src.language
 		public function get tree01_desc():String { return _tree01_desc; }
 		public function get road01_name():String { return _road01_name; }
 		public function get road01_desc():String { return _road01_desc; }
+		public function get lake_name():String { return _lake_name; }
+		public function get lake_desc():String { return _lake_desc; }
+		public function get sea_name():String { return _sea_name; }
+		public function get sea_desc():String { return _sea_desc; }
 	}
 	
 }

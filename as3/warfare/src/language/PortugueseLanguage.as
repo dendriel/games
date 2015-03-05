@@ -53,8 +53,8 @@ recrutas de arqueiro são aldeões que são forçados a entrar no exército temp
 			_bridge01_desc = "Ponte rústica de madeira.";
 			
 			// Tiles.
-			_grass01_name = "Campina";
-			_grass01_desc = "Terreno amplo e de fácil acesso, porém, sem obstáculos naturais para defesa.";
+			_grass_name = "Campina";
+			_grass_desc = "Terreno amplo e de fácil acesso, porém, sem obstáculos naturais para defesa.";
 			_mountain01_name = "Montanha";
 			_mountain01_desc = "Grande elevação de difícil acesso. Representa um obstáculo natural e intransponível.";
 			_river01_name = "Rio";
@@ -63,6 +63,11 @@ recrutas de arqueiro são aldeões que são forçados a entrar no exército temp
 			_tree01_desc = "Fonte de recursos para civilizações. Também serve naturalmente como posição estratégica de defesa.";
 			_road01_name = "Estrada";
 			_road01_desc = "Via para rápida movimentação de unidades.";
+			_lake_name = "Lago";
+			_lake_desc = "O lago é uma possível fonte de recursos para auxiliar no desenvolvimento de cidades.";
+			_sea_name = "Oceano";
+			_sea_desc = "O oceano é uma possível fonte de recursos e rotas de transporte para auxiliar no desenvolvimento de cidades.";
+			
 		}
 		
 	}

@@ -90,6 +90,21 @@ package src.tiles
 		static const ROAD_01_DEF = ConstTile.DEF_VALUE_NONE;
 		static const ROAD_01_MOVEABLE = true;
 		static const ROAD_01_MOVEEFFORT = ConstTile.MOVEEFFORT_EXCELENT;
+		
+		// Lake tile definitions.
+		public static const LAKE_DEF = ConstTile.DEF_VALUE_NONE;
+		public static const LAKE_MOVEABLE = false;
+		public static const LAKE_MOVEEFFORT = ConstTile.MOVEEFFORT_NONE;
+		
+		// Grass tile definitions.
+		public static const GRASS_DEF = ConstTile.DEF_VALUE_NONE;
+		public static const GRASS_MOVEABLE = true;
+		public static const GRASS_MOVEEFFORT = ConstTile.MOVEEFFORT_NORMAL;
+
+		// Lake tile definitions.
+		public static const SEA_DEF = ConstTile.DEF_VALUE_NONE;
+		public static const SEA_MOVEABLE = false;
+		public static const SEA_MOVEEFFORT = ConstTile.MOVEEFFORT_NONE;
 	}
 	
 }
