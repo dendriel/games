@@ -51,18 +51,22 @@ package src.language
 		// Tiles.
 		function get grass_name() : String;
 		function get grass_desc() : String;
-		function get mountain01_name() : String;
-		function get mountain01_desc() : String;
-		function get river01_name():String;
-		function get river01_desc():String;
-		function get tree01_name():String;
-		function get tree01_desc():String;
-		function get road01_name():String;
-		function get road01_desc():String;
+		function get mountain_name() : String;
+		function get mountain_desc() : String;
+		function get river_name():String;
+		function get river_desc():String;
+		function get tree_name():String;
+		function get tree_desc():String;
+		function get road_name():String;
+		function get road_desc():String;
 		function get lake_name():String;
 		function get lake_desc():String;
 		function get sea_name():String;
 		function get sea_desc():String;
+		function get cliff_name():String;
+		function get cliff_desc():String;
+		function get coast_name():String;
+		function get coast_desc():String;
 	}
 	
 }

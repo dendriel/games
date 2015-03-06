@@ -1,8 +1,11 @@
 package src.maps
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import src.Const;
 	import src.IElementInfo;
 	import src.tiles.*;
@@ -22,6 +25,7 @@ package src.maps
 		// Map properties.
 		protected var _width_tiles:int;
 		protected var height_tiles:int;
+		protected var tileset:GameTileset;
 		
 		// Layer 0.
 		protected var tile_layer_map:Array;
@@ -74,7 +78,7 @@ package src.maps
 			if (tile_layer_map != null)
 			{
 				trace("Draw landscape.");
-				tile_layer = GameMapBuilder.drawLandscape(tile_layer_map, tile_layer_element, _width_tiles, height_tiles);
+				tile_layer = GameMapBuilder.drawLandscape(tile_layer_map, tile_layer_element, _width_tiles, height_tiles, tileset);
 				// Add layer 0.
 				addChild(tile_layer);
 			}

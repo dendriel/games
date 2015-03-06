@@ -51,18 +51,22 @@ package src.language
 		// Tiles text.
 		protected var _grass_name:String;
 		protected var _grass_desc:String;
-		protected var _mountain01_name:String;
-		protected var _mountain01_desc:String;
-		protected var _river01_name:String;
-		protected var _river01_desc:String;
-		protected var _tree01_name:String;
-		protected var _tree01_desc:String;
-		protected var _road01_name:String;
-		protected var _road01_desc:String;
+		protected var _mountain_name:String;
+		protected var _mountain_desc:String;
+		protected var _river_name:String;
+		protected var _river_desc:String;
+		protected var _tree_name:String;
+		protected var _tree_desc:String;
+		protected var _road_name:String;
+		protected var _road_desc:String;
 		protected var _lake_name:String;
 		protected var _lake_desc:String;
 		protected var _sea_name:String;
 		protected var _sea_desc:String;
+		protected var _cliff_name:String;
+		protected var _cliff_desc:String;
+		protected var _coast_name:String;
+		protected var _coast_desc:String;
 		
 		
 //##################################################################################################
@@ -117,18 +121,22 @@ package src.language
 // Tiles.
 		public function get grass_name():String { return _grass_name; }
 		public function get grass_desc():String { return _grass_desc; }
-		public function get mountain01_name():String { return _mountain01_name; }
-		public function get mountain01_desc():String { return _mountain01_desc; }
-		public function get river01_name():String { return _river01_name; }
-		public function get river01_desc():String { return _river01_desc; }
-		public function get tree01_name():String { return _tree01_name; }
-		public function get tree01_desc():String { return _tree01_desc; }
-		public function get road01_name():String { return _road01_name; }
-		public function get road01_desc():String { return _road01_desc; }
+		public function get mountain_name():String { return _mountain_name; }
+		public function get mountain_desc():String { return _mountain_desc; }
+		public function get river_name():String { return _river_name; }
+		public function get river_desc():String { return _river_desc; }
+		public function get tree_name():String { return _tree_name; }
+		public function get tree_desc():String { return _tree_desc; }
+		public function get road_name():String { return _road_name; }
+		public function get road_desc():String { return _road_desc; }
 		public function get lake_name():String { return _lake_name; }
 		public function get lake_desc():String { return _lake_desc; }
 		public function get sea_name():String { return _sea_name; }
 		public function get sea_desc():String { return _sea_desc; }
+		public function get cliff_name():String { return _cliff_name; }
+		public function get cliff_desc():String { return _cliff_desc; }
+		public function get coast_name():String { return _coast_name; }
+		public function get coast_desc():String { return _coast_desc; }
 	}
 	
 }

@@ -4,7 +4,6 @@ package src
 	import flash.events.Event;
 	import src.language.EnglishLanguage;
 	import src.language.PortugueseLanguage;
-	import src.tiles.Grass01Tile;
 	import src.ui.MainMenu;
 	import src.maps.*;
 	import src.language.GameLanguage;
@@ -92,7 +91,7 @@ package src
 		{
 			hideMainMenu();
 			
-			gamePlayR.loadMap(new TestMap3);
+			gamePlayR.loadMap(new TestMap4);
 			
 			addChild(gamePlayR);
 		}

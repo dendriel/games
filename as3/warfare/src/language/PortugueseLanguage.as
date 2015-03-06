@@ -55,19 +55,22 @@ recrutas de arqueiro são aldeões que são forçados a entrar no exército temp
 			// Tiles.
 			_grass_name = "Campina";
 			_grass_desc = "Terreno amplo e de fácil acesso, porém, sem obstáculos naturais para defesa.";
-			_mountain01_name = "Montanha";
-			_mountain01_desc = "Grande elevação de difícil acesso. Representa um obstáculo natural e intransponível.";
-			_river01_name = "Rio";
-			_river01_desc = "Curso natural de água. Permite que civilizações se desenvolvam e fornece proteção natural contra perigos.";
-			_tree01_name = "Floresta";
-			_tree01_desc = "Fonte de recursos para civilizações. Também serve naturalmente como posição estratégica de defesa.";
-			_road01_name = "Estrada";
-			_road01_desc = "Via para rápida movimentação de unidades.";
+			_mountain_name = "Montanha";
+			_mountain_desc = "Grande elevação de difícil acesso. Representa um obstáculo natural e intransponível.";
+			_river_name = "Rio";
+			_river_desc = "Curso natural de água. Permite que civilizações se desenvolvam e fornece proteção natural contra perigos.";
+			_tree_name = "Floresta";
+			_tree_desc = "Fonte de recursos para civilizações. Também serve naturalmente como posição estratégica de defesa.";
+			_road_name = "Estrada";
+			_road_desc = "Via para rápida movimentação de unidades.";
 			_lake_name = "Lago";
 			_lake_desc = "O lago é uma possível fonte de recursos para auxiliar no desenvolvimento de cidades.";
 			_sea_name = "Oceano";
 			_sea_desc = "O oceano é uma possível fonte de recursos e rotas de transporte para auxiliar no desenvolvimento de cidades.";
-			
+			_cliff_name = "Penhasco";
+			_cliff_desc = "Desnível do terreno com diferença de altura considerável. Impossível passar.";
+			_coast_name = "Costa";
+			_coast_desc = "Limite entre o continente e ocêano. Dificulta a movimentação de unidades e possuí terreno desfavorável para defesa.";
 		}
 		
 	}

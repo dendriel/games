@@ -1,5 +1,7 @@
 package src.maps
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import src.buildings.*;
@@ -16,9 +18,10 @@ package src.maps
 	 */
 	public class GameMapBuilder 
 	{
-		public static function drawLandscape(map_layer:Array, element_layer:Array, map_width:int, map_height:int) : MovieClip
+		public static function drawLandscape(map_layer:Array, element_layer:Array, map_width:int, map_height:int, tileset:GameTileset) : MovieClip
 		{
-			var image_layer:MovieClip = new MovieClip();
+			var layer:MovieClip = new MovieClip();
+			var bitmap_data:BitmapData = new BitmapData(map_width * ConstTile.TILE_W, map_height * ConstTile.TILE_H);
 			
 			for (var i in map_layer)
 			{
@@ -26,16 +29,17 @@ package src.maps
 				{
 					continue;
 				}
-				var tile:GameTile = newTileFromId(map_layer[i]);
-				var p:Point = Calc.idx_to_pixel(i, map_width, ConstTile.TILE_W);
-				tile.x = p.x;
-				tile.y = p.y;
-				element_layer[i] = tile;
 				
-				image_layer.addChild(tile);
+				var type:int = map_layer[i];
+				
+				// draw tile X in position for index 'i'.
+				tileset.drawTile(bitmap_data, type, i);
+				element_layer[i] = tileset.getTileElement(type);
 			}
 			
-			return image_layer;
+			layer.addChild(new Bitmap(bitmap_data));
+			
+			return layer;
 		}
 		
 		public static function drawBuildings(map_layer:Array, element_layer:Array, map_width:int, map_height:int) : MovieClip
@@ -339,53 +343,6 @@ package src.maps
 						node.neighborList.push(neighbor);
 					}
 				}
-			}
-		}
-		
-		// Create tile object from its ID.
-		private static function newTileFromId(id:int) : GameTile
-		{
-			switch (id)
-			{
-				case ConstTile.GRASS_01_ID:	return new Grass01Tile;
-				case ConstTile.TREE_01_ID: return new Tree01Tile;
-				case ConstTile.TREE_02_ID: return new Tree02Tile;
-				case ConstTile.TREE_03_ID: return new Tree03Tile;
-				case ConstTile.TREE_04_ID: return new Tree04Tile;					
-				case ConstTile.TREE_05_ID: return new Tree05Tile;
-				case ConstTile.TREE_06_ID: return new Tree06Tile;
-				case ConstTile.MOUNTAIN_01_ID: return new Mountain01Tile;
-				case ConstTile.MOUNTAIN_02_ID: return new Mountain02Tile;
-				case ConstTile.MOUNTAIN_03_ID: return new Mountain03Tile;
-				case ConstTile.MOUNTAIN_04_ID: return new Mountain04Tile;
-				case ConstTile.MOUNTAIN_05_ID: return new Mountain05Tile;
-				case ConstTile.MOUNTAIN_06_ID: return new Mountain06Tile;
-				case ConstTile.RIVER_01_ID: return new River01Tile;
-				case ConstTile.RIVER_02_ID: return new River02Tile;
-				case ConstTile.RIVER_03_ID: return new River03Tile;
-				case ConstTile.RIVER_04_ID: return new River04Tile;
-				case ConstTile.RIVER_05_ID: return new River05Tile;
-				case ConstTile.RIVER_06_ID: return new River06Tile;
-				case ConstTile.RIVER_07_ID: return new River07Tile;
-				case ConstTile.RIVER_08_ID: return new River08Tile;
-				case ConstTile.ROAD_01_ID: return new Road01Tile;
-				case ConstTile.ROAD_02_ID: return new Road02Tile;
-				case ConstTile.ROAD_03_ID: return new Road03Tile;
-				case ConstTile.ROAD_05_ID: return new Road05Tile;
-				case ConstTile.ROAD_07_ID: return new Road07Tile;
-				case ConstTile.ROAD_10_ID: return new Road10Tile;
-				case ConstTile.ROAD_12_ID: return new Road12Tile;
-				case ConstTile.ROAD_13_ID: return new Road13Tile;
-				case ConstTile.ROAD_16_ID: return new Road16Tile;
-				
-				// Tileset1000
-				case ConstTileset1000.TILE1066_ID: return new Tile1066;
-				case ConstTileset1000.TILE1212_ID: return new Tile1212;
-				case ConstTileset1000.TILE1638_ID: return new Tile1638;
-					
-				default:
-					trace("Invalid tile id: " + id + " received.");
-					return new Grass01Tile;
 			}
 		}
 		

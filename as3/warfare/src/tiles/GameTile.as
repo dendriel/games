@@ -14,8 +14,6 @@ package src.tiles
 	{
 		// Unique identifier.
 		private var _uid:int;
-		// Type identifier.
-		protected var _id:int;
 		
 		// Element type identifier;
 		private var _type:int = ElementType.TILE;
@@ -50,7 +48,6 @@ package src.tiles
 		}
 		
 		public function get uid() : int { return _uid; }
-		public function get id():int { return _id; }
 		
 		public function get elemType():int {return _type;}
 		public function get elemName():String { return _name; }
