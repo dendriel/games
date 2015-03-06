@@ -1,6 +1,8 @@
 package src.tiles.tileset1000
 {
+	import flash.geom.Point;
 	import src.tiles.*;
+	import src.as3.math.Calc;
 	
 	/**
 	 * ...
@@ -14,6 +16,52 @@ package src.tiles.tileset1000
 			baseIndex = 1000;
 			tile_width = ConstTile.TILE_W;
 			tile_height = ConstTile.TILE_H;
+			
+			randomTiles = new Array([ConstTileset1000.TILE1066_ID, randomGrassTile],
+									[ConstTileset1000.TILE1006_ID, randomYellowGrassTile]
+									);
+		}
+		
+		private function randomGrassTile() : Point
+		{
+			switch(int(Calc.randomRange(1, 8)) )
+			{
+				case 1:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1066_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+				case 2:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1067_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+				case 3:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1098_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+				case 4:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1099_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+				case 5:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1130_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+				case 6:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1131_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+				case 7:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1162_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+				case 8:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1163_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+					
+				default:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1066_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+			}
+		}
+		
+		private function randomYellowGrassTile() : Point
+		{
+			switch(int(Calc.randomRange(1, 2)) )
+			{
+				case 1:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1006_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+					
+				case 2:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1038_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+					
+				default:
+					return Calc.idx_to_pixel(ConstTileset1000.TILE1006_ID - baseIndex - 1, imageData.width / tile_width, tile_width);
+			}
+			
 		}
 		
 		public override function getTileElement(type:int) : GameTile
@@ -310,8 +358,6 @@ package src.tiles.tileset1000
 				case ConstTileset1000.TILE1381_ID:
 				case ConstTileset1000.TILE1382_ID:
 				case ConstTileset1000.TILE1383_ID:
-				case ConstTileset1000.TILE1466_ID:
-				case ConstTileset1000.TILE1467_ID:
 				case ConstTileset1000.TILE1468_ID:
 				case ConstTileset1000.TILE1469_ID:
 				case ConstTileset1000.TILE1470_ID:
@@ -319,8 +365,6 @@ package src.tiles.tileset1000
 				case ConstTileset1000.TILE1472_ID:
 				case ConstTileset1000.TILE1473_ID:
 				case ConstTileset1000.TILE1474_ID:
-				case ConstTileset1000.TILE1498_ID:
-				case ConstTileset1000.TILE1499_ID:
 				case ConstTileset1000.TILE1500_ID:
 				case ConstTileset1000.TILE1501_ID:
 				case ConstTileset1000.TILE1502_ID:
@@ -360,6 +404,11 @@ package src.tiles.tileset1000
 				case ConstTileset1000.TILE1773_ID:
 				case ConstTileset1000.TILE1800_ID:
 				case ConstTileset1000.TILE1801_ID:
+					// Cliff borders.
+				case ConstTileset1000.TILE1466_ID:
+				case ConstTileset1000.TILE1467_ID:
+				case ConstTileset1000.TILE1498_ID:
+				case ConstTileset1000.TILE1499_ID:
 					return new CliffTile();
 					
 //##################################################################################################

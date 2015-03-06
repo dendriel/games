@@ -17,16 +17,34 @@ package src.tiles
 		protected var baseIndex:int;
 		protected var tile_width:int;
 		protected var tile_height:int;
+		protected var randomTiles:Array; // [tile index, callback : Point]
 		
 		public function drawTile(destn:BitmapData, tile:int, destnIdx:int) : void
 		{
-			var tileOffset:int = tile - baseIndex - 1;
 			var destnPos:Point = Calc.idx_to_pixel(destnIdx, (destn.width / tile_width), tile_width);
-			var tilePos:Point = Calc.idx_to_pixel(tileOffset, (imageData.width / tile_width) , tile_width);
+			var tilePos:Point = findTileDataPos(tile);
 			
 			var rect:Rectangle = new Rectangle(tilePos.x, tilePos.y, tile_width, tile_height);
-			
 			destn.copyPixels(imageData, rect, new Point(destnPos.x, destnPos.y));
+		}
+		
+		private function findTileDataPos(index:int) : Point
+		{
+			if (randomTiles != null)
+			{
+				for (var i in randomTiles)
+				{
+					var randomTileIndex:int = randomTiles[i][0];
+					var randomTileCallback:Function = randomTiles[i][1];
+					if (randomTileIndex == index)
+					{
+						return randomTileCallback();
+					}
+				}
+			}
+			// There is no callback registered for this tile.
+			var tileOffset:int = index - baseIndex - 1;
+			return Calc.idx_to_pixel(tileOffset, (imageData.width / tile_width) , tile_width);
 		}
 		
 		public function getTileElement(type:int) : GameTile
