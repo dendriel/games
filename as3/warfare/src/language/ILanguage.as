@@ -13,6 +13,9 @@ package src.language
 		function get multiplayer_button() : String;
 		function get credits_button() : String;
 		
+		// Miscelaneous.
+		function get chat_help_str():String;
+		
 		// Display information screen.
 		function get moveable_str() : String;
 		function get blocked_str() : String;

@@ -15,6 +15,9 @@ package src.language
 			_multiplayer_button   = "Multijogador";
 			_credits_button       = "Créditos";
 			
+			// Miscelaneous.
+			_chat_help_str = "Use a tecla 'c' para mostrar ou esconder o chat do jogo.";
+			
 			// Game information screen.
 			_moveable_str = "Livre";
 			_blocked_str = "Bloqueado";

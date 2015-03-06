@@ -94,6 +94,8 @@ package src
 			gamePlayR.loadMap(new TestMap4);
 			
 			addChild(gamePlayR);
+			stage.stageFocusRect = false;
+			stage.focus = gamePlayR;
 		}
 		
 		private function handleMultiplayerClick(e:Event) : void

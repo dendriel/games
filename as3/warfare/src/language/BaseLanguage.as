@@ -13,6 +13,9 @@ package src.language
 		protected var _multiplayer_button:String;
 		protected var _credits_button:String;
 		
+		// Miscelaneous.
+		protected var _chat_help_str:String;
+		
 		// Display information screen.
 		protected var _moveable_str:String;
 		protected var _blocked_str:String;
@@ -74,8 +77,13 @@ package src.language
 		public function get main_title():String {return _main_title;}		
 		public function get single_player_button():String {return _single_player_button;}		
 		public function get multiplayer_button():String {return _multiplayer_button;}		
-		public function get credits_button():String { return _credits_button;}
+		public function get credits_button():String { return _credits_button; }
 		
+
+//##################################################################################################
+// Miscelaneous.
+		public function get chat_help_str():String { return _chat_help_str; }
+
 //##################################################################################################
 // Display information screen.
 		public function get moveable_str():String { return _moveable_str; }

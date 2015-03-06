@@ -2,9 +2,12 @@ package src
 {
 	import flash.display.MovieClip;
 	import flash.display.Shape;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	import flash.text.TextField;
 	import src.as3.io.KeyObject;
 	import src.maps.GameMap;
 	import src.as3.math.Calc;
@@ -17,7 +20,7 @@ package src
 	import src.as3.ui.ChatInputEvent;
 	import src.units.IElementUnitInfo;
 	import src.units.GameUnit;
-	import flash.text.TextField;
+	import src.language.GameLanguage;
 	
 	/**
 	 * ...
@@ -57,6 +60,7 @@ package src
 		// Input/Output.
 		private var key:KeyObject;
 		private var controlPressed:Boolean;
+		private var cPressed:Boolean;
 		private var gameChat:Chat;
 		// Chat Commands.
 		private const spawnUnitCmd:String = "/spawn";
@@ -84,6 +88,7 @@ package src
 			gameChat.x = Const.CHAT_POX_X;
 			gameChat.y = Const.CHAT_POX_Y;
 			gameChat.registerCallback(spawnUnitCmd, handleSpawnUnitCmd);
+			gameChat.addText(GameLanguage.lang.chat_help_str, false);
 			
 			// Create displays.
 			gameUnitDisplay = new GameUnitDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y);
@@ -142,6 +147,7 @@ package src
 			gameMapR.addEventListener(MouseEvent.MOUSE_UP, handleMouseUpOnMap, false, 0, true);
 			gameMapR.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMoveOnMap, false, 0, true);
 			gameMapR.addEventListener(MouseEvent.CLICK, handleMouseClickOnMap, false, 0, true);
+			addEventListener(Event.ENTER_FRAME, handleEnterFrame, false, 0, true);
 			
 			// Start timer.
 			timer.start();
@@ -163,6 +169,7 @@ package src
 			gameMapR.removeEventListener(MouseEvent.MOUSE_UP, handleMouseUpOnMap);
 			gameMapR.removeEventListener(MouseEvent.MOUSE_MOVE, handleMouseMoveOnMap);
 			gameMapR.removeEventListener(MouseEvent.CLICK, handleMouseClickOnMap);
+			removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			gameMapScreen.removeChild(gameMapR);
 		}
 
@@ -170,17 +177,44 @@ package src
 // Private functions.
 //##################################################################################################
 
-		private function handleMouseDownOnMap(e:MouseEvent) : void
+		private function handleEnterFrame(e:Event) : void
 		{
-			mouseButtonPressPoint.x = mouseX;
-			mouseButtonPressPoint.y = mouseY;
-			mouseButtonDown = true;
-			
 			if (key.isDown(Keyboard.CONTROL))
 			{
 				controlPressed = true;
 				gameTarget.visible = false;
 			}
+			// I don't know if worth checking the variable before, or just setting it to false anyway.
+			else
+			{
+				controlPressed = false;
+			}
+			
+			// We check f1Pressed to avoid repeating the action many times until the key is released.
+			if (key.isDown(Keyboard.C))
+			{
+				if (cPressed == false)
+				{
+					gameChat.visible = !gameChat.visible;
+					if (gameChat.visible)
+					{
+						gameMapR.stage.focus = gameChat.inputTxt;
+						gameChat.clearInputField();
+					}
+				}
+				cPressed = true;
+			}
+			else
+			{
+				cPressed = false;
+			}
+		}
+
+		private function handleMouseDownOnMap(e:MouseEvent) : void
+		{
+			mouseButtonPressPoint.x = mouseX;
+			mouseButtonPressPoint.y = mouseY;
+			mouseButtonDown = true;
 		}
 		
 		private function handleMouseUpOnMap(e:MouseEvent) : void
@@ -189,7 +223,6 @@ package src
 			
 			if (controlPressed)
 			{
-				controlPressed = false;
 				var pointOnMapFrom:Point = screenToMapCoor(mouseButtonPressPoint.x, mouseButtonPressPoint.y);
 				var from = Calc.pixel_to_idx(pointOnMapFrom.x, pointOnMapFrom.y, ConstTile.TILE_W, gameMapR.width_tiles);
 				var pointOnMapTo:Point = screenToMapCoor(mouseX, mouseY);
@@ -201,24 +234,11 @@ package src
 		
 		private function handleMouseMoveOnMap(e:MouseEvent) : void
 		{
-			if (mouseButtonDown != true)
+			if ( (mouseButtonDown != true) ||
+				// If control is pressed. (code relative to unit movement).
+				controlPressed )
 			{
 				return;
-			}
-			
-			// If control is pressed. (code relative to unit movement).
-			if (controlPressed)
-			{
-				// If control keeps pressed.
-				if (key.isDown(Keyboard.CONTROL) )
-				{
-					return;
-				}
-				// If control was released.
-				else if (key.isDown(Keyboard.CONTROL) == false)
-				{
-					controlPressed = false;
-				}
 			}
 			
 			var offsetX = mouseX - mouseButtonPressPoint.x;
