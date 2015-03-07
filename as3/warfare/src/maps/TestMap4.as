@@ -17,14 +17,19 @@ package src.maps
 			height_tiles = tile_layer_map.length;
 			tile_layer_map = Calc.biToUniArray(tile_layer_map);
 			
-			players_list = new Vector.<GamePlayer>;
+			players_list = new Array();
 			
 			var player1:GamePlayer = GamePlayer.newPlayer("Player 1", 10);
 			player1.units_map = Calc.biToUniArray(new TestMap4UnitsPlayer1().layer);
 			player1.buildings_map = Calc.biToUniArray(new TestMap4BuildingsPlayer1().layer);
 			player1.indexOffset = 0;// tileset.baseIndex;
 			
+			var player2:GamePlayer = GamePlayer.newPlayer("Player 2", 10);
+			player2.units_map = Calc.biToUniArray(new TestMap4UnitsPlayer2().layer);
+			player2.indexOffset = 0;// tileset.baseIndex;
+			
 			players_list.push(player1);
+			players_list.push(player2);
 			
 			drawSelf();
 		}

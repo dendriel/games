@@ -5,6 +5,7 @@ package src.maps
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import src.buildings.*;
+	import src.GamePlay;
 	import src.GamePlayer;
 	import src.tiles.*;
 	import src.tiles.tileset1000.*;
@@ -60,6 +61,7 @@ package src.maps
 				
 				layer.addChild(building);
 				player.buildings.push(building);
+				building.player = player;
 			}
 		}
 		
@@ -82,8 +84,7 @@ package src.maps
 				{
 					continue;
 				}
-				var unit:GameUnit = spawnUnit(elements_map[i], actions, i, map_width, elements, layers, weightMap);
-				player.units.push(unit);
+				spawnUnit(elements_map[i], actions, i, map_width, elements, layers, weightMap, player);
 			}
 		}
 		
@@ -139,14 +140,16 @@ package src.maps
 			map_width:int,
 			elements:Array,
 			layers:Array,
-			weightMap:Array) : GameUnit
+			weightMap:Array,
+			player:GamePlayer) : void
 		{
 			var unit:GameUnit = GameMapBuilder.createUnit(type, actions, index, map_width);
 			GameMapBuilder.addUnit(unit, elements, layers, index);
 			// Update the weight of the node that the unit is in.
 			SPFNode(weightMap[index]).weight += Const.UNIT_WEIGHT;
-			
-			return unit;
+			// Set references.
+			player.units.push(unit);
+			unit.player = player;
 		}
 		
 		public static function createUnit(type:int, actions:Array, index:int, map_width:int) : GameUnit

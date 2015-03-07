@@ -1,6 +1,7 @@
 package src.buildings
 {
 	import flash.display.MovieClip;
+	import src.GamePlayer;
 	import src.IElementInfo;
 	import src.tiles.IElementTileInfo;
 	import src.ElementType;
@@ -20,6 +21,9 @@ package src.buildings
 		private var _uid:int;
 		// Type identifier for map building.
 		protected var _id:int;
+		// Owner.
+		private var _player:GamePlayer;
+		
 		// Element type identifier;
 		private var _type:int = ElementType.BUILDING;
 		protected var _name:String;
@@ -63,6 +67,9 @@ package src.buildings
 		public function get def():Number {return _def;}		
 		public function get moveable():Boolean {return _moveable;}
 		public function get moveEffort():int {return _moveEffort;}
+		
+		public function get player():GamePlayer {return _player;}
+		public function set player(value:GamePlayer):void {_player = value;}
 	}
 	
 }

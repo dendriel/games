@@ -7,6 +7,7 @@ package src.maps
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import src.Const;
+	import src.GamePlay;
 	import src.IElementInfo;
 	import src.tiles.*;
 	import src.buildings.*;
@@ -52,7 +53,7 @@ package src.maps
 		private var unitOnFocus:GameUnit;
 		
 		// Players.
-		protected var players_list:Vector.<GamePlayer>;
+		protected var players_list:Array;
 		
 		protected function drawSelf() : void
 		{
@@ -311,6 +312,16 @@ package src.maps
 //##################################################################################################
 		public function get width_tiles():int {	return _width_tiles;}
 		
+		public function get players():Array 
+		{
+			return players_list;
+		}
+		
+		public function set players(value:Array):void 
+		{
+			players_list = value;
+		}
+		
 		/**
 		 * @brief Get an element from the map.
 		 * @param	idx Position of the Element.
@@ -332,7 +343,6 @@ package src.maps
 			// Search inside buildings layer.
 			if (buildings_list != null)
 			{
-				trace("building in " + idx + " is " + buildings_list[idx]);
 				if (buildings_list[idx] != null)
 				{
 					return buildings_list[idx];
@@ -382,7 +392,7 @@ package src.maps
 			return GameUnitHolder(units_list[idx]).unit;
 		}
 		
-		public function moveUnit(from:int, to:int) : void
+		public function moveUnit(player:GamePlayer, from:int, to:int) : void
 		{
 			var unit:GameUnit;
 			var enemy:GameUnit = null;
@@ -395,6 +405,12 @@ package src.maps
 				return;
 			}
 			
+			if (player.id != unit.player.id)
+			{
+				trace("Can't move an unit that isn't yours.");
+				return;
+			}
+			
 			// Check if can move to the given destination.
 			if (posIsFree(to) != true)
 			{
@@ -402,7 +418,15 @@ package src.maps
 				enemy = GameUnitHolder(units_list[to]).unit;
 				if (enemy == null)
 				{
+					// The path is blocked by nature.
 					trace("Can't move there.");
+					return;
+				}
+				
+				// Check if destination unit is friend or foe.
+				if (enemy.player.id == unit.player.id)
+				{
+					trace("Can't attack a friendly unit.");
 					return;
 				}
 			}
@@ -450,11 +474,11 @@ package src.maps
 		 * @param	posy
 		 * @return true
 		 */
-		public function spawnUnit(type:int, posx:int, posy:int) : Boolean
+		public function spawnUnit(player:GamePlayer, type:int, posx:int, posy:int) : Boolean
 		{
 			var index:int = Calc.coor_to_idx(posx, posy, _width_tiles);
 			// Create and add unit in the map.
-			GameMapBuilder.spawnUnit(type, unit_actions, index, _width_tiles, units_list, unit_layers, weightMap);
+			GameMapBuilder.spawnUnit(type, unit_actions, index, _width_tiles, units_list, unit_layers, weightMap, player);
 			return true;
 		}
 		

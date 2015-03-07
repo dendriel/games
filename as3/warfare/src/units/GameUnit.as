@@ -1,11 +1,13 @@
 package src.units
 {
+	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
+	import src.GamePlayer;
 	import src.IElementInfo;
 	import src.ElementType;
 	import src.Const;
@@ -41,6 +43,8 @@ package src.units
 		private var _uid:int;
 		// Type identifier for map building.
 		protected var _id:int;
+		// Owner.
+		private var _player:GamePlayer;
 		
 		// Element type identifier;
 		private var _type:int = ElementType.UNIT;
@@ -75,6 +79,7 @@ package src.units
 		private var _swordHitSign:SwordHitSign;
 		private var _damageSign:DamageSign;
 		private var _blockHitSign:BlockHitSign;
+		private var _banner:Bitmap;
 		
 		// Unit advantages and disadvantages.
 		// TODO.
@@ -97,7 +102,7 @@ package src.units
 		public function GameUnit()
 		{
 			_uid = GameUnit.generateUID();
-			
+
 			moveTimer = new Timer(0);
 			moveTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move, false, 0, true);
 			attackTimer = new Timer(0);
@@ -116,6 +121,9 @@ package src.units
 //##################################################################################################
 		public function removeSelf() : void
 		{
+			// Remove reference from player.
+			player.removeUnit(this);
+			
 			moveTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_move);
 			attackTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, handleTimerComplete_attack);
 			
@@ -125,6 +133,20 @@ package src.units
 		
 		public function get uid() : int {return _uid;}
 		public function get id():int { return _id; }
+		
+		public function get player():GamePlayer {return _player;}
+		public function set player(value:GamePlayer):void
+		{
+			trace("add player into unit " + this.uid);
+			if ( (_player != null) && _topImg.contains(_banner) )
+			{
+				_topImg.removeChild(_banner);
+			}
+			
+			_player = value;
+			_banner = player.banner;
+			_topImg.addChild(_banner);
+		}
 		
 		public function get elemType():int {return _type;}
 		public function get elemName():String { return _name; }

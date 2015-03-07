@@ -74,7 +74,6 @@ package src
 		
 		// Players.
 		private var player:GamePlayer;
-		private var players_list:Vector.<GamePlayer>;
 		
 		public function GamePlay()
 		{
@@ -131,9 +130,6 @@ package src
 			// Create coordinates text.
 			coorTxt = GameTextFormat.newDisplayTextTitle(Const.COOR_TXT_POS_X, Const.COOR_TXT_POS_Y);
 			
-			// Players list.
-			players_list = new Vector.<GamePlayer>;
-			
 			addChild(gameMapScreen);
 			addChild(gameMenuScreen);
 			addChild(gameChat);
@@ -155,8 +151,7 @@ package src
 			gameMapR.addEventListener(MouseEvent.CLICK, handleMouseClickOnMap, false, 0, true);
 			addEventListener(Event.ENTER_FRAME, handleEnterFrame, false, 0, true);
 			
-			player = GamePlayer.newPlayer("Dendriel", 10);
-			players_list.push(player);
+			player = gameMapR.players[0];
 			
 			// Start timer.
 			timer.start();
@@ -295,7 +290,6 @@ package src
 				return;
 			}
 			
-			
 			var pointOnMap:Point = Calc.idx_to_coor(idx, gameMapR.width_tiles);
 			coorTxt.text = pointOnMap.y + "," + pointOnMap.x;
 			
@@ -407,7 +401,7 @@ package src
 			}
 			
 			displayElementInfo(from);
-			gameMapR.moveUnit(from, to);
+			gameMapR.moveUnit(player, from, to);
 		}
 		
 		/**
@@ -444,7 +438,7 @@ package src
 			var posy:int = args[2];
 			var posx:int = args[3];
 			
-			gameMapR.spawnUnit(type, posx, posy);
+			gameMapR.spawnUnit(player, type, posx, posy);
 		}
 	}
 }
