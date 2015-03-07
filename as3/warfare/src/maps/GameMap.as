@@ -15,6 +15,7 @@ package src.maps
 	import src.as3.math.Calc;
 	import src.as3.math.graph.*;
 	import src.GameBattleProcessor;
+	import src.GamePlayer;
 	
 	/**
 	 * ...
@@ -29,22 +30,17 @@ package src.maps
 		
 		// Layer 0.
 		protected var tile_layer_map:Array;
-		private var tile_layer_element:Array;
+		private var tiles_list:Array;
 		private var tile_layer:MovieClip;
 		
 		// Layer 1.
-		protected var building_layer_map:Array;
-		private var building_layer_element:Array;
+		private var buildings_list:Array;
 		private var building_layer:MovieClip;
 		
-		// Layer 2.
-		protected var unit_layer_map:Array;
-		private var unit_layer_element:Array;
-		private var unit_layer:MovieClip;
+		// Layer 2 and 3.
+		private var unit_layers:Array	// [0] bottom layer; [1] top layer.
+		private var units_list:Array;
 		private var unit_actions:Array;
-		
-		// Layer 3.
-		private var unit_top_layer:MovieClip;
 		
 		// Graph map.
 		private var weightMap:Array;
@@ -55,60 +51,76 @@ package src.maps
 		// Internal map state.
 		private var unitOnFocus:GameUnit;
 		
+		// Players.
+		protected var players_list:Vector.<GamePlayer>;
+		
 		protected function drawSelf() : void
 		{
-			shortestPath = new SPF();
+			var player:GamePlayer;
+			var i:int;
+			var map_lenght:int = _width_tiles * height_tiles
 			
-			tile_layer_element = new Array(_width_tiles * height_tiles);
-			building_layer_element = new Array(_width_tiles * height_tiles);
-			unit_layer_element = new Array(_width_tiles * height_tiles);
-			weightMap = new Array(_width_tiles * height_tiles);
-			// Don't forget to update GameMapBuilder to add event listeners for these functions.
-			unit_actions = new Array(handleUnitMove, handleUnitEngage, handleUnitBattle, handleUnitRemove);
+			shortestPath = new SPF();
+			weightMap = new Array(map_lenght);
+			units_list = new Array(map_lenght);
 			
 			// Initialize weight map (with default values) and unit layer array.
-			for (var i:int = 0; i < (_width_tiles * height_tiles); i++)
+			for (i = 0; i < map_lenght; i++)
 			{
-				var p:Point = Calc.idx_to_coor(i, _width_tiles);
-				unit_layer_element[i] = new GameUnitHolder( (p.x * ConstTile.TILE_W), (p.y * ConstTile.TILE_H) );
+				var pos:Point = Calc.idx_to_pixel(i, _width_tiles, ConstTile.TILE_W);
+				units_list[i] = new GameUnitHolder(pos);
 				weightMap[i] = new SPFNode(i);
 			}
-			
-			// Draw landscape.
+
+			trace("Draw landscape.");
+			tiles_list = new Array(map_lenght);
 			if (tile_layer_map != null)
 			{
-				trace("Draw landscape.");
-				tile_layer = GameMapBuilder.drawLandscape(tile_layer_map, tile_layer_element, _width_tiles, height_tiles, tileset);
+				tile_layer = GameMapBuilder.drawLandscape(tile_layer_map, tiles_list, _width_tiles, height_tiles, tileset);
 				// Add layer 0.
 				addChild(tile_layer);
 			}
 			
-			// Draw buildings.
-			if (building_layer_map != null)
+			trace("Draw buildings.");;
+			building_layer = new MovieClip();
+			buildings_list = new Array(map_lenght);
+			for each (player in players_list)
 			{
-				trace("Draw buildings.");
-				building_layer = GameMapBuilder.drawBuildings(building_layer_map, building_layer_element, _width_tiles, height_tiles);
-				// Add layer 1.
-				addChild(building_layer);
+				if (player.buildings_map == null)
+				{
+					continue;
+				}
+				
+				GameMapBuilder.createBuildings(player, buildings_list, _width_tiles, tileset, building_layer);
 			}
+			addChild(building_layer);
 			
 			// Configure SPF.
-			GameMapBuilder.buildWeightMap(weightMap, tile_layer_element, building_layer_element);
+			GameMapBuilder.buildWeightMap(weightMap, tiles_list, buildings_list);
 			GameMapBuilder.linkNeighborsOnMap(weightMap, _width_tiles, height_tiles);
 			shortestPath.loadGraph(weightMap);
 			
 			// Draw units.
-			if (unit_layer_map != null)
+			trace("Draw units.");
+			unit_layers = new Array(new MovieClip, new MovieClip);
+			// Don't forget to update GameMapBuilder to add event listeners for these functions.
+			unit_actions = new Array(handleUnitMove,
+									handleUnitEngage,
+									handleUnitBattle,
+									handleUnitRemove);
+			for each (player in players_list)
 			{
-				trace("Draw units.");
-				var layers:Array = GameMapBuilder.createUnits(unit_layer_map, unit_layer_element, _width_tiles, height_tiles, unit_actions, weightMap);
-				unit_layer = layers[0];
-				unit_top_layer = layers[1];
+				if (player.units_map == null)
+				{
+					continue;
+				}
 				
-				// Add layer 3.
-				addChild(unit_layer);
-				addChild(unit_top_layer);
+				GameMapBuilder.createUnits(player, units_list, _width_tiles, unit_actions, weightMap,  unit_layers);
 			}
+			// Add layer 2.
+			addChild(unit_layers[0]);
+			// Add layer 3.
+			addChild(unit_layers[1]);
 		}
 
 //##################################################################################################
@@ -136,9 +148,9 @@ package src.maps
 		{
 			var moveable = true;
 			
-			var tile:GameTile = tile_layer_element[idx];
-			var building:GameBuilding = building_layer_element[idx];
-			var unit:GameUnit = GameUnitHolder(unit_layer_element[idx]).units.concat().pop();
+			var tile:GameTile = tiles_list[idx];
+			var building:GameBuilding = buildings_list[idx];
+			var unit:GameUnit = GameUnitHolder(units_list[idx]).units.concat().pop();
 			
 			// If the tile isn't moveable.
 			if (tile.moveable != true)
@@ -176,7 +188,7 @@ package src.maps
 		 */
 		private function findUnitHolder(unit:GameUnit) : GameUnitHolder
 		{
-			return unit_layer_element[findUnitMapIndex(unit)];
+			return units_list[findUnitMapIndex(unit)];
 		}
 		
 		/**
@@ -198,7 +210,7 @@ package src.maps
 		{
 			var holderFrom:GameUnitHolder = findUnitHolder(e.unit);
 			var weightNodeFrom:SPFNode = findUnitWeightNode(e.unit);
-			var holderTo:GameUnitHolder = unit_layer_element[e.toIdx];
+			var holderTo:GameUnitHolder = units_list[e.toIdx];
 			
 			// Check if destination still moveable.
 			if (posIsFree(e.toIdx) != true)
@@ -227,7 +239,7 @@ package src.maps
 		 */
 		private function handleUnitEngage(e:UnitEngageEvent) : void
 		{
-			var expectedDefenderPosHolder:GameUnitHolder = GameUnitHolder(unit_layer_element[e.defenderExpectedPos]);
+			var expectedDefenderPosHolder:GameUnitHolder = GameUnitHolder(units_list[e.defenderExpectedPos]);
 				
 			// Check if defender still in the expected position.
 			if (expectedDefenderPosHolder.containsUnit(e.defender) != true)
@@ -291,7 +303,7 @@ package src.maps
 		{
 			var unit:GameUnit = e.unit;
 			var index:int = Calc.pixel_to_idx(unit.x, unit.y, ConstTile.TILE_W, _width_tiles);
-			GameMapBuilder.removeUnit(unit, unit_layer_element, unit_layer, unit_top_layer, index, weightMap);
+			GameMapBuilder.removeUnit(unit, units_list, unit_layers, index, weightMap);
 		}
 
 //##################################################################################################
@@ -306,9 +318,9 @@ package src.maps
 		public function getElement(idx:int) : IElementInfo
 		{
 			// Search inside units layer.			
-			if (unit_layer_element != null)
+			if (units_list != null)
 			{
-				var units_list_temp:Vector.<GameUnit> = unit_layer_element[idx].units.concat();
+				var units_list_temp:Vector.<GameUnit> = units_list[idx].units.concat();
 				
 				// TODO: return a list of all the units in the stack.
 				if (units_list_temp.length > 0)
@@ -318,20 +330,21 @@ package src.maps
 			}
 			
 			// Search inside buildings layer.
-			if (building_layer_element != null)
+			if (buildings_list != null)
 			{
-				if (building_layer_element[idx] != null)
+				trace("building in " + idx + " is " + buildings_list[idx]);
+				if (buildings_list[idx] != null)
 				{
-					return building_layer_element[idx];
+					return buildings_list[idx];
 				}
 			}
 			
 			// Search inside tiles layer.
-			if (tile_layer_element != null)
+			if (tiles_list != null)
 			{
-				if (tile_layer_element[idx] != null)
+				if (tiles_list[idx] != null)
 				{
-					return tile_layer_element[idx];
+					return tiles_list[idx];
 				}
 			}
 			
@@ -346,7 +359,7 @@ package src.maps
 		 */
 		public function getUnit(idx:int, uid:int=0) : GameUnit
 		{
-			var holder:Vector.<GameUnit> = unit_layer_element[idx].units;
+			var holder:Vector.<GameUnit> = units_list[idx].units;
 			
 			for each (var unit:GameUnit in holder)
 			{
@@ -366,7 +379,7 @@ package src.maps
 		 */
 		public function getUnitAt(idx:int) : GameUnit
 		{
-			return GameUnitHolder(unit_layer_element[idx]).unit;
+			return GameUnitHolder(units_list[idx]).unit;
 		}
 		
 		public function moveUnit(from:int, to:int) : void
@@ -374,7 +387,7 @@ package src.maps
 			var unit:GameUnit;
 			var enemy:GameUnit = null;
 			
-			unit = GameUnitHolder(unit_layer_element[from]).unit;
+			unit = GameUnitHolder(units_list[from]).unit;
 			if (unit == null)
 			{
 				trace("Nothing to move from here!");
@@ -386,7 +399,7 @@ package src.maps
 			if (posIsFree(to) != true)
 			{
 				// Destination is an enemy?
-				enemy = GameUnitHolder(unit_layer_element[to]).unit;
+				enemy = GameUnitHolder(units_list[to]).unit;
 				if (enemy == null)
 				{
 					trace("Can't move there.");
@@ -441,7 +454,7 @@ package src.maps
 		{
 			var index:int = Calc.coor_to_idx(posx, posy, _width_tiles);
 			// Create and add unit in the map.
-			GameMapBuilder.spawnUnit(type, unit_actions, index, _width_tiles, unit_layer_element, unit_layer, unit_top_layer, weightMap);
+			GameMapBuilder.spawnUnit(type, unit_actions, index, _width_tiles, units_list, unit_layers, weightMap);
 			return true;
 		}
 		

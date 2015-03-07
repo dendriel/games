@@ -11,6 +11,11 @@ package src.buildings
 	 */
 	public class GameBuilding extends MovieClip implements IElementInfo, IElementTileInfo, IElementBuildingInfo
 	{
+//##################################################################################################
+// Static Definitions.
+		static const CITY_ID:int = 1;
+
+//##################################################################################################
 		// Unique identifier.
 		private var _uid:int;
 		// Type identifier for map building.

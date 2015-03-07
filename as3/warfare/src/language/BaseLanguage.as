@@ -46,8 +46,14 @@ package src.language
 		protected var _levy_archer01_desc:String;
 		
 		// Buildings text.
-		protected var _village01_name:String;
-		protected var _village01_desc:String;
+		protected var _village_name:String;
+		protected var _village_desc:String;
+		protected var _small_city_name:String;
+		protected var _small_city_desc:String;
+		protected var _medium_city_name:String;
+		protected var _medium_city_desc:String;
+		protected var _big_city_name:String;
+		protected var _big_city_desc:String;
 		protected var _bridge01_name:String;
 		protected var _bridge01_desc:String;
 		
@@ -119,8 +125,14 @@ package src.language
 
 //##################################################################################################
 // Buildings.
-		public function get village01_name():String { return _village01_name;}
-		public function get village01_desc():String { return _village01_desc; }
+		public function get village_name():String { return _village_name;}
+		public function get village_desc():String { return _village_desc; }
+		public function get small_city_name() : String { return _small_city_name; }
+		public function get small_city_desc() : String { return _small_city_desc; }
+		public function get medium_city_name() : String {return _medium_city_name; }
+		public function get medium_city_desc() : String {return _medium_city_desc; }
+		public function get big_city_name() : String { return _big_city_name; }
+		public function get big_city_desc() : String { return _big_city_desc; }
 		public function get bridge01_name():String { return _bridge01_name; }
 		public function get bridge01_desc():String { return _bridge01_desc; }
 

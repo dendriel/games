@@ -46,8 +46,14 @@ package src.language
 		function get levy_archer01_desc() : String;
 		
 		// Buildings.
-		function get village01_name() : String;
-		function get village01_desc() : String;
+		function get village_name() : String;
+		function get village_desc() : String;
+		function get small_city_name() : String;
+		function get small_city_desc() : String;
+		function get medium_city_name() : String;
+		function get medium_city_desc() : String;
+		function get big_city_name() : String;
+		function get big_city_desc() : String;
 		function get bridge01_name():String;
 		function get bridge01_desc():String;
 		

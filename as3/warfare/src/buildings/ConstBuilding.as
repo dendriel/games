@@ -14,17 +14,11 @@ package src.buildings
 		// Building IDs.
 		public static const BRIDGE_01_ID:int = 22;
 		public static const BRIDGE_02_ID:int = 23;
-		public static const VILLAGE_01_ID:int = 24;
 		
 		// Bridge 01-02 definitions.
 		static const BRIDGE_01_DEF = ConstTile.DEF_VALUE_UNFAVORABLE;
 		static const BRIDGE_01_MOVEABLE = true;
 		static const BRIDGE_01_MOVEEFFORT = ConstTile.MOVEEFFORT_UNFAVORABLE;
-		
-		// Village 01 definitions.
-		static const VILLAGE_01_DEF = ConstTile.DEF_VALUE_MEDIUM;
-		static const VILLAGE_01_MOVEABLE = true;
-		static const VILLAGE_01_MOVEEFFORT = ConstTile.MOVEEFFORT_UNFAVORABLE;
 	}
 	
 }

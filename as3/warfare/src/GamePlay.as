@@ -59,8 +59,6 @@ package src
 		
 		// Input/Output.
 		private var key:KeyObject;
-		private var controlPressed:Boolean;
-		private var cPressed:Boolean;
 		private var gameChat:Chat;
 		// Chat Commands.
 		private const spawnUnitCmd:String = "/spawn";
@@ -68,10 +66,15 @@ package src
 		// Internal state.
 		private var mouseButtonDown:Boolean;
 		private var mouseButtonPressPoint:Point;
+		private var controlPressed:Boolean;
+		private var cPressed:Boolean;
 		
 		// Info text.
 		private var coorTxt:TextField;	// Coordinates in focus. Temporary TODO: remove.
 		
+		// Players.
+		private var player:GamePlayer;
+		private var players_list:Vector.<GamePlayer>;
 		
 		public function GamePlay()
 		{
@@ -128,6 +131,9 @@ package src
 			// Create coordinates text.
 			coorTxt = GameTextFormat.newDisplayTextTitle(Const.COOR_TXT_POS_X, Const.COOR_TXT_POS_Y);
 			
+			// Players list.
+			players_list = new Vector.<GamePlayer>;
+			
 			addChild(gameMapScreen);
 			addChild(gameMenuScreen);
 			addChild(gameChat);
@@ -148,6 +154,9 @@ package src
 			gameMapR.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMoveOnMap, false, 0, true);
 			gameMapR.addEventListener(MouseEvent.CLICK, handleMouseClickOnMap, false, 0, true);
 			addEventListener(Event.ENTER_FRAME, handleEnterFrame, false, 0, true);
+			
+			player = GamePlayer.newPlayer("Dendriel", 10);
+			players_list.push(player);
 			
 			// Start timer.
 			timer.start();
@@ -351,6 +360,9 @@ package src
 		private function displayElementBuilding(elem:IElementInfo) : void
 		{
 			displayElementTile(elem);
+			// Clear menu from previous information.
+			//removeElementInformation();
+			
 		}
 		
 		private function displayElementTile(elem:IElementInfo) : void

@@ -14,10 +14,10 @@ package src.units
 		private var pos_pixels:Point;
 		private var _units:Vector.<GameUnit>;
 		
-		public function GameUnitHolder(px:int, py:int)
+		public function GameUnitHolder(pos:Point)
 		{
 			_units = new Vector.<GameUnit>;
-			pos_pixels = new Point(px, py);
+			pos_pixels = pos;
 		}
 		
 		public function get units():Vector.<GameUnit> 

@@ -14,7 +14,7 @@ package src.tiles
 	public class GameTileset 
 	{
 		protected var imageData:BitmapData;
-		protected var baseIndex:int;
+		protected var _baseIndex:int;
 		protected var tile_width:int;
 		protected var tile_height:int;
 		protected var randomTiles:Array; // [tile index, callback : Point]
@@ -43,7 +43,7 @@ package src.tiles
 				}
 			}
 			// There is no callback registered for this tile.
-			var tileOffset:int = index - baseIndex - 1;
+			var tileOffset:int = index - _baseIndex - 1;
 			return Calc.idx_to_pixel(tileOffset, (imageData.width / tile_width) , tile_width);
 		}
 		
@@ -55,6 +55,11 @@ package src.tiles
 					trace("tile " + type + " not registered. This function must be overwritted.");
 					return new GrassTile();
 			}
+		}
+		
+		public function get baseIndex():int 
+		{
+			return _baseIndex;
 		}
 	}
 	

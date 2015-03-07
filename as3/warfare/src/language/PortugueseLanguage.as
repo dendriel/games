@@ -50,8 +50,15 @@ recrutas de infantaria são aldeões que são forçados a entrar no exército te
 recrutas de arqueiro são aldeões que são forçados a entrar no exército temporariamente para defender seu país ou atender a uma campanha militar.";
 			
 			// Buildings.
-			_village01_name = "Aldeia";
-			_village01_desc = "Pequeno povoado rural que vive da subsistência e possui entre centenas e alguns poucos milhares de pessoas.";
+			_village_name = "Aldeia";
+			_village_desc = "Pequeno povoado rural que vive da subsistência e possui entre centenas e alguns poucos milhares de pessoas.";
+			_small_city_name = "Cidade pequena";
+			_small_city_desc = "Cidade pequena";
+			_medium_city_name = "Cidade média";
+			_medium_city_desc = "Cidade média";
+			_big_city_name = "Cidade grande";
+			_big_city_desc = "Cidade grande";
+			
 			_bridge01_name = "Ponte de madeira";
 			_bridge01_desc = "Ponte rústica de madeira.";
 			
