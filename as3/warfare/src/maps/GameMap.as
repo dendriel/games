@@ -6,17 +6,13 @@ package src.maps
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import src.Const;
-	import src.GamePlay;
-	import src.IElementInfo;
 	import src.tiles.*;
 	import src.buildings.*;
 	import src.ui.GameUnitDisplay;
 	import src.units.*;
 	import src.as3.math.Calc;
 	import src.as3.math.graph.*;
-	import src.GameBattleProcessor;
-	import src.GamePlayer;
+	import src.*;
 	
 	/**
 	 * ...
@@ -420,6 +416,7 @@ package src.maps
 				{
 					// The path is blocked by nature.
 					trace("Can't move there.");
+					SoundLoader.playUnitError01();
 					return;
 				}
 				
@@ -427,6 +424,7 @@ package src.maps
 				if (enemy.player.id == unit.player.id)
 				{
 					trace("Can't attack a friendly unit.");
+					SoundLoader.playUnitError01();
 					return;
 				}
 			}
@@ -453,7 +451,12 @@ package src.maps
 		 */
 		public function setUnitOnFocus(unit:GameUnit) : void
 		{
-			// Remove focus from previous unit (if exist).
+			if ( (unitOnFocus != null) && (unit != null) && (unit.uid == unitOnFocus.uid) )
+			{
+				// If unit already in focus.
+				return;
+			}
+			
 			if (unitOnFocus != null)
 			{
 				unitOnFocus.focusSign = false;

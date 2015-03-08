@@ -163,7 +163,15 @@ package src.units
 		
 		public function get topImg() : MovieClip { return _topImg; }
 		
-		public function set focusSign(value:Boolean) : void { _focusSign.visible = value; }
+		public function set focusSign(value:Boolean) : void
+		{
+			if ( (_focusSign.visible == false) && (value == true) )
+			{
+				SoundLoader.playUnitsSelect01();
+			}
+			_focusSign.visible = value;
+		}
+		
 		public function get battleRole():Number { return _battleRole;}
 		
 //#####################
@@ -226,6 +234,11 @@ package src.units
 				return;
 			}
 			
+			if (attackInProgress != true)
+			{
+				SoundLoader.playUnitMove01();
+			}
+			
 			busySign = true;
 			attackInProgress = false;
 			moveTimer.stop();
@@ -243,6 +256,8 @@ package src.units
 				trace("Unit is fighting. Can't move right now.");
 				return;
 			}
+			
+			SoundLoader.playCharge01();
 			
 			busySign = true;
 			moveTimer.stop();

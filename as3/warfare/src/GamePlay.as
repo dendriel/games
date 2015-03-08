@@ -274,7 +274,6 @@ package src
 			gameTarget.y = tiley * ConstTile.TILE_H;
 			
 			gameTarget.visible = false;
-			gameMapR.setUnitOnFocus(null);
 			
 			// Display the element in the Menu.
 			displayElementInfo(tile_idx);
@@ -302,10 +301,12 @@ package src
 					displayElementUnit(elem);
 					break;
 				case ElementType.BUILDING:
+					gameMapR.setUnitOnFocus(null);
 					gameTarget.visible = true;
 					displayElementBuilding(elem);
 					break;
 				case ElementType.TILE:
+					gameMapR.setUnitOnFocus(null);
 					gameTarget.visible = true;
 					displayElementTile(elem);
 					break;
