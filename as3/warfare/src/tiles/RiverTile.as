@@ -11,7 +11,7 @@ package src.tiles
 		{
 			_def = ConstTile.RIVER_DEF;
 			_moveable = ConstTile.RIVER_MOVEABLE;
-			_moveEffort = ConstTile.RIVER_MOVEEFFORT;
+			_moveBonus = ConstTile.RIVER_MOVEEFFORT;
 			_name = GameLanguage.lang.river_name;
 			_desc = GameLanguage.lang.river_desc;
 		}

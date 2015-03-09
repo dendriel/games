@@ -11,7 +11,7 @@ package src.tiles
 		{
 			_def = ConstTile.ROAD_DEF;
 			_moveable = ConstTile.ROAD_MOVEABLE;
-			_moveEffort = ConstTile.ROAD_MOVEEFFORT;
+			_moveBonus = ConstTile.ROAD_MOVEEFFORT;
 			_name = GameLanguage.lang.road_name;
 			_desc = GameLanguage.lang.road_desc;
 			

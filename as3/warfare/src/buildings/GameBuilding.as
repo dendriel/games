@@ -35,7 +35,7 @@ package src.buildings
 		// If land is moveable;
 		protected var _moveable:Boolean;
 		// Effort to move through this land.
-		protected var _moveEffort:int;
+		protected var _moveBonus:int;
 		
 //##################################################################################################
 		// Unique building identifier.
@@ -66,7 +66,7 @@ package src.buildings
 		
 		public function get def():Number {return _def;}		
 		public function get moveable():Boolean {return _moveable;}
-		public function get moveEffort():int {return _moveEffort;}
+		public function get moveBonus():int {return _moveBonus;}
 		
 		public function get player():GamePlayer {return _player;}
 		public function set player(value:GamePlayer):void {_player = value;}

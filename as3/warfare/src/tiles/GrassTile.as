@@ -14,7 +14,7 @@ package src.tiles
 			_desc = GameLanguage.lang.grass_desc;
 			_def = ConstTile.GRASS_DEF;
 			_moveable = ConstTile.GRASS_MOVEABLE;
-			_moveEffort = ConstTile.GRASS_MOVEEFFORT;
+			_moveBonus = ConstTile.GRASS_MOVEEFFORT;
 		}
 	}
 }

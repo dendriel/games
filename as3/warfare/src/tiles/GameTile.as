@@ -25,7 +25,7 @@ package src.tiles
 		// If land is moveable;
 		protected var _moveable:Boolean;
 		// Effort to move through this land.
-		protected var _moveEffort:int;
+		protected var _moveBonus:int;
 		
 //##################################################################################################
 		// Unique tile identifier.
@@ -55,7 +55,7 @@ package src.tiles
 		
 		public function get def():Number {return _def;}		
 		public function get moveable():Boolean {return _moveable;}
-		public function get moveEffort():int {return _moveEffort;}
+		public function get moveBonus():int {return _moveBonus;}
 		
 	}
 	

@@ -15,7 +15,7 @@ package src.buildings
 			
 			_def = ConstBuilding.BRIDGE_01_DEF;
 			_moveable =  ConstBuilding.BRIDGE_01_MOVEABLE;
-			_moveEffort = ConstBuilding.BRIDGE_01_MOVEEFFORT;
+			_moveBonus = ConstBuilding.BRIDGE_01_MOVEEFFORT;
 		}
 	}
 	

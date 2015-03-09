@@ -9,7 +9,7 @@ package src.tiles
 	{
 		function get def():Number;
 		function get moveable():Boolean;
-		function get moveEffort():int;
+		function get moveBonus():int;
 	}
 	
 }

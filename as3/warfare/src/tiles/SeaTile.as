@@ -11,7 +11,7 @@ package src.tiles
 		{
 			_def = ConstTile.SEA_DEF;
 			_moveable = ConstTile.SEA_MOVEABLE;
-			_moveEffort = ConstTile.SEA_MOVEEFFORT;
+			_moveBonus = ConstTile.SEA_MOVEEFFORT;
 			_name = GameLanguage.lang.sea_name;
 			_desc = GameLanguage.lang.sea_desc;
 		}

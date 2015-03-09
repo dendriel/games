@@ -50,7 +50,7 @@ package src.buildings
 		private var base_status:ImprovementStatus;
 		private var view:MovieClip;
 		private var improvements_list:Vector.<ImprovementStatus>;
-		private var population:int;
+		private var _population:int;
 		
 		public function CityBuilding(level:int) : void
 		{
@@ -62,12 +62,12 @@ package src.buildings
 			
 			_def = ConstTile.DEF_VALUE_NONE;
 			_moveable =  true;
-			_moveEffort = ConstTile.MOVEEFFORT_UNFAVORABLE;
+			_moveBonus = ConstTile.MOVEEFFORT_UNFAVORABLE;
 			
 			base_status = CityBuilding.getStatus(_level);
 			view = CityBuilding.getView(_level);
 			improvements_list = new Vector.<ImprovementStatus>;
-			population = CityBuilding.getPopulation(_level);
+			_population = CityBuilding.getPopulation(_level);
 			
 			addChild(view);
 		}
@@ -94,7 +94,7 @@ package src.buildings
 		public function updateStatus() : void
 		{
 			var curr_status:ImprovementStatus = getStatus();
-			population += Calc.percentage(population, curr_status.growth);
+			_population += Calc.percentage(population, curr_status.growth);
 		}
 //##################################################################################################
 // Static functions. Get default values for cities.
@@ -187,6 +187,11 @@ package src.buildings
 					trace("Invalid city level received. Returning default pupulation value.");
 					return CityBuilding.VILLAGE_POPULATION;
 			}
+		}
+		
+		public function get population():int 
+		{
+			return _population;
 		}
 	}
 	

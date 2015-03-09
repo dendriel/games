@@ -11,7 +11,7 @@ package src.tiles
 		{			
 			_def = ConstTile.TREE_DEF;
 			_moveable = ConstTile.TREE_MOVEABLE;
-			_moveEffort = ConstTile.TREE_MOVEEFFORT;
+			_moveBonus = ConstTile.TREE_MOVEEFFORT;
 			_name = GameLanguage.lang.tree_name;
 			_desc = GameLanguage.lang.tree_desc;
 		}

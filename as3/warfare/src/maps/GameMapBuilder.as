@@ -112,7 +112,7 @@ package src.maps
 					{
 						// Transform move effort in weight. Bonuses will decrese the node weight while
 						// penalties will increase the node it.
-						node.weight = (-1 * (tile.moveEffort / 10) ) + Const.DEFAULT_WEIGHT;
+						node.weight = (-1 * (tile.moveBonus / 10) ) + Const.DEFAULT_WEIGHT;
 					}
 				}
 				
@@ -127,7 +127,7 @@ package src.maps
 					{
 						// Transform move effort in weight. Bonuses will decrese the node weight while
 						// penalties will increase the node it.
-						node.weight = (-1 * (building.moveEffort / 10) ) + Const.DEFAULT_WEIGHT;
+						node.weight = (-1 * (building.moveBonus / 10) ) + Const.DEFAULT_WEIGHT;
 					}
 				}
 			}

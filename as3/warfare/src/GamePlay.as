@@ -10,6 +10,7 @@ package src
 	import flash.text.TextField;
 	import src.as3.io.KeyObject;
 	import src.buildings.improvements.FarmImprovement;
+	import src.buildings.*;
 	import src.maps.GameMap;
 	import src.maps.GameMapUpdatePlayerEvent;
 	import src.as3.math.Calc;
@@ -53,8 +54,9 @@ package src
 		private var gameMapScreenMask:MovieClip;		// Limits the game map view.
 		private var gameMapR:GameMap;					// Loaded game map reference.
 		private var gameMenuScreen:MovieClip;			// Contains the menu area.
-		private var gameUnitDisplay:GameUnitDisplay;	// Unit status display.
-		private var gameTileDisplay:GameTileDisplay;	// Tile status display.
+		private var unit_display:GameStatusDisplay;
+		private var tile_display:GameStatusDisplay;
+		private var building_display:GameStatusDisplay;
 		private var gamePlayerDisplay:GamePlayerDisplay;
 		
 		// Input/Output.
@@ -93,9 +95,30 @@ package src
 			gameChat.addText(GameLanguage.lang.chat_help_str, false);
 			
 			// Create displays.
-			gameUnitDisplay = new GameUnitDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y);
-			gameTileDisplay = new GameTileDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y);
 			gamePlayerDisplay = new GamePlayerDisplay(Const.PLAYER_STATUS_POS_X, Const.PLAYER_STATUS_POS_Y); // Temporary.
+			
+			tile_display = new GameStatusDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y,
+										[	[Const.MOVE_BONUS_LABEL	 , new MoveBonusIconImage()],
+											[Const.MOVE_PATH_LABEL   , new MovePathFreeIconImage()],
+											[Const.DEFENSE_LABEL  	 , new DefenseBonusIconImage()]
+										]);
+			
+			building_display = new GameStatusDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y,
+										[	[Const.BUILDING_POPULATION_LABEL , new PopulationIconImage()],
+											[Const.BUILDING_GROWTH_LABEL     , new GrowthIconImage()],
+											[Const.DEFENSE_LABEL  			 , new DefenseBonusIconImage()],
+											[Const.BUILDING_INCOME_LABEL     , new GoldIconImage()],
+											[Const.MILITARY_LABEL   , new SoldiersIconImage()]
+										]);
+			
+			unit_display = new GameStatusDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y,
+										[	[Const.MILITARY_LABEL	, new SoldiersIconImage()],
+											[Const.ATTACK_LABEL		, new AttackIconImage()],
+											[Const.SHIELD_LABEL		, new ShieldIconImage()],
+											[Const.DISTANCE_LABEL   , new DistanceIconImage()],
+											[Const.MOVE_PATH_LABEL  , new MovePathFreeIconImage()],
+											[Const.COST_LABEL       , new GoldIconImage()],
+										]);
 			
 			// Load game frame.
 			gamePlayFrameR = new GamePlayFrame();
@@ -337,17 +360,20 @@ package src
 		 */
 		private function removeElementInformation() : void
 		{
-			if (gameMenuScreen.contains(gameUnitDisplay))
+			if (gameMenuScreen.contains(unit_display))
 			{
-				gameMenuScreen.removeChild(gameUnitDisplay);
+				gameMenuScreen.removeChild(unit_display);
 			}
 			
-			if (gameMenuScreen.contains(gameTileDisplay))
+			if (gameMenuScreen.contains(tile_display))
 			{
-				gameMenuScreen.removeChild(gameTileDisplay);
+				gameMenuScreen.removeChild(tile_display);
 			}
 			
-			// TODO: another displays.
+			if (gameMenuScreen.contains(building_display))
+			{
+				gameMenuScreen.removeChild(building_display);
+			}
 		}
 		
 		private function displayElementUnit(elem:IElementInfo) : void
@@ -357,23 +383,41 @@ package src
 			
 			var unit:IElementUnitInfo = IElementUnitInfo(elem);
 			
-			gameUnitDisplay.elemName = elem.elemName;
-			gameUnitDisplay.set_soldiers(unit.soldiers, unit.soldiers_max);
-			gameUnitDisplay.attack   = unit.attack;
-			gameUnitDisplay.defense  = unit.defense;
-			gameUnitDisplay.distance = unit.distance;
-			gameUnitDisplay.move     = unit.move_time;
-			gameUnitDisplay.cost     = unit.recruit_cost;
+			unit_display.setName(elem.elemName);
 			
-			gameMenuScreen.addChild(gameUnitDisplay);
+			unit_display.setField(Const.MILITARY_LABEL, String(unit.soldiers) + "/" + String(unit.soldiers_max));
+			unit_display.setField(Const.ATTACK_LABEL, String(unit.attack));
+			unit_display.setField(Const.SHIELD_LABEL, String(unit.defense));
+			unit_display.setField(Const.DISTANCE_LABEL, String(unit.distance));
+			unit_display.setField(Const.MOVE_PATH_LABEL, String(unit.move_time));
+			unit_display.setField(Const.COST_LABEL, String(unit.recruit_cost));
+			
+			gameMenuScreen.addChild(unit_display);
 		}
 		
 		private function displayElementBuilding(elem:IElementInfo) : void
 		{
-			displayElementTile(elem);
 			// Clear menu from previous information.
-			//removeElementInformation();
+			removeElementInformation();
 			
+			var building:GameBuilding = GameBuilding(elem);
+			
+			if (building.id != GameBuilding.CITY_ID)
+			{
+				displayElementTile(elem);
+			}
+			
+			var city:CityBuilding = CityBuilding(building);
+			var status:ImprovementStatus = city.getStatus();
+			
+			building_display.setName(building.elemName);
+			building_display.setField(Const.BUILDING_POPULATION_LABEL , String(city.population));
+			building_display.setField(Const.BUILDING_GROWTH_LABEL	  , String(status.growth), true, true, true);
+			building_display.setField(Const.BUILDING_INCOME_LABEL     , String(status.income), true, false, true);
+			building_display.setField(Const.DEFENSE_LABEL    		  , String(status.defense_bonus), true, true, true);
+			building_display.setField(Const.MILITARY_LABEL   , String(status.military));
+			
+			gameMenuScreen.addChild(building_display);
 		}
 		
 		private function displayElementTile(elem:IElementInfo) : void
@@ -383,12 +427,20 @@ package src
 			
 			var tile:IElementTileInfo = IElementTileInfo(elem);
 			
-			gameTileDisplay.elemName = elem.elemName;
-			gameTileDisplay.fortifyBonus = tile.def;
-			gameTileDisplay.moveBonus = tile.moveEffort;
-			gameTileDisplay.moveable = tile.moveable;
+			tile_display.setName(elem.elemName);
+			tile_display.setField(Const.DEFENSE_LABEL		, String(tile.def), true, true, true);
+			tile_display.setField(Const.MOVE_BONUS_LABEL	, String(tile.moveBonus), true, true, true);
 			
-			gameMenuScreen.addChild(gameTileDisplay);
+			if (tile.moveable == true)
+			{
+				tile_display.changeIcon(Const.MOVE_PATH_LABEL, new MovePathFreeIconImage);
+			}
+			else
+			{
+				tile_display.changeIcon(Const.MOVE_PATH_LABEL, new MovePathBlockedIconImage);
+			}
+			
+			gameMenuScreen.addChild(tile_display);
 		}
 		
 		private function moveMap(px:int, py:int) : void

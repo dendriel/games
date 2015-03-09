@@ -11,7 +11,7 @@ package src.tiles
 		{
 			_def = ConstTile.CLIFF_DEF;
 			_moveable = ConstTile.CLIFF_MOVEABLE;
-			_moveEffort = ConstTile.CLIFF_MOVEEFFORT;
+			_moveBonus = ConstTile.CLIFF_MOVEEFFORT;
 			_name = GameLanguage.lang.cliff_name;
 			_desc = GameLanguage.lang.cliff_desc;
 		}
