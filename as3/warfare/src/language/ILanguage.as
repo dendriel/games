@@ -15,6 +15,7 @@ package src.language
 		
 		// Miscelaneous.
 		function get chat_help_str():String;
+		function get gold_str():String;
 		
 		// Display information screen.
 		function get moveable_str() : String;

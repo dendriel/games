@@ -8,6 +8,7 @@ package src.buildings.improvements
 	{
 		// Improvements idenfiers.
 		public static const FARM_ID = 1;
+		public static const WOODCUTTER_ID = 2;
 		
 		
 		static const FARM_GROWTH = 1;

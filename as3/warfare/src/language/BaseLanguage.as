@@ -15,6 +15,7 @@ package src.language
 		
 		// Miscelaneous.
 		protected var _chat_help_str:String;
+		protected var _gold_str:String;
 		
 		// Display information screen.
 		protected var _moveable_str:String;
@@ -89,6 +90,7 @@ package src.language
 //##################################################################################################
 // Miscelaneous.
 		public function get chat_help_str():String { return _chat_help_str; }
+		public function get gold_str():String { return _gold_str; }
 
 //##################################################################################################
 // Display information screen.

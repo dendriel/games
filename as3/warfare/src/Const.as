@@ -21,6 +21,8 @@ package src
 		public static const COOR_TXT_POS_X = SCREEN_SIZE_W / 2 - 32;
 		public static const COOR_TXT_POS_Y = 20;
 		public static const UNIT_WEIGHT = 1000000;
+		public static const PLAYER_STATUS_POS_X = 16;
+		public static const PLAYER_STATUS_POS_Y = 16;
 		
 		// Time definitions.
 		public static const DAY_TIME_MS = 2000;

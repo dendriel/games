@@ -9,13 +9,13 @@ package src
 	import flash.ui.Keyboard;
 	import flash.text.TextField;
 	import src.as3.io.KeyObject;
+	import src.buildings.improvements.FarmImprovement;
 	import src.maps.GameMap;
+	import src.maps.GameMapUpdatePlayerEvent;
 	import src.as3.math.Calc;
 	import src.tiles.ConstTile;
 	import src.tiles.IElementTileInfo;
-	import src.ui.GameTileDisplay;
-	import src.ui.GameUnitDisplay;
-	import src.ui.GameTextFormat;
+	import src.ui.*;
 	import src.as3.ui.Chat;
 	import src.as3.ui.ChatInputEvent;
 	import src.units.IElementUnitInfo;
@@ -55,7 +55,7 @@ package src
 		private var gameMenuScreen:MovieClip;			// Contains the menu area.
 		private var gameUnitDisplay:GameUnitDisplay;	// Unit status display.
 		private var gameTileDisplay:GameTileDisplay;	// Tile status display.
-		private var timer:GameTimer;					// Date/time object handler.
+		private var gamePlayerDisplay:GamePlayerDisplay;
 		
 		// Input/Output.
 		private var key:KeyObject;
@@ -95,6 +95,7 @@ package src
 			// Create displays.
 			gameUnitDisplay = new GameUnitDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y);
 			gameTileDisplay = new GameTileDisplay(Const.STATUS_DISPLAY_POS_X, Const.STATUS_DISPLAY_POS_Y);
+			gamePlayerDisplay = new GamePlayerDisplay(Const.PLAYER_STATUS_POS_X, Const.PLAYER_STATUS_POS_Y); // Temporary.
 			
 			// Load game frame.
 			gamePlayFrameR = new GamePlayFrame();
@@ -121,12 +122,6 @@ package src
 			gameMenuScreen.y = Const.MENU_AREA_POS_Y;
 			gameMenuScreen.addChild(new GameMenuBar);
 			
-			// Create timer.
-			timer = new GameTimer();
-			timer.x = Const.TIMER_POS_X;
-			timer.y = Const.TIMER_POS_Y;
-			gameMenuScreen.addChild(timer);
-			
 			// Create coordinates text.
 			coorTxt = GameTextFormat.newDisplayTextTitle(Const.COOR_TXT_POS_X, Const.COOR_TXT_POS_Y);
 			
@@ -134,6 +129,7 @@ package src
 			addChild(gameMenuScreen);
 			addChild(gameChat);
 			addChild(coorTxt);
+			addChild(gamePlayerDisplay);
 		}
 		
 //##################################################################################################
@@ -149,12 +145,22 @@ package src
 			gameMapR.addEventListener(MouseEvent.MOUSE_UP, handleMouseUpOnMap, false, 0, true);
 			gameMapR.addEventListener(MouseEvent.MOUSE_MOVE, handleMouseMoveOnMap, false, 0, true);
 			gameMapR.addEventListener(MouseEvent.CLICK, handleMouseClickOnMap, false, 0, true);
+			gameMapR.addEventListener(GameMapUpdatePlayerEvent.EVT_MAP_UPDATE_PLAYER, handleMapUpdatePlayer, false, 0, true);
 			addEventListener(Event.ENTER_FRAME, handleEnterFrame, false, 0, true);
 			
 			player = gameMapR.players[0];
+			gamePlayerDisplay.loadPlayer(player);
 			
-			// Start timer.
-			timer.start();
+			var farm:FarmImprovement = new FarmImprovement();
+			farm.x = 32 * 7;
+			farm.y = 32 * 7;
+			gameMapR.addChild(farm);
+			
+			gameMapR.timer.x = Const.TIMER_POS_X;
+			gameMapR.timer.y = Const.TIMER_POS_Y;
+			gameMenuScreen.addChild(gameMapR.timer);
+			
+			gameMapR.playMap();
 		}
 		
 		public function unloadMap() : void
@@ -173,6 +179,7 @@ package src
 			gameMapR.removeEventListener(MouseEvent.MOUSE_UP, handleMouseUpOnMap);
 			gameMapR.removeEventListener(MouseEvent.MOUSE_MOVE, handleMouseMoveOnMap);
 			gameMapR.removeEventListener(MouseEvent.CLICK, handleMouseClickOnMap);
+			gameMapR.removeEventListener(GameMapUpdatePlayerEvent.EVT_MAP_UPDATE_PLAYER, handleMapUpdatePlayer);
 			removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
 			gameMapScreen.removeChild(gameMapR);
 		}
@@ -277,6 +284,15 @@ package src
 			
 			// Display the element in the Menu.
 			displayElementInfo(tile_idx);
+		}
+		
+		/**
+		 * Refresh player status display.
+		 * @param	e
+		 */
+		private function handleMapUpdatePlayer(e:GameMapUpdatePlayerEvent) : void
+		{
+			gamePlayerDisplay.update();
 		}
 		
 		private function displayElementInfo(idx:int) : void

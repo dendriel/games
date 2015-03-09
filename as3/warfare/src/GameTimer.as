@@ -12,7 +12,7 @@ package src
 	 * @author Vitor Rozsa
 	 */
 	public class GameTimer extends MovieClip
-	{
+	{		
 		// Static values.
 		public static const JANUARY  = 0;
 		public static const FEBRUARY = 1;
@@ -37,7 +37,7 @@ package src
 		
 		public function GameTimer()
 		{
-			timerCounter = new Timer(Const.DAY_TIME_MS, yearInDays);
+			timerCounter = new Timer(Const.DAY_TIME_MS/16, yearInDays); // TODO: remove the division.
 			year_counter = 1;
 			month_counter = GameTimer.JANUARY;
 			days_counter = 0;
@@ -71,6 +71,8 @@ package src
 			
 			if (days_counter <= 31)
 			{
+				// The semester occur in January and July. The first semester update(january) is
+				// handled in the "handle year" function. (handleTimerComplete)
 				month_counter = GameTimer.JANUARY;
 			}
 			else if ( (days_counter >= 32) && (days_counter <= 59) )
@@ -95,6 +97,11 @@ package src
 			}
 			else if ( (days_counter >= 182) && (days_counter <= 212) )
 			{
+				// Half year.
+				if (month_counter != GameTimer.JULY) // Do it once.
+				{
+					dispatchEvent(new GameTimerSemesterEvent());
+				}
 				month_counter = GameTimer.JULY;
 			}
 			else if ( (days_counter >= 213) && (days_counter <= 243) )
@@ -132,6 +139,8 @@ package src
 			timerCounter.reset();
 			timerCounter.start();
 			trace(timerCounter.currentCount);
+			
+			dispatchEvent(new GameTimerSemesterEvent());
         }
 		
 		private function updateTimerTxt() : void

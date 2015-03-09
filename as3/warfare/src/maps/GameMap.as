@@ -47,6 +47,7 @@ package src.maps
 		
 		// Internal map state.
 		private var unitOnFocus:GameUnit;
+		private var _timer:GameTimer;					// Date/time object handler.
 		
 		// Players.
 		protected var players_list:Array;
@@ -118,6 +119,15 @@ package src.maps
 			addChild(unit_layers[0]);
 			// Add layer 3.
 			addChild(unit_layers[1]);
+			
+			// Create timer.
+			_timer = new GameTimer();
+			_timer.addEventListener(GameTimerSemesterEvent.EVT_TIMER_SEMESTER, handleTimerSemester, false, 0, true);
+		}
+		
+		public function playMap() : void
+		{
+			_timer.start();
 		}
 
 //##################################################################################################
@@ -196,6 +206,37 @@ package src.maps
 		private function findUnitWeightNode(unit:GameUnit) : SPFNode
 		{
 			return weightMap[findUnitMapIndex(unit)];
+		}
+		
+		private function handleTimerSemester(e:GameTimerSemesterEvent) : void
+		{
+			updatePlayerStatus();
+		}
+		
+		private function updatePlayerStatus() : void
+		{
+			for (var i in players_list)
+			{
+				var player:GamePlayer = players_list[i];
+				var profits:int = 0;
+				
+				// Update cities. // Maybe change buildings from vector to array.
+				for (var j in player.buildings)
+				{
+					var building:GameBuilding = player.buildings[j];
+					if (building.id != GameBuilding.CITY_ID)
+					{
+						continue;
+					}
+					// Process city. TODO: create a new function.
+					var city:CityBuilding = CityBuilding(building);
+					var status:ImprovementStatus = city.getStatus();
+					player.gold += status.income;
+					city.updateStatus();
+				}				
+			}
+			
+			dispatchEvent(new GameMapUpdatePlayerEvent());
 		}
 		
 		/**
@@ -316,6 +357,11 @@ package src.maps
 		public function set players(value:Array):void 
 		{
 			players_list = value;
+		}
+		
+		public function get timer():GameTimer 
+		{
+			return _timer;
 		}
 		
 		/**

@@ -74,8 +74,10 @@ package src
 		}
 		
 		public function get nick():String {	return _nick;}
-		public function get gold():int {return _gold;}
 		public function get id():int { return _id; }
+		
+		public function get gold():int {return _gold;}
+		public function set gold(value:int):void {_gold = value;}
 		
 		public function get indexOffset():int {return _indexOffset;}
 		public function set indexOffset(value:int):void {_indexOffset = value;}
@@ -93,6 +95,7 @@ package src
 		public function set buildings(value:Vector.<GameBuilding>):void { buildings_list = value; }
 		
 		public function get banner():Bitmap { return new Bitmap(_banner); }
+		
 		
 		public function removeUnit(unit:GameUnit) : void
 		{

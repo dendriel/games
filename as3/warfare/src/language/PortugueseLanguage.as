@@ -17,6 +17,7 @@ package src.language
 			
 			// Miscelaneous.
 			_chat_help_str = "Use a tecla 'c' para mostrar ou esconder o chat do jogo.";
+			_gold_str = "Ouro";
 			
 			// Game information screen.
 			_moveable_str = "Livre";
