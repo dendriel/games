@@ -16,10 +16,27 @@ package src.language
 		// Miscelaneous.
 		protected var _chat_help_str:String;
 		protected var _gold_str:String;
+		protected var _buildings_str:String;
 		
 		// Display information screen.
 		protected var _moveable_str:String;
 		protected var _blocked_str:String;
+		
+		// Improvements.
+		protected var _farm_name:String;
+		protected var _farm_desc:String;
+		protected var _woodcutter_name:String;
+		protected var _woodcutter_desc:String;
+		protected var _stonecutter_name:String;
+		protected var _stonecutter_desc:String;
+		protected var _fisherman_name:String;
+		protected var _fisherman_desc:String;
+		protected var _docks_name:String;
+		protected var _docks_desc:String;
+		protected var _hunting_lodge_name:String;
+		protected var _hunting_lodge_desc:String;
+		protected var _iron_mine_name:String;
+		protected var _iron_mine_desc:String;
 		
 		// Timer.
 		protected var _of_the_year_str:String;
@@ -91,11 +108,29 @@ package src.language
 // Miscelaneous.
 		public function get chat_help_str():String { return _chat_help_str; }
 		public function get gold_str():String { return _gold_str; }
+		public function get buildings_str():String { return _buildings_str;}
 
 //##################################################################################################
 // Display information screen.
 		public function get moveable_str():String { return _moveable_str; }
 		public function get blocked_str():String { return _blocked_str; }
+		
+//##################################################################################################
+// Improvements.
+		public function get farm_name():String { return _farm_name; }
+		public function get farm_desc():String { return _farm_desc; }
+		public function get woodcutter_name():String { return _woodcutter_name;}
+		public function get woodcutter_desc():String { return _woodcutter_desc;}
+		public function get stonecutter_name():String {	return _stonecutter_name;}
+		public function get stonecutter_desc():String {	return _stonecutter_desc;}
+		public function get fisherman_name():String {return _fisherman_name;}
+		public function get fisherman_desc():String {return _fisherman_desc;}
+		public function get docks_name():String {return _docks_name;}
+		public function get docks_desc():String {return _docks_desc;}
+		public function get hunting_lodge_name():String {return _hunting_lodge_name;}
+		public function get hunting_lodge_desc():String {return _hunting_lodge_desc;}
+		public function get iron_mine_name():String {return _iron_mine_name;}
+		public function get iron_mine_desc():String {return _iron_mine_desc;}
 		
 //##################################################################################################
 // Timer.

@@ -18,10 +18,27 @@ package src.language
 			// Miscelaneous.
 			_chat_help_str = "Use a tecla 'c' para mostrar ou esconder o chat do jogo.";
 			_gold_str = "Ouro";
+			_buildings_str = "Construções";
 			
 			// Game information screen.
 			_moveable_str = "Livre";
 			_blocked_str = "Bloqueado";
+			
+			// Improvements.
+			_farm_name = "Fazenda";
+			_farm_desc = "Prove alimentos, rendimentos monetários e aumenta o crescimento populacional.";
+			_woodcutter_name = "Madeireira";
+			_woodcutter_desc = "Prove recursos básico para construções e rendimentos monetários.";
+			_stonecutter_name = "Pedreira";
+			_stonecutter_desc = "Prove recursos básico para construções e rendimentos monetários.";
+			_fisherman_name = "Centro de Pesca";
+			_fisherman_desc = "Prove alimentos, rendimentos monetários e aumenta o crescimento populacional.";
+			_docks_name = "Porto.";
+			_docks_desc = "Prove rendimentos monetários";
+			_hunting_lodge_name = "Centro de Caça";
+			_hunting_lodge_desc = "Prove alimentos, rendimentos monetários e aumenta o crescimento populacional.";
+			_iron_mine_name = "Mina de ferro";
+			_iron_mine_desc = "Prove recursos básico para confecção de equipamentos de gerra e rendimentos monetários.";
 			
 			// Timer.
 			_of_the_year_str = "do ano";

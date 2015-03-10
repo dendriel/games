@@ -16,10 +16,27 @@ package src.language
 		// Miscelaneous.
 		function get chat_help_str():String;
 		function get gold_str():String;
+		function get buildings_str():String;
 		
 		// Display information screen.
 		function get moveable_str() : String;
 		function get blocked_str() : String;
+		
+		// Improvements;
+		function get farm_name():String;
+		function get farm_desc():String;
+		function get woodcutter_name():String;
+		function get woodcutter_desc():String;
+		function get stonecutter_name():String;
+		function get stonecutter_desc():String;
+		function get fisherman_name():String;
+		function get fisherman_desc():String;
+		function get docks_name():String;
+		function get docks_desc():String;
+		function get hunting_lodge_name():String;
+		function get hunting_lodge_desc():String;
+		function get iron_mine_name():String;
+		function get iron_mine_desc():String;
 		
 		// Timer.
 		function get of_the_year_str() : String;

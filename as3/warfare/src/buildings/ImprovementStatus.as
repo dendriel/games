@@ -1,11 +1,13 @@
 package src.buildings
 {
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
+	import src.IElementInfo;
 	/**
 	 * ...
 	 * @author Vitor Rozsa
 	 */
-	public class ImprovementStatus extends MovieClip
+	public class ImprovementStatus extends MovieClip implements IElementInfo
 	{
 		// Population growth.
 		protected var _growth:Number;
@@ -15,6 +17,14 @@ package src.buildings
 		protected var _military:int;
 		// Defense bonus for garrisoned soldiers.
 		protected var _defense_bonus:int;
+		
+		// Displaying icon.
+		protected var _icon:BitmapData;
+		
+		// Element Info.
+		protected var _elemType:int;
+		protected var _elemName:String;
+		protected var _elemDesc:String;
 		
 		public function ImprovementStatus(growth:Number = 0, income:int = 0, military:int = 0, defense_bonus:int = 0)
 		{
@@ -48,6 +58,15 @@ package src.buildings
 		
 		public function get defense_bonus():int {return _defense_bonus;}
 		public function set defense_bonus(value:int):void {	_defense_bonus = value;	}
+		
+		public function get elemType():int 	{return _elemType;}
+		public function get elemName():String {	return _elemName;}
+		public function get elemDesc():String {	return _elemDesc;	}
+		
+		public function get icon():BitmapData 
+		{
+			return _icon;
+		}
 	}
 	
 }

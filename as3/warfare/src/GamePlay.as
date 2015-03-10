@@ -58,6 +58,7 @@ package src
 		private var tile_display:GameStatusDisplay;
 		private var building_display:GameStatusDisplay;
 		private var gamePlayerDisplay:GamePlayerDisplay;
+		private var building_action_display:GameActionsDisplay;
 		
 		// Input/Output.
 		private var key:KeyObject;
@@ -119,6 +120,8 @@ package src
 											[Const.MOVE_PATH_LABEL  , new MovePathFreeIconImage()],
 											[Const.COST_LABEL       , new GoldIconImage()],
 										]);
+										
+			building_action_display = new GameActionsDisplay(Const.ACTION_DISPLAY_POS_X, Const.ACTION_DISPLAY_POS_Y);
 			
 			// Load game frame.
 			gamePlayFrameR = new GamePlayFrame();
@@ -374,6 +377,11 @@ package src
 			{
 				gameMenuScreen.removeChild(building_display);
 			}
+			
+			if (gameMenuScreen.contains(building_action_display))
+			{
+				gameMenuScreen.removeChild(building_action_display);
+			}
 		}
 		
 		private function displayElementUnit(elem:IElementInfo) : void
@@ -415,9 +423,13 @@ package src
 			building_display.setField(Const.BUILDING_GROWTH_LABEL	  , String(status.growth), true, true, true);
 			building_display.setField(Const.BUILDING_INCOME_LABEL     , String(status.income), true, false, true);
 			building_display.setField(Const.DEFENSE_LABEL    		  , String(status.defense_bonus), true, true, true);
-			building_display.setField(Const.MILITARY_LABEL   , String(status.military));
+			building_display.setField(Const.MILITARY_LABEL   		  , String(status.military));
+			
+			
+			building_action_display.addWindow(GameLanguage.lang.buildings_str, city.getBuildingsList());			
 			
 			gameMenuScreen.addChild(building_display);
+			gameMenuScreen.addChild(building_action_display);
 		}
 		
 		private function displayElementTile(elem:IElementInfo) : void

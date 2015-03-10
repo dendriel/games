@@ -22,9 +22,12 @@ package src
 		public static const COOR_TXT_POS_Y = 20;
 		public static const UNIT_WEIGHT = 1000000;
 		
+		// GamePlay definitions.
 		// Status menus.
-		public static const PLAYER_STATUS_POS_X = 16;
-		public static const PLAYER_STATUS_POS_Y = 16;
+		static const PLAYER_STATUS_POS_X = 16;
+		static const PLAYER_STATUS_POS_Y = 16;
+		static const ACTION_DISPLAY_POS_X = 192;
+		static const ACTION_DISPLAY_POS_Y = 8;
 		static const BUILDING_GROWTH_LABEL = "growth label";
 		static const BUILDING_POPULATION_LABEL = "population label";
 		static const BUILDING_INCOME_LABEL = "income label";
@@ -36,6 +39,12 @@ package src
 		static const COST_LABEL = "cost label";
 		static const MOVE_BONUS_LABEL = "move bonus label";
 		static const MOVE_PATH_LABEL = "move path label";
+		static const MENU_AREA_W = (800 - 32);
+		static const MENU_AREA_H = (120 - 16);
+		static const MAP_AREA_W = (SCREEN_SIZE_W - 32);
+		static const MAP_AREA_H = (SCREEN_SIZE_H - MENU_AREA_H - 16); // with '-16', the menubar is placed over the big frame.
+		static const STATUS_DISPLAY_POS_X = 8;
+		static const STATUS_DISPLAY_POS_Y = 8;
 		
 		// Time definitions.
 		public static const DAY_TIME_MS = 2000;
@@ -48,14 +57,6 @@ package src
 		public static const SINGLE_PLAYER_S = "Single Player";
 		public static const MULTI_PLAYER_S = "Multiplayer";
 		public static const CREDITS_S = "Credits";
-		
-		// GamePlay definitions.
-		public static const MENU_AREA_W = (800 - 32);
-		public static const MENU_AREA_H = (120 - 16);
-		public static const MAP_AREA_W = (SCREEN_SIZE_W - 32);
-		public static const MAP_AREA_H = (SCREEN_SIZE_H - MENU_AREA_H - 16); // with '-16', the menubar is placed over the big frame.
-		public static const STATUS_DISPLAY_POS_X = 8;
-		public static const STATUS_DISPLAY_POS_Y = 8;
 		
 		public static const MAP_AREA_POS_X = 16;
 		public static const MAP_AREA_POS_Y = 16;

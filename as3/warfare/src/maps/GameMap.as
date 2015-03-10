@@ -8,7 +8,6 @@ package src.maps
 	import flash.geom.Rectangle;
 	import src.tiles.*;
 	import src.buildings.*;
-	import src.ui.GameUnitDisplay;
 	import src.units.*;
 	import src.as3.math.Calc;
 	import src.as3.math.graph.*;

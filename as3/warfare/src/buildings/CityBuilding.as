@@ -1,8 +1,11 @@
 package src.buildings
 {
+	import flash.display.Bitmap;
 	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import src.buildings.improvements.*;
 	import src.language.GameLanguage;
-	import src.buildings.improvements.ConstImprovement;
 	import src.tiles.ConstTile;
 	import src.as3.math.Calc;
 	/**
@@ -38,8 +41,13 @@ package src.buildings
 		// Base buildings.
 		public static const base_buildings:Array = new Array(
 		// Improvement      , Needed city level.
-		[ConstImprovement.FARM_ID, CityBuilding.LEVEL_0],
-		[ConstImprovement.WOODCUTTER_ID, CityBuilding.LEVEL_0]
+		[ConstImprovement.FARM_ID			, CityBuilding.LEVEL_0],
+		[ConstImprovement.WOODCUTTER_ID		, CityBuilding.LEVEL_0],
+		[ConstImprovement.FISHERMAN_ID		, CityBuilding.LEVEL_0],
+		[ConstImprovement.HUNTING_LODGE_ID  , CityBuilding.LEVEL_0],
+		[ConstImprovement.STONECUTTER_ID	, CityBuilding.LEVEL_1],
+		[ConstImprovement.IRON_MINE_ID		, CityBuilding.LEVEL_1],
+		[ConstImprovement.DOCKS_ID			, CityBuilding.LEVEL_1]
 		);
 		// Militar buildings.
 		
@@ -96,6 +104,92 @@ package src.buildings
 			var curr_status:ImprovementStatus = getStatus();
 			_population += Calc.percentage(population, curr_status.growth);
 		}
+		
+		public function getBuildingsList() : Array
+		{
+			var list:Array = new Array();
+			
+			for (var i in CityBuilding.base_buildings)
+			{
+				var base_building_id = CityBuilding.base_buildings[i][0];
+				var base_building_level = CityBuilding.base_buildings[i][1];
+				
+				if (_level != base_building_level)
+				{
+					continue;
+				}
+				
+				var improvement:ImprovementStatus = getImprovement(base_building_id);
+				list.push([improvement.elemName, improvement.elemDesc, new Bitmap(improvement.icon), getImprovementHandler(base_building_id)]);
+			}
+			
+			return list;
+		}
+		
+		private function getImprovementHandler(building_id:int) : Function
+		{
+			switch(building_id)
+			{
+				case ConstImprovement.FARM_ID:
+					return handleFarmImprovement;
+				case ConstImprovement.WOODCUTTER_ID:
+					return handleWoodcutterImprovement;
+				case ConstImprovement.FISHERMAN_ID:
+					return handleFishermanImprovement;
+				case ConstImprovement.HUNTING_LODGE_ID:
+					return handleHuntingLodgeImprovement;
+				case ConstImprovement.STONECUTTER_ID:
+					return handleStonecutterImprovement;
+				case ConstImprovement.IRON_MINE_ID:
+					return handleIronMineImprovement;
+				case ConstImprovement.DOCKS_ID:
+					return handleDocksImprovement;
+				default:
+					trace("Invalid building ID received " + building_id + ".");
+					return handleInvalidId;
+			}
+		}
+		
+		private function handleInvalidId(e:MouseEvent) : void
+		{
+			trace("Invalid ID configured. This functions is just a debug.");
+		}
+		
+		private function handleFarmImprovement(e:MouseEvent) : void
+		{
+			trace("Handle Farm Improvement");
+		}
+		
+		private function handleWoodcutterImprovement(e:MouseEvent) : void
+		{
+			trace("Handle Woodcutter Improvement");
+		}
+		
+		private function handleFishermanImprovement(e:MouseEvent) : void
+		{
+			trace("Handle Fisherman Improvement");
+		}
+		
+		private function handleHuntingLodgeImprovement(e:MouseEvent) : void
+		{
+			trace("Handle Hunting Lodge Improvement");
+		}
+		
+		private function handleStonecutterImprovement(e:MouseEvent) : void
+		{
+			trace("Handle Stonecutter Improvement");
+		}
+		
+		private function handleIronMineImprovement(e:MouseEvent) : void
+		{
+			trace("Handle Iron Mine Improvement");
+		}
+		
+		private function handleDocksImprovement(e:MouseEvent) : void
+		{
+			trace("Handle Docks Improvement");
+		}
+		
 //##################################################################################################
 // Static functions. Get default values for cities.
 		public static function getName(level:int) : String
@@ -192,6 +286,21 @@ package src.buildings
 		public function get population():int 
 		{
 			return _population;
+		}
+		
+//#########################		
+// Private static functions.		
+		private static function getImprovement(id:int) : ImprovementStatus
+		{
+			switch(id)
+			{
+				case ConstImprovement.FARM_ID:
+					return new FarmImprovement();
+				case ConstImprovement.WOODCUTTER_ID:
+					return new WoodcutterImprovement();
+				default:
+					return new FarmImprovement();
+			}
 		}
 	}
 	
