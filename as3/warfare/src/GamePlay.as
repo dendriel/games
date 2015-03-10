@@ -177,11 +177,6 @@ package src
 			player = gameMapR.players[0];
 			gamePlayerDisplay.loadPlayer(player);
 			
-			var farm:FarmImprovement = new FarmImprovement();
-			farm.x = 32 * 7;
-			farm.y = 32 * 7;
-			gameMapR.addChild(farm);
-			
 			gameMapR.timer.x = Const.TIMER_POS_X;
 			gameMapR.timer.y = Const.TIMER_POS_Y;
 			gameMenuScreen.addChild(gameMapR.timer);

@@ -63,13 +63,13 @@ package src.units
 		
 		// Action definitions.
 		private var moveTimer:Timer;
-		private var movePath:Vector.<SPFNode>;
-		private var moveTo:SPFNode;
+		private var _move_path:Vector.<SPFNode>;
+		private var _move_to:SPFNode;
 		private var attackInProgress:Boolean;
 		private var enemy:GameUnit;
 		private var attackTimer:Timer;
 		private var _battleRole:Number;
-		private var engaged:Boolean;
+		private var _engaged:Boolean;
 		private var removeSelfTimer:Timer;
 		
 		// Images.
@@ -112,7 +112,7 @@ package src.units
 			
 			drawSigns();
 			attackInProgress = false;
-			engaged = false;
+			_engaged = false;
 		}
 
 
@@ -183,13 +183,13 @@ package src.units
 		 */
 		public function engage() : Boolean
 		{
-			if (engaged == true)
+			if (_engaged == true)
 			{
 				return false;
 			}
 			
 			stopMove();
-			engaged = true;
+			_engaged = true;
 			busySign = true;
 			
 			return true;
@@ -228,7 +228,7 @@ package src.units
 		 */
 		public function startMove(path:Vector.<SPFNode>) : void
 		{
-			if (engaged)
+			if (_engaged)
 			{
 				trace("Unit is fighting. Can't move right now.");
 				return;
@@ -242,7 +242,7 @@ package src.units
 			busySign = true;
 			attackInProgress = false;
 			moveTimer.stop();
-			movePath = path;
+			_move_path = path;
 			scheduleMove();
 		}
 		
@@ -251,7 +251,7 @@ package src.units
 		 */
 		public function startAttack(path:Vector.<SPFNode>, unit:GameUnit) : void
 		{
-			if (engaged)
+			if (_engaged)
 			{
 				trace("Unit is fighting. Can't move right now.");
 				return;
@@ -263,7 +263,7 @@ package src.units
 			moveTimer.stop();
 			attackInProgress = true;
 			enemy = unit;
-			movePath = path;
+			_move_path = path;
 			scheduleMove();
 		}
 
@@ -272,30 +272,30 @@ package src.units
 		 */
 		public function scheduleMove() : void
 		{
-			if (movePath == null)
+			if (_move_path == null)
 			{
 				// Movement has ended.
 				busySign = false;
 				return;
 			}
 			
-			moveTo = movePath.pop();
+			_move_to = _move_path.pop();
 			
-			if (movePath.length == 0)
+			if (_move_path.length == 0)
 			{
-				movePath = null;
+				_move_path = null;
 			}
 			
 			// If is the last node and we are in a battle.
-			if ( (movePath == null) && (attackInProgress == true) )
+			if ( (_move_path == null) && (attackInProgress == true) )
 			{
 				attackInProgress = false;
-				engaged = true;
-				dispatchEvent(new UnitEngageEvent(this, enemy, moveTo.uid));
+				_engaged = true;
+				dispatchEvent(new UnitEngageEvent(this, enemy, _move_to.uid));
 				return;
 			}
 			
-			moveTimer.delay = ( (Const.MOVE_TIME_1_DAY / _move_time) * Const.DAY_TIME_MS) +  weightFromNode(moveTo);
+			moveTimer.delay = ( (Const.MOVE_TIME_1_DAY / _move_time) * Const.DAY_TIME_MS) +  weightFromNode(_move_to);
 			moveTimer.repeatCount = 1;
 			
 			moveTimer.reset();
@@ -320,8 +320,8 @@ package src.units
 		public function stopMove() : void
 		{			
 			moveTimer.stop();
-			moveTo = null;
-			movePath = null;
+			_move_to = null;
+			_move_path = null;
 			attackInProgress = false;
 			busySign = false;
 		}
@@ -330,11 +330,11 @@ package src.units
 		{			
 			attackTimer.stop();
 			moveTimer.stop();
-			moveTo = null;
-			movePath = null;
+			_move_to = null;
+			_move_path = null;
 			attackInProgress = false;
 			_battleRole = 0;
-			engaged = false;
+			_engaged = false;
 			busySign = false;
 		}
 
@@ -346,12 +346,12 @@ package src.units
 // Handle Timer Events.
 		private function handleTimerComplete_move(e:TimerEvent) : void
 		{
-			var moveToUID:int = moveTo.uid;
+			var moveToUID:int = _move_to.uid;
 			
-			if (movePath == null)
+			if (_move_path == null)
 			{
 				// Unit finished moving.
-				moveTo = null;
+				_move_to = null;
 				busySign = false;
 			}
 			
@@ -445,6 +445,25 @@ package src.units
 		private function set busySign(value:Boolean) : void
 		{
 			_busySign.visible = value;
+		}
+		
+		public function get move_path():Vector.<SPFNode> 
+		{
+			if (_move_path != null)
+			{
+				return _move_path.concat();
+			}
+			return null;
+		}
+		
+		public function get move_to():SPFNode 
+		{
+			return _move_to;
+		}
+		
+		public function get engaged():Boolean 
+		{
+			return _engaged;
 		}
 	}
 	

@@ -24,16 +24,19 @@ package src.maps
 		protected var height_tiles:int;
 		protected var tileset:GameTileset;
 		
-		// Layer 0.
+		// Tile layer.
 		protected var tile_layer_map:Array;
 		private var tiles_list:Array;
 		private var tile_layer:MovieClip;
 		
-		// Layer 1.
+		// Building layer.
 		private var buildings_list:Array;
 		private var building_layer:MovieClip;
 		
-		// Layer 2 and 3.
+		// Path layer.
+		private var path_layer:MovieClip;
+		
+		// Unit layer.
 		private var unit_layers:Array	// [0] bottom layer; [1] top layer.
 		private var units_list:Array;
 		private var unit_actions:Array;
@@ -57,6 +60,7 @@ package src.maps
 			var i:int;
 			var map_lenght:int = _width_tiles * height_tiles
 			
+			path_layer = new MovieClip();
 			shortestPath = new SPF();
 			weightMap = new Array(map_lenght);
 			units_list = new Array(map_lenght);
@@ -114,9 +118,7 @@ package src.maps
 				
 				GameMapBuilder.createUnits(player, units_list, _width_tiles, unit_actions, weightMap,  unit_layers);
 			}
-			// Add layer 2.
 			addChild(unit_layers[0]);
-			// Add layer 3.
 			addChild(unit_layers[1]);
 			
 			// Create timer.
@@ -268,6 +270,11 @@ package src.maps
 			
 			// Schedule next movement.
 			e.unit.scheduleMove();
+			
+			if ( (unitOnFocus != null) && (unitOnFocus.uid == e.unit.uid) )
+			{
+				drawUnitPath(e.unit);
+			}
 		}
 		
 		/**
@@ -341,6 +348,57 @@ package src.maps
 			var unit:GameUnit = e.unit;
 			var index:int = Calc.pixel_to_idx(unit.x, unit.y, ConstTile.TILE_W, _width_tiles);
 			GameMapBuilder.removeUnit(unit, units_list, unit_layers, index, weightMap);
+		}
+		
+		private function drawUnitPath(unit:GameUnit) : void
+		{
+			var path:Vector.<SPFNode>;
+			var node:SPFNode;
+			var mark:Bitmap;
+			var pos:Point;
+			
+			// Remove old reference, if needed.
+			if ( (path_layer != null) && (contains(path_layer)) )
+			{
+				removeChild(path_layer);
+				path_layer = null;
+			}
+			
+			if ( (unit == null) ||
+				( (unit != null) && ( (unit.move_to == null) || (unit.engaged == true) ) )
+				)
+			{
+				return;
+			}
+			
+			// Get a clear movieclip.
+			path_layer = new MovieClip();
+			
+			node = unit.move_to;
+			path = unit.move_path;
+			
+			// First node.
+			// If is the final destination, add a different mark.
+			mark = (path != null)? new Bitmap(new PathMarkImage()) : new Bitmap(new PathDestinationMarkImage());
+			pos = Calc.idx_to_pixel(node.uid, _width_tiles, ConstTile.TILE_W);
+			mark.x = pos.x;
+			mark.y = pos.y;
+			path_layer.addChild(mark);
+			
+			// Subsequent nodes.
+			while ( (path != null) && (path.length != 0) )
+			{
+				node = path.pop();
+				// If is the final destination, add a different mark.
+				mark = (path.length > 0)? new Bitmap(new PathMarkImage()) : new Bitmap(new PathDestinationMarkImage());
+				pos = Calc.idx_to_pixel(node.uid, _width_tiles, ConstTile.TILE_W);
+				mark.x = pos.x;
+				mark.y = pos.y;
+				path_layer.addChild(mark);
+			}
+			
+			// Above tile and building layer.
+			addChildAt(path_layer, 2);
 		}
 
 //##################################################################################################
@@ -487,6 +545,11 @@ package src.maps
 			{
 				unit.startMove(path);
 			}
+			
+			if ( (unitOnFocus != null) && (unitOnFocus.uid == unit.uid) )
+			{
+				drawUnitPath(unit);
+			}
 		}
 		
 		/**
@@ -506,12 +569,14 @@ package src.maps
 			{
 				unitOnFocus.focusSign = false;
 				unitOnFocus = null;
+				drawUnitPath(null);
 			}
 			
 			if (unit != null)
 			{
 				unitOnFocus = unit;
 				unitOnFocus.focusSign = true;
+				drawUnitPath(unit);
 			}
 		}
 		
