@@ -29,14 +29,21 @@ package src.buildings
 		static const VILLAGE_MILITARY:int      = 3;
 		static const VILLAGE_ATTACK_BONUS:int  = 1;
 		static const VILLAGE_DEFENSE_BONUS:int = 20;
-		static const VILLAGE_POPULATION:int = 300;
+		static const VILLAGE_POPULATION:int	   = 300;
+		static const VILLAGE_RANGE:int			= 3;
 		// Small city status.
 		static const SMALL_CITY_GROWTH:Number     = 2;
 		static const SMALL_CITY_INCOME:int        = 10;
 		static const SMALL_CITY_MILITARY:int      = 5;
 		static const SMALL_CITY_ATTACK_BONUS:int  = 3;
 		static const SMALL_CITY_DEFENSE_BONUS:int = 25;
-		static const SMALL_CITY_POPULATION:int = 2000;
+		static const SMALL_CITY_POPULATION:int 		= 2000;
+		static const SMALL_CITY_RANGE:int			= 4;
+		// Medium city status.
+		static const MEDIUM_CITY_RANGE:int			= 5;
+		
+		// Big city status.
+		static const BIG_CITY_RANGE:int			= 6;
 		
 		// Base buildings.
 		public static const base_buildings:Array = new Array(
@@ -59,6 +66,7 @@ package src.buildings
 		private var view:MovieClip;
 		private var improvements_list:Vector.<ImprovementStatus>;
 		private var _population:int;
+		private var _range:int;
 		
 		public function CityBuilding(level:int) : void
 		{
@@ -72,10 +80,12 @@ package src.buildings
 			_moveable =  true;
 			_moveBonus = ConstTile.MOVEEFFORT_UNFAVORABLE;
 			
-			base_status = CityBuilding.getStatus(_level);
-			view = CityBuilding.getView(_level);
-			improvements_list = new Vector.<ImprovementStatus>;
-			_population = CityBuilding.getPopulation(_level);
+			base_status 		= CityBuilding.getStatus(_level);
+			view 				= CityBuilding.getView(_level);
+			_population 		= CityBuilding.getPopulation(_level);
+			_range				= CityBuilding.getRange(_level);
+			improvements_list 	= new Vector.<ImprovementStatus>;
+			
 			
 			addChild(view);
 		}
@@ -105,7 +115,7 @@ package src.buildings
 			_population += Calc.percentage(population, curr_status.growth);
 		}
 		
-		public function getBuildingsList() : Array
+		public function getBuildingsList(tiles_in_range:Vector.<int>) : Array
 		{
 			var list:Array = new Array();
 			
@@ -120,7 +130,28 @@ package src.buildings
 				}
 				
 				var improvement:ImprovementStatus = getImprovement(base_building_id);
-				list.push([improvement.elemName, improvement.elemDesc, new Bitmap(improvement.icon), getImprovementHandler(base_building_id)]);
+				var tileable_counter:int = 0;
+				
+				if (improvement.tileable == true)
+				{
+					for (var j in tiles_in_range)
+					{
+						var tile_id:int = tiles_in_range[j];
+						if (improvement.checkTilePlaceable(tile_id) != true)
+						{
+							continue;
+						}
+						
+						tileable_counter++;
+					}
+				}
+					
+				list.push([
+					improvement.elemName,
+					improvement.elemDesc + " enable to build " + tileable_counter,
+					new Bitmap(improvement.icon),
+					getImprovementHandler(base_building_id)
+					]);
 			}
 			
 			return list;
@@ -188,6 +219,16 @@ package src.buildings
 		private function handleDocksImprovement(e:MouseEvent) : void
 		{
 			trace("Handle Docks Improvement");
+		}
+		
+		public function get population():int 
+		{
+			return _population;
+		}
+		
+		public function get range():int 
+		{
+			return _range;
 		}
 		
 //##################################################################################################
@@ -283,9 +324,18 @@ package src.buildings
 			}
 		}
 		
-		public function get population():int 
+		public static function getRange(level:int) : int
 		{
-			return _population;
+			switch (level)
+			{
+				case CityBuilding.LEVEL_0: return CityBuilding.VILLAGE_RANGE;
+				case CityBuilding.LEVEL_1: return CityBuilding.SMALL_CITY_RANGE;
+				case CityBuilding.LEVEL_2: return CityBuilding.MEDIUM_CITY_RANGE;
+				case CityBuilding.LEVEL_3: return CityBuilding.BIG_CITY_RANGE;
+				default:
+					trace("Invalid city level received. Returning default range value.");
+					return CityBuilding.VILLAGE_RANGE;
+			}
 		}
 		
 //#########################		
@@ -294,12 +344,13 @@ package src.buildings
 		{
 			switch(id)
 			{
-				case ConstImprovement.FARM_ID:
-					return new FarmImprovement();
-				case ConstImprovement.WOODCUTTER_ID:
-					return new WoodcutterImprovement();
-				default:
-					return new FarmImprovement();
+				case ConstImprovement.FARM_ID:	return new FarmImprovement();
+				case ConstImprovement.WOODCUTTER_ID: return new WoodcutterImprovement();
+				case ConstImprovement.FISHERMAN_ID:	return new FishermanImprovement();
+				case ConstImprovement.HUNTING_LODGE_ID:	return new HuntingLodgeImprovement();
+			default:
+				trace("Improvement with ID " + id + " was not found. Return default improvement.");
+				return new FarmImprovement();
 			}
 		}
 	}

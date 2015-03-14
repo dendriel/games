@@ -8,6 +8,9 @@ package src.tiles
 	 */
 	public class ConstTile 
 	{
+		// Tiles identifiers.
+		public static const GRASS_TILE_ID = 1;
+		
 		// Internal definitions.
 		public static const TILE_W = 32;
 		public static const TILE_H = 32;

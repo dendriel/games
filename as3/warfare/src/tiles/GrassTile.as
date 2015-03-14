@@ -10,6 +10,8 @@ package src.tiles
 	{
 		public function GrassTile()
 		{
+			_id = ConstTile.GRASS_TILE_ID;
+			
 			_name = GameLanguage.lang.grass_name;
 			_desc = GameLanguage.lang.grass_desc;
 			_def = ConstTile.GRASS_DEF;

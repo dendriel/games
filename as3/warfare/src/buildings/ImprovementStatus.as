@@ -18,6 +18,10 @@ package src.buildings
 		// Defense bonus for garrisoned soldiers.
 		protected var _defense_bonus:int;
 		
+		// Tiles wich can hold the improvement.
+		protected var _tileable:Boolean; // If the improvement is placed over a tile on the map.
+		protected var _placeable_tiles:Vector.<int>;
+		
 		// Displaying icon.
 		protected var _icon:BitmapData;
 		
@@ -25,6 +29,7 @@ package src.buildings
 		protected var _elemType:int;
 		protected var _elemName:String;
 		protected var _elemDesc:String;
+		
 		
 		public function ImprovementStatus(growth:Number = 0, income:int = 0, military:int = 0, defense_bonus:int = 0)
 		{
@@ -63,9 +68,21 @@ package src.buildings
 		public function get elemName():String {	return _elemName;}
 		public function get elemDesc():String {	return _elemDesc;	}
 		
-		public function get icon():BitmapData 
+		public function get icon():BitmapData { return _icon; }
+		
+		public function get tileable():Boolean 
 		{
-			return _icon;
+			return _tileable;
+		}
+		
+		/**
+		 * Check if the given tile ID can hold this improvement.
+		 * @param	tile
+		 * @return
+		 */
+		public function checkTilePlaceable(tile:int) : Boolean
+		{
+			return ( (_placeable_tiles.indexOf(tile) >= 0)? true : false);
 		}
 	}
 	

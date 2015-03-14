@@ -604,6 +604,53 @@ package src.maps
 			trace("removing unit!");
 			unit.removeSelf();
 		}
+		
+		/**
+		 * Get the tiles ID that are in the given range.
+		 * 
+		 * Example:
+			* center = 24;
+			* range = 2;
+		 * 
+		 * In the given matriz:
+		 *  0   1   2   3   4   5   6   7   8   9
+		 * 10  11  12  13  14  15  16  17  18  19
+		 * 20  21  22  23  24  25  26  27  28  29
+		 * 30  31  32  33  34  35  36  37  38  39
+		 * 40  41  42  43  44  45  46  47  48  49
+		 * 
+		 * Will return the IDs from the tiles in the indexes: 2, 3, 4, 5, 6, 7, 12, 13, 14, 15, 16, 17, 22, 23, 24, 25, 26, 27, 32, 33, 34, 35, 36, 37, 42, 43, 44, 45, 46, 47
+		 * 
+		 * @param	center
+		 * @param	range
+		 * @return
+		 */
+		public function getTilesInRange(center:int, range:int) : Vector.<int>
+		{
+			var range_in_tiles:int = (range * 2) + 1;
+			var base_tile:int = (center - _width_tiles - range)
+			var list:Vector.<int> = new Vector.<int>;
+			
+			for (var column:int = 1; column <= range_in_tiles; column++)
+			{
+				var current_row:int = base_tile + (_width_tiles * column);
+				var lower_limit:int = (current_row / _width_tiles) * _width_tiles;
+				var upper_limit:int = lower_limit + (_width_tiles - 1);
+				
+				for (var row:int = 1; row <= range_in_tiles; row++)
+				{
+					var tile_index:int = current_row + row;
+					if ( ( (tile_index < 0) || (tile_index > _width_tiles*height_tiles) ) ||
+						 (tile_index < lower_limit) || ( tile_index > upper_limit) )
+					{
+						continue;
+					}
+					list.push(GameTile(tiles_list[tile_index]).id);
+				}
+			}
+			
+			return list;
+		}
 	}
 	
 }

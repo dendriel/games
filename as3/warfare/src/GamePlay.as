@@ -420,8 +420,10 @@ package src
 			building_display.setField(Const.DEFENSE_LABEL    		  , String(status.defense_bonus), true, true, true);
 			building_display.setField(Const.MILITARY_LABEL   		  , String(status.military));
 			
+			var city_pos_index = Calc.pixel_to_idx(city.x, city.y, ConstTile.TILE_W, gameMapR.width_tiles);
+			var tiles_in_range:Vector.<int> = gameMapR.getTilesInRange(city_pos_index, city.range);
 			
-			building_action_display.addWindow(GameLanguage.lang.buildings_str, city.getBuildingsList());			
+			building_action_display.addWindow(GameLanguage.lang.buildings_str, city.getBuildingsList(tiles_in_range) );
 			
 			gameMenuScreen.addChild(building_display);
 			gameMenuScreen.addChild(building_action_display);

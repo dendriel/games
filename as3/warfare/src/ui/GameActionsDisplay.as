@@ -69,6 +69,7 @@ package src.ui
 				
 				icon.addEventListener(MouseEvent.CLICK, clickHandler, false, 0, true);
 				
+				trace(element[1]);
 				//var nameTxt:TextField = GameTextFormat.newDisplayTextField();
 				//nameTxt.text = element[0];
 				//nameTxt.x = Calc.alignMiddle(icon.x, iconsWidth, nameTxt.textWidth);
