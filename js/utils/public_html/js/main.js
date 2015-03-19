@@ -1,15 +1,26 @@
 // Define core scripts that must be loaded first.
 var core_scripts = [
+    "js/core/Box2dWeb-2.1.a.3.min.js",
     "js/core/core.js"
 ];
 
 var basic_assets = [
     // Scripts.
     "js/basic/Spritesheet.js",
+    "js/basic/PhysicsEngine.js",
+    "js/basic/InputEngine.js",
+    "js/basic/GameEngine.js",
+    "js/basic/Entity.js",
+    
     // Images map.
     "json/grits_effects.json",
     // Images.
     "images/grits_effects.png"
+];
+
+var entities = [
+    "js/basic/Character.js",
+    "js/entities/LandmineClass.js"
 ];
 
 
@@ -34,7 +45,17 @@ function load_basic_assets()
     loadAssets(basic_assets,
         function(assetsList)
         {
-            console.log("Basic assets were loaded. Call main.");
+            console.log("Basic assets were loaded. Call load spritesheets.");
+            load_entities();
+        });
+}
+
+function load_entities()
+{
+    loadAssets(entities,
+        function(assetsList)
+        {
+            console.log("Entities were loaded. Call load spritesheets.");
             load_spritesheets();
         });
 }
@@ -64,22 +85,35 @@ function load_spritesheets()
     main();
 }
 
+var FRAMERATE = 1000/30;
+
 function main()
 {
+    
+    
     var body = document.getElementById("body");
     var canvas = document.createElement("canvas");
     
     canvas.setAttribute('width', 500);
     canvas.setAttribute('height', 500);
+    canvas.setAttribute('tabindex','0');
+    canvas.focus();
     
     var drawctx = canvas.getContext("2d");
-    drawctx.fillStyle = "#ff00ff";
+    drawctx.fillStyle = "#33ffff";
     drawctx.fillRect(0,0,500,700);
     //canvas.style.opacity = '0.2';
     
     body.appendChild(canvas);
     
-    drawSprite("rocket_launcher_muzzle_0005.png", 100, 100, drawctx);
+    gInputEngine.setup(canvas);
+    
+    gGameEngine.setup(FRAMERATE, drawctx);
+    gGameEngine.spawnEntity("Landmine", 200, 200);
+    
+    var player = gGameEngine.spawnEntity("Character", 150, 150);
+    player.nick = "Dendriel";
+    gGameEngine.loadPlayer(player);
 }
 
 // Start js logic.

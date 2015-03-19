@@ -65,11 +65,11 @@ SpriteSheetClass = Class.extend(
             var cx = -1 * Math.ceil(sprite.frame.w / 2);
             var cy = -1 * Math.ceil(sprite.frame.h / 2);
             
-            if (sprite.trimmed === true)
-            {
-                cx  = sprite.spriteSourceSize.x - (sprite.sourceSize.w / 2);
-                cy  = sprite.spriteSourceSize.y - (sprite.sourceSize.h / 2);
-            }
+            //if (sprite.trimmed === true)
+           // {
+           //     cx  = sprite.spriteSourceSize.x - (sprite.sourceSize.w / 2);
+           //     cy  = sprite.spriteSourceSize.y - (sprite.sourceSize.h / 2);
+           // }
 
             this.defSprite(sprite_name,
                         sprite.frame.x,
