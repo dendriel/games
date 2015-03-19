@@ -87,21 +87,26 @@ GameEngineClass = Class.extend(
     {        
         var player = self.player;
         
+        player.facing = FACING_NONE;
         if (gInputEngine.actions['move-up'])
         {
             player.move_dir.y -= 1;
+            player.facing = FACING_UP;
         }
         if (gInputEngine.actions['move-down'])
         {
             player.move_dir.y += 1;
+            player.facing = FACING_DOWN;
         }
         if (gInputEngine.actions['move-left'])
         {
             player.move_dir.x -= 1;
+            player.facing = FACING_LEFT;
         }
         if (gInputEngine.actions['move-right'])
         {
             player.move_dir.x += 1;
+            player.facing = FACING_RIGHT;
         }
 
         // After modifying the move_dir above, we check if the vector is
@@ -187,7 +192,6 @@ GameEngineClass = Class.extend(
         
         this.entities.push(entity);
         
-        console.log("Entity: " + entity.entity_def);
         if (entity.entity_def != null)
         {
             entity.entity_def.userData = entity;
@@ -195,6 +199,8 @@ GameEngineClass = Class.extend(
             entity.body_phy = body_phy;
             entity.body_phy.SetPosition(new Vec2(x, y));
         }
+        
+        console.log(entity.id + " created!");
         
         return entity;
     },

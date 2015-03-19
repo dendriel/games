@@ -135,6 +135,18 @@ function __drawSpriteInternal(spt, sheet, posX, posY, drawctx)
                 spt.w, spt.h); // to
     //drawctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX, posY, spt.w, spt.h);
 }
+    
+function gen_sprite_names(prefix, start, end, suffix)
+{
+    var sprites_list = new Array();
+
+    for (var i = start; i <= end; i++)
+    {
+        var sprite_name = prefix + i + suffix;
+        sprites_list.push(sprite_name);
+    }
+    return sprites_list;
+}
 
 //var body = document.getElementById("body");
 //var canvas = document.createElement("canvas");

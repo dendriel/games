@@ -85,7 +85,7 @@ function load_spritesheets()
     main();
 }
 
-var FRAMERATE = 1000/30;
+var FRAMERATE = 1000/60;
 
 function main()
 {
