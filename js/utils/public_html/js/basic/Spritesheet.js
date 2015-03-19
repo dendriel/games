@@ -22,11 +22,10 @@ SpriteSheetClass = Class.extend(
 
     //-----------------------------------------
     // Load the atlas at the path 'imgName' into memory.
-    load: function (img_path)
+    load: function (img_path, img_data)
     {
         this.url = img_path;	// Store the URL of the spritesheet we want.
-        this.img = new Image(); // Create a new image whose source is at 'imgName'.
-        this.img.src = this.url;
+        this.img = img_data;
 
         // Store this SpriteSheetClass in our global dictionary.
         gSpriteSheets[this.url] = this;
@@ -102,7 +101,7 @@ SpriteSheetClass = Class.extend(
 
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite name.
-function drawSprite(spritename, posX, posY, canvas)
+function drawSprite(spritename, posX, posY, drawctx)
 {
     // Find the spritesheet that contains the wanted sprite.
     for (var i in gSpriteSheets)
@@ -112,7 +111,7 @@ function drawSprite(spritename, posX, posY, canvas)
         var sprite = sheet.getStats(spritename);
         if (sprite !== null)
         {
-            __drawSpriteInternal(sprite, sheet, posX, posY, canvas);
+            __drawSpriteInternal(sprite, sheet, posX, posY, drawctx);
             break;
         }
     }
@@ -123,13 +122,13 @@ function drawSprite(spritename, posX, posY, canvas)
 // External-facing function for drawing sprites based on the sprite object
 // stored from the 'sprites' Array inside the 'SpriteSheetClass' object, and the
 // position on canvas to draw to.
-function __drawSpriteInternal(spt, sheet, posX, posY, canvas)
+function __drawSpriteInternal(spt, sheet, posX, posY, drawctx)
 {
-    if ( (spt === null) || (sheet === null) || (canvas === null) )
+    if ( (spt === null) || (sheet === null) || (drawctx === null) )
     {
         return;
     }
-    canvas.drawImage(sheet.img,
+    drawctx.drawImage(sheet.img,
                 spt.x, spt.y, // from
                 spt.w, spt.h, // from
                 posX + spt.cx, posY + spt.cy, // to

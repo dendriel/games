@@ -25,6 +25,7 @@ function loadAssets(assetsList, callbackFcn)
         total : assetsList.length,
         cb : callbackFcn
     };
+    
     for (var i = 0; i < assetsList.length; i++)
     {
         var asset = assetsList[i];
@@ -48,12 +49,24 @@ function loadAssets(assetsList, callbackFcn)
         else if (file_type === 1)
         {
             var new_js = document.createElement("script");
+            
             new_js.setAttribute('type', "text/javascript");
             new_js.onload = function () {onLoadedAssetCb(assetsList, batch);};
             new_js.src = asset;
             
             var tags_list = document.getElementsByTagName('head');
             tags_list[0].appendChild(new_js);
+        }
+        // Handle json files.
+        else if (file_type === 2)
+        {
+            gCachedAssets[asset] = null;
+            $.getJSON(asset, function(response)
+            {
+                var json_name = "json/" + response.meta.image.substr(0, response.meta.image.lastIndexOf(".")) + ".json";
+                gCachedAssets[json_name] = response;
+                onLoadedAssetCb(assetsList, batch);
+            });
         }
         else
         {
@@ -63,7 +76,7 @@ function loadAssets(assetsList, callbackFcn)
     }
 }
 
-function onLoadedAssetCb(assetsList, batch)
+function onLoadedAssetCb(assetsList, batch, data)
 {
     batch.loaded++;
     
@@ -85,9 +98,15 @@ function getAssetTypeFromExtension(fname)
     {
         return 0;
     }
-
-    if (fname.indexOf('.js') !== -1 ||
-        fname.indexOf('.json') !== -1)
+    
+    // This first. Otherwise, looking for indexOf ".js" will return 1 for both
+    // json an js.
+    if (fname.indexOf('.json') !== -1)
+    {
+        return 2;
+    }
+    
+    if (fname.indexOf('.js') !== -1)
     {
         return 1;
     }
