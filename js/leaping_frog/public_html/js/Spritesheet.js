@@ -34,7 +34,7 @@ SpriteSheetClass = Class.extend(
 
     //-----------------------------------------
     // Define a sprite for this atlas
-    defSprite: function (name, x, y, w, h, cx, cy)
+    defSprite: function (name, x, y, w, h, cx, cy, rot)
     {
         var spt = {
                 "id": name,
@@ -43,7 +43,8 @@ SpriteSheetClass = Class.extend(
                 "w": w,
                 "h": h,
                 "cx": cx == null ? 0 : cx,
-                "cy": cy == null ? 0 : cy
+                "cy": cy == null ? 0 : cy,
+                "rotated": rot
         };
         
         this.sprites.push(spt);
@@ -56,20 +57,19 @@ SpriteSheetClass = Class.extend(
     {
         //var data = JSON.parse(atlasJSON);
         var data = atlasJSON;
-        
         for (var i = 0; i < data.frames.length; i++)
         {
             var sprite = data.frames[i];
-            var sprite_name = i;
+            var sprite_name = data.frames[i].filename;
 
             var cx = -1 * Math.ceil(sprite.frame.w / 2);
             var cy = -1 * Math.ceil(sprite.frame.h / 2);
             
-            //if (sprite.trimmed === true)
-           // {
-           //     cx  = sprite.spriteSourceSize.x - (sprite.sourceSize.w / 2);
-           //     cy  = sprite.spriteSourceSize.y - (sprite.sourceSize.h / 2);
-           // }
+            if (sprite.trimmed === true)
+            {
+                cx  = sprite.spriteSourceSize.x - (sprite.sourceSize.w / 2);
+                cy  = sprite.spriteSourceSize.y - (sprite.sourceSize.h / 2);
+            }
 
             this.defSprite(sprite_name,
                         sprite.frame.x,
@@ -77,7 +77,8 @@ SpriteSheetClass = Class.extend(
                         sprite.frame.w,
                         sprite.frame.h,
                         cx,
-                        cy);
+                        cy,
+                        sprite.rotated);
         }
     },
 
@@ -99,10 +100,28 @@ SpriteSheetClass = Class.extend(
 
 });
 
+function get_sprite(spritename)
+{
+    // Find the spritesheet that contains the wanted sprite.
+    for (var i in gSpriteSheets)
+    {
+        var sheet = gSpriteSheets[i];
+        
+        var sprite = sheet.getStats(spritename);
+        if (sprite !== null)
+        {
+            return sprite;
+        }
+    }
+    
+    console.log("Sprite \"" + spritename + "\" was not found.");
+    return null;
+}
+
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite name.
 function drawSprite(spritename, posX, posY, drawctx)
-{
+{    
     // Find the spritesheet that contains the wanted sprite.
     for (var i in gSpriteSheets)
     {
@@ -115,7 +134,6 @@ function drawSprite(spritename, posX, posY, drawctx)
             break;
         }
     }
-
 }
 
 //-----------------------------------------
@@ -126,14 +144,52 @@ function __drawSpriteInternal(spt, sheet, posX, posY, drawctx)
 {
     if ( (spt === null) || (sheet === null) || (drawctx === null) )
     {
+        console.log("Received a null parameter. spt: " + spt + " ; sheet: " + sheet + " ; drawctx: " + drawctx);
         return;
     }
-    drawctx.drawImage(sheet.img,
+    
+    var draw_px = posX;
+    var draw_py = posY;
+    var draw_w = spt.w;
+    var draw_h = spt.h
+    
+    if (spt.rotated)
+    {
+        console.log("rotated");
+        // save the current co-ordinate system 
+        // before we screw with it
+        drawctx.save(); 
+
+        // move to the middle of where we want to draw our image
+        drawctx.translate(posX, posY);
+
+        // rotate around that point, converting our 
+        // angle from degrees to radians 
+        drawctx.rotate(-90 * Math.PI/180);
+        
+        //console.log(spt.w);
+        draw_px = -spt.h;
+        draw_py = 0;//spt.h;//spt.h;
+        draw_w = spt.h;
+        draw_h = spt.w;
+    }
+    
+    
+    //gDraw_ctx.drawImage(gCachedAssets["images/leaping_frog_atlas.png"], 0, 0, 100, 100, 50, 50, 100, 100);
+    //gDraw_ctx.drawImage(gCachedAssets["images/leaping_frog_atlas.png"], 88, 88, 48, 32, 50, 50, 48, 32);
+    drawctx.drawImage(gCachedAssets["images/leaping_frog_atlas.png"],//sheet.img,
                 spt.x, spt.y, // from
-                spt.w, spt.h, // from
-                posX + spt.cx, posY + spt.cy, // to
-                spt.w, spt.h); // to
+                draw_w, draw_h, // from
+                draw_px, draw_py,
+                //(draw_px + spt.cx), (draw_py + spt.cy),
+                //posX + spt.cx, posY + spt.cy, // to
+                draw_w, draw_h); // to
     //drawctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX, posY, spt.w, spt.h);
+    
+    if (spt.rotated)
+    {
+        drawctx.restore();
+    }
 }
     
 function gen_sprite_names(prefix, start, end, suffix)

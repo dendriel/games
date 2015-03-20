@@ -11,11 +11,16 @@ var basic_assets = [
     "js/basic/InputEngine.js",
     "js/basic/GameEngine.js",
     "js/basic/Entity.js",
+    "js/basic/TiledMap.js",
     
     // Images map.
     "json/grits_effects.json",
     // Images.
     "images/grits_effects.png"
+];
+
+var maps = [
+    "json/map.json"
 ];
 
 var entities = [
@@ -45,7 +50,17 @@ function load_basic_assets()
     loadAssets(basic_assets,
         function(assetsList)
         {
-            console.log("Basic assets were loaded. Call load spritesheets.");
+            console.log("Basic assets were loaded. Call load maps.");
+            load_maps();
+        });
+}
+
+function load_maps()
+{
+    loadAssets(maps,
+        function(assetsList)
+        {
+            console.log("Maps were loaded. Call load entities.");
             load_entities();
         });
 }
@@ -94,8 +109,8 @@ function main()
     var body = document.getElementById("body");
     var canvas = document.createElement("canvas");
     
-    canvas.setAttribute('width', 500);
-    canvas.setAttribute('height', 500);
+    canvas.setAttribute('width', 1000);
+    canvas.setAttribute('height', 1000);
     canvas.setAttribute('tabindex','0');
     canvas.focus();
     
@@ -109,7 +124,7 @@ function main()
     gInputEngine.setup(canvas);
     
     gGameEngine.setup(FRAMERATE, drawctx);
-    gGameEngine.spawnEntity("Landmine", 200, 200);
+    gGameEngine.spawnEntity("Landmine", 200, 350);
     
     var player = gGameEngine.spawnEntity("Character", 150, 150);
     player.nick = "Dendriel";

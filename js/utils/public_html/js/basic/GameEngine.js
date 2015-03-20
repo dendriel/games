@@ -12,13 +12,14 @@ RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef;
 
 GameEngineClass = Class.extend(
 {
-    framerate : 30,
+    framerate: 30,
     dirVec: new Vec2(0,0),
-    player : null,
+    player: null,
     _deferredKill: [],
     entities: [],
-    factory : {},
-    world_physics : null,
+    factory: {},
+    world_physics: null,
+    tiled_map: null,
 
     //-----------------------------
     setup: function (framerate, drawctx)
@@ -27,7 +28,9 @@ GameEngineClass = Class.extend(
         
         this.framerate = framerate;
         this.drawctx = drawctx;
-        self.world_physics = gPhysicsEngine.create();
+        this.world_physics = gPhysicsEngine.create();
+        this.tiled_map = new TiledMapClass();
+        this.tiled_map.load(gCachedAssets["json/map.json"]);
         
         gPhysicsEngine.addContactListener(
         {
@@ -208,10 +211,10 @@ GameEngineClass = Class.extend(
     //-----------------------------
     draw: function (self)
     {
-        // Draw map. Note that we're passing a canvas context of 'null' in. This
-        // would normally be our game context, but we don't need to grade this
-        // here.
-       // gMap.draw(null);
+        // I dislike rebuilding the entire tiled map. Maybe we can keep a copy 
+        // of the layers and just redraw this image instead of building
+        // everything.
+        self.tiled_map.draw(self.drawctx);
 
         // Bucket entities by zIndex
         var fudgeVariance = 128;
