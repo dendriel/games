@@ -1,7 +1,7 @@
 //##############################################################################
 // Assets handling.
 //
-var core_assets = ["js/core.js"];
+var core_assets = ["js/core.js", "js/Box2dWeb-2.1.a.3.min.js"];
 var code_assets = ["js/Spritesheet.js", "js/Frog.js"];
 
 // Media and codes that depend from base classes.
@@ -136,16 +136,20 @@ function show_game_play()
     
     // Register replay button.
     var sprite = get_sprite("replay_button.png");
+    // The bounds that we will check for click is with the original image size.
+    // We don't need to bother with this now. *maybe resize the raw image.
     add_element_callback("restart_button.png",
                         (gCanvas_w - sprite.w), 0,
                         sprite.w, sprite.h,
                         handle_button_replay_pressed)
     
-    update_game_play();
+    updateGamePlay();
 }
 
-function update_game_play()
+function updateGamePlay()
 {
+    var i;
+    
     if (gFrogs_list === null)
     {
         console.log("Can't update the game play. The frog's list is empty.");
@@ -157,52 +161,36 @@ function update_game_play()
     var sprite = get_sprite("replay_button.png");
     drawSprite(sprite.id, (gCanvas_w - sprite.w), 0, gDraw_ctx, 0.5);
     
-    for ( var i = 0; i < gFrogs_list.length; i++)
+    // Draw lily pads. (before the frogs, otherwise, we could draw a lily pad
+    // over a frog that is changing its position. In other words, the frog is
+    // drawn before the lily pad.
+    for ( i = 0; i < gFrogs_list.length; i++)
+    {
+        drawSprite("lily_pad.png", ((gFrog_x_start * i) + gFrog_x_offset), gFrog_y_start, gDraw_ctx);
+    }
+    
+    for ( i = 0; i < gFrogs_list.length; i++)
     {
         var element = gFrogs_list[i];
-        //console.log(i + " " + element.id + " " + element.pos.x + "," + element.pos.y);
-        
-        // Add a lily pad in the position.
-        drawSprite("lily_pad.png", element.pos.x, element.pos.y, gDraw_ctx);
         
         if (element.id === "empty")
         {
             continue;
         }
-        
-        drawSprite(element.sprites.standing[0], element.pos.x, element.pos.y, gDraw_ctx);
+        var sprite_name = (element.leaping)? element.sprites.leaping[element.curr_sprite] : element.sprites.standing[element.curr_sprite];
+        drawSprite(sprite_name, element.pos.x, element.pos.y, gDraw_ctx);
     }
 }
 
-function move_frog(from, to)
-{
-    var temp_to_ref = gFrogs_list[to];
-    var temp_from_x = gFrogs_list[from].pos.x;
-    var temp_from_y = gFrogs_list[from].pos.y;
-    var temp_to_x = gFrogs_list[to].pos.x;
-    var temp_to_y = gFrogs_list[to].pos.y;
-    
-    gFrogs_list[to] = gFrogs_list[from];
-    gFrogs_list[to].pos.x = temp_to_x;
-    gFrogs_list[to].pos.y = temp_to_y;
-    
-    gFrogs_list[from] = temp_to_ref;
-    gFrogs_list[from].pos.x = temp_from_x;
-    gFrogs_list[from].pos.y = temp_from_y;
-    
-    update_game_play();
-    
-    update_element_callback(gFrogs_list[from].id, gFrogs_list[from].pos.x, gFrogs_list[from].pos.y);
-    update_element_callback(gFrogs_list[to].id, gFrogs_list[to].pos.x, gFrogs_list[to].pos.y);
-}
-
 // Check and handle victory condition.
-function check_victory()
-{
+function checkVictory()
+{    
     for (var i = 0; i < gFrogs_list.length; i++)
     {
         var element = gFrogs_list[i];
         var expected = gExpected_frogs_array[i];
+        
+        console.log(element.id + " === " + expected + " ?");
         
         // Check if the expected frog type is in position.
         if (element.id.indexOf(expected) === -1)
@@ -233,19 +221,15 @@ function handle_frog_click(id)
     var empty_pos = get_pos_by_id("empty");
     var frog_pos = get_pos_by_id(id);
     
+    console.log("Empty pos id: " + empty_pos + "; Frog pos id: " + frog_pos);
+    
     if (check_movement_allowed(id, frog_pos, empty_pos) !== true)
     {
         console.log("Movement not allowed.");
         return;
     }
     
-    move_frog(frog_pos, empty_pos);
-    
-    if (check_victory() === true)
-    {
-        console.log("Victory!");
-        show_victory();
-    }
+    animateMovement(frog_pos, empty_pos);
 }
 
 function build_frog_array()
@@ -384,10 +368,106 @@ function check_movement_allowed(id, from, to)
     return true;
 }
 
+var gAnimation_delay = 1000/60;
+var gStarting_pos = {x:0, y:0};
+function animateMovement(from, to, frame)
+{
+    var element = gFrogs_list[from];
+    var destn = gFrogs_list[to];
+    
+    // Starting animation.
+    if ( (frame == undefined) || (frame === 0) )
+    {
+        frame = 0;
+        element.curr_sprite = 0;
+        element.leaping = true;
+        disable_mouse_click();
+        gStarting_pos.x = element.pos.x;
+        gStarting_pos.y = element.pos.y;
+        
+        console.log("[1]Origin: " + gStarting_pos.x + "," + gStarting_pos.y + " " + element.id);
+        console.log("[1]Destination: " + destn.pos.x + "," +  destn.pos.y + " " + destn.id);
+    }
+    
+    var B = {x : gStarting_pos.x, y : gStarting_pos.y};
+    var A = {x : destn.pos.x, y : destn.pos.y};
+    
+    var r = Math.round((B.x - A.x) / 2);
+    
+    var cx = A.x + r;
+    var cy = A.y;
+    var px = Math.round(cx + r * Math.cos(frame * Math.PI/180) );
+    var py;
+    
+    if (element.id.indexOf(gGreen_frog_prefix) !== -1)
+    {
+        py = Math.round(cy + r * Math.sin(frame * Math.PI/180) );
+    }
+    else
+    {
+        py = Math.round(cy - r * Math.sin(frame * Math.PI/180) );
+    }
+    
+    // Update frog.
+    if (frame < 180)
+    {
+        element.pos.x = px;
+        element.pos.y = py;
+    }
+    else
+    {
+        // If the angle step is to broad, the frog may land few pixels out of
+        // the expected destination.
+        element.pos.x = destn.pos.x;
+        element.pos.y = destn.pos.y;
+        
+        element.curr_sprite = 0;
+        element.leaping = false;
+    
+        var temp = gFrogs_list[to];
+        gFrogs_list[to] = gFrogs_list[from];
+        gFrogs_list[from] = temp;
+        // WHAT OUT WHILE ASSIGNING OBJECTS!!
+        // The code bellow will copy by reference (and mess everything).
+        // gFrogs_list[from].pos = gStarting_pos
+        gFrogs_list[from].pos.x = gStarting_pos.x;
+        gFrogs_list[from].pos.y = gStarting_pos.y;
+    
+        update_element_callback(gFrogs_list[from].id, gFrogs_list[from].pos.x, gFrogs_list[from].pos.y);
+        update_element_callback(gFrogs_list[to].id, gFrogs_list[to].pos.x, gFrogs_list[to].pos.y);
+        
+        updateGamePlay();
+        enable_mouse_click();
+    
+        if (checkVictory() === true)
+        {
+            console.log("Victory!");
+            show_victory();
+        }
+        
+        return;
+    }
+    
+    updateGamePlay();
+    
+    // Stop changing sprites.
+    if (element.curr_sprite < (element.sprites.leaping.length -1))
+    {
+        element.curr_sprite++;
+    }
+    
+    frame += 16;
+    setTimeout(function() {
+                animateMovement(from, to, frame);
+                },
+            gAnimation_delay);
+}
+
 //##############################################################################
 // Main handling.
 //
 gElements_callbacks = {};
+gMouse_click_enable = true;
 
 function main()
 {
@@ -405,9 +485,23 @@ function main()
 // Bootstrap.
 load_core_assets();
 
+function enable_mouse_click()
+{
+    gMouse_click_enable = true;
+}
+
+function disable_mouse_click()
+{
+    gMouse_click_enable = false;
+}
 
 function handle_mouse_click(e)
 {
+    if (gMouse_click_enable === false)
+    {
+        return;
+    }
+    
     var rect = gCanvas_obj.getBoundingClientRect();
     var px = e.clientX - rect.left;
     var py = e.clientY - rect.top;
