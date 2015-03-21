@@ -120,7 +120,7 @@ function get_sprite(spritename)
 
 //-----------------------------------------
 // External-facing function for drawing sprites based on the sprite name.
-function drawSprite(spritename, posX, posY, drawctx)
+function drawSprite(spritename, posX, posY, drawctx, resize)
 {    
     // Find the spritesheet that contains the wanted sprite.
     for (var i in gSpriteSheets)
@@ -130,7 +130,7 @@ function drawSprite(spritename, posX, posY, drawctx)
         var sprite = sheet.getStats(spritename);
         if (sprite !== null)
         {
-            __drawSpriteInternal(sprite, sheet, posX, posY, drawctx);
+            __drawSpriteInternal(sprite, sheet, posX, posY, drawctx, resize);
             break;
         }
     }
@@ -140,7 +140,7 @@ function drawSprite(spritename, posX, posY, drawctx)
 // External-facing function for drawing sprites based on the sprite object
 // stored from the 'sprites' Array inside the 'SpriteSheetClass' object, and the
 // position on canvas to draw to.
-function __drawSpriteInternal(spt, sheet, posX, posY, drawctx)
+function __drawSpriteInternal(spt, sheet, posX, posY, drawctx, resize)
 {
     if ( (spt === null) || (sheet === null) || (drawctx === null) )
     {
@@ -148,10 +148,18 @@ function __drawSpriteInternal(spt, sheet, posX, posY, drawctx)
         return;
     }
     
+    if (resize == null)
+    {
+        resize = 0;
+    }
+    
     var draw_px = posX;
     var draw_py = posY;
     var draw_w = spt.w;
-    var draw_h = spt.h
+    var draw_h = spt.h;
+    
+    var draw_to_w = spt.w - (spt.w * resize);
+    var draw_to_h = spt.h - (spt.h * resize);
     
     if (spt.rotated)
     {
@@ -168,13 +176,21 @@ function __drawSpriteInternal(spt, sheet, posX, posY, drawctx)
         draw_py = 0;//spt.h;//spt.h;
         draw_w = spt.h;
         draw_h = spt.w;
+        draw_to_w = spt.h - (spt.h * resize);
+        draw_to_h = spt.w - (spt.w * resize);
+    }
+    
+    if (resize !== 0)
+    {
+        draw_px += Math.round(draw_to_w / 2);
+        draw_py += Math.round(draw_to_h / 2);
     }
     
     drawctx.drawImage(gCachedAssets["images/leaping_frog_atlas.png"],//sheet.img,
                 spt.x, spt.y, // from
                 draw_w, draw_h, // from
                 draw_px, draw_py,
-                draw_w, draw_h); // to
+                draw_to_w, draw_to_h); // to
     
     if (spt.rotated)
     {

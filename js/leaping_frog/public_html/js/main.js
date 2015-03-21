@@ -133,6 +133,14 @@ function show_game_play()
     console.log("GamePlay");
     
     gFrogs_list = build_frog_array();
+    
+    // Register replay button.
+    var sprite = get_sprite("replay_button.png");
+    add_element_callback("restart_button.png",
+                        (gCanvas_w - sprite.w), 0,
+                        sprite.w, sprite.h,
+                        handle_button_replay_pressed)
+    
     update_game_play();
 }
 
@@ -144,6 +152,10 @@ function update_game_play()
     }
     
     gDraw_ctx.drawImage(gCachedAssets["images/forest_lake_800x600.png"], 0, 0);
+    
+    // Draw replay button.
+    var sprite = get_sprite("replay_button.png");
+    drawSprite(sprite.id, (gCanvas_w - sprite.w), 0, gDraw_ctx, 0.5);
     
     for ( var i = 0; i < gFrogs_list.length; i++)
     {
@@ -160,6 +172,133 @@ function update_game_play()
         
         drawSprite(element.sprites.standing[0], element.pos.x, element.pos.y, gDraw_ctx);
     }
+}
+
+function move_frog(from, to)
+{
+    var temp_to_ref = gFrogs_list[to];
+    var temp_from_x = gFrogs_list[from].pos.x;
+    var temp_from_y = gFrogs_list[from].pos.y;
+    var temp_to_x = gFrogs_list[to].pos.x;
+    var temp_to_y = gFrogs_list[to].pos.y;
+    
+    gFrogs_list[to] = gFrogs_list[from];
+    gFrogs_list[to].pos.x = temp_to_x;
+    gFrogs_list[to].pos.y = temp_to_y;
+    
+    gFrogs_list[from] = temp_to_ref;
+    gFrogs_list[from].pos.x = temp_from_x;
+    gFrogs_list[from].pos.y = temp_from_y;
+    
+    update_game_play();
+    
+    update_element_callback(gFrogs_list[from].id, gFrogs_list[from].pos.x, gFrogs_list[from].pos.y);
+    update_element_callback(gFrogs_list[to].id, gFrogs_list[to].pos.x, gFrogs_list[to].pos.y);
+}
+
+// Check and handle victory condition.
+function check_victory()
+{
+    for (var i = 0; i < gFrogs_list.length; i++)
+    {
+        var element = gFrogs_list[i];
+        var expected = gExpected_frogs_array[i];
+        
+        // Check if the expected frog type is in position.
+        if (element.id.indexOf(expected) === -1)
+        {
+            return false;
+        }
+    }
+    
+    // All elements are in position.
+    return true;
+}
+
+function show_victory()
+{
+    gDraw_ctx.font="60px Georgia";
+    gDraw_ctx.fillStyle ="#3333ff";
+    gDraw_ctx.fillText(gGame_win, (gCanvas_w / 2) - 100 , 150);
+}
+
+function handle_button_replay_pressed()
+{
+    remove_all_element_callback();
+    show_game_play();
+}
+
+function handle_frog_click(id)
+{
+    var empty_pos = get_pos_by_id("empty");
+    var frog_pos = get_pos_by_id(id);
+    
+    if (check_movement_allowed(id, frog_pos, empty_pos) !== true)
+    {
+        console.log("Movement not allowed.");
+        return;
+    }
+    
+    move_frog(frog_pos, empty_pos);
+    
+    if (check_victory() === true)
+    {
+        console.log("Victory!");
+        show_victory();
+    }
+}
+
+function build_frog_array()
+{
+    var frogs_list = [];
+    var i;
+    
+    // Create 3 green frogs.
+    for (i = 0; i < 3; i++)
+    {
+        var frog = new FrogGreenClass();
+        frog.id = gGreen_frog_prefix + i;
+        frog.pos.x = gFrog_x_start * i + gFrog_x_offset;
+        frog.pos.y = gFrog_y_start;
+        
+        var sprite = get_sprite(frog.sprites.standing[0]);
+        
+        // Add callback for on click.
+        add_element_callback(frog.id,
+                            frog.pos.x, frog.pos.y,
+                            sprite.w, sprite.h,
+                            handle_frog_click);
+        
+        frogs_list.push(frog);
+    }
+    
+    // Create an empty space in the middle.
+    var empty = new FrogClass();
+    empty.id = "empty";
+    empty.pos.x = gFrog_x_start * 3 + gFrog_x_offset;
+    empty.pos.y = gFrog_y_start;
+    frogs_list.push(empty);
+    
+    // Create 3 red frogs.
+    for (i = 4; i < 7; i++)
+    {
+        var frog = new FrogBlueClass();
+        frog.id = gBlue_frog_prefix + (i - 4);
+        frog.pos.x = gFrog_x_start * i + gFrog_x_offset;
+        frog.pos.y = gFrog_y_start;
+        
+        var sprite = get_sprite(frog.sprites.standing[0]);
+        
+        // Add callback for on click.
+        add_element_callback(frog.id,
+                            frog.pos.x, frog.pos.y,
+                            sprite.w, sprite.h,
+                            handle_frog_click);
+        
+        frogs_list.push(frog);
+    }
+    
+    return frogs_list;
 }
 
 function get_pos_by_id(id)
@@ -243,144 +382,6 @@ function check_movement_allowed(id, from, to)
     }
     
     return true;
-}
-
-function move_frog(from, to)
-{
-    var temp_to_ref = gFrogs_list[to];
-    var temp_from_x = gFrogs_list[from].pos.x;
-    var temp_from_y = gFrogs_list[from].pos.y;
-    var temp_to_x = gFrogs_list[to].pos.x;
-    var temp_to_y = gFrogs_list[to].pos.y;
-    
-    gFrogs_list[to] = gFrogs_list[from];
-    gFrogs_list[to].pos.x = temp_to_x;
-    gFrogs_list[to].pos.y = temp_to_y;
-    
-    gFrogs_list[from] = temp_to_ref;
-    gFrogs_list[from].pos.x = temp_from_x;
-    gFrogs_list[from].pos.y = temp_from_y;
-    
-    update_game_play();
-    
-    update_element_callback(gFrogs_list[from].id, gFrogs_list[from].pos.x, gFrogs_list[from].pos.y);
-    update_element_callback(gFrogs_list[to].id, gFrogs_list[to].pos.x, gFrogs_list[to].pos.y);
-}
-
-// Check and handle victory condition.
-function check_victory()
-{
-    for (var i = 0; i < gFrogs_list.length; i++)
-    {
-        var element = gFrogs_list[i];
-        var expected = gExpected_frogs_array[i];
-        
-        // Check if the expected frog type is in position.
-        if (element.id.indexOf(expected) === -1)
-        {
-            return false;
-        }
-    }
-    
-    // All elements are in position.
-    return true;
-}
-
-function show_victory()
-{
-    gDraw_ctx.font="60px Georgia";
-    gDraw_ctx.fillStyle ="#3333ff";
-    gDraw_ctx.fillText(gGame_win, (gCanvas_w / 2) - 100 , 150);
-    
-    var sprite = get_sprite("replay_button.png");
-    var px = align_middle(0, gCanvas_w, sprite.w);
-    var py = gCanvas_h / 2 - 100;
-    
-    drawSprite(sprite.id, px, py, gDraw_ctx);
-    
-    add_element_callback("restart_button.png",
-                        px, py,
-                        sprite.w, sprite.h,
-                        handle_button_restart_pressed)
-}
-
-function handle_button_restart_pressed()
-{
-    remove_all_element_callback();
-    show_game_play();
-}
-
-function handle_frog_click(id)
-{
-    var empty_pos = get_pos_by_id("empty");
-    var frog_pos = get_pos_by_id(id);
-    
-    if (check_movement_allowed(id, frog_pos, empty_pos) !== true)
-    {
-        console.log("Movement not allowed.");
-        return;
-    }
-    
-    move_frog(frog_pos, empty_pos);
-    
-    if (check_victory() === true)
-    {
-        console.log("Victory!");
-        show_victory();
-    }
-}
-
-function build_frog_array()
-{
-    var frogs_list = [];
-    var i;
-    
-    // Create 3 green frogs.
-    for (i = 0; i < 3; i++)
-    {
-        var frog = new FrogGreenClass();
-        frog.id = gGreen_frog_prefix + i;
-        frog.pos.x = gFrog_x_start * i + gFrog_x_offset;
-        frog.pos.y = gFrog_y_start;
-        
-        var sprite = get_sprite(frog.sprites.standing[0]);
-        
-        // Add callback for on click.
-        add_element_callback(frog.id,
-                            frog.pos.x, frog.pos.y,
-                            sprite.w, sprite.h,
-                            handle_frog_click);
-        
-        frogs_list.push(frog);
-    }
-    
-    // Create an empty space in the middle.
-    var empty = new FrogClass();
-    empty.id = "empty";
-    empty.pos.x = gFrog_x_start * 3 + gFrog_x_offset;
-    empty.pos.y = gFrog_y_start;
-    frogs_list.push(empty);
-    
-    // Create 3 red frogs.
-    for (i = 4; i < 7; i++)
-    {
-        var frog = new FrogBlueClass();
-        frog.id = gBlue_frog_prefix + (i - 4);
-        frog.pos.x = gFrog_x_start * i + gFrog_x_offset;
-        frog.pos.y = gFrog_y_start;
-        
-        var sprite = get_sprite(frog.sprites.standing[0]);
-        
-        // Add callback for on click.
-        add_element_callback(frog.id,
-                            frog.pos.x, frog.pos.y,
-                            sprite.w, sprite.h,
-                            handle_frog_click);
-        
-        frogs_list.push(frog);
-    }
-    
-    return frogs_list;
 }
 
 //##############################################################################
