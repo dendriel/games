@@ -155,36 +155,26 @@ function __drawSpriteInternal(spt, sheet, posX, posY, drawctx)
     
     if (spt.rotated)
     {
-        console.log("rotated");
-        // save the current co-ordinate system 
-        // before we screw with it
+        // save the current co-ordinate system before we screw with it
         drawctx.save(); 
 
         // move to the middle of where we want to draw our image
         drawctx.translate(posX, posY);
 
-        // rotate around that point, converting our 
-        // angle from degrees to radians 
+        // rotate around that point, converting our angle from degrees to radians 
         drawctx.rotate(-90 * Math.PI/180);
         
-        //console.log(spt.w);
         draw_px = -spt.h;
         draw_py = 0;//spt.h;//spt.h;
         draw_w = spt.h;
         draw_h = spt.w;
     }
     
-    
-    //gDraw_ctx.drawImage(gCachedAssets["images/leaping_frog_atlas.png"], 0, 0, 100, 100, 50, 50, 100, 100);
-    //gDraw_ctx.drawImage(gCachedAssets["images/leaping_frog_atlas.png"], 88, 88, 48, 32, 50, 50, 48, 32);
     drawctx.drawImage(gCachedAssets["images/leaping_frog_atlas.png"],//sheet.img,
                 spt.x, spt.y, // from
                 draw_w, draw_h, // from
                 draw_px, draw_py,
-                //(draw_px + spt.cx), (draw_py + spt.cy),
-                //posX + spt.cx, posY + spt.cy, // to
                 draw_w, draw_h); // to
-    //drawctx.drawImage(sheet.img, spt.x, spt.y, spt.w, spt.h, posX, posY, spt.w, spt.h);
     
     if (spt.rotated)
     {
