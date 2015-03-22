@@ -1,7 +1,7 @@
 //##############################################################################
 // Assets handling.
 //
-var core_assets = ["js/core.js", "js/Box2dWeb-2.1.a.3.min.js", "js/howler.min.js"];
+var core_assets = ["js/core.js", "js/howler.min.js"];
 var code_assets = ["js/Spritesheet.js", "js/Frog.js"];
 
 // Media and codes that depend from base classes.
