@@ -1,3 +1,4 @@
 *.db
 /js/utils/nbproject/private/
 /js/leaping_frog/nbproject/private/
+/js/soundLoader/nbproject/private/

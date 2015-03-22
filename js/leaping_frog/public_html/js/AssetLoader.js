@@ -69,6 +69,13 @@ function loadAssets(assetsList, callbackFcn)
                 onLoadedAssetCb(assetsList, batch);
             });
         }
+        else if (file_type === 3)
+        {
+            console.log("load " + asset);
+            var sound = new Howl({urls: [asset]});
+            gCachedAssets[asset] = sound;
+            onLoadedAssetCb(assetsList, batch);
+        }
         else
         {
             console.log("Received unhandled file type " + file_type);
@@ -88,7 +95,7 @@ function onLoadedAssetCb(assetsList, batch, data)
 }
 
 // We've provided you a handy function for determining the asset type from the file extension.
-// Images return 0, javascript returns 1, and everything else returns -1.
+// Images return 0, javascript returns 1, 3 for audio files; and everything else returns -1.
 function getAssetTypeFromExtension(fname)
 {
     if (fname.indexOf('.jpg') !== -1 ||
@@ -110,6 +117,11 @@ function getAssetTypeFromExtension(fname)
     if (fname.indexOf('.js') !== -1)
     {
         return 1;
+    }
+    
+    if (fname.indexOf('.mp3') !== -1)
+    {
+        return 3;
     }
 
     return -1;

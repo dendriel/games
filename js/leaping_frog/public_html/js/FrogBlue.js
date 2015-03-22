@@ -10,8 +10,6 @@ FrogBlueClass = FrogClass.extend(
                                     "frog_blue_leaping_0001.png",
                                     "frog_blue_leaping_0002.png",
                                     "frog_blue_leaping_0003.png");
-                                    
-        console.log("Blue frog constructor.");
     }
 
 });

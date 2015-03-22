@@ -10,5 +10,8 @@ FrogClass = Class.extend (
    sprites : {
        standing : [],
        leaping : []
-   }
+   },
+   
+   curr_sprite : 0,
+   leaping : false
 });

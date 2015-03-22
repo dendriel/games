@@ -1,7 +1,7 @@
 //##############################################################################
 // Assets handling.
 //
-var core_assets = ["js/core.js", "js/Box2dWeb-2.1.a.3.min.js"];
+var core_assets = ["js/core.js", "js/Box2dWeb-2.1.a.3.min.js", "js/howler.min.js"];
 var code_assets = ["js/Spritesheet.js", "js/Frog.js"];
 
 // Media and codes that depend from base classes.
@@ -13,29 +13,34 @@ var media_assets = [
     "json/leaping_frog_atlas.json", 
     // Images.
     "images/leaping_frog_atlas.png",
-    "images/forest_lake_800x600.png"];
+    "images/forest_lake_800x600.png",
+    // Audio.
+    "sounds/frog.mp3", //"sounds/Tiny_Frog-SoundBible.com-1771194786.mp3"
+    "sounds/frogs_enter.mp3", // frogs-croaking-suburb-area_fJ17rrNu
+    "sounds/winning.mp3"    // Ta Da-SoundBible.com-1884170640_mod.mp3
+];
 
-function load_core_assets()
+function loadCoreAssets()
 {
     loadAssets(core_assets,
     function(assetsList)
     {
         console.log("Core assets were loaded. Start loading code assets.");
-        load_code_assets();
+        loadCodeAssets();
     });
 }
 
-function load_code_assets()
+function loadCodeAssets()
 {
     loadAssets(code_assets,
     function(assetsList)
     {
         console.log("Code assets were loaded. Start loading media assets.");
-        load_media_assets();
+        loadMediaAssets();
     });
 }
 
-function load_media_assets()
+function loadMediaAssets()
 {
     loadAssets(media_assets,
     function(assetsList)
@@ -64,6 +69,7 @@ var gCanvas_w = 800;
 var gCanvas_h = 600;
 var gGame_title = "Leaping Frog";
 var gGame_win = "Winner!";
+var gCenter_frogs_offset = 5; // Center the frogs better in the lily pad.
 
 var gGreen_frog_prefix = "green_frog_";
 var gBlue_frog_prefix = "blue_frog_";
@@ -80,7 +86,7 @@ var gFrogs_list = null;
 var gExpected_frogs_array = [gBlue_frog_prefix, gBlue_frog_prefix, gBlue_frog_prefix, "empty", gGreen_frog_prefix, gGreen_frog_prefix, gGreen_frog_prefix];
 
 // Make gDrawCtx available.
-function create_canvas()
+function createCanvas()
 {
     gBody = document.getElementById(gBody_div_name);
     gCanvas_obj = document.createElement("canvas");
@@ -93,12 +99,12 @@ function create_canvas()
     gDraw_ctx = gCanvas_obj.getContext("2d");
 }
 
-function show_main_menu()
+function showMainMenu()
 {
     gDraw_ctx.drawImage(gCachedAssets["images/forest_lake_800x600.png"], 0, 0);
     
     var sprite = get_sprite("button_play.png");
-    var px = align_middle(0, gCanvas_w, sprite.w);
+    var px = alignMiddle(0, gCanvas_w, sprite.w);
     var py = gCanvas_h / 2;
     
     drawSprite(sprite.id, px, py, gDraw_ctx);
@@ -110,38 +116,39 @@ function show_main_menu()
     gDraw_ctx.fillStyle = gradient;
     gDraw_ctx.fillText(gGame_title, px - 50, 100);
     
-    add_element_callback("button_play.png",
+    addElementCallback("button_play.png",
                         px, py,
                         sprite.w, sprite.h,
-                        handle_button_play_pressed);
+                        handleButtonPlayPressed);
 }
 
-function hide_main_menu()
+function hideMainMenu()
 {
     //gDraw_ctx.clearRect(0, 0, gCanvas_obj.width, gCanvas_obj.height);
-    remove_element_callback("button_play.png");
+    removeElementCallback("button_play.png");
 }
 
-function handle_button_play_pressed()
+function handleButtonPlayPressed()
 {
-    hide_main_menu();
-    show_game_play();
+    gCachedAssets["sounds/frogs_enter.mp3"].play();
+    hideMainMenu();
+    showGamePlay();
 }
 
-function show_game_play()
+function showGamePlay()
 {
     console.log("GamePlay");
     
-    gFrogs_list = build_frog_array();
+    gFrogs_list = buildFrogArray();
     
     // Register replay button.
     var sprite = get_sprite("replay_button.png");
     // The bounds that we will check for click is with the original image size.
     // We don't need to bother with this now. *maybe resize the raw image.
-    add_element_callback("restart_button.png",
+    addElementCallback("restart_button.png",
                         (gCanvas_w - sprite.w), 0,
                         sprite.w, sprite.h,
-                        handle_button_replay_pressed)
+                        handleButtonReplayPressed)
     
     updateGamePlay();
 }
@@ -178,7 +185,7 @@ function updateGamePlay()
             continue;
         }
         var sprite_name = (element.leaping)? element.sprites.leaping[element.curr_sprite] : element.sprites.standing[element.curr_sprite];
-        drawSprite(sprite_name, element.pos.x, element.pos.y, gDraw_ctx);
+        drawSprite(sprite_name, element.pos.x+gCenter_frogs_offset, element.pos.y+gCenter_frogs_offset, gDraw_ctx);
     }
 }
 
@@ -203,36 +210,39 @@ function checkVictory()
     return true;
 }
 
-function show_victory()
+function showVictory()
 {
+    gCachedAssets["sounds/winning.mp3"].play();
     gDraw_ctx.font="60px Georgia";
     gDraw_ctx.fillStyle ="#3333ff";
     gDraw_ctx.fillText(gGame_win, (gCanvas_w / 2) - 100 , 150);
 }
 
-function handle_button_replay_pressed()
+function handleButtonReplayPressed()
 {
-    remove_all_element_callback();
-    show_game_play();
+    gCachedAssets["sounds/frog.mp3"].play();
+    removeAllElementCallback();
+    showGamePlay();
 }
 
-function handle_frog_click(id)
+function handleFrogClick(id)
 {
-    var empty_pos = get_pos_by_id("empty");
-    var frog_pos = get_pos_by_id(id);
+    var empty_pos = getPosById("empty");
+    var frog_pos = getPosById(id);
     
     console.log("Empty pos id: " + empty_pos + "; Frog pos id: " + frog_pos);
     
-    if (check_movement_allowed(id, frog_pos, empty_pos) !== true)
+    if (checkMovementAllowed(id, frog_pos, empty_pos) !== true)
     {
         console.log("Movement not allowed.");
         return;
     }
     
+    gCachedAssets["sounds/frog.mp3"].play();
     animateMovement(frog_pos, empty_pos);
 }
 
-function build_frog_array()
+function buildFrogArray()
 {
     var frogs_list = [];
     var i;
@@ -248,10 +258,10 @@ function build_frog_array()
         var sprite = get_sprite(frog.sprites.standing[0]);
         
         // Add callback for on click.
-        add_element_callback(frog.id,
+        addElementCallback(frog.id,
                             frog.pos.x, frog.pos.y,
                             sprite.w, sprite.h,
-                            handle_frog_click);
+                            handleFrogClick);
         
         frogs_list.push(frog);
     }
@@ -274,10 +284,10 @@ function build_frog_array()
         var sprite = get_sprite(frog.sprites.standing[0]);
         
         // Add callback for on click.
-        add_element_callback(frog.id,
+        addElementCallback(frog.id,
                             frog.pos.x, frog.pos.y,
                             sprite.w, sprite.h,
-                            handle_frog_click);
+                            handleFrogClick);
         
         frogs_list.push(frog);
     }
@@ -285,7 +295,7 @@ function build_frog_array()
     return frogs_list;
 }
 
-function get_pos_by_id(id)
+function getPosById(id)
 {
     for ( var i = 0; i < gFrogs_list.length; i++)
     {
@@ -300,7 +310,7 @@ function get_pos_by_id(id)
     return -1;
 }
 
-function check_movement_allowed(id, from, to)
+function checkMovementAllowed(id, from, to)
 {
     // Green frogs can go only to right;
     // Blue frogs can go only to left;
@@ -381,7 +391,7 @@ function animateMovement(from, to, frame)
         frame = 0;
         element.curr_sprite = 0;
         element.leaping = true;
-        disable_mouse_click();
+        disableMouseClick();
         gStarting_pos.x = element.pos.x;
         gStarting_pos.y = element.pos.y;
         
@@ -433,16 +443,16 @@ function animateMovement(from, to, frame)
         gFrogs_list[from].pos.x = gStarting_pos.x;
         gFrogs_list[from].pos.y = gStarting_pos.y;
     
-        update_element_callback(gFrogs_list[from].id, gFrogs_list[from].pos.x, gFrogs_list[from].pos.y);
-        update_element_callback(gFrogs_list[to].id, gFrogs_list[to].pos.x, gFrogs_list[to].pos.y);
+        updateElementCallback(gFrogs_list[from].id, gFrogs_list[from].pos.x, gFrogs_list[from].pos.y);
+        updateElementCallback(gFrogs_list[to].id, gFrogs_list[to].pos.x, gFrogs_list[to].pos.y);
         
         updateGamePlay();
-        enable_mouse_click();
+        enableMouseClick();
     
         if (checkVictory() === true)
         {
             console.log("Victory!");
-            show_victory();
+            showVictory();
         }
         
         return;
@@ -473,29 +483,29 @@ function main()
 {
     console.log("All code and media were loaded.");
     
-    create_canvas();
+    createCanvas();
     
     // User Interaction.
-    gCanvas_obj.onclick = handle_mouse_click;
+    gCanvas_obj.onclick = handleMouseClick;
     
     // Display main menu.
-    show_main_menu();
+    showMainMenu();
 }
 
 // Bootstrap.
-load_core_assets();
+loadCoreAssets();
 
-function enable_mouse_click()
+function enableMouseClick()
 {
     gMouse_click_enable = true;
 }
 
-function disable_mouse_click()
+function disableMouseClick()
 {
     gMouse_click_enable = false;
 }
 
-function handle_mouse_click(e)
+function handleMouseClick(e)
 {
     if (gMouse_click_enable === false)
     {
@@ -518,7 +528,7 @@ function handle_mouse_click(e)
     }
 }
 
-function add_element_callback(id, x, y, w, h, cb, data)
+function addElementCallback(id, x, y, w, h, cb, data)
 {
     var element = {
         x : x,
@@ -532,12 +542,12 @@ function add_element_callback(id, x, y, w, h, cb, data)
     gElements_callbacks[id] = element;
 }
 
-function remove_all_element_callback()
+function removeAllElementCallback()
 {
     gElements_callbacks = {};
 }
 
-function remove_element_callback(id)
+function removeElementCallback(id)
 {
     if (id in gElements_callbacks)
     {
@@ -545,7 +555,7 @@ function remove_element_callback(id)
     }
 }
 
-function update_element_callback(id, x, y)
+function updateElementCallback(id, x, y)
 {
     if (id in gElements_callbacks)
     {
@@ -557,7 +567,7 @@ function update_element_callback(id, x, y)
 //##############################################################################
 // Utils.
 //
-function align_middle(obj1_px, obj1_w, obj2_w)
+function alignMiddle(obj1_px, obj1_w, obj2_w)
 {
     var ref_middle = obj1_px + ( (obj1_w / 2) + (obj1_w % 2) );
     return (ref_middle - ( (obj2_w / 2) + (obj2_w % 2) ));

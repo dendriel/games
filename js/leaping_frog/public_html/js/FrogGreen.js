@@ -10,8 +10,6 @@ FrogGreenClass = FrogClass.extend(
                                     "frog_green_leaping_0001.png",
                                     "frog_green_leaping_0002.png",
                                     "frog_green_leaping_0003.png");
-                                    
-        console.log("Green frog constructor.");
     }
 
 });
