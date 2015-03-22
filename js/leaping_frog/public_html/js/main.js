@@ -69,7 +69,10 @@ var gCanvas_w = 800;
 var gCanvas_h = 600;
 var gGame_title = "Leaping Frog";
 var gGame_win = "Winner!";
+var gGame_lost = "Time's up!";
+var gTime_limit = 60;
 var gCenter_frogs_offset = 5; // Center the frogs better in the lily pad.
+var gVictory_flag = false;
 
 var gGreen_frog_prefix = "green_frog_";
 var gBlue_frog_prefix = "blue_frog_";
@@ -82,6 +85,16 @@ var gCanvas_obj = null;
 var gDraw_ctx = null;
 
 var gFrogs_list = null;
+
+var gAnimation_delay = 1000/60;
+var gStarting_pos = {x:0, y:0};
+
+var gTimer = {
+    x : 10,
+    y : 50,
+    value : 0,
+    id : 0
+};
 
 var gExpected_frogs_array = [gBlue_frog_prefix, gBlue_frog_prefix, gBlue_frog_prefix, "empty", gGreen_frog_prefix, gGreen_frog_prefix, gGreen_frog_prefix];
 
@@ -148,7 +161,35 @@ function showGamePlay()
     addElementCallback("restart_button.png",
                         (gCanvas_w - sprite.w), 0,
                         sprite.w, sprite.h,
-                        handleButtonReplayPressed)
+                        handleButtonReplayPressed);
+
+    clearInterval(gTimer.id);
+    gTimer.id = setInterval(updateTimer, 1000);
+    
+    updateGamePlay();
+}
+
+function updateTimer()
+{
+    gTimer.value++;
+    
+    if (gTimer.value === gTime_limit)
+    {
+            console.log("Time's up!");
+            clearInterval(gTimer.id);
+            gVictory_flag = true;
+            removeAllElementCallback();
+            
+            var sprite = get_sprite("replay_button.png");
+            addElementCallback("restart_button.png",
+                        (gCanvas_w - sprite.w), 0,
+                        sprite.w, sprite.h,
+                        handleButtonReplayPressed);
+                        
+            updateGamePlay();
+            showLost();
+            return;
+    }
     
     updateGamePlay();
 }
@@ -162,7 +203,13 @@ function updateGamePlay()
         console.log("Can't update the game play. The frog's list is empty.");
     }
     
+    // Draw background.
     gDraw_ctx.drawImage(gCachedAssets["images/forest_lake_800x600.png"], 0, 0);
+    
+    // Draw timer.
+    gDraw_ctx.font="40px sans-serif";
+    gDraw_ctx.fillStyle ="#ffffff";
+    gDraw_ctx.fillText(gTimer.value, gTimer.x, gTimer.y);
     
     // Draw replay button.
     var sprite = get_sprite("replay_button.png");
@@ -218,10 +265,24 @@ function showVictory()
     gDraw_ctx.fillText(gGame_win, (gCanvas_w / 2) - 100 , 150);
 }
 
+function showLost()
+{
+    gCachedAssets["sounds/frogs_enter.mp3"].play();
+    gDraw_ctx.font="60px Georgia";
+    gDraw_ctx.fillStyle ="#3333ff";
+    gDraw_ctx.fillText(gGame_lost, (gCanvas_w / 2) - 100 , 150);
+}
+
 function handleButtonReplayPressed()
 {
     gCachedAssets["sounds/frog.mp3"].play();
     removeAllElementCallback();
+    
+    if (gVictory_flag === true)
+    {
+        gTimer.value = 0;
+        gVictory_flag = false;
+    }
     showGamePlay();
 }
 
@@ -378,8 +439,6 @@ function checkMovementAllowed(id, from, to)
     return true;
 }
 
-var gAnimation_delay = 1000/60;
-var gStarting_pos = {x:0, y:0};
 function animateMovement(from, to, frame)
 {
     var element = gFrogs_list[from];
@@ -452,7 +511,9 @@ function animateMovement(from, to, frame)
         if (checkVictory() === true)
         {
             console.log("Victory!");
+            clearInterval(gTimer.id);
             showVictory();
+            gVictory_flag = true;
         }
         
         return;
