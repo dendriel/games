@@ -1,0 +1,18 @@
+/*
+ * Stage.cpp
+ *
+ *  Created on: Mar 26, 2015
+ *      Author: vitor
+ */
+
+#include "Stage.h"
+
+Stage::Stage() {
+	// TODO Auto-generated constructor stub
+
+}
+
+Stage::~Stage() {
+	// TODO Auto-generated destructor stub
+}
+

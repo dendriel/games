@@ -1,0 +1,20 @@
+/*
+ * Stage01.cpp
+ *
+ *  Created on: Mar 26, 2015
+ *      Author: vitor
+ */
+
+#include "Stage01.h"
+
+Stage01::Stage01()
+{
+	_texture_name = "images/movebox_256x256.png";
+	_sheet = new Spritesheet();
+}
+
+Stage01::~Stage01()
+{
+	// TODO Auto-generated destructor stub
+}
+

@@ -1,0 +1,17 @@
+/*
+ * Utils.h
+ *
+ *  Created on: Mar 26, 2015
+ *      Author: vitor
+ */
+
+#ifndef UTILS_H_
+#define UTILS_H_
+
+class Utils {
+public:
+	Utils();
+	virtual ~Utils();
+};
+
+#endif /* UTILS_H_ */

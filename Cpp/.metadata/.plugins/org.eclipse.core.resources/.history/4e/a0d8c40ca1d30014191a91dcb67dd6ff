@@ -1,0 +1,18 @@
+/*
+ * Utils.cpp
+ *
+ *  Created on: Mar 26, 2015
+ *      Author: vitor
+ */
+
+#include "Utils.h"
+
+Utils::Utils() {
+	// TODO Auto-generated constructor stub
+
+}
+
+Utils::~Utils() {
+	// TODO Auto-generated destructor stub
+}
+

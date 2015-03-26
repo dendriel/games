@@ -27,6 +27,8 @@ Spritesheet::~Spritesheet()
 	}
 
 	sprite_list.clear();
+
+	free(_texture);
 }
 
 void Spritesheet::add(std::string filename,

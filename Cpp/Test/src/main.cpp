@@ -5,22 +5,12 @@
  *      Author: vitor.rozsa
  */
 
-// C++ basic libs.
-#include <iostream>
-
-// C basic libs.
-#include <assert.h>
-
-// Thirdy part libs.
-#include "SDL.h"
-#include "SDL_image.h"
+#include <stdlib.h>
 
 // Internal libs.
 #include "GamePlay.h"
-#include "GameVideo.h"
-#include "Spritesheet.h"
-#include "GameAtlas.h"
-#include "VisualElement.h"
+
+#include "Stage01.h"
 
 
 //Screen dimension constants
@@ -35,29 +25,9 @@ int main(int argc, char *argv[])
 {
 	GamePlay *game = new GamePlay();
 
-	game->loop();
+	game->load();
 
-//	init_resources();
-//
-//	screen->init();
-//	screen->loadAtlas(atlas);
-//
-//	atlas->addSheet( create_spritesheet(screen->renderer()) );
-//
-//	//elem->setPos({100, 100});
-//	//elem->addSprite("frog_blue_standing_0000.png");
-//
-//	// Nothing to draw.
-//	screen->addElement(elem);
-//
-//	main_loop(screen, elem);
-//
-//	free(elem);
-//	free(atlas);
-//	free(screen);
-//
-//	screen->finalize();
-//	finalize_resources();
+	free(game);
 
 	return 0;
 }

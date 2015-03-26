@@ -13,12 +13,14 @@
 
 #include "GameVideo.h"
 #include "GameAtlas.h"
+#include "GameStage.h"
 
 class GamePlay
 {
 private:
 	GameVideo *screen;
 	GameAtlas *atlas;
+	GameStage *stage;
 
 	/**
 	 * @brief Initialize everything that is necessary for the game.
@@ -29,11 +31,14 @@ private:
 	SDL_Texture* loadTexture(std::string path, SDL_Renderer *renderer);
 	Spritesheet *createSpritesheet(SDL_Renderer *renderer);
 
+	void unload(void);
+	void loop(void);
+
 public:
 	GamePlay();
 	virtual ~GamePlay();
 
-	void loop(void);
+	void load();
 };
 
 #endif /* GAMEPLAY_H_ */

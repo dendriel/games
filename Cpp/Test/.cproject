@@ -26,6 +26,8 @@
 								<option id="gnu.cpp.compiler.mingw.exe.release.option.debugging.level.909282556" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.release.option.debugging.level" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.242600331" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="C:\Users\vitor\Desktop\sdl20\SDL2-2.0.3\i686-w64-mingw32\include\SDL2"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/stages}&quot;"/>
 									<listOptionValue builtIn="false" value="C:\Users\vitor\Desktop\sdl20\SDL2_image-2.0.0\i686-w64-mingw32\include\SDL2"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.991451983" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
