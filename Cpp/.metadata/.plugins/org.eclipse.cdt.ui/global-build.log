@@ -1,0 +1,1125 @@
+21:26:03 **** Rebuild of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\VisualElement.o" "..\\src\\VisualElement.cpp" 
+..\src\VisualElement.cpp: In constructor 'VisualElement::VisualElement()':
+..\src\VisualElement.cpp:13:5: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _pos({0,0}),
+     ^
+..\src\VisualElement.cpp:14:6: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _size({0,0}),
+      ^
+..\src\VisualElement.cpp:15:16: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _curr_sprite("")
+                ^
+..\src\VisualElement.cpp:15:16: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameVideo.o" "..\\src\\GameVideo.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+..\src\main.cpp: In function 'int SDL_main(int, char**)':
+..\src\main.cpp:61:2: error: 'GamePlay' was not declared in this scope
+  GamePlay game = new GamePlay();
+  ^
+..\src\main.cpp:61:11: error: expected ';' before 'game'
+  GamePlay game = new GamePlay();
+           ^
+..\src\main.cpp:63:2: error: 'game' was not declared in this scope
+  game.loop();
+  ^
+21:26:20 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\Spritesheet.o" "..\\src\\Spritesheet.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameSprite.o" "..\\src\\GameSprite.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In function 'Spritesheet* create_spritesheet(SDL_Renderer*)':
+..\src\GamePlay.cpp:22:78: error: 'loadTexture' was not declared in this scope
+  SDL_Texture *texture = loadTexture("images/leaping_frog_atlas.png", renderer);
+                                                                              ^
+..\src\GamePlay.cpp:28:30: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("button_play.png",
+                              ^
+..\src\GamePlay.cpp:31:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    true,
+        ^
+..\src\GamePlay.cpp:32:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {3, 3, 59, 114},
+                   ^
+..\src\GamePlay.cpp:33:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {265, 120},
+              ^
+..\src\GamePlay.cpp:34:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+    {0.5, 0.5});
+              ^
+..\src\GamePlay.cpp:34:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:36:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0000.png",
+                                         ^
+..\src\GamePlay.cpp:39:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:40:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:41:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:42:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:42:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:44:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0001.png",
+                                         ^
+..\src\GamePlay.cpp:47:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:48:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:49:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:50:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:50:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:52:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0002.png",
+                                         ^
+..\src\GamePlay.cpp:55:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:56:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,57},
+              ^
+..\src\GamePlay.cpp:57:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,57},
+          ^
+..\src\GamePlay.cpp:58:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:58:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:60:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0003.png",
+                                         ^
+..\src\GamePlay.cpp:63:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:64:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:65:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:66:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:66:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:69:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0000.png",
+                                           ^
+..\src\GamePlay.cpp:72:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:73:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:74:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:75:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:75:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:77:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0001.png",
+                                           ^
+..\src\GamePlay.cpp:80:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:81:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:82:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:83:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:83:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:85:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0002.png",
+                                           ^
+..\src\GamePlay.cpp:88:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:89:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:90:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:91:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:91:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp: In member function 'void GamePlay::finalizeResources()':
+..\src\GamePlay.cpp:144:12: error: 'free' was not declared in this scope
+  free(atlas);
+            ^
+21:27:13 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+..\src\main.cpp: In function 'int SDL_main(int, char**)':
+..\src\main.cpp:61:2: error: 'GamePlay' was not declared in this scope
+  GamePlay *game = new GamePlay();
+  ^
+..\src\main.cpp:61:12: error: 'game' was not declared in this scope
+  GamePlay *game = new GamePlay();
+            ^
+..\src\main.cpp:61:23: error: expected type-specifier before 'GamePlay'
+  GamePlay *game = new GamePlay();
+                       ^
+..\src\main.cpp:61:23: error: expected ';' before 'GamePlay'
+21:35:24 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameAtlas.o" "..\\src\\GameAtlas.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In function 'Spritesheet* create_spritesheet(SDL_Renderer*)':
+..\src\GamePlay.cpp:23:78: error: 'loadTexture' was not declared in this scope
+  SDL_Texture *texture = loadTexture("images/leaping_frog_atlas.png", renderer);
+                                                                              ^
+..\src\GamePlay.cpp:29:30: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("button_play.png",
+                              ^
+..\src\GamePlay.cpp:32:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    true,
+        ^
+..\src\GamePlay.cpp:33:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {3, 3, 59, 114},
+                   ^
+..\src\GamePlay.cpp:34:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {265, 120},
+              ^
+..\src\GamePlay.cpp:35:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+    {0.5, 0.5});
+              ^
+..\src\GamePlay.cpp:35:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:37:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0000.png",
+                                         ^
+..\src\GamePlay.cpp:40:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:41:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:42:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:43:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:43:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:45:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0001.png",
+                                         ^
+..\src\GamePlay.cpp:48:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:49:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:50:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:51:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:51:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:53:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0002.png",
+                                         ^
+..\src\GamePlay.cpp:56:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:57:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,57},
+              ^
+..\src\GamePlay.cpp:58:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,57},
+          ^
+..\src\GamePlay.cpp:59:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:59:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:61:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0003.png",
+                                         ^
+..\src\GamePlay.cpp:64:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:65:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:66:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:67:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:67:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:70:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0000.png",
+                                           ^
+..\src\GamePlay.cpp:73:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:74:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:75:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:76:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:76:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:78:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0001.png",
+                                           ^
+..\src\GamePlay.cpp:81:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:82:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:83:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:84:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:84:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:86:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0002.png",
+                                           ^
+..\src\GamePlay.cpp:89:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:90:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:91:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:92:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:92:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+21:36:18 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In function 'Spritesheet* create_spritesheet(SDL_Renderer*)':
+..\src\GamePlay.cpp:52:78: error: 'loadTexture' was not declared in this scope
+  SDL_Texture *texture = loadTexture("images/leaping_frog_atlas.png", renderer);
+                                                                              ^
+..\src\GamePlay.cpp:58:30: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("button_play.png",
+                              ^
+..\src\GamePlay.cpp:61:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    true,
+        ^
+..\src\GamePlay.cpp:62:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {3, 3, 59, 114},
+                   ^
+..\src\GamePlay.cpp:63:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {265, 120},
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+    {0.5, 0.5});
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:66:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0000.png",
+                                         ^
+..\src\GamePlay.cpp:69:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:70:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:71:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:74:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0001.png",
+                                         ^
+..\src\GamePlay.cpp:77:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:78:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:79:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:82:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0002.png",
+                                         ^
+..\src\GamePlay.cpp:85:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:86:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,57},
+              ^
+..\src\GamePlay.cpp:87:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,57},
+          ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:90:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0003.png",
+                                         ^
+..\src\GamePlay.cpp:93:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:94:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:95:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:99:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0000.png",
+                                           ^
+..\src\GamePlay.cpp:102:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:103:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:104:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:107:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0001.png",
+                                           ^
+..\src\GamePlay.cpp:110:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:111:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:112:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:115:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0002.png",
+                                           ^
+..\src\GamePlay.cpp:118:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:119:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:120:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+21:36:40 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In function 'Spritesheet* create_spritesheet(SDL_Renderer*)':
+..\src\GamePlay.cpp:52:78: error: 'loadTexture' was not declared in this scope
+  SDL_Texture *texture = loadTexture("images/leaping_frog_atlas.png", renderer);
+                                                                              ^
+..\src\GamePlay.cpp:58:30: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("button_play.png",
+                              ^
+..\src\GamePlay.cpp:61:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    true,
+        ^
+..\src\GamePlay.cpp:62:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {3, 3, 59, 114},
+                   ^
+..\src\GamePlay.cpp:63:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {265, 120},
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+    {0.5, 0.5});
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:66:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0000.png",
+                                         ^
+..\src\GamePlay.cpp:69:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:70:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:71:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:74:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0001.png",
+                                         ^
+..\src\GamePlay.cpp:77:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:78:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:79:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:82:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0002.png",
+                                         ^
+..\src\GamePlay.cpp:85:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:86:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,57},
+              ^
+..\src\GamePlay.cpp:87:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,57},
+          ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:90:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0003.png",
+                                         ^
+..\src\GamePlay.cpp:93:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:94:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:95:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:99:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0000.png",
+                                           ^
+..\src\GamePlay.cpp:102:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:103:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:104:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:107:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0001.png",
+                                           ^
+..\src\GamePlay.cpp:110:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:111:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:112:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:115:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0002.png",
+                                           ^
+..\src\GamePlay.cpp:118:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:119:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:120:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+21:39:17 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'Spritesheet* GamePlay::createSpritesheet(SDL_Renderer*)':
+..\src\GamePlay.cpp:58:30: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("button_play.png",
+                              ^
+..\src\GamePlay.cpp:61:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    true,
+        ^
+..\src\GamePlay.cpp:62:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {3, 3, 59, 114},
+                   ^
+..\src\GamePlay.cpp:63:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {265, 120},
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+    {0.5, 0.5});
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:66:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0000.png",
+                                         ^
+..\src\GamePlay.cpp:69:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:70:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:71:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:74:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0001.png",
+                                         ^
+..\src\GamePlay.cpp:77:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:78:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:79:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:82:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0002.png",
+                                         ^
+..\src\GamePlay.cpp:85:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:86:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,57},
+              ^
+..\src\GamePlay.cpp:87:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,57},
+          ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:90:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0003.png",
+                                         ^
+..\src\GamePlay.cpp:93:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:94:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:95:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:99:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0000.png",
+                                           ^
+..\src\GamePlay.cpp:102:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:103:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:104:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:107:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0001.png",
+                                           ^
+..\src\GamePlay.cpp:110:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:111:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:112:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:115:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0002.png",
+                                           ^
+..\src\GamePlay.cpp:118:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:119:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:120:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp: In member function 'void GamePlay::initResources()':
+..\src\GamePlay.cpp:167:56: error: 'create_spritesheet' was not declared in this scope
+  atlas->addSheet( create_spritesheet(screen->renderer()) );
+                                                        ^
+21:39:38 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'Spritesheet* GamePlay::createSpritesheet(SDL_Renderer*)':
+..\src\GamePlay.cpp:58:30: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("button_play.png",
+                              ^
+..\src\GamePlay.cpp:61:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    true,
+        ^
+..\src\GamePlay.cpp:62:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {3, 3, 59, 114},
+                   ^
+..\src\GamePlay.cpp:63:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {265, 120},
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+    {0.5, 0.5});
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:66:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0000.png",
+                                         ^
+..\src\GamePlay.cpp:69:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:70:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:71:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:74:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0001.png",
+                                         ^
+..\src\GamePlay.cpp:77:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:78:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:79:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:82:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0002.png",
+                                         ^
+..\src\GamePlay.cpp:85:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:86:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,57},
+              ^
+..\src\GamePlay.cpp:87:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,57},
+          ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:90:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0003.png",
+                                         ^
+..\src\GamePlay.cpp:93:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:94:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:95:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:99:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0000.png",
+                                           ^
+..\src\GamePlay.cpp:102:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:103:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:104:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:107:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0001.png",
+                                           ^
+..\src\GamePlay.cpp:110:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:111:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:112:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:115:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0002.png",
+                                           ^
+..\src\GamePlay.cpp:118:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:119:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:120:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\main.o" "src\\VisualElement.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+21:50:27 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'Spritesheet* GamePlay::createSpritesheet(SDL_Renderer*)':
+..\src\GamePlay.cpp:58:30: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("button_play.png",
+                              ^
+..\src\GamePlay.cpp:61:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    true,
+        ^
+..\src\GamePlay.cpp:62:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {3, 3, 59, 114},
+                   ^
+..\src\GamePlay.cpp:63:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {265, 120},
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+    {0.5, 0.5});
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:66:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0000.png",
+                                         ^
+..\src\GamePlay.cpp:69:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:70:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:71:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:74:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0001.png",
+                                         ^
+..\src\GamePlay.cpp:77:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:78:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:79:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:82:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0002.png",
+                                         ^
+..\src\GamePlay.cpp:85:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:86:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,57},
+              ^
+..\src\GamePlay.cpp:87:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,57},
+          ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:90:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0003.png",
+                                         ^
+..\src\GamePlay.cpp:93:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:94:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:95:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:99:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0000.png",
+                                           ^
+..\src\GamePlay.cpp:102:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:103:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:104:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:107:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0001.png",
+                                           ^
+..\src\GamePlay.cpp:110:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:111:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:112:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:115:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0002.png",
+                                           ^
+..\src\GamePlay.cpp:118:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:119:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:120:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\main.o" "src\\VisualElement.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+21:51:25 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'Spritesheet* GamePlay::createSpritesheet(SDL_Renderer*)':
+..\src\GamePlay.cpp:58:30: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("button_play.png",
+                              ^
+..\src\GamePlay.cpp:61:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    true,
+        ^
+..\src\GamePlay.cpp:62:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {3, 3, 59, 114},
+                   ^
+..\src\GamePlay.cpp:63:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    {265, 120},
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+    {0.5, 0.5});
+              ^
+..\src\GamePlay.cpp:64:14: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:66:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0000.png",
+                                         ^
+..\src\GamePlay.cpp:69:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:70:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:71:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:72:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:74:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0001.png",
+                                         ^
+..\src\GamePlay.cpp:77:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:78:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:79:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:80:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:82:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0002.png",
+                                         ^
+..\src\GamePlay.cpp:85:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:86:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,57},
+              ^
+..\src\GamePlay.cpp:87:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,57},
+          ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:88:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:90:41: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  sheet->add("frog_blue_leaping_0003.png",
+                                         ^
+..\src\GamePlay.cpp:93:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:94:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,50,41},
+              ^
+..\src\GamePlay.cpp:95:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {50,41},
+          ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:96:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:99:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0000.png",
+                                           ^
+..\src\GamePlay.cpp:102:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:103:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:104:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:105:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:107:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0001.png",
+                                           ^
+..\src\GamePlay.cpp:110:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:111:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:112:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:113:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+..\src\GamePlay.cpp:115:43: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   sheet->add("frog_blue_standing_0002.png",
+                                           ^
+..\src\GamePlay.cpp:118:8: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   false,
+        ^
+..\src\GamePlay.cpp:119:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {0,0,48,32},
+              ^
+..\src\GamePlay.cpp:120:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+   {48,32},
+          ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+   {0.5,0.5});
+            ^
+..\src\GamePlay.cpp:121:12: warning: narrowing conversion of '5.0e-1' from 'double' to 'int' inside { } is ill-formed in C++11 [-Wnarrowing]
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\main.o" "src\\VisualElement.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 

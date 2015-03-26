@@ -1,0 +1,89 @@
+/*
+ * main.cpp
+ *
+ *  Created on: Mar 23, 2015
+ *      Author: vitor.rozsa
+ */
+
+// C++ basic libs.
+#include <iostream>
+
+// C basic libs.
+#include <assert.h>
+
+// Thirdy part libs.
+#include "SDL.h"
+#include "SDL_image.h"
+
+// Internal libs.
+#include "GamePlay.h"
+#include "GameVideo.h"
+#include "Spritesheet.h"
+#include "GameAtlas.h"
+#include "VisualElement.h"
+
+
+//Screen dimension constants
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+
+using namespace std;
+
+SDL_Texture* loadTexture(std::string path, SDL_Renderer *renderer)
+{
+	//The final texture
+	SDL_Texture *texture = NULL;
+
+	//Load image at specified path
+	SDL_Surface *surface = IMG_Load(path.c_str());
+	if( surface == NULL )
+	{
+		cout << "Unable to load image " << path.c_str() << "! SDL_image Error: " << IMG_GetError() << endl;
+		assert(0);
+	}
+
+
+	//Create texture from surface pixels
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	if(texture == NULL)
+	{
+		cout << "Unable to create texture from " << path.c_str() << " SDL Error: " << SDL_GetError();
+		assert(0);
+	}
+
+	// Get rid of old loaded surface
+	SDL_FreeSurface(surface);
+
+	return texture;
+}
+
+int main(int argc, char *argv[])
+{
+	GamePlay *game = new GamePlay();
+
+	game->loop();
+
+//	init_resources();
+//
+//	screen->init();
+//	screen->loadAtlas(atlas);
+//
+//	atlas->addSheet( create_spritesheet(screen->renderer()) );
+//
+//	//elem->setPos({100, 100});
+//	//elem->addSprite("frog_blue_standing_0000.png");
+//
+//	// Nothing to draw.
+//	screen->addElement(elem);
+//
+//	main_loop(screen, elem);
+//
+//	free(elem);
+//	free(atlas);
+//	free(screen);
+//
+//	screen->finalize();
+//	finalize_resources();
+
+	return 0;
+}
