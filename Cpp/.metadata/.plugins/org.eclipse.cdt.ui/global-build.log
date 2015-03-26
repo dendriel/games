@@ -1749,3 +1749,1437 @@ C:\Users\vitor\Documents\GitHub\games\Cpp\Test\src\stages/Stage01.h:15:7: note: 
 Info: Internal Builder is used for build
 g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
 g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+17:30:39 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:22:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0});
+                          ^
+..\src\stages\Stage01.cpp:22:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0});
+                                                     ^
+..\src\stages\Stage01.cpp:22:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0});
+                                                                    ^
+..\src\stages\Stage01.cpp:22:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0});
+                                                                             ^
+..\src\stages\Stage01.cpp:23:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0});
+                       ^
+..\src\stages\Stage01.cpp:23:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0});
+                                                    ^
+..\src\stages\Stage01.cpp:23:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0});
+                                                                     ^
+..\src\stages\Stage01.cpp:23:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0});
+                                                                              ^
+..\src\stages\Stage01.cpp:24:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0});
+                        ^
+..\src\stages\Stage01.cpp:24:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0});
+                                                     ^
+..\src\stages\Stage01.cpp:24:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0});
+                                                                      ^
+..\src\stages\Stage01.cpp:24:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0});
+                                                                               ^
+..\src\stages\Stage01.cpp:25:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0});
+                       ^
+..\src\stages\Stage01.cpp:25:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0});
+                                                      ^
+..\src\stages\Stage01.cpp:25:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0});
+                                                                         ^
+..\src\stages\Stage01.cpp:25:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0});
+                                                                                  ^
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\Spritesheet.o" "..\\src\\Spritesheet.cpp" 
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+17:31:08 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameStage.o" "..\\src\\GameStage.cpp" 
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+17:53:52 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:87:41: error: invalid use of incomplete type 'SDL_Texture {aka struct SDL_Texture}'
+  SDL_Texture *texture = new SDL_Texture();
+                                         ^
+In file included from C:\Users\vitor\Desktop\sdl20\SDL2-2.0.3\i686-w64-mingw32\include\SDL2/SDL.h:87:0,
+                 from ..\src\GamePlay.h:12,
+                 from ..\src\GamePlay.cpp:8:
+C:\Users\vitor\Desktop\sdl20\SDL2-2.0.3\i686-w64-mingw32\include\SDL2/SDL_render.h:127:8: error: forward declaration of 'SDL_Texture {aka struct SDL_Texture}'
+ struct SDL_Texture;
+        ^
+..\src\GamePlay.cpp:90:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (unsigned int h = 0; h < map_size.h; h++)
+                                        ^
+..\src\GamePlay.cpp:92:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for (unsigned int w = 0; w < map_size.w; w++)
+                                         ^
+..\src\GamePlay.cpp:94:8: warning: unused variable 'tile_id' [-Wunused-variable]
+    int tile_id = map_arr[h*map_size.w + w];
+        ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = new SDL_Texture();
+               ^
+18:00:03 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameVideo.o" "..\\src\\GameVideo.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameSprite.o" "..\\src\\GameSprite.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameAtlas.o" "..\\src\\GameAtlas.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\Spritesheet.o" "..\\src\\Spritesheet.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:94:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (unsigned int h = 0; h < map_size.h; h++)
+                                        ^
+..\src\GamePlay.cpp:96:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for (unsigned int w = 0; w < map_size.w; w++)
+                                         ^
+..\src\GamePlay.cpp:98:8: warning: unused variable 'tile_id' [-Wunused-variable]
+    int tile_id = map_arr[h*map_size.w + w];
+        ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:22:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:22:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:22:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:22:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:23:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:23:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:23:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:23:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:24:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:24:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:24:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:24:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:25:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:25:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:25:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:25:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:32:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+      3, 3, 3, 3, 3};
+                   ^
+..\src\stages\Stage01.cpp:27:11: error: cannot convert '<brace-enclosed initializer list>' to 'int*' in assignment
+  _map_arr = {3, 3, 3, 3, 3,
+           ^
+..\src\stages\Stage01.cpp:35:30: error: ISO C++ forbids applying 'sizeof' to an expression of function type [-fpermissive]
+  _map_size.h = sizeof(map_arr) / _map_size.w;
+                              ^
+18:00:26 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:22:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:22:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:22:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:22:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:23:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:23:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:23:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:23:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:24:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:24:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:24:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:24:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:25:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:25:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:25:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:25:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:32:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+      3, 3, 3, 3, 3};
+                   ^
+..\src\stages\Stage01.cpp:27:11: error: assigning to an array from an initializer list
+  _map_arr = {3, 3, 3, 3, 3,
+           ^
+..\src\stages\Stage01.cpp:35:30: error: ISO C++ forbids applying 'sizeof' to an expression of function type [-fpermissive]
+  _map_size.h = sizeof(map_arr) / _map_size.w;
+                              ^
+18:00:51 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+In file included from ..\src\stages\Stage01.h:11:0,
+                 from ..\src\stages\Stage01.cpp:8:
+C:\Users\vitor\Documents\GitHub\games\Cpp\Test\src/GameStage.h: In member function 'int* GameStage::map_arr()':
+C:\Users\vitor\Documents\GitHub\games\Cpp\Test\src/GameStage.h:41:10: error: cannot convert 'int**' to 'int*' in return
+   return _map_arr;
+          ^
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:22:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:22:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:22:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:22:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:23:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:23:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:23:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:23:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:24:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:24:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:24:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:24:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:25:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:25:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:25:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:25:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:32:19: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+      3, 3, 3, 3, 3};
+                   ^
+..\src\stages\Stage01.cpp:27:11: error: assigning to an array from an initializer list
+  _map_arr = {3, 3, 3, 3, 3,
+           ^
+..\src\stages\Stage01.cpp:35:30: error: ISO C++ forbids applying 'sizeof' to an expression of function type [-fpermissive]
+  _map_size.h = sizeof(map_arr) / _map_size.w;
+                              ^
+18:01:45 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameStage.o" "..\\src\\GameStage.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:94:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (unsigned int h = 0; h < map_size.h; h++)
+                                        ^
+..\src\GamePlay.cpp:96:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for (unsigned int w = 0; w < map_size.w; w++)
+                                         ^
+..\src\GamePlay.cpp:98:8: warning: unused variable 'tile_id' [-Wunused-variable]
+    int tile_id = map_arr[h*map_size.w + w];
+        ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\VisualElement.o" "..\\src\\VisualElement.cpp" 
+..\src\VisualElement.cpp: In constructor 'VisualElement::VisualElement()':
+..\src\VisualElement.cpp:13:5: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _pos({0,0}),
+     ^
+..\src\VisualElement.cpp:14:6: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _size({0,0}),
+      ^
+..\src\VisualElement.cpp:16:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _texture(NULL)
+              ^
+..\src\VisualElement.cpp:16:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:30:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:30:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:30:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:30:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:31:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:31:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:31:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:31:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:32:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:32:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:32:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:33:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:33:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:33:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:37:30: error: ISO C++ forbids applying 'sizeof' to an expression of function type [-fpermissive]
+  _map_size.h = sizeof(map_arr) / _map_size.w;
+                              ^
+18:01:59 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:30:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:30:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:30:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:30:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:31:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:31:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:31:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:31:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:32:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:32:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:32:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:33:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:33:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:33:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:02:32 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameStage.o" "..\\src\\GameStage.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:96:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (unsigned int h = 0; h < map_size.h; h++)
+                                        ^
+..\src\GamePlay.cpp:98:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for (unsigned int w = 0; w < map_size.w; w++)
+                                         ^
+..\src\GamePlay.cpp:100:8: warning: unused variable 'tile_id' [-Wunused-variable]
+    int tile_id = map_arr[h*map_size.w + w];
+        ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:02:49 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:96:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (unsigned int h = 0; h < map_size.h; h++)
+                                        ^
+..\src\GamePlay.cpp:98:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for (unsigned int w = 0; w < map_size.w; w++)
+                                         ^
+..\src\GamePlay.cpp:100:8: warning: unused variable 'tile_id' [-Wunused-variable]
+    int tile_id = map_arr[h*map_size.w + w];
+        ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:03:15 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:96:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (unsigned int h = 0; h < map_size.h; h++)
+                                        ^
+..\src\GamePlay.cpp:98:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for (unsigned int w = 0; w < map_size.w; w++)
+                                         ^
+..\src\GamePlay.cpp:85:7: warning: unused variable 'map_arr' [-Wunused-variable]
+  int *map_arr = stage->map_arr();
+       ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:03:37 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:96:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  for (unsigned int h = 0; h < map_size.h; h++)
+                                        ^
+..\src\GamePlay.cpp:99:41: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for (unsigned int w = 0; w < map_size.w; w++)
+                                         ^
+..\src\GamePlay.cpp:85:7: warning: unused variable 'map_arr' [-Wunused-variable]
+  int *map_arr = stage->map_arr();
+       ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:03:51 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:85:7: warning: unused variable 'map_arr' [-Wunused-variable]
+  int *map_arr = stage->map_arr();
+       ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:04:05 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:85:7: warning: unused variable 'map_arr' [-Wunused-variable]
+  int *map_arr = stage->map_arr();
+       ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:04:39 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:85:7: warning: unused variable 'map_arr' [-Wunused-variable]
+  int *map_arr = stage->map_arr();
+       ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:05:00 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:85:7: warning: unused variable 'map_arr' [-Wunused-variable]
+  int *map_arr = stage->map_arr();
+       ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:05:24 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:30:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:30:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:30:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:30:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:31:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:31:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:31:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:31:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:32:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:32:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:32:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:33:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:33:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:33:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:38:2: error: 'cout' was not declared in this scope
+  cout << "sizeof: " << sizeof(*_map_arr) << endl;
+  ^
+..\src\stages\Stage01.cpp:38:45: error: 'endl' was not declared in this scope
+  cout << "sizeof: " << sizeof(*_map_arr) << endl;
+                                             ^
+18:05:40 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:40:2: error: 'cout' was not declared in this scope
+  cout << "sizeof: " << sizeof(*_map_arr) << endl;
+  ^
+..\src\stages\Stage01.cpp:40:2: note: suggested alternative:
+In file included from ..\src\stages\Stage01.cpp:10:0:
+c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\iostream:61:18: note:   'std::cout'
+   extern ostream cout;  /// Linked to standard output
+                  ^
+..\src\stages\Stage01.cpp:40:45: error: 'endl' was not declared in this scope
+  cout << "sizeof: " << sizeof(*_map_arr) << endl;
+                                             ^
+..\src\stages\Stage01.cpp:40:45: note: suggested alternative:
+In file included from c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\iostream:39:0,
+                 from ..\src\stages\Stage01.cpp:10:
+c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\ostream:564:5: note:   'std::endl'
+     endl(basic_ostream<_CharT, _Traits>& __os)
+     ^
+18:05:51 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:06:49 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:06:57 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:07:10 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:40:45: error: expected primary-expression before ']' token
+  std::cout << "sizeof: " << sizeof(_map_arr[]) << std::endl;
+                                             ^
+18:07:29 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:07:52 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:08:18 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:40:2: error: 'cout' was not declared in this scope
+  cout << "size: " << sizeof(Map) << endl;
+  ^
+..\src\stages\Stage01.cpp:40:2: note: suggested alternative:
+In file included from ..\src\stages\Stage01.cpp:10:0:
+c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\iostream:61:18: note:   'std::cout'
+   extern ostream cout;  /// Linked to standard output
+                  ^
+..\src\stages\Stage01.cpp:40:37: error: 'endl' was not declared in this scope
+  cout << "size: " << sizeof(Map) << endl;
+                                     ^
+..\src\stages\Stage01.cpp:40:37: note: suggested alternative:
+In file included from c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\iostream:39:0,
+                 from ..\src\stages\Stage01.cpp:10:
+c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\ostream:564:5: note:   'std::endl'
+     endl(basic_ostream<_CharT, _Traits>& __os)
+     ^
+18:08:28 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:09:12 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:32:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:32:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:32:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:33:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:33:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:33:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:34:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:34:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:34:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:34:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:35:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:35:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:35:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:35:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:13:05 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\Spritesheet.o" "..\\src\\Spritesheet.cpp" 
+..\src\Spritesheet.cpp: In member function 'GameSprite* Spritesheet::getSprite(int)':
+..\src\Spritesheet.cpp:73:21: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (sprite->id == id)
+                     ^
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:100:54: error: cannot convert 'Spritesheet*' to 'GameSprite*' in initialization
+    GameSprite *sprite = this->atlas->getSheet(tile_id);
+                                                      ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+18:13:43 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameVideo.o" "..\\src\\GameVideo.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:100:17: warning: unused variable 'sheet' [-Wunused-variable]
+    Spritesheet *sheet = this->atlas->getSheet(tile_id);
+                 ^
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameAtlas.o" "..\\src\\GameAtlas.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameStage.o" "..\\src\\GameStage.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:30:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:30:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:30:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:30:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:31:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:31:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:31:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:31:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:32:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:32:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:32:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:33:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:33:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:33:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:14:17 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+..\src\GamePlay.cpp: In member function 'void GamePlay::loadBackground(GameStage*, VisualElement*)':
+..\src\GamePlay.cpp:87:15: warning: unused variable 'texture' [-Wunused-variable]
+  SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+               ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:22:10 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\VisualElement.o" "..\\src\\VisualElement.cpp" 
+..\src\VisualElement.cpp: In constructor 'VisualElement::VisualElement()':
+..\src\VisualElement.cpp:13:5: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _pos({0,0}),
+     ^
+..\src\VisualElement.cpp:14:6: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _size({0,0}),
+      ^
+..\src\VisualElement.cpp:16:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _texture(NULL)
+              ^
+..\src\VisualElement.cpp:16:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameVideo.o" "..\\src\\GameVideo.cpp" 
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:25:25 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\VisualElement.o" "..\\src\\VisualElement.cpp" 
+..\src\VisualElement.cpp: In constructor 'VisualElement::VisualElement()':
+..\src\VisualElement.cpp:13:5: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _pos({0,0}),
+     ^
+..\src\VisualElement.cpp:14:6: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _size({0,0}),
+      ^
+..\src\VisualElement.cpp:16:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _texture(NULL)
+              ^
+..\src\VisualElement.cpp:16:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameVideo.o" "..\\src\\GameVideo.cpp" 
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+18:32:46 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\main.o" "..\\src\\main.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:30:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:30:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:30:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:30:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:31:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:31:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:31:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:31:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:32:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:32:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:32:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:33:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:33:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:33:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:39:63: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _map_size_pixel.w = {0, 0, _map_size.w * 64, _map_size.h * 64};
+                                                               ^
+..\src\stages\Stage01.cpp:39:20: error: cannot convert '<brace-enclosed initializer list>' to 'int' in assignment
+  _map_size_pixel.w = {0, 0, _map_size.w * 64, _map_size.h * 64};
+                    ^
+18:33:00 **** Incremental Build of configuration Release for project Test ****
+Info: Internal Builder is used for build
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameVideo.o" "..\\src\\GameVideo.cpp" 
+..\src\GameVideo.cpp: In member function 'void GameVideo::update()':
+..\src\GameVideo.cpp:99:85: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    destn = {element->pos().x, element->pos().y, element->size().w, element->size().h};
+                                                                                     ^
+..\src\GameVideo.cpp:99:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    destn = {element->pos().x, element->pos().y, element->size().w, element->size().h};
+          ^
+..\src\GameVideo.cpp:113:81: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    destn = {element->pos().x, element->pos().y, sprite->frame.w, sprite->frame.h};
+                                                                                 ^
+..\src\GameVideo.cpp:113:10: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    destn = {element->pos().x, element->pos().y, sprite->frame.w, sprite->frame.h};
+          ^
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GameStage.o" "..\\src\\GameStage.cpp" 
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\VisualElement.o" "..\\src\\VisualElement.cpp" 
+..\src\VisualElement.cpp: In constructor 'VisualElement::VisualElement()':
+..\src\VisualElement.cpp:13:5: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _pos({0,0}),
+     ^
+..\src\VisualElement.cpp:14:6: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _size({0,0}),
+      ^
+..\src\VisualElement.cpp:16:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+ _texture(NULL)
+              ^
+..\src\VisualElement.cpp:16:14: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\stages\\Stage01.o" "..\\src\\stages\\Stage01.cpp" 
+..\src\stages\Stage01.cpp: In constructor 'Stage01::Stage01(SDL_Renderer*)':
+..\src\stages\Stage01.cpp:30:26: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                          ^
+..\src\stages\Stage01.cpp:30:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                     ^
+..\src\stages\Stage01.cpp:30:68: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                    ^
+..\src\stages\Stage01.cpp:30:77: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("target.png",{0, 0, 63, 63},false,false,{0, 0, 63, 63},{64, 64},{0, 0}, 1);
+                                                                             ^
+..\src\stages\Stage01.cpp:31:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                       ^
+..\src\stages\Stage01.cpp:31:52: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                    ^
+..\src\stages\Stage01.cpp:31:69: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                     ^
+..\src\stages\Stage01.cpp:31:78: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("box.png",{64, 0, 127, 63},false,false,{64, 0, 127, 63},{64, 64},{0, 0}, 2);
+                                                                              ^
+..\src\stages\Stage01.cpp:32:24: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                        ^
+..\src\stages\Stage01.cpp:32:53: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                     ^
+..\src\stages\Stage01.cpp:32:70: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                      ^
+..\src\stages\Stage01.cpp:32:79: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("wall.png",{0, 64, 63, 127},false,false,{0, 64, 63, 127},{64, 64},{0, 0}, 3);
+                                                                               ^
+..\src\stages\Stage01.cpp:33:23: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                       ^
+..\src\stages\Stage01.cpp:33:54: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                      ^
+..\src\stages\Stage01.cpp:33:73: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                         ^
+..\src\stages\Stage01.cpp:33:82: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _sheet->add("bug.png",{64, 64, 127, 127},false,false,{64, 64, 127, 127},{64, 64},{0, 0}, 4);
+                                                                                  ^
+..\src\stages\Stage01.cpp:39:61: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _map_size_pixel = {0, 0, _map_size.w * 64, _map_size.h * 64};
+                                                             ^
+..\src\stages\Stage01.cpp:39:18: warning: extended initializer lists only available with -std=c++11 or -std=gnu++11 [enabled by default]
+  _map_size_pixel = {0, 0, _map_size.w * 64, _map_size.h * 64};
+                  ^
+g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+Info: Nothing to build for Test

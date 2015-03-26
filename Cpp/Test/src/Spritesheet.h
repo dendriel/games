@@ -29,9 +29,11 @@ public:
 			bool trimmed,
 			SDL_Rect sprite_source_size,
 			SDL_Rect source_size,
-			SDL_Rect pivot);
+			SDL_Rect pivot,
+			unsigned int id); // id = numeric identification.
 
-	GameSprite *getSprite(std::string name);
+	GameSprite *getSprite(const std::string name);
+	GameSprite *getSprite(const int id);
 
 	void setTexture(SDL_Texture *texture);
 

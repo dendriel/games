@@ -19,98 +19,6 @@
 using namespace std;
 
 
-
-
-// TODO: remove this.
-//Spritesheet *GamePlay::createSpritesheet(SDL_Renderer *renderer)
-//{
-//	Spritesheet *sheet = new Spritesheet();
-//	SDL_Texture *texture = loadTexture("images/leaping_frog_atlas.png", renderer);
-//
-//	// Load sheet image file.
-//	sheet->setTexture(texture);
-//
-//	// Register sprites.
-//	sheet->add("button_play.png",
-//			{191, 2, 259, 114},
-//			false,
-//			true,
-//			{3, 3, 59, 114},
-//			{265, 120},
-//			{0.5, 0.5});
-//
-//	sheet->add("frog_blue_leaping_0000.png",
-//		{2,193,48,32},
-//		false,
-//		false,
-//		{0,0,48,32},
-//		{48,32},
-//		{0.5,0.5});
-//
-//	sheet->add("frog_blue_leaping_0001.png",
-//		{303,118,50,41},
-//		true,
-//		false,
-//		{0,0,50,41},
-//		{50,41},
-//		{0.5,0.5});
-//
-//	sheet->add("frog_blue_leaping_0002.png",
-//		{251,118,50,57},
-//		false,
-//		false,
-//		{0,0,50,57},
-//		{50,57},
-//		{0.5,0.5});
-//
-//	sheet->add("frog_blue_leaping_0003.png",
-//		{329,170,50,41},
-//		true,
-//		false,
-//		{0,0,50,41},
-//		{50,41},
-//		{0.5,0.5});
-//
-//
-//		sheet->add("frog_blue_standing_0000.png",
-//		{52,193,48,32},
-//		false,
-//		false,
-//		{0,0,48,32},
-//		{48,32},
-//		{0.5,0.5});
-//
-//		sheet->add("frog_blue_standing_0001.png",
-//		{102,193,48,32},
-//		false,
-//		false,
-//		{0,0,48,32},
-//		{48,32},
-//		{0.5,0.5});
-//
-//		sheet->add("frog_blue_standing_0002.png",
-//		{152,193,48,32},
-//		false,
-//		false,
-//		{0,0,48,32},
-//		{48,32},
-//		{0.5,0.5});
-//
-//	//sheet->dump();
-//
-//	/*
-//	std::string filename;
-//	SDL_Rect frame;
-//	bool rotated;
-//	bool trimmed;
-//	SDL_Rect sprite_source_size;
-//	SDL_Rect source_size;
-//	SDL_Rect pivot;
-//	*/
-//
-//	return sheet;
-//}
-
 GamePlay::GamePlay()
 {
 	initResources();
@@ -162,12 +70,54 @@ void GamePlay::load(void)
 	// Fill atlas.
 	this->atlas->addSheet(this->stage->sheet());
 	this->screen->loadAtlas(this->atlas);
+
+	loadBackground(this->stage, this->backgroud);
+
+	loop();
 }
 
 void GamePlay::unload(void)
 {
 	free(this->atlas);
 	this->atlas = NULL;
+}
+
+void GamePlay::loadBackground(GameStage *stage, VisualElement *background)
+{
+	int *map_arr = stage->map_arr();
+	SDL_Rect map_size = stage->map_size();
+	SDL_Rect map_size_pixel = stage->map_size_pixel();
+
+	SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
+			SDL_PIXELFORMAT_RGBA8888,
+			SDL_TEXTUREACCESS_TARGET,
+			SCREEN_WIDTH,
+			SCREEN_HEIGHT);
+
+	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderTarget(this->screen->renderer(), texture);
+
+	for (int h = 0; h < map_size.h; h++)
+	{
+		for (int w = 0; w < map_size.w; w++)
+		{
+			int tile_id = map_arr[h*map_size.w + w];
+			Spritesheet *sheet = this->atlas->getSheet(tile_id);
+			GameSprite *sprite = sheet->getSprite(tile_id);
+
+			SDL_Rect destn = {w * sprite->frame.w, w * sprite->frame.y, sprite->frame.w, sprite->frame.h};
+			SDL_RenderCopy(this->screen->renderer(), sheet->texture(), &sprite->frame, &destn);
+		}
+	}
+
+	background = new VisualElement();
+	background->setTexture(texture);
+	background->setSize(map_size_pixel);
+
+	// Restore default rendering target.
+	SDL_SetRenderTarget(this->screen->renderer(), NULL);
+
+	this->screen->addElement(background);
 }
 
 void GamePlay::loop(void)
@@ -199,41 +149,6 @@ void GamePlay::loop(void)
 		{
 			return;
 		}
-//		//User presses a key
-//		else if( e.type == SDL_KEYDOWN )
-//		{
-//			//Select surfaces based on key press
-//			switch( e.key.keysym.sym )
-//			{
-//				case SDLK_UP:
-//					cout << "up" << endl;
-//					elem->setPos({elem->pos().x, elem->pos().y - 1});
-//				break;
-//
-//				case SDLK_DOWN:
-//					cout << "down" << endl;
-//					elem->setPos({elem->pos().x, elem->pos().y + 1});
-//				break;
-//
-//				default:
-//				break;
-//			}
-//			switch( e.key.keysym.sym )
-//			{
-//				case SDLK_LEFT:
-//					cout << "left" << endl;
-//					elem->setPos({elem->pos().x - 1, elem->pos().y});
-//				break;
-//
-//				case SDLK_RIGHT:
-//					cout << "right" << endl;
-//					elem->setPos({elem->pos().x + 1, elem->pos().y});
-//				break;
-//
-//				default:
-//				break;
-//			}
-//		}
 
 		SDL_Delay(1000/60);
 		screen->update();

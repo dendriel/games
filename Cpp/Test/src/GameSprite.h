@@ -22,6 +22,7 @@ public:
 	SDL_Rect sprite_source_size;
 	SDL_Rect source_size;
 	SDL_Rect pivot;
+	unsigned int id;
 
 	GameSprite(std::string filename,
 			SDL_Rect frame,
@@ -29,7 +30,8 @@ public:
 			bool trimmed,
 			SDL_Rect sprite_source_size,
 			SDL_Rect source_size,
-			SDL_Rect pivot);
+			SDL_Rect pivot,
+			unsigned int id);
 	virtual ~GameSprite();
 };
 

@@ -7,7 +7,10 @@
 
 #include "GameStage.h"
 
-GameStage::GameStage() {
+GameStage::GameStage():
+_sheet(NULL),
+_map_arr(NULL)
+{
 	// TODO Auto-generated constructor stub
 
 }

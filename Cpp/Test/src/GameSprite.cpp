@@ -13,14 +13,16 @@ GameSprite::GameSprite(std::string filename,
 		bool trimmed,
 		SDL_Rect sprite_source_size,
 		SDL_Rect source_size,
-		SDL_Rect pivot):
+		SDL_Rect pivot,
+		unsigned int id):
 filename(filename),
 frame(frame),
 rotated(rotated),
 trimmed(trimmed),
 sprite_source_size(sprite_source_size),
 source_size(source_size),
-pivot(pivot)
+pivot(pivot),
+id(id)
 {
 	// TODO Auto-generated constructor stub
 

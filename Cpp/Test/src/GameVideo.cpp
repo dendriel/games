@@ -86,16 +86,35 @@ void GameVideo::update(void)
 	for (vector<VisualElement *>::iterator iter = element_list.begin(); iter != element_list.end(); ++iter)
 	{
 		VisualElement *element = *iter;
-		Spritesheet *sheet = atlas->getSheet(element->curr_sprite());
-		if (sheet == NULL)
-		{
-			cout << "The sheet for the sprite \"" << element->curr_sprite() << "\" wasn't found in the atlas." << endl;
-			assert(0);
-		}
-		GameSprite *sprite = sheet->getSprite(element->curr_sprite());
+		SDL_Texture *texture = NULL;
+		Spritesheet *sheet = NULL;
+		GameSprite *sprite = NULL;
+		SDL_Rect *source = NULL;
+		SDL_Rect destn;
 
-		SDL_Rect destn = {element->pos().x, element->pos().y, sprite->frame.w, sprite->frame.h};
-		SDL_RenderCopy(_renderer, sheet->texture(), &sprite->frame, &destn);
+		if (element->texture() != NULL)
+		{
+			texture = element->texture();
+			source = NULL;
+			destn = {element->pos().x, element->pos().y, element->size().w, element->size().h};
+		}
+		else
+		{
+			sheet = atlas->getSheet(element->curr_sprite());
+			if (sheet == NULL)
+			{
+				cout << "The sheet for the sprite \"" << element->curr_sprite() << "\" wasn't found in the atlas." << endl;
+				assert(0);
+			}
+
+			sprite = sheet->getSprite(element->curr_sprite());
+
+			texture = sheet->texture();
+			destn = {element->pos().x, element->pos().y, sprite->frame.w, sprite->frame.h};
+			source = &sprite->frame;
+		}
+
+		SDL_RenderCopy(_renderer, texture, source, &destn);
 	}
 
     //Render texture to screen

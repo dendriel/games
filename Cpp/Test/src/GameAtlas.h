@@ -28,7 +28,8 @@ public:
 	/**
 	 * @brief Look for the sheet that owns the given sprite.
 	 */
-	Spritesheet *getSheet(std::string name);
+	Spritesheet *getSheet(const std::string name);
+	Spritesheet *getSheet(const int id);
 };
 
 #endif /* GAMEATLAS_H_ */

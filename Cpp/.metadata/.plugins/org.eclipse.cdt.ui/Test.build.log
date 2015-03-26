@@ -1,7 +1,1 @@
-07:23:52 **** Incremental Build of configuration Release for project Test ****
-Info: Internal Builder is used for build
-g++ "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2-2.0.3\\i686-w64-mingw32\\include\\SDL2" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src" "-IC:\\Users\\vitor\\Documents\\GitHub\\games\\Cpp\\Test\\src\\stages" "-IC:\\Users\\vitor\\Desktop\\sdl20\\SDL2_image-2.0.0\\i686-w64-mingw32\\include\\SDL2" -O3 -Wall -c -fmessage-length=0 -o "src\\GamePlay.o" "..\\src\\GamePlay.cpp" 
-g++ "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2-2.0.3\\i686-w64-mingw32\\lib" "-LC:\\Users\\vitor\\Desktop\\Workspace\\libraries\\cpp\\SDL2_image-2.0.0\\i686-w64-mingw32\\lib" -o Test.exe "src\\stages\\Stage01.o" "src\\main.o" "src\\VisualElement.o" "src\\Utils.o" "src\\Spritesheet.o" "src\\GameVideo.o" "src\\GameStage.o" "src\\GameSprite.o" "src\\GamePlay.o" "src\\GameAtlas.o" -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
-
-07:23:53 Build Finished (took 632ms)
-
+Info: Nothing to build for Test
