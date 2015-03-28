@@ -2,12 +2,14 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="createSpritesheet" key="selection"/>
+		<item value="screen-&gt;init" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="screen-&gt;init"/>
+			<item value="movebox_256x256.png"/>
 			<item value="createSpritesheet"/>
 			<item value="loadTexture"/>
 			<item value="Unable to create texture from"/>

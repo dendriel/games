@@ -31,6 +31,12 @@ public:
 		_pos = pos;
 	}
 
+	inline void addPos(SDL_Point pos)
+	{
+		_pos.x += pos.x;
+		_pos.y += pos.y;
+	}
+
 	inline void setSize(SDL_Rect size)
 	{
 		_size = size;

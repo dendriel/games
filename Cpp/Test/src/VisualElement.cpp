@@ -21,5 +21,9 @@ _texture(NULL)
 
 VisualElement::~VisualElement()
 {
-	// TODO Auto-generated destructor stub
+	if (_texture != NULL)
+	{
+		SDL_DestroyTexture(_texture);
+		_texture = NULL;
+	}
 }

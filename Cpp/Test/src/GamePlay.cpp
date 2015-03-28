@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include "SDL.h"
 #include "SDL_image.h"
 
 #include "Stage01.h"
@@ -45,7 +46,7 @@ void GamePlay::initResources(void)
 	}
 
 	this->screen = new GameVideo();
-	this->screen->init();
+	this->screen->init("My Label", SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 
@@ -71,18 +72,34 @@ void GamePlay::load(void)
 	this->atlas->addSheet(this->stage->sheet());
 	this->screen->loadAtlas(this->atlas);
 
-	loadBackground(this->stage, this->backgroud);
+	loadMap(this->stage, this->backgroud);
+
+	loadVisualElements();
 
 	loop();
 }
 
 void GamePlay::unload(void)
 {
+	free(this->player);
+	this->player = NULL;
+
+	for(std::vector<VisualElement *>::iterator iter=box_list.begin(); iter != box_list.end(); iter++)
+	{
+		free(*iter);
+	}
+	box_list.clear();
+
 	free(this->atlas);
 	this->atlas = NULL;
+
+	free(this->stage);
+	this->stage = NULL;
+
+	free(this->backgroud);
 }
 
-void GamePlay::loadBackground(GameStage *stage, VisualElement *background)
+void GamePlay::loadMap(GameStage *stage, VisualElement *background)
 {
 	int *map_arr = stage->map_arr();
 	SDL_Rect map_size = stage->map_size();
@@ -91,21 +108,53 @@ void GamePlay::loadBackground(GameStage *stage, VisualElement *background)
 	SDL_Texture *texture = SDL_CreateTexture(this->screen->renderer(),
 			SDL_PIXELFORMAT_RGBA8888,
 			SDL_TEXTUREACCESS_TARGET,
-			SCREEN_WIDTH,
-			SCREEN_HEIGHT);
+			map_size_pixel.w,
+			map_size_pixel.h);
 
-	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderTarget(this->screen->renderer(), texture);
 
 	for (int h = 0; h < map_size.h; h++)
 	{
 		for (int w = 0; w < map_size.w; w++)
 		{
-			int tile_id = map_arr[h*map_size.w + w];
+			int pos = h*map_size.w + w;
+			int tile_id = map_arr[pos];
+
+			// 0 = empty tile.
+			if (tile_id == 0)
+			{
+				continue;
+			}
+
+			// Look for player starting position.
+			if (tile_id == stage->player_id())
+			{
+				this->player = new VisualElement();
+				this->player->setPos({w*64, h*64});
+				this->player->addSprite(stage->player_sprite());
+				// Draw ground in the background instead of the player. The player will be drawn latter.
+				tile_id = stage->ground_id();
+			}
+			// Look for boxes starting position.
+			else if (tile_id == stage->box_id())
+			{
+				VisualElement *box = new VisualElement();
+				box->setPos({w*64, h*64});
+				box->addSprite(stage->box_sprite());
+				this->box_list.push_back(box);
+				// Draw ground in the background instead of the box. The box will be drawn latter.
+				tile_id = stage->ground_id();
+			}
+			// Look for targets starting position.
+			else if (tile_id == stage->target_id())
+			{
+				this->target_pos_list.push_back({h, h});
+			}
+
 			Spritesheet *sheet = this->atlas->getSheet(tile_id);
 			GameSprite *sprite = sheet->getSprite(tile_id);
+			SDL_Rect destn = {w * 64, h * 64, 64, 64};
 
-			SDL_Rect destn = {w * sprite->frame.w, w * sprite->frame.y, sprite->frame.w, sprite->frame.h};
 			SDL_RenderCopy(this->screen->renderer(), sheet->texture(), &sprite->frame, &destn);
 		}
 	}
@@ -120,6 +169,16 @@ void GamePlay::loadBackground(GameStage *stage, VisualElement *background)
 	this->screen->addElement(background);
 }
 
+void GamePlay::loadVisualElements(void)
+{
+	this->screen->addElement(this->player);
+
+	for(std::vector<VisualElement *>::iterator iter=box_list.begin(); iter != box_list.end(); iter++)
+	{
+		this->screen->addElement(*iter);
+	}
+}
+
 void GamePlay::loop(void)
 {
 	SDL_Event e;
@@ -130,19 +189,7 @@ void GamePlay::loop(void)
 		SDL_PollEvent( &e );
 		const Uint8 *state = SDL_GetKeyboardState(NULL);
 
-		if (state[SDL_SCANCODE_UP])
-		{
-		}
-		else if (state[SDL_SCANCODE_DOWN])
-		{
-		}
 
-		if (state[SDL_SCANCODE_LEFT])
-		{
-		}
-		else if (state[SDL_SCANCODE_RIGHT])
-		{
-		}
 
 		//User requests quit
 		if( e.type == SDL_QUIT )
@@ -154,3 +201,23 @@ void GamePlay::loop(void)
 		screen->update();
 	}
 }
+
+/*
+if (state[SDL_SCANCODE_UP])
+{
+	this->player->addPos({0, -64});
+}
+else if (state[SDL_SCANCODE_DOWN])
+{
+	this->player->addPos({0, 64});
+}
+
+if (state[SDL_SCANCODE_LEFT])
+{
+	this->player->addPos({-64, 0});
+}
+else if (state[SDL_SCANCODE_RIGHT])
+{
+	this->player->addPos({64, 0});
+}
+ */

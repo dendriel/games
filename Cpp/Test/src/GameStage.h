@@ -22,6 +22,13 @@ protected:
 	int *_map_arr;
 	SDL_Rect _map_size;
 	SDL_Rect _map_size_pixel;
+	int _player_id;
+	int _ground_id;
+	int _target_id;
+	int _box_id;
+	std::string _player_sprite;
+	std::string _target_sprite;
+	std::string _box_sprite;
 
 public:
 	GameStage();
@@ -50,6 +57,41 @@ public:
 	inline SDL_Rect map_size_pixel(void)
 	{
 		return _map_size_pixel;
+	}
+
+	inline int player_id(void)
+	{
+		return _player_id;
+	}
+
+	inline int ground_id(void)
+	{
+		return _ground_id;
+	}
+
+	inline int box_id(void)
+	{
+		return _box_id;
+	}
+
+	inline int target_id(void)
+	{
+		return _target_id;
+	}
+
+	inline std::string player_sprite(void)
+	{
+		return _player_sprite;
+	}
+
+	inline std::string target_sprite(void)
+	{
+		return _target_sprite;
+	}
+
+	inline std::string box_sprite(void)
+	{
+		return _box_sprite;
 	}
 };
 
