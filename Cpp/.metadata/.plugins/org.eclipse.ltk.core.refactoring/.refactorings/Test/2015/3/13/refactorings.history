@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;Test/src/Stage.h&apos; to &apos;GameStage.h&apos;" description="Rename resource &apos;Stage.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/Stage.h" name="GameStage.h" stamp="1427363516984" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;Test/src/Stage.cpp&apos; to &apos;GameStage.cpp&apos;" description="Rename resource &apos;Stage.cpp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/Stage.cpp" name="GameStage.cpp" stamp="1427363524171" updateReferences="true"/>
-</session>
