@@ -32,6 +32,7 @@ private:
 	VisualElement *player;
 	std::vector<VisualElement *> box_list;
 	std::vector<SDL_Point> target_pos_list;
+	std::vector<int> map_state;
 
 	/**
 	 * @brief Initialize everything that is necessary for the game.
@@ -49,6 +50,9 @@ private:
 
 	void unload(void);
 	void loop(void);
+	void movePlayer(SDL_Keycode dir);
+	void checkCanMove(SDL_Point *target);
+	VisualElement *getBoxAt(SDL_Point *pos);
 
 public:
 	GamePlay();

@@ -120,6 +120,8 @@ void GamePlay::loadMap(GameStage *stage, VisualElement *background)
 			int pos = h*map_size.w + w;
 			int tile_id = map_arr[pos];
 
+			map_state.push_back(tile_id);
+
 			// 0 = empty tile.
 			if (tile_id == 0)
 			{
@@ -129,17 +131,21 @@ void GamePlay::loadMap(GameStage *stage, VisualElement *background)
 			// Look for player starting position.
 			if (tile_id == stage->player_id())
 			{
+				// If this position is the player position, change the internal map state to ground.
+				map_state[map_state.size() - 1] = stage->ground_id();
+
 				this->player = new VisualElement();
 				this->player->setPos({w*64, h*64});
 				this->player->addSprite(stage->player_sprite());
 				// Draw ground in the background instead of the player. The player will be drawn latter.
-				tile_id = stage->ground_id();
+				tile_id = map_state[map_state.size() - 1];
 			}
 			// Look for boxes starting position.
 			else if (tile_id == stage->box_id())
 			{
 				VisualElement *box = new VisualElement();
 				box->setPos({w*64, h*64});
+				box->addSprite(stage->box_done_sprite());
 				box->addSprite(stage->box_sprite());
 				this->box_list.push_back(box);
 				// Draw ground in the background instead of the box. The box will be drawn latter.
@@ -182,27 +188,171 @@ void GamePlay::loadVisualElements(void)
 void GamePlay::loop(void)
 {
 	SDL_Event e;
+	/**
+	 * We want to allow the player to move one square per key press/release. So we will keep track
+	 * of the key status here. Can move only if the key was released.
+	 */
+	bool can_move = true;
 
 	// Handle events on queue
 	while( true )
 	{
 		SDL_PollEvent( &e );
-		const Uint8 *state = SDL_GetKeyboardState(NULL);
-
-
 
 		//User requests quit
 		if( e.type == SDL_QUIT )
 		{
+			cout << "Quit game!" << endl;
 			return;
 		}
+		//User presses a key
+		else if ( (e.type == SDL_KEYDOWN) && can_move)
+		{
+			movePlayer(e.key.keysym.sym);
+			can_move = false;
+		}
+		else if ( e.type == SDL_KEYUP)
+		{
+			can_move = true;
+		}
+
+		SDL_FlushEvent(SDL_KEYDOWN);
+		SDL_FlushEvent(SDL_KEYUP);
 
 		SDL_Delay(1000/60);
 		screen->update();
 	}
 }
 
+void GamePlay::movePlayer(SDL_Keycode dir)
+{
+	SDL_Point orientation;
+
+	switch(dir)
+	{
+		case SDLK_UP:
+			orientation = {0, -1};
+			break;
+
+		case SDLK_DOWN:
+			orientation = {0, 1};
+			break;
+
+		case SDLK_LEFT:
+			orientation = {-1, 0};
+			break;
+
+		case SDLK_RIGHT:
+			orientation = {1, 0};
+			break;
+
+		default:
+			return;
+	}
+
+	checkCanMove(&orientation);
+
+}
+
+// I don't like very much passing pointer to such small variable, but.. looks like we will save some
+// memory.
+void GamePlay::checkCanMove(SDL_Point *orientation)
+{
+	SDL_Point origin = {player->posX() / 64, player->posY() / 64};
+	SDL_Rect map_size = stage->map_size();
+
+	SDL_Point destn;
+
+	// Set target position in the matrix.
+	destn = {origin.x + orientation->x, origin.y + orientation->y};
+
+	// Translate matrix position to array position.
+	int pos = destn.y*map_size.w + destn.x;
+	int tile_id = map_state[pos];
+
+	cout << pos << " - move to tile id: " << tile_id  << endl;
+
+	// Move box.
+	if ( (tile_id == stage->box_id()) || (tile_id == stage->box_done_id()) )
+	{
+		SDL_Point destn_after = {origin.x + orientation->x*2, origin.y + orientation->y*2};
+		int pos_after =  destn_after.y*map_size.w + destn_after.x;
+		int tile_id_after = map_state[pos_after];
+
+		if ( (tile_id_after != stage->ground_id()) &&
+				(tile_id_after != stage->target_id()) )
+		{
+			// The box can,'t move if the next tile isn't ground or target.
+			return;
+		}
+
+		VisualElement *box = getBoxAt(&destn);
+		box->setPos({destn_after.x * 64, destn_after.y * 64});
+
+		// Next position is a target.
+		if (map_state[pos_after] == stage->target_id())
+		{
+			map_state[pos_after] = stage->box_done_id();
+			box->setSprite(stage->box_done_sprite());
+		}
+		else
+		{
+			map_state[pos_after] = stage->box_id();
+			// TODO: we will need to keep track of the box over/off target so we can check for victory.
+			box->setSprite(stage->box_sprite());
+		}
+
+		// Free the position.
+		if (map_state[pos] == stage->box_done_id())
+		{
+			map_state[pos] = stage->target_id();
+		}
+		else
+		{
+			map_state[pos] = stage->ground_id();
+		}
+
+		// Check if destn is a target!!
+
+		// Move the player.
+		player->setPos({destn.x * 64, destn.y * 64});
+		return;
+	}
+
+
+
+	if ( (tile_id == stage->ground_id()) || (tile_id == stage->target_id()) )
+	{
+		player->addPos({orientation->x*64, orientation->y*64});
+		return;
+	}
+}
+
+VisualElement *GamePlay::getBoxAt(SDL_Point *pos)
+{
+	SDL_Point pos_pixels = {pos->x * 64, pos->y *64};
+
+	for(std::vector<VisualElement *>::iterator iter=box_list.begin(); iter != box_list.end(); iter++)
+	{
+		VisualElement *box = *iter;
+
+		if ( (box->posX() == pos_pixels.x) && (box->posY() == pos_pixels.y) )
+		{
+			return box;
+		}
+	}
+
+	cout << "The box at position " << pos_pixels.x << "," << pos_pixels.y << " was not found!" << endl;
+	assert(0);
+	return NULL;
+}
+
 /*
+
+// SDL_PumpEvents() to filter events. Maybe useful in the code bellow.
+
+const Uint8 *state = SDL_GetKeyboardState(NULL);
+
 if (state[SDL_SCANCODE_UP])
 {
 	this->player->addPos({0, -64});

@@ -31,6 +31,21 @@ public:
 		_pos = pos;
 	}
 
+	inline SDL_Point pos(void)
+	{
+		return _pos;
+	}
+
+	inline int posX(void)
+	{
+		return _pos.x;
+	}
+
+	inline int posY(void)
+	{
+		return _pos.y;
+	}
+
 	inline void addPos(SDL_Point pos)
 	{
 		_pos.x += pos.x;
@@ -53,6 +68,11 @@ public:
 		_curr_sprite = sprite;
 	}
 
+	inline void setSprite(std::string sprite)
+	{
+		_curr_sprite = sprite;
+	}
+
 	inline void setTexture(SDL_Texture *texture)
 	{
 		_texture = texture;
@@ -63,14 +83,9 @@ public:
 		return _texture;
 	}
 
-	std::string curr_sprite(void)
+	inline std::string curr_sprite(void)
 	{
 		return _curr_sprite;
-	}
-
-	SDL_Point pos(void)
-	{
-		return _pos;
 	}
 };
 

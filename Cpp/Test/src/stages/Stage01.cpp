@@ -41,6 +41,7 @@ Stage01::Stage01(SDL_Renderer *renderer)
 	_sheet->add("wall.png",{0, 64, 64, 64},false,false,{0, 0, 0, 0},{64, 64},{0, 0}, 3);
 	_sheet->add("bug.png",{64, 64, 64, 64},false,false,{0, 0, 0, 0},{64, 64},{0, 0}, 4);
 	_sheet->add("box.png",{0, 128, 64, 64},false,false,{0, 0, 0, 0},{64, 64},{0, 0}, 5);
+	_sheet->add("box_done.png",{64, 128, 64, 64},false,false,{0, 0, 0, 0},{64, 64},{0, 0}, 6);
 
 	_map_arr = Map;
 	_map_size.w = 7;
@@ -51,10 +52,12 @@ Stage01::Stage01(SDL_Renderer *renderer)
 	_target_id = 2;
 	_player_id = 4;
 	_box_id = 5;
+	_box_done_id = 6;
 
 	_player_sprite = "bug.png";
 	_target_sprite = "target.png";
 	_box_sprite = "box.png";
+	_box_done_sprite = "box_done.png";
 
 }
 

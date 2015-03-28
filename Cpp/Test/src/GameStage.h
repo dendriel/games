@@ -26,9 +26,11 @@ protected:
 	int _ground_id;
 	int _target_id;
 	int _box_id;
+	int _box_done_id;
 	std::string _player_sprite;
 	std::string _target_sprite;
 	std::string _box_sprite;
+	std::string _box_done_sprite;
 
 public:
 	GameStage();
@@ -74,6 +76,11 @@ public:
 		return _box_id;
 	}
 
+	inline int box_done_id(void)
+	{
+		return _box_done_id;
+	}
+
 	inline int target_id(void)
 	{
 		return _target_id;
@@ -92,6 +99,11 @@ public:
 	inline std::string box_sprite(void)
 	{
 		return _box_sprite;
+	}
+
+	inline std::string box_done_sprite(void)
+	{
+		return _box_done_sprite;
 	}
 };
 
