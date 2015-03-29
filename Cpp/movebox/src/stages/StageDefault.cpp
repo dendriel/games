@@ -11,6 +11,11 @@
 
 StageDefault::StageDefault(SDL_Renderer *renderer)
 {
+	/**
+	 * For the created stages, i won't parse the text files data. It's is possible to get it from
+	 * json files, but we would need a parser for this.
+	 */
+
 	_sheet = new Spritesheet("images/movebox_128x192.png", renderer);
 	_sheet->add("tile.png",{0, 0, 64, 64},false,false,{0, 0, 0, 0},{64, 64},{0, 0}, 1);
 	_sheet->add("target.png",{64, 0, 64, 64},false,false,{0, 0, 0, 0},{64, 64},{0, 0}, 2);

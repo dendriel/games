@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="10" height="9" tilewidth="64" tileheight="64" nextobjectid="1">
+ <tileset firstgid="1" name="movebox_128x192" tilewidth="64" tileheight="64">
+  <image source="../../../../../../Desktop/Workspace/resources/charsets/movebox/movebox_128x192.png" width="128" height="192"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="10" height="9">
+  <data encoding="base64" compression="zlib">
+   eJyFjwEKACAIAzVb/39yRAlDVgkDlXlMs13xkZHPSWtu1DMrPTieVAgWiDHIx6zsIXY1Fy5sld/F7qVe/lVVbyaMGADC
+  </data>
+ </layer>
+</map>

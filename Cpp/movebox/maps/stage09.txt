@@ -1,0 +1,21 @@
+[header]
+width=8
+height=7
+tilewidth=64
+tileheight=64
+orientation=orthogonal
+
+[tilesets]
+tileset=../../../../../../Desktop/Workspace/resources/charsets/movebox/movebox_128x192.png,64,64,0,0
+
+[layer]
+type=Tile Layer 1
+data=
+0,0,3,3,3,3,3,0,
+3,3,3,1,1,4,3,0,
+3,1,1,5,2,1,3,3,
+3,1,1,2,5,2,1,3,
+3,3,3,1,6,5,1,3,
+0,0,3,1,1,1,3,3,
+0,0,3,3,3,3,3,0
+

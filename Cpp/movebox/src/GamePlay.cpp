@@ -52,6 +52,20 @@ void GamePlay::initResources(void)
 	num_of_target = 0;
 
 	// Fill stage list.
+	stage_list.push_back(new Stage17(screen->renderer()));
+	stage_list.push_back(new Stage16(screen->renderer()));
+	stage_list.push_back(new Stage15(screen->renderer()));
+	stage_list.push_back(new Stage14(screen->renderer()));
+	stage_list.push_back(new Stage13(screen->renderer()));
+	stage_list.push_back(new Stage12(screen->renderer()));
+	stage_list.push_back(new Stage11(screen->renderer()));
+	stage_list.push_back(new Stage10(screen->renderer()));
+	stage_list.push_back(new Stage09(screen->renderer()));
+	stage_list.push_back(new Stage08(screen->renderer()));
+	stage_list.push_back(new Stage07(screen->renderer()));
+	stage_list.push_back(new Stage06(screen->renderer()));
+	stage_list.push_back(new Stage05(screen->renderer()));
+	stage_list.push_back(new Stage04(screen->renderer()));
 	stage_list.push_back(new Stage03(screen->renderer()));
 	stage_list.push_back(new Stage02(screen->renderer()));
 	stage_list.push_back(new Stage01(screen->renderer()));

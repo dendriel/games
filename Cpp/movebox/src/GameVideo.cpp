@@ -114,9 +114,6 @@ void GameVideo::update(void)
 		}
 	}
 
-    //Render texture to screen
-    //SDL_RenderCopy( gRenderer, gTexture, NULL, NULL );
-
-    //Update screen
-    SDL_RenderPresent(_renderer);
+	//Update screen
+	SDL_RenderPresent(_renderer);
 }
