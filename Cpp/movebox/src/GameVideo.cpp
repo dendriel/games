@@ -50,7 +50,7 @@ void GameVideo::init(string label, unsigned int width, unsigned int height)
 		assert(0);
 	}
 
-	if (SDL_SetRenderDrawColor(_renderer, 0xff, 0xf, 0xf, 0xff) != 0)
+	if (SDL_SetRenderDrawColor(_renderer, 0x00, 0x00, 0x00, 0xff) != 0)
 	{
 		cout << "Failed to set renderer draw color." << endl;
 	}
@@ -104,7 +104,14 @@ void GameVideo::update(void)
 			source = &sprite->frame;
 		}
 
-		SDL_RenderCopy(_renderer, texture, source, &destn);
+		if (element->rotated() == true)
+		{
+			SDL_RenderCopyEx(_renderer, texture, source, &destn, element->rotation_angle_degrees(), NULL, SDL_FLIP_NONE);
+		}
+		else
+		{
+			SDL_RenderCopy(_renderer, texture, source, &destn);
+		}
 	}
 
     //Render texture to screen

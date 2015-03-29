@@ -13,7 +13,9 @@ VisualElement::VisualElement():
 _pos({0,0}),
 _size({0,0}),
 _curr_sprite(""),
-_texture(NULL)
+_texture(NULL),
+_rotated(false),
+_rotation_angle_degrees(0)
 {
 	// TODO Auto-generated constructor stub
 

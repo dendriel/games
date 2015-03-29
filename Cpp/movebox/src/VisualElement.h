@@ -13,6 +13,8 @@
 
 #include <SDL.h>
 
+#include "Utils.h"
+
 class VisualElement {
 private:
 
@@ -21,6 +23,8 @@ private:
 	std::string _curr_sprite;
 	std::vector<std::string> sprite_list;
 	SDL_Texture *_texture;	// If not NULL, the GameVideo will draw only this texture from the elem.
+	bool _rotated;
+	double _rotation_angle_degrees;
 
 public:
 	VisualElement();
@@ -86,6 +90,26 @@ public:
 	inline std::string curr_sprite(void)
 	{
 		return _curr_sprite;
+	}
+
+	inline void setRotated(bool value)
+	{
+		_rotated = value;
+	}
+
+	inline bool rotated(void)
+	{
+		return _rotated;
+	}
+
+	inline void setRotationAngleDegrees(int value)
+	{
+		_rotation_angle_degrees = value;
+	}
+
+	inline double rotation_angle_degrees(void)
+	{
+		return _rotation_angle_degrees;
 	}
 };
 

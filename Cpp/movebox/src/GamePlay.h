@@ -16,11 +16,12 @@
 #include "GameAtlas.h"
 #include "GameStage.h"
 #include "VisualElement.h"
+#include "Bug.h"
 
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 764;
+const int SCREEN_HEIGHT = 640;
 
 class GamePlay
 {
@@ -29,7 +30,7 @@ private:
 	GameAtlas *atlas;
 	GameStage *stage;
 	VisualElement *background;
-	VisualElement *player;
+	Bug *player;
 	std::vector<VisualElement *> box_list;
 	std::vector<int> map_state;
 	unsigned short int num_of_target;	// aux variable that will contain the size of target_pos_list.

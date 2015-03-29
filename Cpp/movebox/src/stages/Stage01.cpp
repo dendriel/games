@@ -7,11 +7,10 @@
 
 #include "Stage01.h"
 
-#include "Utils.h"
-
+#include <iostream>
 
 static int Map[] =  {0, 0, 3, 3, 3, 3, 3,
-					 3, 3, 3, 1, 6, 1, 3,
+					 3, 3, 3, 1, 2, 1, 3,
 					 3, 1, 1, 4, 5, 2, 3,
 					 3, 1, 5, 3, 1, 1, 3,
 					 3, 1, 1, 3, 3, 3, 3,

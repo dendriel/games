@@ -15,6 +15,7 @@
 class GameSprite
 {
 public:
+	// Original data.
 	std::string filename;
 	SDL_Rect frame;
 	bool rotated;

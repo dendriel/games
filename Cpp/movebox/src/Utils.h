@@ -8,9 +8,22 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <iostream>
+#include <iomanip>
 #include <string>
 
 #include "SDL.h"
+
+#define DEBUG
+
+#ifdef DEBUG
+#define PREFIX "[debug]"
+#define debug(_str) std::cout << PREFIX << " " << std::setw(25) << __FILE__ << ":" << std::setw(4) << __LINE__ << ": " << _str << std::endl
+#define assert_exit(_str) debug(_str << " (Asserting...)"); assert(0)
+#else
+#define debug(...)
+#define assert_exit(...) assert(0)
+#endif
 
 class Utils
 {

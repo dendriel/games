@@ -27,3 +27,5 @@ game
 # TeXlipse plugin
 .texlipse
 .metadata
+
+movebox\.settings\*

@@ -145,12 +145,9 @@ void GamePlay::loadMap()
 				// If this position is the player position, change the internal map state to ground.
 				map_state[map_state.size() - 1] = stage->ground_id();
 
-				this->player = new VisualElement();
-				this->player->setPos({w*64, h*64});
-				this->player->addSprite(stage->player_sprite());
+				player = new Bug(stage->player_sprite(), w*64, h*64);
 				// Draw ground in the background instead of the player. The player will be drawn latter.
 				tile_id = map_state[map_state.size() - 1];
-				cout << "Player pos: " << w*64 << "," << h*64 << endl;
 			}
 			// Look for boxes starting position.
 			else if ( (tile_id == stage->box_id()) || (tile_id == stage->box_done_id()) )
@@ -159,7 +156,7 @@ void GamePlay::loadMap()
 				box->setPos({w*64, h*64});
 				box->addSprite(stage->box_done_sprite());
 				box->addSprite(stage->box_sprite());
-				this->box_list.push_back(box);
+				box_list.push_back(box);
 
 				// If box is over a target.
 				if (tile_id == stage->box_done_id())
@@ -167,10 +164,14 @@ void GamePlay::loadMap()
 					box->setSprite(stage->box_done_sprite());
 					num_of_target++;
 					box_on_target++;
+					// Draw ground in the background instead of the box. The box will be drawn latter.
+					tile_id = stage->target_id();
 				}
-
-				// Draw ground in the background instead of the box. The box will be drawn latter.
-				tile_id = stage->ground_id();
+				else
+				{
+					// Draw ground in the background instead of the box. The box will be drawn latter.
+					tile_id = stage->ground_id();
+				}
 			}
 			// Look for targets starting position.
 			else if (tile_id == stage->target_id())
@@ -182,7 +183,7 @@ void GamePlay::loadMap()
 			GameSprite *sprite = sheet->getSprite(tile_id);
 			SDL_Rect destn = {w * 64, h * 64, 64, 64};
 
-			SDL_RenderCopy(this->screen->renderer(), sheet->texture(), &sprite->frame, &destn);
+			SDL_RenderCopy(screen->renderer(), sheet->texture(), &sprite->frame, &destn);
 		}
 	}
 
@@ -190,13 +191,12 @@ void GamePlay::loadMap()
 	background->setSize(map_size_pixel);
 
 	// Restore default rendering target.
-	SDL_SetRenderTarget(this->screen->renderer(), NULL);
+	SDL_SetRenderTarget(screen->renderer(), NULL);
 
 	// Load moveable Elements.
 	loadVisualElements();
 
 	// Can't start a level that is already finished.
-	cout << "status: " << box_on_target << "/" << num_of_target << endl;
 	assert(box_on_target < num_of_target);
 }
 
@@ -370,8 +370,6 @@ void GamePlay::checkMove(SDL_Point *orientation)
 	int pos = destn.y*map_size.w + destn.x;
 	int tile_id = map_state[pos];
 
-	cout << pos << " - move to tile id: " << tile_id  << endl;
-
 	// Move box.
 	if ( (tile_id == stage->box_id()) || (tile_id == stage->box_done_id()) )
 	{
@@ -414,14 +412,13 @@ void GamePlay::checkMove(SDL_Point *orientation)
 		}
 
 		// Move the player.
-		player->setPos({destn.x * 64, destn.y * 64});
+		//player->setPos({destn.x * 64, destn.y * 64});
+		player->addPos({orientation->x*64, orientation->y*64});
 	}
 	else if ( (tile_id == stage->ground_id()) || (tile_id == stage->target_id()) )
 	{
 		player->addPos({orientation->x*64, orientation->y*64});
 	}
-
-	cout << "status: " << box_on_target << "/" << num_of_target << endl;
 
 	return;
 }
