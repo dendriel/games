@@ -5,22 +5,17 @@
  *      Author: vitor.rozsa
  */
 
-#include <stdlib.h>
-
 // Internal libs.
 #include "GamePlay.h"
 
-#include "Stage01.h"
-
 
 using namespace std;
-
 
 int main(int argc, char *argv[])
 {
 	GamePlay *game = new GamePlay();
 
-	game->load();
+	game->mainLoop();
 
 	free(game);
 

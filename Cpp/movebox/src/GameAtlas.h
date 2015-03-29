@@ -24,6 +24,10 @@ public:
 	GameAtlas();
 	virtual ~GameAtlas();
 
+	/**
+	 * @brief Add a spriteeshet to the Atlas.
+	 * WARNING: The atlas will not free the spriteshets in order to avoid double free.
+	 */
 	void addSheet(Spritesheet *sheet);
 	/**
 	 * @brief Look for the sheet that owns the given sprite.

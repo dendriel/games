@@ -63,16 +63,6 @@ void GameVideo::finalize(void)
 	SDL_DestroyWindow(window);
 }
 
-void GameVideo::loadAtlas(GameAtlas *atlas)
-{
-	this->atlas = atlas;
-}
-
-void GameVideo::addElement(VisualElement *element)
-{
-	element_list.push_back(element);
-}
-
 void GameVideo::update(void)
 {
 	if (atlas == NULL)

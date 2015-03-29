@@ -49,12 +49,25 @@ public:
 	/**
 	 * @brief Load atlas in game video so it can search the visual element sprite information.
 	 */
-	void loadAtlas(GameAtlas *atlas);
+	inline void loadAtlas(GameAtlas *atlas)
+	{
+		this->atlas = atlas;
+	}
 
 	/**
 	 * @brief Add element into the drawing list.
 	 */
-	void addElement(VisualElement *element);
+	inline void addElement(VisualElement *element)
+	{
+		element_list.push_back(element);
+	}
+	/**
+	 * @brief Clear elements list.
+	 */
+	inline void removeAllElements(void)
+	{
+		element_list.clear();
+	}
 };
 
 #endif /* GAMEVIDEO_H_ */

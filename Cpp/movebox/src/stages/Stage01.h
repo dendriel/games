@@ -8,11 +8,11 @@
 #ifndef STAGE01_H_
 #define STAGE01_H_
 
-#include "GameStage.h"
+#include "StageDefault.h"
 
 #include "SDL.h"
 
-class Stage01: public GameStage
+class Stage01: public StageDefault
 {
 public:
 	Stage01(SDL_Renderer *renderer);

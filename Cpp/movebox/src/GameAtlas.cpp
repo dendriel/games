@@ -21,11 +21,6 @@ GameAtlas::GameAtlas()
 
 GameAtlas::~GameAtlas()
 {
-	for (vector<Spritesheet *>::iterator iter = sheet_list.begin(); iter != sheet_list.end(); iter++)
-	{
-		delete(*iter);
-	}
-
 	sheet_list.clear();
 }
 

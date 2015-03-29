@@ -15,7 +15,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
-#include "Stage01.h"
+#include "default_stages.h"
 
 using namespace std;
 
@@ -47,6 +47,14 @@ void GamePlay::initResources(void)
 
 	this->screen = new GameVideo();
 	this->screen->init("My Label", SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	box_on_target = 0;
+	num_of_target = 0;
+
+	// Fill stage list.
+	stage_list.push_back(new Stage03(screen->renderer()));
+	stage_list.push_back(new Stage02(screen->renderer()));
+	stage_list.push_back(new Stage01(screen->renderer()));
 }
 
 
@@ -61,45 +69,48 @@ void GamePlay::finalizeResources(void)
 	SDL_Quit();
 }
 
-void GamePlay::load(void)
+void GamePlay::loadStage()
 {
-	// Save stage reference.
-	this->stage = new Stage01(this->screen->renderer());
-
-	this->atlas = new GameAtlas();
+	atlas = new GameAtlas();
 
 	// Fill atlas.
-	this->atlas->addSheet(this->stage->sheet());
-	this->screen->loadAtlas(this->atlas);
+	atlas->addSheet(stage->sheet());
+	screen->loadAtlas(atlas);
 
-	loadMap(this->stage, this->backgroud);
+	background = new VisualElement();
 
-	loadVisualElements();
-
-	loop();
+	loadMap();
 }
 
-void GamePlay::unload(void)
+void GamePlay::unloadStage(void)
 {
-	free(this->player);
-	this->player = NULL;
+	// Clear screen.
+	screen->removeAllElements();
+	screen->loadAtlas(NULL);
 
 	for(std::vector<VisualElement *>::iterator iter=box_list.begin(); iter != box_list.end(); iter++)
 	{
-		free(*iter);
+		delete(*iter);
 	}
 	box_list.clear();
 
-	free(this->atlas);
-	this->atlas = NULL;
+	delete(player);
+	player = NULL;
 
-	free(this->stage);
-	this->stage = NULL;
+	delete(background);
+	background = NULL;
 
-	free(this->backgroud);
+	delete(atlas);
+	atlas = NULL;
+
+	num_of_target = 0;
+	box_on_target = 0;
+
+	// Clear current id map.
+	map_state.clear();
 }
 
-void GamePlay::loadMap(GameStage *stage, VisualElement *background)
+void GamePlay::loadMap()
 {
 	int *map_arr = stage->map_arr();
 	SDL_Rect map_size = stage->map_size();
@@ -139,22 +150,32 @@ void GamePlay::loadMap(GameStage *stage, VisualElement *background)
 				this->player->addSprite(stage->player_sprite());
 				// Draw ground in the background instead of the player. The player will be drawn latter.
 				tile_id = map_state[map_state.size() - 1];
+				cout << "Player pos: " << w*64 << "," << h*64 << endl;
 			}
 			// Look for boxes starting position.
-			else if (tile_id == stage->box_id())
+			else if ( (tile_id == stage->box_id()) || (tile_id == stage->box_done_id()) )
 			{
 				VisualElement *box = new VisualElement();
 				box->setPos({w*64, h*64});
 				box->addSprite(stage->box_done_sprite());
 				box->addSprite(stage->box_sprite());
 				this->box_list.push_back(box);
+
+				// If box is over a target.
+				if (tile_id == stage->box_done_id())
+				{
+					box->setSprite(stage->box_done_sprite());
+					num_of_target++;
+					box_on_target++;
+				}
+
 				// Draw ground in the background instead of the box. The box will be drawn latter.
 				tile_id = stage->ground_id();
 			}
 			// Look for targets starting position.
 			else if (tile_id == stage->target_id())
 			{
-				this->target_pos_list.push_back({h, h});
+				num_of_target++;
 			}
 
 			Spritesheet *sheet = this->atlas->getSheet(tile_id);
@@ -165,29 +186,92 @@ void GamePlay::loadMap(GameStage *stage, VisualElement *background)
 		}
 	}
 
-	background = new VisualElement();
 	background->setTexture(texture);
 	background->setSize(map_size_pixel);
 
 	// Restore default rendering target.
 	SDL_SetRenderTarget(this->screen->renderer(), NULL);
 
-	this->screen->addElement(background);
+	// Load moveable Elements.
+	loadVisualElements();
+
+	// Can't start a level that is already finished.
+	cout << "status: " << box_on_target << "/" << num_of_target << endl;
+	assert(box_on_target < num_of_target);
 }
 
 void GamePlay::loadVisualElements(void)
 {
-	this->screen->addElement(this->player);
+	screen->addElement(background);
+	screen->addElement(player);
 
 	for(std::vector<VisualElement *>::iterator iter=box_list.begin(); iter != box_list.end(); iter++)
 	{
-		this->screen->addElement(*iter);
+		screen->addElement(*iter);
 	}
 }
 
-void GamePlay::loop(void)
+void GamePlay::mainLoop(void)
+{
+	int state;
+
+	// Stage list must have at least one stage.
+	assert(stage_list.size() > 0);
+
+	stage = stage_list[stage_list.size() - 1];
+	stage_list.pop_back();
+
+	do
+	{
+		// Load stage data.
+		loadStage();
+
+		// Play stage.
+		state = stageLoop();
+
+		// Restart level.
+		if (state == 1)
+		{
+			// Unload stage data.
+			unloadStage();
+			// Continue with the same stage from beginning.
+			continue;
+		}
+		// Quit game.
+		else if (state == 2)
+		{
+			return;
+		}
+
+		// Unload stage data.
+		unloadStage();
+
+
+		// Remove stage.
+		delete(stage);
+		stage = NULL;
+
+		// Pop a new stage.
+		stage = stage_list[stage_list.size() - 1];
+		stage_list.pop_back();
+
+	} while (stage_list.size() > 0);
+
+}
+
+/**
+ * Return codes.
+ * 0 = stage cleared.
+ * 1 = replay stage.
+ * 2 = Player exited the game.
+ */
+int GamePlay::stageLoop(void)
 {
 	SDL_Event e;
+
+	SDL_FlushEvent(SDL_KEYDOWN);
+	SDL_FlushEvent(SDL_KEYUP);
+
 	/**
 	 * We want to allow the player to move one square per key press/release. So we will keep track
 	 * of the key status here. Can move only if the key was released.
@@ -203,13 +287,22 @@ void GamePlay::loop(void)
 		if( e.type == SDL_QUIT )
 		{
 			cout << "Quit game!" << endl;
-			return;
+			return 2;
 		}
 		//User presses a key
 		else if ( (e.type == SDL_KEYDOWN) && can_move)
 		{
-			movePlayer(e.key.keysym.sym);
-			can_move = false;
+			// Restart stage.
+			if (e.key.keysym.sym == SDLK_ESCAPE)
+			{
+				return 1;
+			}
+			// Move player.
+			else
+			{
+				movePlayer(e.key.keysym.sym);
+				can_move = false;
+			}
 		}
 		else if ( e.type == SDL_KEYUP)
 		{
@@ -218,10 +311,18 @@ void GamePlay::loop(void)
 
 		SDL_FlushEvent(SDL_KEYDOWN);
 		SDL_FlushEvent(SDL_KEYUP);
+		screen->update();
+
+		if (levelFinished() == true)
+		{
+			cout << "Victory!" << endl;
+			return 0;
+		}
 
 		SDL_Delay(1000/60);
-		screen->update();
 	}
+
+	return 0;
 }
 
 void GamePlay::movePlayer(SDL_Keycode dir)
@@ -250,13 +351,12 @@ void GamePlay::movePlayer(SDL_Keycode dir)
 			return;
 	}
 
-	checkCanMove(&orientation);
-
+	checkMove(&orientation);
 }
 
 // I don't like very much passing pointer to such small variable, but.. looks like we will save some
 // memory.
-void GamePlay::checkCanMove(SDL_Point *orientation)
+void GamePlay::checkMove(SDL_Point *orientation)
 {
 	SDL_Point origin = {player->posX() / 64, player->posY() / 64};
 	SDL_Rect map_size = stage->map_size();
@@ -294,11 +394,11 @@ void GamePlay::checkCanMove(SDL_Point *orientation)
 		{
 			map_state[pos_after] = stage->box_done_id();
 			box->setSprite(stage->box_done_sprite());
+			box_on_target++;
 		}
 		else
 		{
 			map_state[pos_after] = stage->box_id();
-			// TODO: we will need to keep track of the box over/off target so we can check for victory.
 			box->setSprite(stage->box_sprite());
 		}
 
@@ -306,26 +406,24 @@ void GamePlay::checkCanMove(SDL_Point *orientation)
 		if (map_state[pos] == stage->box_done_id())
 		{
 			map_state[pos] = stage->target_id();
+			box_on_target--;
 		}
 		else
 		{
 			map_state[pos] = stage->ground_id();
 		}
 
-		// Check if destn is a target!!
-
 		// Move the player.
 		player->setPos({destn.x * 64, destn.y * 64});
-		return;
 	}
-
-
-
-	if ( (tile_id == stage->ground_id()) || (tile_id == stage->target_id()) )
+	else if ( (tile_id == stage->ground_id()) || (tile_id == stage->target_id()) )
 	{
 		player->addPos({orientation->x*64, orientation->y*64});
-		return;
 	}
+
+	cout << "status: " << box_on_target << "/" << num_of_target << endl;
+
+	return;
 }
 
 VisualElement *GamePlay::getBoxAt(SDL_Point *pos)
@@ -346,28 +444,3 @@ VisualElement *GamePlay::getBoxAt(SDL_Point *pos)
 	assert(0);
 	return NULL;
 }
-
-/*
-
-// SDL_PumpEvents() to filter events. Maybe useful in the code bellow.
-
-const Uint8 *state = SDL_GetKeyboardState(NULL);
-
-if (state[SDL_SCANCODE_UP])
-{
-	this->player->addPos({0, -64});
-}
-else if (state[SDL_SCANCODE_DOWN])
-{
-	this->player->addPos({0, 64});
-}
-
-if (state[SDL_SCANCODE_LEFT])
-{
-	this->player->addPos({-64, 0});
-}
-else if (state[SDL_SCANCODE_RIGHT])
-{
-	this->player->addPos({64, 0});
-}
- */

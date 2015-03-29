@@ -16,6 +16,6 @@ _map_arr(NULL)
 }
 
 GameStage::~GameStage() {
-	// TODO Auto-generated destructor stub
+	_map_arr = NULL;
 }
 

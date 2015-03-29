@@ -9,26 +9,30 @@
 
 #include <iostream>
 
+#include "Utils.h"
+
 using namespace std;
 
-Spritesheet::Spritesheet():
-source_filename(""),
+Spritesheet::Spritesheet(std::string texture_name, SDL_Renderer *renderer):
 _texture(NULL)
 {
-	// TODO Auto-generated constructor stub
-
+	if ( (texture_name.size() > 0) && (renderer != NULL) )
+	{
+		setTexture(texture_name, renderer);
+	}
 }
 
 Spritesheet::~Spritesheet()
 {
 	for(map<string, GameSprite *>::iterator iter=sprite_list.begin(); iter != sprite_list.end(); iter++)
 	{
-		free(iter->second);
+		delete(iter->second);
 	}
 
 	sprite_list.clear();
 
-	free(_texture);
+	SDL_DestroyTexture(_texture);
+	_texture = NULL;
 }
 
 void Spritesheet::add(std::string filename,
@@ -64,7 +68,7 @@ GameSprite *Spritesheet::getSprite(const string name)
 }
 
 
-GameSprite *Spritesheet::getSprite(const int id)
+GameSprite *Spritesheet::getSprite(const unsigned int id)
 {
 	for(map<string, GameSprite *>::iterator iter=sprite_list.begin(); iter != sprite_list.end(); iter++)
 	{
@@ -80,9 +84,9 @@ GameSprite *Spritesheet::getSprite(const int id)
 
 }
 
-void Spritesheet::setTexture(SDL_Texture *texture)
+void Spritesheet::setTexture(string texture_name, SDL_Renderer *renderer)
 {
-	_texture = texture;
+	_texture = Utils::loadTexture(texture_name, renderer);
 }
 
 SDL_Texture *Spritesheet::texture(void)

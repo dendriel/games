@@ -19,8 +19,8 @@
 
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 
 class GamePlay
 {
@@ -28,11 +28,13 @@ private:
 	GameVideo *screen;
 	GameAtlas *atlas;
 	GameStage *stage;
-	VisualElement *backgroud;
+	VisualElement *background;
 	VisualElement *player;
 	std::vector<VisualElement *> box_list;
-	std::vector<SDL_Point> target_pos_list;
 	std::vector<int> map_state;
+	unsigned short int num_of_target;	// aux variable that will contain the size of target_pos_list.
+	unsigned short int box_on_target;
+	std::vector<GameStage *> stage_list;
 
 	/**
 	 * @brief Initialize everything that is necessary for the game.
@@ -42,23 +44,39 @@ private:
 	/**
 	 * @brief Load the background and look for the objects of the map (player, boxes and targets).
 	 */
-	void loadMap(GameStage *stage, VisualElement *background);
+	void loadMap();
 	/**
 	 * @brief Load the visual elements that were collected in the loadMap phase.
 	 */
 	void loadVisualElements(void);
+	/**
+	 * @brief In-game loop. Catch and dispatch player actions.
+	 */
+	int stageLoop(void);
 
-	void unload(void);
-	void loop(void);
+	/**
+	 * @brief Load stage data to play.
+	 */
+	void loadStage(void);
+	void unloadStage(void);
+
 	void movePlayer(SDL_Keycode dir);
-	void checkCanMove(SDL_Point *target);
+	void checkMove(SDL_Point *target);
 	VisualElement *getBoxAt(SDL_Point *pos);
+
+	inline bool levelFinished(void)
+	{
+		return (num_of_target == box_on_target);
+	}
 
 public:
 	GamePlay();
 	virtual ~GamePlay();
 
-	void load();
+	/**
+	 * @brief Controls the game loop (pop, load and play stages. Check for victory condition).
+	 */
+	void mainLoop(void);
 };
 
 #endif /* GAMEPLAY_H_ */

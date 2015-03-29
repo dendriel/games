@@ -11,16 +11,17 @@
 #include <string>
 #include <map>
 
+#include "SDL.h"
+
 #include "GameSprite.h"
 
 class Spritesheet
 {
-	std::string source_filename;
-	std::map <std::string, GameSprite *> sprite_list;
 	SDL_Texture *_texture;
+	std::map <std::string, GameSprite *> sprite_list;
 
 public:
-	Spritesheet();
+	Spritesheet(std::string texture_name="", SDL_Renderer *renderer=NULL);
 	virtual ~Spritesheet();
 
 	void add(std::string filename,
@@ -33,12 +34,21 @@ public:
 			unsigned int id); // id = numeric identification.
 
 	GameSprite *getSprite(const std::string name);
-	GameSprite *getSprite(const int id);
+	GameSprite *getSprite(const unsigned int id);
 
-	void setTexture(SDL_Texture *texture);
+	/**
+	 * @brief Load the spritesheet texture.
+	 */
+	void setTexture(std::string texture_name, SDL_Renderer *renderer);
 
+	/**
+	 * @brief Get texture.
+	 */
 	SDL_Texture *texture(void);
 
+	/**
+	 * @brief Print all sprites information. Debugging purpose.
+	 */
 	void dump(void);
 };
 
