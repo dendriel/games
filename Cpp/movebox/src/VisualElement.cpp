@@ -9,8 +9,8 @@
 
 using namespace std;
 
-VisualElement::VisualElement():
-_pos({0,0}),
+VisualElement::VisualElement(SDL_Point point):
+_pos(point),
 _size({0,0}),
 _curr_sprite(""),
 _texture(NULL),

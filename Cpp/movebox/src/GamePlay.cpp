@@ -50,6 +50,7 @@ void GamePlay::initResources(void)
 
 	box_on_target = 0;
 	num_of_target = 0;
+	stage_offset = {0, 0};
 
 	// Fill stage list.
 	stage_list.push_back(new Stage17(screen->renderer()));
@@ -122,6 +123,8 @@ void GamePlay::unloadStage(void)
 
 	// Clear current id map.
 	map_state.clear();
+
+	stage_offset = {0, 0};
 }
 
 void GamePlay::loadMap()
@@ -137,6 +140,17 @@ void GamePlay::loadMap()
 			map_size_pixel.h);
 
 	SDL_SetRenderTarget(this->screen->renderer(), texture);
+
+	// Calculate stage offset.
+	if ( SCREEN_WIDTH > map_size_pixel.w)
+	{
+		stage_offset.x = (SCREEN_WIDTH - map_size_pixel.w) / 2;
+	}
+
+	if (SCREEN_HEIGHT > map_size_pixel.h)
+	{
+		stage_offset.y = (SCREEN_HEIGHT - map_size_pixel.h) / 2;
+	}
 
 	for (int h = 0; h < map_size.h; h++)
 	{
@@ -159,15 +173,15 @@ void GamePlay::loadMap()
 				// If this position is the player position, change the internal map state to ground.
 				map_state[map_state.size() - 1] = stage->ground_id();
 
-				player = new Bug(stage->player_sprite(), w*64, h*64);
+				player = new Bug(stage->player_sprite(), w*64 + stage_offset.x, h*64 + stage_offset.y);
+				//player = new Bug(stage->player_sprite(), w*64, h*64);
 				// Draw ground in the background instead of the player. The player will be drawn latter.
 				tile_id = map_state[map_state.size() - 1];
 			}
 			// Look for boxes starting position.
 			else if ( (tile_id == stage->box_id()) || (tile_id == stage->box_done_id()) )
 			{
-				VisualElement *box = new VisualElement();
-				box->setPos({w*64, h*64});
+				VisualElement *box = new VisualElement({w*64 + stage_offset.x, h*64 + stage_offset.y});
 				box->addSprite(stage->box_done_sprite());
 				box->addSprite(stage->box_sprite());
 				box_list.push_back(box);
@@ -195,12 +209,13 @@ void GamePlay::loadMap()
 
 			Spritesheet *sheet = this->atlas->getSheet(tile_id);
 			GameSprite *sprite = sheet->getSprite(tile_id);
-			SDL_Rect destn = {w * 64, h * 64, 64, 64};
+			SDL_Rect destn = {w*64, h*64, 64, 64};
 
 			SDL_RenderCopy(screen->renderer(), sheet->texture(), &sprite->frame, &destn);
 		}
 	}
 
+	background->setPos(stage_offset);
 	background->setTexture(texture);
 	background->setSize(map_size_pixel);
 
@@ -372,7 +387,7 @@ void GamePlay::movePlayer(SDL_Keycode dir)
 // memory.
 void GamePlay::checkMove(SDL_Point *orientation)
 {
-	SDL_Point origin = {player->posX() / 64, player->posY() / 64};
+	SDL_Point origin = { (player->posX() - stage_offset.x) / 64, (player->posY() - stage_offset.y) / 64};
 	SDL_Rect map_size = stage->map_size();
 
 	SDL_Point destn;
@@ -383,6 +398,8 @@ void GamePlay::checkMove(SDL_Point *orientation)
 	// Translate matrix position to array position.
 	int pos = destn.y*map_size.w + destn.x;
 	int tile_id = map_state[pos];
+
+	//debug("Move to " << tile_id);
 
 	// Move box.
 	if ( (tile_id == stage->box_id()) || (tile_id == stage->box_done_id()) )
@@ -399,7 +416,7 @@ void GamePlay::checkMove(SDL_Point *orientation)
 		}
 
 		VisualElement *box = getBoxAt(&destn);
-		box->setPos({destn_after.x * 64, destn_after.y * 64});
+		box->addPos({orientation->x * 64, orientation->y * 64});
 
 		// Next position is a target.
 		if (map_state[pos_after] == stage->target_id())
@@ -439,7 +456,7 @@ void GamePlay::checkMove(SDL_Point *orientation)
 
 VisualElement *GamePlay::getBoxAt(SDL_Point *pos)
 {
-	SDL_Point pos_pixels = {pos->x * 64, pos->y *64};
+	SDL_Point pos_pixels = {pos->x * 64 + stage_offset.x, pos->y *64 + stage_offset.y};
 
 	for(std::vector<VisualElement *>::iterator iter=box_list.begin(); iter != box_list.end(); iter++)
 	{

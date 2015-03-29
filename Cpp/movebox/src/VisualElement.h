@@ -27,7 +27,7 @@ private:
 	double _rotation_angle_degrees;
 
 public:
-	VisualElement();
+	VisualElement(SDL_Point point={0,0});
 	virtual ~VisualElement();
 
 	inline void setPos(SDL_Point pos)

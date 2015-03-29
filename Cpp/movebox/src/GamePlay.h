@@ -36,6 +36,7 @@ private:
 	unsigned short int num_of_target;	// aux variable that will contain the size of target_pos_list.
 	unsigned short int box_on_target;
 	std::vector<GameStage *> stage_list;
+	SDL_Point stage_offset;
 
 	/**
 	 * @brief Initialize everything that is necessary for the game.
