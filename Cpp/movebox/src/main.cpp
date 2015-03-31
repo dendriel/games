@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
 	GamePlay *game = new GamePlay();
 
-	game->mainLoop();
+	game->play();
 
 	free(game);
 

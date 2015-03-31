@@ -15,6 +15,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
+#include "GameText.h"
 #include "default_stages.h"
 
 using namespace std;
@@ -34,15 +35,26 @@ void GamePlay::initResources(void)
 {
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
 	{
-		cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
-		assert(0);
+		assert_exit("SDL could not initialize! SDL_Error: " << SDL_GetError());
 	}
 
 
 	if( !(IMG_Init( IMG_INIT_PNG ) & IMG_INIT_PNG ) )
 	{
-		cout << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << endl;
-		assert(0);
+		assert_exit("SDL_image could not initialize! SDL_image Error: " << IMG_GetError());
+	}
+
+	//Initialize SDL_ttf
+	if( TTF_Init() == -1 )
+	{
+		assert_exit("SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError());
+	}
+
+	// Load global font.
+	text_font = TTF_OpenFont( "fonts/04B_30__.ttf", 28 );
+	if(text_font == NULL)
+	{
+		assert_exit("Failed to load lazy font! SDL_ttf Error: " << TTF_GetError());
 	}
 
 	this->screen = new GameVideo();
@@ -70,24 +82,169 @@ void GamePlay::initResources(void)
 	stage_list.push_back(new Stage03(screen->renderer()));
 	stage_list.push_back(new Stage02(screen->renderer()));
 	stage_list.push_back(new Stage01(screen->renderer()));
+
+	// Load UI images (manually =P).
+	atlas = new GameAtlas();
+	atlas->addTexture("images/game_title_561x101.png", screen->renderer());
+	atlas->addTexture("images/exit_game_blue_button_241x64.png", screen->renderer());
+	atlas->addTexture("images/start_game_blue_button_241x64.png", screen->renderer());
 }
 
 
 void GamePlay::finalizeResources(void)
 {
 	// Free resources.
-	free(atlas);
-	free(screen);
+	delete(atlas);
+	atlas = NULL;
+	delete(screen);
+	screen = NULL;
+
+	TTF_CloseFont(text_font);
+	text_font = NULL;
 
 	// Quit SDL subsystems.
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
 
+void GamePlay::play(void)
+{
+	SDL_Event e;
+
+	showMainMenu();
+
+	// Handle events on queue
+	while( true )
+	{
+		SDL_PollEvent( &e );
+
+		//User requests quit
+		if( e.type == SDL_QUIT )
+		{
+			debug("Quit game!");
+			return;
+		}
+		else if ( e.type == SDL_MOUSEBUTTONDOWN )
+		{
+			int x;
+			int y;
+			SDL_GetMouseState(&x, &y);
+
+			// Start game button.
+			if (Utils::checkInsideBounds(x, y, Utils::alignMiddle(0, SCREEN_WIDTH, 241), 300, 241, 64))
+			{
+				hideMainMenu();
+				mainLoop();
+				return;
+
+			}
+			else if (Utils::checkInsideBounds(x, y, Utils::alignMiddle(0, SCREEN_WIDTH, 241), 400, 241, 64))
+			{
+				debug("Quit game!");
+				return;
+			}
+
+		}
+
+		screen->update();
+		SDL_Delay(SLEEP_BETWEEN_UPDATE);
+	}
+
+	hideMainMenu();
+}
+
+void GamePlay::showMainMenu(void)
+{
+	srand(int(screen));
+	int bg = rand() % stage_list.size();
+	stage = stage_list[bg];
+
+	loadStage();
+
+	VisualElement *title = new VisualElement({Utils::alignMiddle(0, SCREEN_WIDTH, 561), 50}, "images/game_title_561x101.png");
+	title->setSize({0, 0, 561, 101});
+
+	VisualElement *start_game = new VisualElement({Utils::alignMiddle(0, SCREEN_WIDTH, 241), 300}, "images/start_game_blue_button_241x64.png");
+	start_game->setSize({0, 0, 241, 64});
+
+	VisualElement  *exit_button = new VisualElement({Utils::alignMiddle(0, SCREEN_WIDTH, 241), 400}, "images/exit_game_blue_button_241x64.png");
+	exit_button->setSize({0, 0, 241, 64});
+
+	screen->addElement(title);
+	screen->addElement(start_game);
+	screen->addElement(exit_button);
+
+	screen->update();
+}
+
+void GamePlay::hideMainMenu(void)
+{
+	unloadStage();
+}
+
+void GamePlay::mainLoop(void)
+{
+	unsigned int stage_counter = 1;
+	bool stage_restarted = false;
+	int state;
+
+	// Stage list must have at least one stage.
+	assert(stage_list.size() > 0);
+
+	stage = stage_list[stage_list.size() - 1];
+	stage_list.pop_back();
+
+	do
+	{
+		// Load stage data.
+		loadStage();
+
+		// Display stage introduction if just entered here..
+		if (stage_restarted != true)
+		{
+			showStageIntro(stage_counter);
+		}
+
+		// Play stage.
+		state = stageLoop();
+
+		// Restart level.
+		if (state == 1)
+		{
+			// Unload stage data.
+			unloadStage();
+			// Set stage restarted to avoid showing intro message again.
+			stage_restarted = true;
+			// Continue with the same stage from beginning.
+			continue;
+		}
+		// Quit game.
+		else if (state == 2)
+		{
+			return;
+		}
+
+		// Unload stage data.
+		unloadStage();
+
+
+		// Remove stage.
+		delete(stage);
+		stage = NULL;
+
+		// Pop a new stage.
+		stage = stage_list[stage_list.size() - 1];
+		stage_list.pop_back();
+		stage_counter++;
+		stage_restarted = false;
+
+	} while (stage_list.size() > 0);
+
+}
+
 void GamePlay::loadStage()
 {
-	atlas = new GameAtlas();
-
 	// Fill atlas.
 	atlas->addSheet(stage->sheet());
 	screen->loadAtlas(atlas);
@@ -115,8 +272,7 @@ void GamePlay::unloadStage(void)
 	delete(background);
 	background = NULL;
 
-	delete(atlas);
-	atlas = NULL;
+	atlas->clearAllSheets();
 
 	num_of_target = 0;
 	box_on_target = 0;
@@ -125,6 +281,21 @@ void GamePlay::unloadStage(void)
 	map_state.clear();
 
 	stage_offset = {0, 0};
+
+	screen->update();
+}
+
+void GamePlay::showStageIntro(const unsigned int stage)
+{
+	GameText trans_msg;
+	std::string text = "Stage ";// + stage;
+
+	trans_msg.setText(text_font, text, {0xff, 0xff, 0xff}, screen->renderer());
+	trans_msg.setPos({Utils::alignMiddle(0, SCREEN_WIDTH, trans_msg.size().w), SCREEN_HEIGHT/2 - trans_msg.size().h});
+	screen->addElement(&trans_msg);
+	screen->update();
+	SDL_Delay(2000);
+	screen->removeElement(&trans_msg);
 }
 
 void GamePlay::loadMap()
@@ -240,54 +411,6 @@ void GamePlay::loadVisualElements(void)
 	}
 }
 
-void GamePlay::mainLoop(void)
-{
-	int state;
-
-	// Stage list must have at least one stage.
-	assert(stage_list.size() > 0);
-
-	stage = stage_list[stage_list.size() - 1];
-	stage_list.pop_back();
-
-	do
-	{
-		// Load stage data.
-		loadStage();
-
-		// Play stage.
-		state = stageLoop();
-
-		// Restart level.
-		if (state == 1)
-		{
-			// Unload stage data.
-			unloadStage();
-			// Continue with the same stage from beginning.
-			continue;
-		}
-		// Quit game.
-		else if (state == 2)
-		{
-			return;
-		}
-
-		// Unload stage data.
-		unloadStage();
-
-
-		// Remove stage.
-		delete(stage);
-		stage = NULL;
-
-		// Pop a new stage.
-		stage = stage_list[stage_list.size() - 1];
-		stage_list.pop_back();
-
-	} while (stage_list.size() > 0);
-
-}
-
 /**
  * Return codes.
  * 0 = stage cleared.
@@ -348,7 +471,7 @@ int GamePlay::stageLoop(void)
 			return 0;
 		}
 
-		SDL_Delay(1000/60);
+		SDL_Delay(SLEEP_BETWEEN_UPDATE);
 	}
 
 	return 0;

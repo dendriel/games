@@ -61,6 +61,20 @@ public:
 	{
 		element_list.push_back(element);
 	}
+
+	inline void removeElement(VisualElement *element)
+	{
+		for (std::vector<VisualElement *>::iterator iter = element_list.begin(); iter != element_list.end(); iter++)
+		{
+			if (*iter == element)
+			{
+				element_list.erase(iter);
+				return;
+			}
+		}
+		assert_exit("VisualElement was not found in the list.");
+	}
+
 	/**
 	 * @brief Clear elements list.
 	 */

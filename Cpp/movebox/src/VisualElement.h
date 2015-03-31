@@ -27,7 +27,7 @@ private:
 	double _rotation_angle_degrees;
 
 public:
-	VisualElement(SDL_Point point={0,0});
+	VisualElement(SDL_Point point={0,0}, std::string curr_sprite="");
 	virtual ~VisualElement();
 
 	inline void setPos(SDL_Point pos)

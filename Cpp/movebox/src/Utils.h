@@ -11,6 +11,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <assert.h>
 
 #include "SDL.h"
 
@@ -32,6 +33,10 @@ public:
 	virtual ~Utils();
 
 	static SDL_Texture* loadTexture(std::string path, SDL_Renderer *renderer);
+
+	static int alignMiddle(const int obj1_px, const int obj1_w, const int obj2_w);
+
+	static bool checkInsideBounds(const int px, const int py, const int ax, const int ay, const int aw, const int ah);
 };
 
 #endif /* UTILS_H_ */

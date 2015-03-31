@@ -11,6 +11,9 @@
 
 #include <assert.h>
 
+#include "Utils.h"
+
+
 using namespace std;
 
 GameAtlas::GameAtlas()
@@ -21,12 +24,23 @@ GameAtlas::GameAtlas()
 
 GameAtlas::~GameAtlas()
 {
-	sheet_list.clear();
+	clearAllSheets();
+
+	for (auto const& p : texture_list)
+	{
+		SDL_DestroyTexture(p.second);
+	}
+	texture_list.clear();
 }
 
 void GameAtlas::addSheet(Spritesheet *sheet)
 {
 	sheet_list.push_back(sheet);
+}
+
+void GameAtlas::clearAllSheets(void)
+{
+	sheet_list.clear();
 }
 
 Spritesheet *GameAtlas::getSheet(const string name)
@@ -43,9 +57,6 @@ Spritesheet *GameAtlas::getSheet(const string name)
 			return sheet;
 		}
 	}
-
-	cout << "The requested sprite's sheet \"" << name << "\" doesn't exist!" << endl;
-	assert(0);
 
 	return NULL;
 }
@@ -65,9 +76,24 @@ Spritesheet *GameAtlas::getSheet(const int id)
 		}
 	}
 
-	cout << "The requested sprite's sheet \"" << id << "\" doesn't exist!" << id;
-	assert(0);
-
 	return NULL;
+}
 
+void GameAtlas::addTexture(const std::string name, SDL_Renderer *renderer)
+{
+	SDL_Texture *texture = Utils::loadTexture(name, renderer);
+	texture_list[name] = texture;
+}
+
+/**
+ * @brief Use a texture from the atlas.
+ */
+SDL_Texture *GameAtlas::getTexture(const std::string name)
+{
+	if (texture_list.find(name) == texture_list.end())
+	{
+		return NULL;
+	}
+
+	return texture_list[name];
 }

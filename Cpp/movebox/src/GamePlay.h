@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "SDL.h"
+#include "SDL_ttf.h"
 
 #include "GameVideo.h"
 #include "GameAtlas.h"
@@ -20,8 +21,10 @@
 
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 764;
-const int SCREEN_HEIGHT = 640;
+#define SCREEN_WIDTH 764
+#define SCREEN_HEIGHT 640
+#define GAME_FRAMERATE 60
+#define SLEEP_BETWEEN_UPDATE 1000/GAME_FRAMERATE
 
 class GamePlay
 {
@@ -37,12 +40,25 @@ private:
 	unsigned short int box_on_target;
 	std::vector<GameStage *> stage_list;
 	SDL_Point stage_offset;
+	TTF_Font *text_font;
 
 	/**
 	 * @brief Initialize everything that is necessary for the game.
 	 */
 	void initResources(void);
 	void finalizeResources(void);
+
+	/**
+	 * @brief Show main menu.
+	 */
+	void showMainMenu(void);
+	void hideMainMenu(void);
+
+	/**
+	 * @brief Controls the game loop (pop, load and play stages. Check for victory condition).
+	 */
+	void mainLoop(void);
+
 	/**
 	 * @brief Load the background and look for the objects of the map (player, boxes and targets).
 	 */
@@ -55,6 +71,8 @@ private:
 	 * @brief In-game loop. Catch and dispatch player actions.
 	 */
 	int stageLoop(void);
+
+	void showStageIntro(const unsigned int stage);
 
 	/**
 	 * @brief Load stage data to play.
@@ -76,9 +94,9 @@ public:
 	virtual ~GamePlay();
 
 	/**
-	 * @brief Controls the game loop (pop, load and play stages. Check for victory condition).
+	 * @brief Starts the main engine.
 	 */
-	void mainLoop(void);
+	void play(void);
 };
 
 #endif /* GAMEPLAY_H_ */

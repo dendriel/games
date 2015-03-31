@@ -12,6 +12,7 @@
 #include <assert.h>
 
 #include "SDL_image.h"
+#include "SDL_ttf.h"
 
 using namespace std;
 
@@ -51,4 +52,24 @@ SDL_Texture* Utils::loadTexture(std::string path, SDL_Renderer *renderer)
 	SDL_FreeSurface(surface);
 
 	return texture;
+}
+
+int Utils::alignMiddle(const int obj1_px, const int obj1_w, const int obj2_w)
+{
+	int ref_middle = obj1_px + ( (obj1_w / 2) + (obj1_w % 2) );
+	return (ref_middle - ( (obj2_w / 2) + (obj2_w % 2) ));
+}
+
+bool Utils::checkInsideBounds(const int px, const int py, const int ax, const int ay, const int aw, const int ah)
+{
+	if ( (px < ax) || (px >= (ax + aw) ) )
+	{
+			return false;
+	}
+	else if ( (py < ay) || (py >= (ay + ah) ) )
+	{
+			return false;
+	}
+
+	return true;
 }

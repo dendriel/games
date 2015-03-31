@@ -65,12 +65,6 @@ void GameVideo::finalize(void)
 
 void GameVideo::update(void)
 {
-	if (atlas == NULL)
-	{
-		cout << "No atlas was loaded into game video." << endl;
-		assert(0);
-	}
-
 	SDL_RenderClear(_renderer);
 
 	for (vector<VisualElement *>::iterator iter = element_list.begin(); iter != element_list.end(); ++iter)
@@ -82,15 +76,22 @@ void GameVideo::update(void)
 		SDL_Rect *source = NULL;
 		SDL_Rect destn;
 
+		// Texture inside Visual Element?
 		if (element->texture() != NULL)
 		{
 			texture = element->texture();
 			source = NULL;
 			destn = {element->pos().x, element->pos().y, element->size().w, element->size().h};
 		}
-		else
+		// Texture loaded as texture in atlas?
+		else if ( (texture = atlas->getTexture(element->curr_sprite())) != NULL)
 		{
-			sheet = atlas->getSheet(element->curr_sprite());
+			source = NULL;
+			destn = {element->pos().x, element->pos().y, element->size().w, element->size().h};
+		}
+		// Texture in Atlas spritesheet?
+		else if ((sheet = atlas->getSheet(element->curr_sprite())) != NULL)
+		{
 			if (sheet == NULL)
 			{
 				cout << "The sheet for the sprite \"" << element->curr_sprite() << "\" wasn't found in the atlas." << endl;
@@ -103,6 +104,7 @@ void GameVideo::update(void)
 			destn = {element->pos().x, element->pos().y, sprite->frame.w, sprite->frame.h};
 			source = &sprite->frame;
 		}
+
 
 		if (element->rotated() == true)
 		{
