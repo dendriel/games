@@ -22,6 +22,7 @@ class GameVideo
 private:
 	SDL_Window *window;
 	SDL_Renderer *_renderer;
+	SDL_Surface *icon;
 	std::vector<VisualElement *> element_list;
 	GameAtlas *atlas;
 
@@ -81,6 +82,20 @@ public:
 	inline void removeAllElements(void)
 	{
 		element_list.clear();
+	}
+
+	/**
+	 * @brief Set window title.
+	 */
+	inline void setTitle(std::string new_title)
+	{
+		SDL_SetWindowTitle(window, new_title.c_str());
+	}
+
+	inline void setIcon(std::string image)
+	{
+		icon = Utils::loadSurface(image);
+		SDL_SetWindowIcon(window, icon);
 	}
 };
 

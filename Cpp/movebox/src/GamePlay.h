@@ -25,6 +25,11 @@
 #define SCREEN_HEIGHT 640
 #define GAME_FRAMERATE 60
 #define SLEEP_BETWEEN_UPDATE 1000/GAME_FRAMERATE
+#define GAME_TITLE "MoveBox"
+#define GAMEOVER_MSG_1 "Congratulations!"
+#define GAMEOVER_MSG_2 "Game Over!"
+#define GAMEOVER_DELAY_MS 5000
+#define CHANGE_STAGE_DELAY_MS 2000
 
 class GamePlay
 {
@@ -57,7 +62,7 @@ private:
 	/**
 	 * @brief Controls the game loop (pop, load and play stages. Check for victory condition).
 	 */
-	void mainLoop(void);
+	int mainLoop(void);
 
 	/**
 	 * @brief Load the background and look for the objects of the map (player, boxes and targets).
@@ -72,7 +77,13 @@ private:
 	 */
 	int stageLoop(void);
 
-	void showStageIntro(const unsigned int stage);
+	void showStageIntro(const unsigned int stage, const unsigned int stage_max);
+	void showGameOver(void);
+
+	/**
+	 * @brief Fill stages list.
+	 */
+	void createStageList(void);
 
 	/**
 	 * @brief Load stage data to play.

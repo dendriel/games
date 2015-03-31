@@ -26,19 +26,23 @@ Utils::~Utils() {
 	// TODO Auto-generated destructor stub
 }
 
+SDL_Surface *Utils::loadSurface(std::string path)
+{
+	SDL_Surface *surface = IMG_Load(path.c_str());
+	if( surface == NULL )
+	{
+		assert_exit("Unable to load image " << path.c_str() << "! SDL_image Error: " << IMG_GetError());
+	}
+
+	return surface;
+}
+
 SDL_Texture* Utils::loadTexture(std::string path, SDL_Renderer *renderer)
 {
 	//The final texture
 	SDL_Texture *texture = NULL;
-
 	//Load image at specified path
-	SDL_Surface *surface = IMG_Load(path.c_str());
-	if( surface == NULL )
-	{
-		cout << "Unable to load image " << path.c_str() << "! SDL_image Error: " << IMG_GetError() << endl;
-		assert(0);
-	}
-
+	SDL_Surface *surface = loadSurface(path);
 
 	//Create texture from surface pixels
 	texture = SDL_CreateTextureFromSurface(renderer, surface);

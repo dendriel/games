@@ -15,7 +15,8 @@ using namespace std;
 GameVideo::GameVideo():
 window(NULL),
 _renderer(NULL),
-atlas(NULL)
+atlas(NULL),
+icon(NULL)
 {
 	// TODO Auto-generated constructor stub
 
@@ -23,7 +24,20 @@ atlas(NULL)
 
 GameVideo::~GameVideo()
 {
-	// TODO Auto-generated destructor stub
+	if (window != NULL)
+	{
+		SDL_DestroyWindow(window);
+	}
+
+	if (_renderer != NULL)
+	{
+		SDL_DestroyRenderer(_renderer);
+	}
+
+	if (icon != NULL)
+	{
+		SDL_FreeSurface(icon);
+	}
 }
 
 void GameVideo::init(string label, unsigned int width, unsigned int height)

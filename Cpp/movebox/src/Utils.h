@@ -32,6 +32,8 @@ public:
 	Utils();
 	virtual ~Utils();
 
+	static SDL_Surface *loadSurface(std::string path);
+
 	static SDL_Texture* loadTexture(std::string path, SDL_Renderer *renderer);
 
 	static int alignMiddle(const int obj1_px, const int obj1_w, const int obj2_w);

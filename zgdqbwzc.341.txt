@@ -1,0 +1,23 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   movebox/Release/movebox.exe
+#	deleted:    movebox/SDL2.dll
+#	deleted:    movebox/SDL2_image.dll
+#	deleted:    movebox/SDL2_ttf.dll
+#	new file:   movebox/images/bug_icon.png
+#	deleted:    movebox/libfreetype-6.dll
+#	deleted:    movebox/libpng16-16.dll
+#	modified:   movebox/src/GamePlay.cpp
+#	modified:   movebox/src/GamePlay.h
+#	modified:   movebox/src/GameVideo.cpp
+#	modified:   movebox/src/GameVideo.h
+#	modified:   movebox/src/Utils.cpp
+#	modified:   movebox/src/Utils.h
+#	deleted:    movebox/zlib1.dll
+#
+

@@ -8,6 +8,7 @@
 #include "GamePlay.h"
 
 #include <iostream>
+#include <sstream>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -51,37 +52,21 @@ void GamePlay::initResources(void)
 	}
 
 	// Load global font.
-	text_font = TTF_OpenFont( "fonts/04B_30__.ttf", 28 );
+	text_font = TTF_OpenFont( "fonts/04B_30__.ttf", 40);
 	if(text_font == NULL)
 	{
 		assert_exit("Failed to load lazy font! SDL_ttf Error: " << TTF_GetError());
 	}
 
-	this->screen = new GameVideo();
-	this->screen->init("My Label", SCREEN_WIDTH, SCREEN_HEIGHT);
+	screen = new GameVideo();
+	screen->init(GAME_TITLE, SCREEN_WIDTH, SCREEN_HEIGHT);
+	screen->setIcon("images/bug_icon.png");
 
 	box_on_target = 0;
 	num_of_target = 0;
 	stage_offset = {0, 0};
 
-	// Fill stage list.
-	stage_list.push_back(new Stage17(screen->renderer()));
-	stage_list.push_back(new Stage16(screen->renderer()));
-	stage_list.push_back(new Stage15(screen->renderer()));
-	stage_list.push_back(new Stage14(screen->renderer()));
-	stage_list.push_back(new Stage13(screen->renderer()));
-	stage_list.push_back(new Stage12(screen->renderer()));
-	stage_list.push_back(new Stage11(screen->renderer()));
-	stage_list.push_back(new Stage10(screen->renderer()));
-	stage_list.push_back(new Stage09(screen->renderer()));
-	stage_list.push_back(new Stage08(screen->renderer()));
-	stage_list.push_back(new Stage07(screen->renderer()));
-	stage_list.push_back(new Stage06(screen->renderer()));
-	stage_list.push_back(new Stage05(screen->renderer()));
-	stage_list.push_back(new Stage04(screen->renderer()));
-	stage_list.push_back(new Stage03(screen->renderer()));
-	stage_list.push_back(new Stage02(screen->renderer()));
-	stage_list.push_back(new Stage01(screen->renderer()));
+	createStageList();
 
 	// Load UI images (manually =P).
 	atlas = new GameAtlas();
@@ -106,6 +91,28 @@ void GamePlay::finalizeResources(void)
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+}
+
+void GamePlay::createStageList(void)
+{
+	// Fill stage list.
+	stage_list.push_back(new Stage17(screen->renderer()));
+	stage_list.push_back(new Stage16(screen->renderer()));
+	stage_list.push_back(new Stage15(screen->renderer()));
+	stage_list.push_back(new Stage14(screen->renderer()));
+	stage_list.push_back(new Stage13(screen->renderer()));
+	stage_list.push_back(new Stage12(screen->renderer()));
+	stage_list.push_back(new Stage11(screen->renderer()));
+	stage_list.push_back(new Stage10(screen->renderer()));
+	stage_list.push_back(new Stage09(screen->renderer()));
+	stage_list.push_back(new Stage08(screen->renderer()));
+	stage_list.push_back(new Stage07(screen->renderer()));
+	stage_list.push_back(new Stage06(screen->renderer()));
+	stage_list.push_back(new Stage05(screen->renderer()));
+	stage_list.push_back(new Stage04(screen->renderer()));
+	stage_list.push_back(new Stage03(screen->renderer()));
+	stage_list.push_back(new Stage02(screen->renderer()));
+	stage_list.push_back(new Stage01(screen->renderer()));
 }
 
 void GamePlay::play(void)
@@ -135,9 +142,12 @@ void GamePlay::play(void)
 			if (Utils::checkInsideBounds(x, y, Utils::alignMiddle(0, SCREEN_WIDTH, 241), 300, 241, 64))
 			{
 				hideMainMenu();
-				mainLoop();
-				return;
-
+				// Check if player quit.
+				if (mainLoop() == 2)
+				{
+					return;
+				}
+				showMainMenu();
 			}
 			else if (Utils::checkInsideBounds(x, y, Utils::alignMiddle(0, SCREEN_WIDTH, 241), 400, 241, 64))
 			{
@@ -183,8 +193,48 @@ void GamePlay::hideMainMenu(void)
 	unloadStage();
 }
 
-void GamePlay::mainLoop(void)
+void GamePlay::showStageIntro(const unsigned int stage, const unsigned int stage_max)
 {
+	GameText trans_msg;
+	ostringstream sstream;
+	sstream << "Stage " << stage;
+	string text = sstream.str();
+
+	trans_msg.setText(text_font, text, {0xff, 0xff, 0xff}, screen->renderer());
+	trans_msg.setPos({Utils::alignMiddle(0, SCREEN_WIDTH, trans_msg.size().w), SCREEN_HEIGHT/2 - trans_msg.size().h});
+	screen->addElement(&trans_msg);
+
+	sstream.str("");
+	sstream << GAME_TITLE << " - " << text << "/" << stage_max;
+	screen->setTitle(sstream.str());
+	screen->update();
+	SDL_Delay(CHANGE_STAGE_DELAY_MS);
+	screen->removeElement(&trans_msg);
+}
+
+void GamePlay::showGameOver(void)
+{
+	GameText gameover_msg;
+	GameText gameover_msg2;
+
+	gameover_msg.setText(text_font, GAMEOVER_MSG_1, {0xff, 0xff, 0xff}, screen->renderer());
+	gameover_msg.setPos({Utils::alignMiddle(0, SCREEN_WIDTH, gameover_msg.size().w), SCREEN_HEIGHT/2 - gameover_msg.size().h});
+	screen->addElement(&gameover_msg);
+
+
+	gameover_msg2.setText(text_font, GAMEOVER_MSG_2, {0xff, 0xff, 0xff}, screen->renderer());
+	gameover_msg2.setPos({Utils::alignMiddle(0, SCREEN_WIDTH, gameover_msg2.size().w), SCREEN_HEIGHT/2 + gameover_msg.size().h});
+	screen->addElement(&gameover_msg2);
+
+	screen->update();
+	SDL_Delay(GAMEOVER_DELAY_MS);
+	screen->removeElement(&gameover_msg);
+	screen->removeElement(&gameover_msg2);
+}
+
+int GamePlay::mainLoop(void)
+{
+	const unsigned int stage_max = stage_list.size();
 	unsigned int stage_counter = 1;
 	bool stage_restarted = false;
 	int state;
@@ -203,7 +253,7 @@ void GamePlay::mainLoop(void)
 		// Display stage introduction if just entered here..
 		if (stage_restarted != true)
 		{
-			showStageIntro(stage_counter);
+			showStageIntro(stage_counter, stage_max);
 		}
 
 		// Play stage.
@@ -222,25 +272,40 @@ void GamePlay::mainLoop(void)
 		// Quit game.
 		else if (state == 2)
 		{
-			return;
+			return 2;
+		}
+
+		if (stage_list.size() == 0)
+		{
+			// Show game over before losing the stage background.
+			showGameOver();
 		}
 
 		// Unload stage data.
 		unloadStage();
-
 
 		// Remove stage.
 		delete(stage);
 		stage = NULL;
 
 		// Pop a new stage.
-		stage = stage_list[stage_list.size() - 1];
-		stage_list.pop_back();
-		stage_counter++;
-		stage_restarted = false;
+		if (stage_list.size() > 0)
+		{
+			stage = stage_list[stage_list.size() - 1];
+			stage_list.pop_back();
+			stage_counter++;
+			stage_restarted = false;
+		}
+		else
+		{
+			stage = NULL;
+		}
 
-	} while (stage_list.size() > 0);
+	} while (stage != NULL);
 
+	createStageList();
+
+	return 0;
 }
 
 void GamePlay::loadStage()
@@ -283,19 +348,6 @@ void GamePlay::unloadStage(void)
 	stage_offset = {0, 0};
 
 	screen->update();
-}
-
-void GamePlay::showStageIntro(const unsigned int stage)
-{
-	GameText trans_msg;
-	std::string text = "Stage ";// + stage;
-
-	trans_msg.setText(text_font, text, {0xff, 0xff, 0xff}, screen->renderer());
-	trans_msg.setPos({Utils::alignMiddle(0, SCREEN_WIDTH, trans_msg.size().w), SCREEN_HEIGHT/2 - trans_msg.size().h});
-	screen->addElement(&trans_msg);
-	screen->update();
-	SDL_Delay(2000);
-	screen->removeElement(&trans_msg);
 }
 
 void GamePlay::loadMap()
@@ -449,6 +501,11 @@ int GamePlay::stageLoop(void)
 			{
 				return 1;
 			}
+			// Skip stage.
+			else if (e.key.keysym.sym == SDLK_BACKSPACE)
+			{
+				return 0;
+			}
 			// Move player.
 			else
 			{
@@ -484,18 +541,22 @@ void GamePlay::movePlayer(SDL_Keycode dir)
 	switch(dir)
 	{
 		case SDLK_UP:
+		case SDLK_w:
 			orientation = {0, -1};
 			break;
 
 		case SDLK_DOWN:
+		case SDLK_s:
 			orientation = {0, 1};
 			break;
 
 		case SDLK_LEFT:
+		case SDLK_a:
 			orientation = {-1, 0};
 			break;
 
 		case SDLK_RIGHT:
+		case SDLK_d:
 			orientation = {1, 0};
 			break;
 
