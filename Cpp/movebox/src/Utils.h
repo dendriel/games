@@ -15,7 +15,7 @@
 
 #include "SDL.h"
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #define PREFIX "[debug]"

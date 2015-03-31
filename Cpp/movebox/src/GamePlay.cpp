@@ -524,7 +524,6 @@ int GamePlay::stageLoop(void)
 
 		if (levelFinished() == true)
 		{
-			cout << "Victory!" << endl;
 			return 0;
 		}
 
